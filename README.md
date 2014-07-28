@@ -1,4 +1,2 @@
-scientilla
+SCIENTILLA
 ==========
-
-scientilla
