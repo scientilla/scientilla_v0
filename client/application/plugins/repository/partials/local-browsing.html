@@ -1,0 +1,96 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="visible-xs visible-sm navbar-brand" id="project-name">SCIENTILLA</span>
+                    <span class="visible-md visible-lg navbar-brand" id="project-name">SCIENTILLA</span>
+                </div>
+                <!--
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                       
+                        <div id="toolbar-actions-control" class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">development in progress...</a></li>
+                                </ul>
+                            </div>                                        
+                            <input id="action-input" type="text" class="form-control">
+                        </div>
+                    </form>                              
+                </div>
+                -->
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">
+        <div ng-show="empty" class="row">
+            <div class="col-lg-12 empty-message">
+                <div class="alert alert-danger" role="alert">No repositories available in this installation.</div>
+            </div>
+        </div>        
+        <div ng-show="ready && !empty" class="row">             
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th><i class="fa fa-users"></i> Repository Name</th>
+                        <th><i class="fa fa-file-text"></i> URL</th>
+                        <th class="fixed-th-3x">
+                            <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="repository in aRepositories">
+                        <td>{{repository.name}}</td>
+                        <td>{{repository.url}}</td>
+                        <td>
+                            <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Selected' : 'Select' }}</button>
+                            <button ng-click="switchRepositorySharingStatus(repository._id)" type="button" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[dataset._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i> {{repositoryIdsSharingMap[repository._id] ? "Public" : "Private" }}</button>
+                            <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
+                            <!-- <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                        </td>
+                    </tr>                                
+                </table>
+            </div>
+            <div class="col-sm-12 visible-xs visible-sm">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                    </div>                           
+                    <div class="col-xs-12 col-sm-12" ng-repeat="repository in aRepositories">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4><i class="fa fa-file-text"></i> Peer Name:</h4>
+                                {{repository.name}}<br />
+                                <h4><i class="fa fa-tags"></i> URL:</h4>
+                                {{repository.url}}<br />
+                            </div>
+                            <div class="panel-footer">
+                                <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Selected' : 'Select' }}</button>
+                                <button ng-click="switchRepositorySharingStatus(repository._id)" type="button" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[dataset._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i> {{repositoryIdsSharingMap[repository._id] ? "Public" : "Private" }}</button>
+                                <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
+                                <!-- <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                                <div class="clearfix"></div>
+                            </div>                                    
+                        </div>
+                    </div>                                
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>        
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">                    
+                    <span class="visible-xs visible-sm navbar-brand" id="project-name">SCIENTILLA</span>
+                    <span class="visible-md visible-lg navbar-brand" id="project-name">SCIENTILLA</span>
+                </div>
+                <!--
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                       
+                        <div id="toolbar-actions-control" class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">development in progress...</a></li>
+                                </ul>
+                            </div>                                        
+                            <input id="action-input" type="text" class="form-control">
+                        </div>
+                    </form>                              
+                </div>
+                -->
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">
+        <div class="row">            
+            <div class="col-xs-offset-1 col-sm-offset-4 col-md-offset-4 col-lg-offset-5 col-xs-10 col-sm-4 col-md-4 col-lg-2">   
+                <form ng-submit="login()" autocomplete="off" class="form-signin" role="form">
+                    <h3 class="form-signin-heading"><i class="fa fa-lock"></i> Please Sign in</h3>
+                    <label for="username" class="label label-default">Username</label>
+                    <input ng-model="oUser.username" id="username" type="text" autofocus="" class="form-control">
+                    <label for="password" class="label label-default">Password</label>
+                    <input ng-model="oUser.password" id="password" type="password" class="form-control">
+                    <p></p>
+                    <button type="submit" class="btn btn-lg btn-default"><i class="fa fa-sign-in"></i> Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

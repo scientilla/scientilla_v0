@@ -1,0 +1,282 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="visible-xs visible-sm navbar-brand" id="project-name">SCIENTILLA</span>
+                    <span class="visible-md visible-lg navbar-brand" id="project-name">SCIENTILLA</span>
+                </div>
+                <!--
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                       
+                        <div id="toolbar-actions-control" class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">development in progress...</a></li>
+                                </ul>
+                            </div>                                        
+                            <input id="action-input" type="text" class="form-control">
+                        </div>
+                    </form>                              
+                </div>
+                -->
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">
+        <div class="row">            
+            <div class="col-lg-12">
+                <form name="form" class="form-horizontal" role="form" novalidate>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="title" class="label label-default">Title</label>
+                            <label for="title" class="label label-danger" ng-show="form.title.$error.required">Required</label>
+                            <label for="title" class="label label-danger" ng-show="!form.title.$valid">Not correctly typed</label>                           
+                            <input id="title" name="title" ng-model="oReference.title" ng-required="true" type="text" class="form-control">                             
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="authors" class="label label-default">Authors</label>
+                            <label for="authors" class="label label-danger" ng-show="form.authors.$error.required">Required</label>
+                            <label for="authors" class="label label-danger" ng-show="!form.authors.$valid">Not correctly typed</label>                           
+                            <input id="authors" name="authors" ng-model="oReference.authors" ng-required="true" ng-pattern="/^([^,]+\.)+(, [^,]+\.)*( and [^,]+\.)?$/" ng-change="extractAuthors()" type="text" placeholder="Eg: Molinari E., Palmaro E., De Luca A." class="form-control">                            
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="form.authors.$valid">
+                        <div class="col-xs-12 nowrap">
+                            <h4>Who are you?</h4>
+                            <ul>
+                                <li ng-repeat="author in oReference.aAuthors">
+                                    <input id="confirmed_author" name="confirmed_author" type="radio" value="{{$index}}"> <b>{{author}}</b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="organizations" class="label label-default">Organizations</label>
+                            <label for="organizations" class="label label-danger" ng-show="form.organizations.$error.required">Required</label>
+                            <label for="organizations" class="label label-danger" ng-show="!form.organizations.$valid">Not correctly typed</label>                          
+                            <input id="organizations" name="organizations" ng-model="oReference.organizations" ng-required="true" ng-pattern="/^([^,]+)+(, [^,]+)*$/" ng-change="extractOrganizations()" type="text" placeholder="Eg.: Istituto Italiano di Tecnologia, Università di Genova" class="form-control">                            
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="form.organizations.$valid">
+                        <div class="col-xs-12 nowrap">
+                            <h4>Who are you?</h4>
+                            <ul>
+                                <li ng-repeat="organization in oReference.aOrganizations">
+                                    <input id="confirmed_organization" name="confirmed_organization" type="radio" value="{{$index}}"> <b>{{organization}}</b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="tags" class="label label-default">Tags</label>
+                            <label for="tags" class="label label-danger" ng-show="form.tags.$error.required">Required</label>
+                            <label for="tags" class="label label-danger" ng-show="!form.tags.$valid">Not correctly typed</label>                        
+                            <input id="tags" name="tags" ng-model="oReference.tags" ng-required="true" ng-pattern="/^([a-zA-Z0-9 \-\/]+[a-zA-Z0-9])(, [a-zA-Z0-9 \-\/]+[a-zA-Z0-9])*$/" ng-change="extractTags()" type="text" class="form-control">                           
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="form.tags.$valid">
+                        <div class="col-xs-12">
+                            <ul>
+                                <li ng-repeat="tag in oReference.aTags">
+                                    <b>{{tag}}</b>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-1 nowrap">
+                            <label for="year" class="label label-default">Year</label>
+                            <label for="year" class="label label-danger" ng-show="form.year.$error.required">Required</label>
+                            <label for="year" class="label label-danger" ng-show="!form.year.$valid">Not correctly typed</label>                         
+                            <input id="year" name="year" ng-model="oReference.year" ng-required="true" ng-pattern="/^[0-9]{4}$/" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 nowrap">
+                            <label for="doi" class="label label-default">DOI</label>
+                            <input id="doi" ng-model="oReference.doi" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <div class="alert alert-info" role="alert">Journal</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="journal-name" class="label label-default">Name</label>
+                            <input id="journal-name" ng-model="oReference.journal_name" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 nowrap">
+                            <label for="journal-acronym" class="label label-default">Acronym</label>
+                            <input id="journal-acronym" ng-model="oReference.journal_acronym" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 nowrap">
+                            <label for="journal-pissn" class="label label-default">P-ISSN</label>
+                            <input id="journal-pissn" ng-model="oReference.journal_pissn" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 nowrap">
+                            <label for="journal-eissn" class="label label-default">E-ISSN</label>
+                            <input id="journal-eissn" ng-model="oReference.journal_eissn" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 nowrap">
+                            <label for="journal-lissn" class="label label-default">ISSN-L</label>
+                            <input id="journal-lissn" ng-model="oReference.journal_issnl" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 nowrap">
+                            <label for="journal-volume" class="label label-default">Volume</label>
+                            <input id="journal-volume" ng-model="oReference.journal_volume" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 nowrap">
+                            <label for="journal-year" class="label label-default">Year</label>
+                            <label for="journal-year" class="label label-danger" ng-show="form.journal_year.$error.required">Required</label>
+                            <label for="journal-year" class="label label-danger" ng-show="!form.journal_year.$valid">Not correctly typed</label>                            
+                            <input id="journal-year" name="journal_year" ng-model="oReference.journal_year" ng-pattern="/^([0-9]{4})?$/" type="text" class="form-control">                            
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <div class="alert alert-info" role="alert">Conference</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="conference-name" class="label label-default">Name</label>
+                            <input id="conference-name" ng-model="oReference.conference_name" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 nowrap">
+                            <label for="conference-acronym" class="label label-default">Acronym</label>
+                            <input id="conference-acronym" ng-model="oReference.conference_acronym" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="conference-place" class="label label-default">Place</label>
+                            <input id="conference-place" ng-model="oReference.conference_place" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 nowrap">
+                            <label for="conference-year" class="label label-default">Year</label>
+                            <label for="conference-year" class="label label-danger" ng-show="form.conference_year.$error.required">Required</label>
+                            <label for="conference-year" class="label label-danger" ng-show="!form.conference_year.$valid">Not correctly typed</label> 
+                            <input id="conference-year" name="conference_year" ng-model="oReference.conference_year" ng-pattern="/^([0-9]{4})?$/" type="text" class="form-control">                                                         
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <div class="alert alert-info" role="alert">Book</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="book-title" class="label label-default">Title</label>
+                            <input id="book-title" ng-model="oReference.book_title" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 nowrap">
+                            <label for="book-isbn" class="label label-default">ISBN</label>
+                            <input id="book-isbn" ng-model="oReference.book_isbn" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 nowrap">
+                            <label for="book-pages" class="label label-default">Pages</label>
+                            <input id="book-pages" ng-model="oReference.book_pages" type="text" class="form-control">
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="book-editor" class="label label-default">Editor</label>
+                            <input id="book-editor" ng-model="oReference.book_editor" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 nowrap">
+                            <label for="book-year" class="label label-default">Year</label>
+                            <label for="book-year" class="label label-danger" ng-show="form.book_year.$error.required">Required</label>
+                            <label for="book-year" class="label label-danger" ng-show="!form.book_year.$valid">Not correctly typed</label>                            
+                            <input id="book-year" name="book_year" ng-model="oReference.book_year" ng-pattern="/^([0-9]{4})?$/" type="text" class="form-control">                             
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <div class="alert alert-info" role="alert">Other</div>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="abstract" class="label label-default">Abstract</label>
+                            <textarea id="abstract" ng-model="oReference.abstract" rows="3" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-1 nowrap">
+                            <label for="month" class="label label-default">Month</label>
+                            <label for="month" class="label label-danger" ng-show="!form.month.$valid">Not correctly typed</label>                          
+                            <input id="month" name="month" ng-model="oReference.month" ng-pattern="/^(01|02|03|04|05|06|07|08|09|10|11|12)?$/" type="text" class="form-control">                            
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="print-status" class="label label-default">Print Status</label>
+                            <div id="print-status">
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="oReference.print_status" btn-radio="0">Published</label>
+                                    <label class="btn btn-default" ng-model="oReference.print_status" btn-radio="1">In Press</label>
+                                </div>
+                            </div>                            
+                        </div>                        
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="note" class="label label-default">Note</label>
+                            <textarea id="note" ng-model="oReference.note" rows="3" class="form-control"></textarea>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button ng-click="cloneReference()" ng-show="form.$valid" type="button" class="btn btn-default form-control">Clone</button>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <a href="#/browse-references/" class="btn btn-default form-control">Cancel</a>
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

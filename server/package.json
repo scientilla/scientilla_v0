@@ -1,0 +1,20 @@
+{
+    "name": "scientilla",
+    "version": "0.0.1",
+    "license": "MIT",
+    "private": true,
+    "main": "index.js",
+    "dependencies": {
+        "async": "latest",
+        "underscore": "latest",
+        "express": "latest",
+        "body-parser": "latest",
+        "cors": "latest",
+        "jsonwebtoken": "latest",
+        "express-jwt": "latest",
+        "tingodb": "latest",
+        "moment": "latest",
+        "request": "latest",
+        "bcrypt-nodejs": "latest"
+    }
+}

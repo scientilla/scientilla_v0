@@ -1,0 +1,151 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="visible-xs visible-sm navbar-brand" id="project-name">SCIENTILLA</span>
+                    <span class="visible-md visible-lg navbar-brand" id="project-name">SCIENTILLA</span>
+                </div>
+                <!--
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                       
+                        <div id="toolbar-actions-control" class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">development in progress...</a></li>
+                                </ul>
+                            </div>                                        
+                            <input id="action-input" type="text" class="form-control">
+                        </div>
+                    </form>                              
+                </div>
+                -->
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">
+        <div class="row">            
+            <div class="col-lg-12">
+                <form autocomplete="off" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div>
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="oUser.type" btn-radio="'R'">Researcher</label>
+                                    <label class="btn btn-default" ng-model="oUser.type" btn-radio="'O'">Organization</label>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div ng-switch on="oUser.type">
+                        <div ng-switch-when="R">
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="first_name" ng-model="oUser.first_name" type="text" placeholder="First Name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="middle_name" ng-model="oUser.middle_name" type="text" placeholder="Middle Name" class="form-control">
+                                </div>
+                            </div>                    
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="last_name" ng-model="oUser.last_name" type="text" placeholder="Last Name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="birth_date" ng-model="oUser.birth_date" type="text" placeholder="Birth Date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="birth_city" ng-model="oUser.birth_city" type="text" placeholder="Birth City" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="birth_state" ng-model="oUser.birth_state" type="text" placeholder="Birth State" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="birth_country" ng-model="oUser.birth_country" type="text" placeholder="Birth Country" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <div>
+                                        <div class="btn-group">
+                                            <label class="btn btn-default" ng-model="oUser.sex" btn-radio="'F'">Female</label>
+                                            <label class="btn btn-default" ng-model="oUser.sex" btn-radio="'M'">Male</label>
+                                        </div>
+                                    </div>                            
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-switch-when="O">
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <input id="business_name" ng-model="oUser.business_name" type="text" placeholder="Business Name" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input id="email" ng-model="oUser.email" type="text" placeholder="Email" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input id="username" ng-model="oUser.username" type="text" placeholder="Username" class="form-control">
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input id="password" ng-model="oUser.password" type="password" placeholder="Password" class="form-control">
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input id="password_repetition" ng-model="oUser.password_repetition" type="password" placeholder="Password Repetition" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div>
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="oUser.status" btn-radio="'B'">Blocked</label>
+                                    <label class="btn btn-default" ng-model="oUser.status" btn-radio="'U'">Unblocked</label>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button ng-click="updateUser()" type="button" class="btn btn-default form-control">Update</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <a href="#/browse-users/" class="btn btn-default form-control">Cancel</a>
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

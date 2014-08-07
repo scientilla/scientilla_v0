@@ -3,7 +3,8 @@
 **SCIENTILLA**
 
 SCIENTIfic coLLaborative Archive
-The first Independent Scientific Register for Organizations and Researchers
+
+- The first Independent Scientific Register for Organizations and Researchers
 
 
 

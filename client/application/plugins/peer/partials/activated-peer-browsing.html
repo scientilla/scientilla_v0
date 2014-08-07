@@ -1,0 +1,85 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="visible-xs visible-sm navbar-brand" id="project-name">SCIENTILLA</span>
+                    <span class="visible-md visible-lg navbar-brand" id="project-name">SCIENTILLA</span>
+                </div>
+                <!--
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                       
+                        <div id="toolbar-actions-control" class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">development in progress...</a></li>
+                                </ul>
+                            </div>                                        
+                            <input id="action-input" type="text" class="form-control">
+                        </div>
+                    </form>                              
+                </div>
+                -->
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">
+        <div ng-show="empty" class="row">
+            <div class="col-lg-12 empty-message">
+                <div class="alert alert-danger" role="alert">No peers available in this installation.</div>
+            </div>
+        </div>        
+        <div ng-show="ready && !empty" class="row">           
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th><i class="fa fa-users"></i> Peer Name</th>
+                        <th><i class="fa fa-file-text"></i> URL</th>
+                        <th class="fixed-th-3x"></th>
+                    </tr>
+                    <tr ng-repeat="peer in aPeers">
+                        <td>{{peer.name}}</td>
+                        <td><a href="{{peer.url}}/client/" target="PeerWindow">{{peer.url}}</a></td>
+                        <td>
+                            <a href="#/copy-activated-peer-peer/{{peer._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-copy"></i> Copy</a>
+                        </td>
+                    </tr>                                
+                </table>
+            </div>
+            <div class="col-sm-12 visible-xs visible-sm">
+                <div class="row">                          
+                    <div class="col-xs-12 col-sm-12" ng-repeat="peer in aPeers">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4><i class="fa fa-file-text"></i> Peer Name:</h4>
+                                {{peer.name}}<br />
+                                <h4><i class="fa fa-tags"></i> URL:</h4>
+                                <a href="{{peer.url}}/client/" target="PeerWindow">{{peer.url}}</a><br />
+                            </div>
+                            <div class="panel-footer">
+                                <a href="#/copy-activated-peer-peer/{{peer._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-copy"></i> Copy</a>
+                                <div class="clearfix"></div>
+                            </div>                                    
+                        </div>
+                    </div>                                
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>        
+    </div>
+</div>

@@ -1,0 +1,257 @@
+/*
+ * Scientilla v0.0.1 (http://www.scientilla.net)
+ * Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ * Licensed under MIT (https://github.com/scientilla/master/LICENSE)
+ */
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Layout */
+#sidebar-container, #toolbar-and-content-container, #toolbar-container, #content-container {
+	position: absolute;
+}
+
+#sidebar-container {
+	top: 0px;
+    left: -270px;
+	bottom: 0px;
+    width: 270px;
+    background-color: #FAFAFA;
+    overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#toolbar-and-content-container {
+	top: 0px;
+	left: 0px;
+	right: 0px;
+    bottom: 0px;
+    overflow: hidden;
+}
+
+#toolbar-container {
+	top: 0px;
+	left: 0px;
+	right: 0px;
+    height: 54px;
+    background-color: #FFFFFF;
+	border-width: 0px 0px 0px 1px;
+    border-style: solid;
+    border-color: #CCCCCC;
+}
+
+#content-container {
+	top: 54px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+    min-width: 320px;
+    background-color: #EEEEEE;
+	border-width: 1px 0px 0px 1px;
+    border-style: solid;
+    border-color: #CCCCCC;
+	overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Sidebar */
+#sidebar {
+    margin: 0px;
+    padding: 0px;
+}
+
+.navbar {
+	background: #FFFFFF;
+    border: none;
+}
+
+.nav-pills > li {
+    margin: 0px;
+}
+
+.nav-pills > li > a {
+    background-color: #FFFFFF;
+    color: #AAAAAA;
+	border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: #EEEEEE;
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.nav-pills > li > a:hover {
+    background-color: #F9FEFF;
+}
+
+#sidebar > ul > li:first-child > a {
+    background-color: #FFFFFF;
+    height: 55px !important;
+    line-height: 32px;
+    padding-left: 10px;
+}
+
+#sidebar > ul > li:first-child > a strong {
+    text-align: center;
+    font-size: 150%;
+}
+
+.sidebar-divider {
+    height: 4px;
+	border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: #EEEEEE;    
+}
+
+.sidebar-submenu > ul.tree {
+    display: none;
+}
+
+.sidebar-submenu > ul li span {
+    margin-left: 15px;
+}
+
+/* Toolbar */
+#toolbar {
+    margin: 0px;
+    padding: 0px;
+}
+
+#toolbar .navbar-collapse {
+    padding-right: 0px;
+}
+
+#toolbar .navbar-form {
+    padding-right: 0px;
+}
+
+#sidebar-toggle-link:hover {
+	cursor: pointer; 
+}
+
+#project-name {
+    color: #AAAAAA;
+}
+
+#project-name > u {
+    color: #555555;
+}
+
+#toolbar-actions-control {
+    width: 500px;
+}
+
+/* Content */
+#content {
+    margin: 0px;
+    padding: 5px 5px 5px 5px;
+}
+
+#content .alert {
+    margin-bottom: 5px;
+}
+
+#content .waiting-screen {
+    position: absolute;
+    top: 50%;    
+    left: 50%;
+    width: 94px;
+    height: 70px;
+    margin: -35px 0px 0px -47px;
+}
+
+#content .waiting-screen i {
+    color: #CCCCCC;
+}
+
+#content .table {
+    background-color: #FFFFFF;
+    margin-bottom: 0px;
+}
+
+#content .panel {
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+
+#content tr th {
+    background-color: #F8F8F8;
+    white-space: nowrap;
+}
+
+#content tr:hover td {
+    background-color: #F5FBFF;
+}
+
+#content th {
+    line-height: 34px;
+    font-size: 120%;
+    color: #999999;    
+}
+
+.fixed-th {
+    width: 50px;
+}
+
+.fixed-th-2x {
+    width: 100px;
+}
+
+.fixed-th-3x {
+    width: 150px;
+}
+
+.fixed-th-4x {
+    width: 200px;
+}
+
+.fixed-th-5x {
+    width: 250px;
+}
+
+#content td {
+    background-color: transparent;
+}
+
+#content h4 {
+    color: #999999;
+}
+
+#content i {
+    color: #999999;
+}
+
+#content strong {
+    color: #999999;
+}
+
+#content th .btn:hover, #content th .btn:hover i {
+    background-color: #FFFFFF;
+    border-color: #42DDE5;
+    color: #42DDE5 !important;
+}
+
+#content td .btn:hover, #content td .btn:hover i {
+    background-color: #FFFFFF;
+    border-color: #42DDE5;
+    color: #42DDE5 !important;
+}
+
+#content .turned-on {
+    border-color: #42DDE5;
+    color: #42DDE5 !important;
+}
+
+#content .turned-off {
+    color: #CCCCCC;
+}
+
+/* Common */
+.nowrap {
+    white-space: nowrap;
+}

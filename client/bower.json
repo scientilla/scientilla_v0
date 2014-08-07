@@ -1,0 +1,14 @@
+{
+    "name": "scientilla",
+    "version": "0.0.1",
+    "dependencies": {
+        "async": "latest",
+        "angular": "latest",
+        "angular-route": "latest",
+        "angular-resource": "latest",
+        "bootstrap": "latest",
+        "angular-bootstrap": "latest",
+        "font-awesome": "latest",
+        "jquery": "latest"
+    }
+}
