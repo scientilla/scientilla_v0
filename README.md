@@ -8,6 +8,11 @@ SCIENTIfic coLLaborative Archive
 
 
 
+## IMPORTANT
+
+SCIENTILLA is in Alpha phase. While we are writing documentation to help people using it, as well as contributing to the development, it is at moment recommended only for a technical audience.
+
+
 ## Sponsor
 
 **Istituto Italiano di Tecnologia**
