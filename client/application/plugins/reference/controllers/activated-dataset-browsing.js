@@ -8,6 +8,7 @@ angular.module("reference").controller(
     "activatedDatasetReferencesBrowsingController", ["$scope", "datasetReferencesService", "peerDatasetReferencesService", "activatedDatasetsService", "datasetsService", "systemStatusService", "$window", "$location", function($scope, datasetReferencesService, peerDatasetReferencesService, activatedDatasetsService, datasetsService, systemStatusService, $window, $location) {
         $scope.empty = false;
         $scope.ready = false;
+        $scope.error = false;
         async.series([
             function(callback) {
                 $scope.oActivatedDataset = {};
@@ -32,6 +33,7 @@ angular.module("reference").controller(
                         }                    
                         callback();
                     }).error(function(data, status, headers, config) {
+                        $scope.error = true;
                         systemStatusService.react(status, callback);
                     });
                 } else {
@@ -46,6 +48,7 @@ angular.module("reference").controller(
                         }                    
                         callback();
                     }).error(function(data, status, headers, config) {
+                        $scope.error = true;
                         systemStatusService.react(status, callback);
                     });                    
                 }

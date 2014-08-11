@@ -34,44 +34,61 @@
     </div>			
 </div>
 <div id="content-container">
-    <div id="content" class="container-fluid">
-        <div ng-show="empty" class="row">
-            <div class="col-lg-12 empty-message">
-                <div class="alert alert-danger" role="alert">No references available in this installation.</div>
-            </div>
-        </div>        
-        <div ng-show="ready && !empty" class="row">           
+    <div id="content" class="container-fluid">        
+        <div class="row">           
             <div class="col-lg-12 visible-md visible-lg">
                 <table class="table table-bordered table-hover">
-                    <tr>
-                        <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
-                        <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
-                        <th class="fixed-th-3x"></th>
-                    </tr>
-                    <tr ng-repeat="reference in aReferences">
-                        <td>
-                            {{reference.authors}}<br />
-                            <i>{{reference.title}}</i><br />
-                            <span ng-if="reference.journal !== ''">
-                                {{reference.journal}}{{reference.hasOwnProperty("volume") && reference.volume !== "" ? ", " + reference.volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
-                            </span>
-                            <span ng-if="reference.conference !== ''">
-                                {{reference.conference}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
-                            </span>
-                            <span ng-if="reference.book !== ''">
-                                {{reference.book}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
-                            </span>
-                            <strong ng-if="reference.doi !== ''">
-                                {{reference.doi}}
-                            </strong>
-                        </td>
-                        <td class="text-center">
-                            <strong>{{reference.year}}</strong>
-                        </td>
-                        <td>
-                            <a href="#/clone-activated-repository-reference/{{$index}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
-                        </td>
-                    </tr>                                
+                    <thead>
+                        <tr>
+                            <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
+                            <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
+                            <th class="fixed-th-3x"></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr ng-repeat="reference in aReferences">
+                            <td>
+                                {{reference.authors}}<br />
+                                <i>{{reference.title}}</i><br />
+                                <span ng-if="reference.journal !== ''">
+                                    {{reference.journal}}{{reference.hasOwnProperty("volume") && reference.volume !== "" ? ", " + reference.volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                </span>
+                                <span ng-if="reference.conference !== ''">
+                                    {{reference.conference}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                </span>
+                                <span ng-if="reference.book !== ''">
+                                    {{reference.book}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                </span>
+                                <strong ng-if="reference.doi !== ''">
+                                    {{reference.doi}}
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>{{reference.year}}</strong>
+                            </td>
+                            <td>
+                                <a href="#/clone-activated-repository-reference/{{$index}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="3">
+                                <div class="col-lg-12 empty-message">
+                                    No references available on the repository.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="5">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving references from the repository.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>                    
                 </table>
             </div>
             <div class="col-sm-12 visible-xs visible-sm">

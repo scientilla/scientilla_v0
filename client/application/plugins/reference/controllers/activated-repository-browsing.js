@@ -8,6 +8,7 @@ angular.module("reference").controller(
     "activatedRepositoryReferencesBrowsingController", ["$scope", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location) {
         $scope.empty = false;
         $scope.ready = false;
+        $scope.error = false;
         async.series([
             function(callback) {
                 $scope.oActivatedRepository = {};
@@ -31,6 +32,7 @@ angular.module("reference").controller(
                     }                    
                     callback();
                 }).error(function(data, status, headers, config) {
+                    $scope.error = true;
                     systemStatusService.react(status, callback);
                 });
             },

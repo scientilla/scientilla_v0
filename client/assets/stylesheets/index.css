@@ -251,6 +251,20 @@ html, body {
     color: #CCCCCC;
 }
 
+#content .empty-message {
+    background: #F0AD4E;
+    padding: 5px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+#content .error-message {
+    background: #D9534F;
+    padding: 5px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
 /* Common */
 .nowrap {
     white-space: nowrap;

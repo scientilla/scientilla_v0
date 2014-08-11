@@ -8,6 +8,7 @@ angular.module("dataset").controller(
     "activatedPeerRepositoriesBrowsingController", ["$scope", "peerRepositoriesService", "activatedPeersService", "peersService", "systemStatusService", "$window", "$location", function($scope, peerRepositoriesService, activatedPeersService, peersService, systemStatusService, $window, $location) { 
         $scope.empty = false;
         $scope.ready = false;
+        $scope.error = false;
         async.series([
             function(callback) {
                 $scope.oActivatedPeer = {};
@@ -36,6 +37,7 @@ angular.module("dataset").controller(
                     }                    
                     callback();
                 }).error(function(data, status, headers, config) {
+                    $scope.error = true;
                     systemStatusService.react(status, callback);
                 });
             },

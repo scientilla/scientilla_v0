@@ -16,6 +16,7 @@ angular.module("dataset").controller(
         
         $scope.empty = false;
         $scope.ready = false;
+        $scope.error = false;
         async.series([
             function(callback) {
                 $scope.aDatasets = [];
@@ -26,6 +27,7 @@ angular.module("dataset").controller(
                     }                    
                     callback();
                 }).error(function(data, status, headers, config) {
+                    $scope.error = true;
                     systemStatusService.react(status, callback);
                 });
             },

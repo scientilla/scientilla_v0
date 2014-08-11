@@ -24,6 +24,7 @@ angular.module("reference").controller(
         
         $scope.empty = false;
         $scope.ready = false;
+        $scope.error = false;
         async.series([
             function(callback) {
                 $scope.aReferences = [];
@@ -34,6 +35,7 @@ angular.module("reference").controller(
                     }                    
                     callback();
                 }).error(function(data, status, headers, config) {
+                    $scope.error = true;
                     systemStatusService.react(status, callback);
                 });
             },

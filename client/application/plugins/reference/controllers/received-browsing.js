@@ -5,10 +5,11 @@
  */
 
 angular.module("reference").controller(
-    "receivedReferencesBrowsingController", ["$scope", "referencesService", "$window", "$location", function($scope, referencesService, $window, $location) {
+    "receivedReferencesBrowsingController", ["$scope", "referencesService", "systemStatusService", "$window", "$location", function($scope, referencesService, systemStatusService, $window, $location) {
         $scope.aReceivedReferences = [];
         $scope.empty = false;
         $scope.ready = false;
+        $scope.error = false;
         referencesService.getReceivedReferences($window.sessionStorage.token).success(function(data, status, headers, config) {
             $scope.aReceivedReferences = data;
             if ($scope.aReferences.length === 0) {
@@ -16,6 +17,7 @@ angular.module("reference").controller(
             }            
             $scope.ready = true;            
         }).error(function(data, status, headers, config) {
+            $scope.error = true;
             systemStatusService.react(status);
         });
     }]

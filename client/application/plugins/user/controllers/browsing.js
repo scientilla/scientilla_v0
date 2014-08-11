@@ -9,6 +9,7 @@ angular.module("user").controller(
         $scope.aUsers = [];
         $scope.empty = false;
         $scope.ready = false;
+        $scope.error = false;
         usersService.getUsers($window.sessionStorage.token).success(function(data, status, headers, config) {
             $scope.aUsers = data;
             if ($scope.aUsers.length === 0) {
@@ -16,6 +17,7 @@ angular.module("user").controller(
             }            
             $scope.ready = true;
         }).error(function(data, status, headers, config) {
+            $scope.error = true;
             systemStatusService.react(status);
         });
     }]
