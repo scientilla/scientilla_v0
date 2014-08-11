@@ -42,4 +42,4 @@ SCIENTILLA is in Alpha phase. While we are writing documentation to help people 
 
 ## Copyright and License
 
-Code and Documentation Copyright 2014 Istituto Italiano di Tecnologia - Code released under [the MIT license](LICENSE). Documentation released under [Creative Commons](docs/LICENSE).
+Code and Documentation Copyright (c) 2014 Istituto Italiano di Tecnologia - Code released under the [MIT license](LICENSE). Documentation released under the Creative Commons license.
