@@ -85,23 +85,26 @@
 
                     </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleSettingsMenu()" href="#/edit-user/" class="tree-toggle nav-header"><span class="fa fa-gears"></span> <strong>Settings</strong></a>
+                        <a ng-click="toggleSettingsMenu()" href="#/browse-users/" class="tree-toggle nav-header"><span class="fa fa-gears"></span> <strong>Settings</strong></a>
                         <ul collapse_stop="settingsCollapseStatus" id="settingsMenu" class="nav nav-stacked nav-pills tree">
+                            <li>
+                                <a activate href="#/browse-users/"><span class="fa fa-users"></span> Users</a>
+                            </li>                            
                             <li>
                                 <a activate href="#/edit-user/"><span class="fa fa-user"></span> My Profile</a>
                             </li> 
-                            <li>
-                                <a activate href="#/browse-users/"><span class="fa fa-users"></span> Users</a>
-                            </li>
                             <!--
                             <li>
                                 <a href="#/browse-settings/"><span class="glyphicon glyphicon-wrench"></span> Settings</a>
                             </li>
-                            <li>
-                                <a href="#/logout/" id="logout-link"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
-                            </li>
-                            -->
+                            -->                            
                         </ul>                        
+                    </li>
+                    <li class="sidebar-divider">
+
+                    </li>                    
+                    <li>
+                        <a href="#/logout/" id="logout-link"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
                     </li>                    
                 </ul>
             </div>

@@ -23,5 +23,10 @@ angular.module("system").controller(
                 systemStatusService.react(status);
             });
         };
+        
+        $scope.logout = function() {            
+            delete $window.sessionStorage.token;            
+            $window.location.href = "/";
+        };
     }]
 );
