@@ -40,10 +40,10 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th><i class="fa fa-users"></i> First Name</th>
-                            <th><i class="fa fa-users"></i> Middle Name</th>                        
-                            <th><i class="fa fa-users"></i> Last Name</th> 
-                            <th><i class="fa fa-file-text"></i> Email</th>
+                            <th><i class="fa fa-users"></i> Researcher First Name</th>
+                            <th><i class="fa fa-users"></i> Researcher Middle Name</th>                        
+                            <th><i class="fa fa-users"></i> Researcher Last Name</th> 
+                            <th><i class="fa fa-users"></i> Organization Name</th> 
                             <th class="fixed-th-3x">
                                 <a href="#/add-user/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
                             </th>
@@ -54,7 +54,7 @@
                             <td>{{user.first_name}}</td>
                             <td>{{user.middle_name}}</td>                        
                             <td>{{user.last_name}}</td>
-                            <td>{{user.email}}</td>
+                            <td>{{user.business_name}}</td>
                             <td>
                                 <button type="button" class="btn btn-default btn-block"><i class="fa fa-lock"></i> Block</button>
                                 <a href="#/edit-user/{{user._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
@@ -90,14 +90,14 @@
                     <div class="col-xs-12 col-sm-12" ng-repeat="user in aUsers">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <h4><i class="fa fa-file-text"></i> First Name:</h4>
+                                <h4><i class="fa fa-file-text"></i> Researcher First Name:</h4>
                                 {{user.first_name}}<br />
-                                <h4><i class="fa fa-file-text"></i> Middle Name:</h4>                                
+                                <h4><i class="fa fa-file-text"></i> Researcher Middle Name:</h4>                                
                                 {{user.middle_name}}<br />
-                                <h4><i class="fa fa-file-text"></i> Last Name:</h4>
+                                <h4><i class="fa fa-file-text"></i> Researcher Last Name:</h4>
                                 {{user.last_name}}<br />                              
-                                <h4><i class="fa fa-tags"></i> Email:</h4>
-                                {{user.email}}<br />
+                                <h4><i class="fa fa-tags"></i> Organization Name:</h4>
+                                {{user.business_name}}<br />
                             </div>
                             <div class="panel-footer">
                                 <button type="button" class="btn btn-default btn-block"><i class="fa fa-lock"></i> Block</button>
