@@ -71,11 +71,11 @@
                             </td>        
                             <td>{{reference.tags}}</td>
                             <td>
+                                <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>                                
                                 <!-- <button type="button" class="btn btn-default btn-block"><i class="glyphicon glyphicon-cloud-upload"></i> Push</button> -->                            
                                 <button ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
                                 <button ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
-                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
-                                <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</button>                            
+                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
                                 <!-- <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                             </td>
                         </tr>
@@ -129,11 +129,11 @@
                                 {{reference.tags}}<br />
                             </div>
                             <div class="panel-footer">
+                                <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>                                
                                 <!-- <button type="button" class="btn btn-default btn-block"><i class="glyphicon glyphicon-cloud-upload"></i> Push</button> -->                               
                                 <button ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
                                 <button ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
                                 <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
-                                <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
                                 <!-- <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                                 <div class="clearfix"></div>
                             </div>                                    
