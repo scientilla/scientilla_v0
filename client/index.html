@@ -18,29 +18,29 @@
             <div id="sidebar" class="container-fluid">
                 <ul class="sidebar-nav nav nav-stacked nav-pills">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleSettingsMenu()" href="#/edit-user/" class="tree-toggle nav-header"><img src="assets/images/logo-mini.png" /> <!-- <strong class="pull-right"></strong> --></a>                       
+                        <a ng-click="toggleSettingsMenu()" href="#/edit-user/" class="tree-toggle nav-header"><i class="fa fa-mortar-board"></i> <strong>Profile</strong></a>                       
                     </li>                    
                     <li class="sidebar-divider">
 
                     </li>
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><span class="glyphicon glyphicon-book"></span> <strong>References</strong></a>
+                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><i class="glyphicon glyphicon-book"></i> References</a>
                         <ul collapse_stop="referencesCollapseStatus" id="referencesMenu" class="nav nav-stacked nav-pills tree">
                             <li>
-                                <a activate href="#/browse-references/"><span class="fa fa-user"></span> in <i><strong>My Official List</strong></i></a>
+                                <a activate href="#/browse-references/"><i class="fa fa-user"></i> from <strong>Official List</strong></a>
                             </li>
                             <li>
-                                <a activate href="#/browse-activated-dataset-references/"><span class="fa fa-database"></span> from Datasets</a>
+                                <a activate href="#/browse-activated-dataset-references/"><i class="fa fa-database"></i> from Datasets</a>
                             </li>                            
                             <li>
-                                <a activate href="#/browse-activated-repository-references/"><span class="glyphicon glyphicon-cloud-download"></span> from Repositories</a>
+                                <a activate href="#/browse-activated-repository-references/"><i class="glyphicon glyphicon-cloud-download"></i> from Repositories</a>
                             </li>
                             <li>
-                                <a activate href="#/browse-activated-peer-references/"><span class="glyphicon glyphicon-cloud-download"></span> from Peers</a>
+                                <a activate href="#/browse-activated-peer-references/"><i class="glyphicon glyphicon-cloud-download"></i> from Peers</a>
                             </li>                            
                             <!--
                             <li>
-                                <a href="#/browse-received-references/"><span class="glyphicon glyphicon-inbox"></span> List of Received ones</a>
+                                <a href="#/browse-received-references/"><i class="glyphicon glyphicon-inbox"></i> List of Received ones</a>
                             </li>
                             -->
                         </ul>
@@ -49,29 +49,26 @@
 
                     </li>
                     <li>
-                        <a activate href="#/browse-datasets/"><span class="fa fa-database"></span> <strong>Datasets</strong></a>
+                        <a activate href="#/browse-datasets/"><i class="fa fa-database"></i> Datasets</a>
                     </li>                    
                     <li class="sidebar-divider">
 
                     </li>                                        
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleSettingsMenu()" class="tree-toggle nav-header"><span class="fa fa-gears"></span> <strong>Settings</strong></a>
+                        <a ng-click="toggleSettingsMenu()" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Settings</a>
                         <ul collapse_stop="settingsCollapseStatus" id="settingsMenu" class="nav nav-stacked nav-pills tree">
                             <li>
-                                <a activate href="#/edit-user/"><span class="fa fa-mortar-board"></span> <strong>My Profile</strong></a>
-                            </li>
-                            <li>
-                                <a activate href="#/browse-users/"><span class="fa fa-users"></span> <strong>Users</strong></a>
+                                <a activate href="#/browse-users/"><i class="fa fa-users"></i> Users</a>
                             </li>                            
                             <li>
-                                <a activate href="#/browse-repositories/"><span class="fa fa-cloud"></span> <strong>Repositories</strong> (Web Services)</a>
+                                <a activate href="#/browse-repositories/"><i class="fa fa-cloud"></i> Repositories (Web Services)</a>
                             </li>
                             <li>
-                                <a activate href="#/browse-peers/"><span class="fa fa-cloud"></span> <strong>Peers</strong> (Other Installations)</a>
+                                <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers (Other Installations)</a>
                             </li>                            
                             <!--
                             <li>
-                                <a href="#/browse-settings/"><span class="glyphicon glyphicon-wrench"></span> Settings</a>
+                                <a href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Settings</a>
                             </li>
                             -->                            
                         </ul>                        
@@ -80,7 +77,7 @@
 
                     </li>                    
                     <li>
-                        <a href="#/logout/" id="logout-link"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                        <a href="#/logout/" id="logout-link"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
                     </li>                    
                 </ul>
             </div>

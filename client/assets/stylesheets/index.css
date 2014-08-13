@@ -22,7 +22,7 @@ html, body {
     left: -250px;
 	bottom: 0px;
     width: 270px;
-    background-color: #FAFAFA;
+    background-color: #F6F6F6;
     overflow-x: hidden;
 	overflow-y: auto;
 }
@@ -34,7 +34,7 @@ html, body {
     bottom: 0px;
 	border-width: 0px 0px 0px 2px;
     border-style: solid;    
-    border-color: #42DDE5;    
+    border-color: #CCCCCC;    
     overflow: hidden;
 }
 
@@ -92,16 +92,30 @@ html, body {
     background-color: #F9FEFF;
 }
 
+#sidebar > ul > li > a {
+    font-size: 120%;
+}
+
 #sidebar > ul > li:first-child > a {
     background-color: #FFFFFF;
     height: 55px !important;
     line-height: 32px;
-    padding-left: 10px;
+}
+
+#sidebar > ul > li > a i {
+    width: 20px;
 }
 
 #sidebar > ul > li:first-child > a strong {
     text-align: center;
-    font-size: 150%;
+}
+
+#sidebar > ul > li > ul > li > a {
+    font-size: 110%;
+}
+
+#sidebar > ul > li > ul > li > a i {
+    width: 30px;
 }
 
 .sidebar-divider {
