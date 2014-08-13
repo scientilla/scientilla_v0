@@ -12,36 +12,16 @@ angular.module("system").controller(
             $("#settingsMenu").slideDown();
             $("#referencesMenu").slideUp();
             $("#datasetsMenu").slideUp();
-            $("#peersMenu").slideUp();
-            $("#repositoriesMenu").slideUp();
         }
         $scope.toggleReferencesMenu = function() {
             $("#settingsMenu").slideUp();
             $("#referencesMenu").slideDown();
-            $("#datasetsMenu").slideUp();
-            $("#peersMenu").slideUp();
-            $("#repositoriesMenu").slideUp();            
+            $("#datasetsMenu").slideUp();            
         }
         $scope.toggleDatasetsMenu = function() {
             $("#settingsMenu").slideUp();
             $("#referencesMenu").slideUp();
-            $("#datasetsMenu").slideDown();
-            $("#peersMenu").slideUp();
-            $("#repositoriesMenu").slideUp();            
-        }
-        $scope.togglePeersMenu = function() {
-            $("#settingsMenu").slideUp();
-            $("#referencesMenu").slideUp();
-            $("#datasetsMenu").slideUp();
-            $("#peersMenu").slideDown();
-            $("#repositoriesMenu").slideUp();            
-        }
-        $scope.toggleRepositoriesMenu = function() {
-            $("#settingsMenu").slideUp();
-            $("#referencesMenu").slideUp();
-            $("#datasetsMenu").slideUp();
-            $("#peersMenu").slideUp(); 
-            $("#repositoriesMenu").slideDown();
+            $("#datasetsMenu").slideDown();            
         }
         /* jQuery code end */        
     }]

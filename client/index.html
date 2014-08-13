@@ -27,16 +27,16 @@
                         <a ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><span class="glyphicon glyphicon-book"></span> <strong>References</strong></a>
                         <ul collapse_stop="referencesCollapseStatus" id="referencesMenu" class="nav nav-stacked nav-pills tree">
                             <li>
-                                <a activate href="#/browse-references/"><span class="fa fa-user"></span> My List</a>
+                                <a activate href="#/browse-references/"><span class="fa fa-user"></span> in <i><strong>My Official List</strong></i></a>
                             </li>
                             <li>
-                                <a activate href="#/browse-activated-dataset-references/"><span class="fa fa-database"></span> List from selected Dataset</a>
+                                <a activate href="#/browse-activated-dataset-references/"><span class="fa fa-database"></span> from Datasets</a>
                             </li>                            
                             <li>
-                                <a activate href="#/browse-activated-repository-references/"><span class="glyphicon glyphicon-cloud-download"></span> List from selected Repository</a>
+                                <a activate href="#/browse-activated-repository-references/"><span class="glyphicon glyphicon-cloud-download"></span> from Repositories</a>
                             </li>
                             <li>
-                                <a activate href="#/browse-activated-peer-references/"><span class="glyphicon glyphicon-cloud-download"></span> List from selected Peer</a>
+                                <a activate href="#/browse-activated-peer-references/"><span class="glyphicon glyphicon-cloud-download"></span> from Peers</a>
                             </li>                            
                             <!--
                             <li>
@@ -48,51 +48,27 @@
                     <li class="sidebar-divider">
 
                     </li>
-                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleDatasetsMenu()" href="#/browse-datasets/" class="tree-toggle nav-header"><span class="fa fa-database"></span> <strong>Datasets</strong> (Collected References)</a>
-                        <ul collapse_stop="datasetsCollapseStatus" id="datasetsMenu" class="nav nav-stacked nav-pills tree">
-                            <li>
-                                <a activate href="#/browse-datasets/"><span class="fa fa-user"></span> My List</a>
-                            </li>
-                            <li>
-                                <a href="#/browse-activated-peer-datasets/"><span class="glyphicon glyphicon-cloud-download"></span> List from selected Peer</a>
-                            </li> 
-                        </ul>
+                    <li>
+                        <a activate href="#/browse-datasets/"><span class="fa fa-database"></span> <strong>Datasets</strong></a>
                     </li>                    
                     <li class="sidebar-divider">
 
-                    </li>
+                    </li>                                        
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleRepositoriesMenu()" href="#/browse-repositories/" class="tree-toggle nav-header"><span class="fa fa-cloud"></span> <strong>Repositories</strong> (Web Services)</a>
-                        <ul collapse_stop="repositoriesCollapseStatus" id="repositoriesMenu" class="nav nav-stacked nav-pills tree">
-                            <li>
-                                <a activate href="#/browse-repositories/"><span class="fa fa-user"></span> My List</a>
-                            </li>                            
-                        </ul>
-                    </li>
-                    <li class="sidebar-divider">
-
-                    </li>                    
-                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="togglePeersMenu()" href="#/browse-peers/" class="tree-toggle nav-header"><span class="fa fa-cloud"></span> <strong>Other Installations</strong> (Peers)</a>
-                        <ul collapse_stop="peersCollapseStatus" id="peersMenu" class="nav nav-stacked nav-pills tree">
-                            <li>
-                                <a activate href="#/browse-peers/"><span class="fa fa-user"></span> My List</a>
-                            </li>                            
-                        </ul>
-                    </li>                    
-                    <li class="sidebar-divider">
-
-                    </li>                    
-                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleSettingsMenu()" href="#/browse-users/" class="tree-toggle nav-header"><span class="fa fa-gears"></span> <strong>Settings</strong></a>
+                        <a ng-click="toggleSettingsMenu()" class="tree-toggle nav-header"><span class="fa fa-gears"></span> <strong>Settings</strong></a>
                         <ul collapse_stop="settingsCollapseStatus" id="settingsMenu" class="nav nav-stacked nav-pills tree">
                             <li>
-                                <a activate href="#/browse-users/"><span class="fa fa-users"></span> Users</a>
+                                <a activate href="#/edit-user/"><span class="fa fa-mortar-board"></span> <strong>My Profile</strong></a>
+                            </li>
+                            <li>
+                                <a activate href="#/browse-users/"><span class="fa fa-users"></span> <strong>Users</strong></a>
                             </li>                            
                             <li>
-                                <a activate href="#/edit-user/"><span class="fa fa-user"></span> My Profile</a>
-                            </li> 
+                                <a activate href="#/browse-repositories/"><span class="fa fa-cloud"></span> <strong>Repositories</strong> (Web Services)</a>
+                            </li>
+                            <li>
+                                <a activate href="#/browse-peers/"><span class="fa fa-cloud"></span> <strong>Peers</strong> (Other Installations)</a>
+                            </li>                            
                             <!--
                             <li>
                                 <a href="#/browse-settings/"><span class="glyphicon glyphicon-wrench"></span> Settings</a>

@@ -19,7 +19,7 @@ html, body {
 
 #sidebar-container {
 	top: 0px;
-    left: -270px;
+    left: -250px;
 	bottom: 0px;
     width: 270px;
     background-color: #FAFAFA;
@@ -29,9 +29,12 @@ html, body {
 
 #toolbar-and-content-container {
 	top: 0px;
-	left: 0px;
+	left: 20px;
 	right: 0px;
     bottom: 0px;
+	border-width: 0px 0px 0px 2px;
+    border-style: solid;    
+    border-color: #42DDE5;    
     overflow: hidden;
 }
 
@@ -41,7 +44,7 @@ html, body {
 	right: 0px;
     height: 54px;
     background-color: #FFFFFF;
-	border-width: 0px 0px 0px 1px;
+	border-width: 0px 0px 0px 0px;
     border-style: solid;
     border-color: #CCCCCC;
 }
@@ -53,7 +56,7 @@ html, body {
 	bottom: 0px;
     min-width: 320px;
     background-color: #EEEEEE;
-	border-width: 1px 0px 0px 1px;
+	border-width: 1px 0px 0px 0px;
     border-style: solid;
     border-color: #CCCCCC;
 	overflow-x: hidden;

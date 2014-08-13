@@ -13,11 +13,11 @@ angular.module("system").controller(
             /* TO-DO: substitute the jQuery code with a directive. */
             /* jQuery code start */
             if (!$scope.bSidebarVisualizationStatus) {
-                $("#sidebar-container").stop(true).animate({"left": "-270px"});
-                $("#toolbar-and-content-container").stop(true).animate({"left": "0px"});
+                $("#sidebar-container").stop(true).animate({"left": "-250px"});
+                $("#toolbar-and-content-container").stop(true).animate({"left": "20px"});
             } else {
                 $("#toolbar-and-content-container").stop(true).animate({"left": "270px"});
-                $("#sidebar-container").stop(true).animate({"left": "0px"});               
+                $("#sidebar-container").stop(true).animate({"left": "0px"});                
             }
             /* jQuery code end */
         };
