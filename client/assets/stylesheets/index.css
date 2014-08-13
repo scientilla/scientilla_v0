@@ -19,7 +19,7 @@ html, body {
 
 #sidebar-container {
 	top: 0px;
-    left: -250px;
+    left: -270px;
 	bottom: 0px;
     width: 270px;
     background-color: #F6F6F6;
@@ -29,10 +29,10 @@ html, body {
 
 #toolbar-and-content-container {
 	top: 0px;
-	left: 20px;
+	left: 0px;
 	right: 0px;
     bottom: 0px;
-	border-width: 0px 0px 0px 2px;
+	border-width: 0px 0px 0px 15px;
     border-style: solid;    
     border-color: #CCCCCC;    
     overflow: hidden;
