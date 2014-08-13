@@ -24,6 +24,7 @@ var underscore = require("underscore");
 var application = express();
 
 var configuration = require("./configuration/default.js")();
+var seeds = require("./seeds.js")();
 
 var datasetsController = require("./application/plugins/dataset/controllers/default.js")();
 var peerDatasetsController = require("./application/plugins/dataset/controllers/peer-datasets.js")();
@@ -54,6 +55,7 @@ application.use("*", function(req, res, next) {
     req.jsonWebToken = jsonWebToken;    
     req.moment = moment;
     req.request = request;
+    req.seeds = seeds;
     req.underscore = underscore;    
     next();    
 });
