@@ -151,11 +151,11 @@ html, body {
 	cursor: pointer; 
 }
 
-#project-name {
+#tools-link {
     color: #AAAAAA;
 }
 
-#project-name > u {
+#tools-link > u {
     color: #555555;
 }
 
