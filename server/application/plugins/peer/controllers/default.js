@@ -9,7 +9,7 @@ var model = require("../models/default.js")();
 module.exports = function () {
     return {
         getPeers: function(req, res) {
-            req.collection.find({}).toArray(function(err, peers) {
+            req.peersCollection.find({}).toArray(function(err, peers) {
                 if (err || req.underscore.isNull(peers)) {
                     res.status(404).end();
                     return;
@@ -20,7 +20,7 @@ module.exports = function () {
             });
         },
         getPublicPeers: function(req, res) {
-            req.collection.find({ sharing_status: true }).toArray(function(err, peers) {
+            req.peersCollection.find({ sharing_status: true }).toArray(function(err, peers) {
                 if (err || req.underscore.isNull(peers)) {
                     res.status(404).end();
                     return;
@@ -31,7 +31,7 @@ module.exports = function () {
             });            
         },        
         getPeer: function(req, res) {
-            req.collection.findOne({ _id: req.params.id }, function(err, peer) {
+            req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -42,7 +42,7 @@ module.exports = function () {
             });            
         },
         getPublicPeer: function(req, res) {
-            req.collection.findOne({ _id: req.params.id, sharing_status: true }, function(err, peer) {
+            req.peersCollection.findOne({ _id: req.params.id, sharing_status: true }, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -61,7 +61,7 @@ module.exports = function () {
             peer.creation_datetime = req.moment().format();
             peer.last_modifier_id = "";
             peer.last_modification_datetime = "";            
-            req.collection.insert(peer, {w:1}, function(err, peer) {
+            req.peersCollection.insert(peer, {w:1}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -77,7 +77,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.sharing_status) ? peer.sharing_status = req.body.sharing_status : null;
             peer.last_modifier_id = req.user.id;
             peer.last_modification_datetime = req.moment().format();         
-            req.collection.update({ _id: req.params.id }, { $set: peer }, {w: 1}, function(err, peer) {
+            req.peersCollection.update({ _id: req.params.id }, { $set: peer }, {w: 1}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;

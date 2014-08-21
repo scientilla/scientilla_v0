@@ -9,7 +9,7 @@ var model = require("../models/default.js")();
 module.exports = function () {
     return {
         getDatasets: function(req, res) {
-            req.collection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
+            req.datasetsCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
                 if (err || req.underscore.isNull(datasets)) {
                     res.status(404).end();
                     return;
@@ -20,7 +20,7 @@ module.exports = function () {
             });            
         },
         getPublicDatasets: function(req, res) {
-            req.collection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
+            req.datasetsCollection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
                 if (err || req.underscore.isNull(datasets)) {
                     res.status(404).end();
                     return;
@@ -31,7 +31,7 @@ module.exports = function () {
             });            
         },        
         getDataset: function(req, res) {
-            req.collection.findOne({ _id: req.params.id }, function(err, dataset) {
+            req.datasetsCollection.findOne({ _id: req.params.id }, function(err, dataset) {
                 if (err || req.underscore.isNull(dataset)) {
                     res.status(404).end();
                     return;
@@ -42,7 +42,7 @@ module.exports = function () {
             });            
         },
         getPublicDataset: function(req, res) {
-            req.collection.findOne({ _id: req.params.id, sharing_status: true }, function(err, dataset) {
+            req.datasetsCollection.findOne({ _id: req.params.id, sharing_status: true }, function(err, dataset) {
                 if (err || req.underscore.isNull(dataset)) {
                     res.status(404).end();
                     return;
@@ -63,7 +63,7 @@ module.exports = function () {
             dataset.creation_datetime = req.moment().format();
             dataset.last_modifier_id = "";
             dataset.last_modification_datetime = "";             
-            req.collection.insert(dataset, {w:1}, function(err, dataset) {
+            req.datasetsCollection.insert(dataset, {w:1}, function(err, dataset) {
                 if (err || req.underscore.isNull(dataset)) {
                     res.status(404).end();
                     return;
@@ -81,7 +81,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.sharing_status) ? dataset.sharing_status = req.body.sharing_status : null;
             dataset.last_modifier_id = req.user.id;
             dataset.last_modification_datetime = req.moment().format();         
-            req.collection.update({ _id: req.params.id }, { $set: dataset }, {w: 1}, function(err, dataset) {
+            req.datasetsCollection.update({ _id: req.params.id }, { $set: dataset }, {w: 1}, function(err, dataset) {
                 if (err || req.underscore.isNull(dataset)) {
                     res.status(404).end();
                     return;

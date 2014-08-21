@@ -9,7 +9,7 @@ var model = require("../models/default.js")();
 module.exports = function () {
     return {
         getRepositories: function(req, res) {
-            req.collection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, repositories) {
+            req.repositoriesCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, repositories) {
                 if (err || req.underscore.isNull(repositories)) {
                     res.status(404).end();
                     return;
@@ -20,7 +20,7 @@ module.exports = function () {
             });            
         },
         getPublicRepositories: function(req, res) {
-            req.collection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, repositories) {
+            req.repositoriesCollection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, repositories) {
                 if (err || req.underscore.isNull(repositories)) {
                     res.status(404).end();
                     return;
@@ -31,7 +31,7 @@ module.exports = function () {
             });            
         },        
         getRepository: function(req, res) {
-            req.collection.findOne({ _id: req.params.id }, function(err, repository) {
+            req.repositoriesCollection.findOne({ _id: req.params.id }, function(err, repository) {
                 if (err || req.underscore.isNull(repository)) {
                     res.status(404).end();
                     return;
@@ -52,7 +52,7 @@ module.exports = function () {
             repository.creation_datetime = req.moment().format();
             repository.last_modifier_id = "";
             repository.last_modification_datetime = "";            
-            req.collection.insert(repository, {w:1}, function(err, repository) {
+            req.repositoriesCollection.insert(repository, {w:1}, function(err, repository) {
                 if (err || req.underscore.isNull(repository)) {
                     res.status(404).end();
                     return;
@@ -70,7 +70,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : null;
             repository.last_modifier_id = req.user.id;
             repository.last_modification_datetime = req.moment().format();         
-            req.collection.update({ _id: req.params.id }, { $set: repository }, {w: 1}, function(err, repository) {
+            req.repositoriesCollection.update({ _id: req.params.id }, { $set: repository }, {w: 1}, function(err, repository) {
                 if (err || req.underscore.isNull(repository)) {
                     res.status(404).end();
                     return;
