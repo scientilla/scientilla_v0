@@ -17,6 +17,7 @@ var http = require("http");
 var https = require("https");
 var jsonWebToken = require("jsonwebtoken");
 var moment = require("moment");
+var nodeSchedule = require("node-schedule");
 var path = require("path");
 var request = require("request");
 var tingodb = require("tingodb");
@@ -40,6 +41,18 @@ var activatedRepositoriesController = require("./application/plugins/repository/
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
 var systemController = require("./application/plugins/system/controllers/default.js")();
 var usersController = require("./application/plugins/user/controllers/default.js")();
+
+// Configures scheduling
+var jobToSchedule = function jobToSchedule() {
+    peersController.discoverPeers();
+    repositoriesController.discoverRepositories();
+    
+    return jobToSchedule;
+}();
+var recurrenceRule = new nodeSchedule.RecurrenceRule();
+recurrenceRule.hour = [2, new nodeSchedule.Range(0, 23)];
+recurrenceRule.minute = 0;
+nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
 
 // Executes middlewares
 application.use("/client", express.static(require('path').resolve(__dirname + "/../client")));

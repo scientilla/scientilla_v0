@@ -85,6 +85,9 @@ module.exports = function () {
                 
                 res.end();
             });            
+        },
+        discoverPeers: function() {
+            
         } 
     };
 };

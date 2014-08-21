@@ -78,6 +78,9 @@ module.exports = function () {
                 
                 res.end();
             });            
+        },
+        discoverRepositories: function() {
+            
         } 
     };
 };

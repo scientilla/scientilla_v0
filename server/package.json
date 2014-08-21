@@ -15,6 +15,7 @@
         "tingodb": "latest",
         "moment": "latest",
         "request": "latest",
-        "bcrypt-nodejs": "latest"
+        "bcrypt-nodejs": "latest",
+        "node-schedule": "latest"        
     }
 }
