@@ -9,7 +9,7 @@ var model = require("../models/repository-references.js")();
 module.exports = function () {
     return {        
         getRepositoryReferences: function(req, res) {
-            req.collection.findOne({ _id: req.params.id }, function(err, repository) {
+            req.repositoriesCollection.findOne({ _id: req.params.id }, function(err, repository) {
                 if (err || req.underscore.isNull(repository)) {
                     res.status(404).end();
                     return;

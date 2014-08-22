@@ -9,7 +9,7 @@ var model = require("../models/default.js")();
 module.exports = function () {
     return {
         getReferences: function(req, res) {
-            req.collection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
+            req.referencesCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
                 if (err || req.underscore.isNull(references)) {
                     res.status(404).end();
                     return;
@@ -20,7 +20,7 @@ module.exports = function () {
             });            
         },
         getPublicReferences: function(req, res) {
-            req.collection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, publicReferences) {
+            req.referencesCollection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, publicReferences) {
                 if (err || req.underscore.isNull(publicReferences)) {
                     res.status(404).end();
                     return;
@@ -31,7 +31,7 @@ module.exports = function () {
             });            
         },        
         getReference: function(req, res) {
-            req.collection.findOne({ _id: req.params.id }, function(err, reference) {
+            req.referencesCollection.findOne({ _id: req.params.id }, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
@@ -42,7 +42,7 @@ module.exports = function () {
             });                
         },
         getPublicReference: function(req, res) {
-            req.collection.findOne({ _id: req.params.id, sharing_status: true }, function(err, publicReference) {
+            req.referencesCollection.findOne({ _id: req.params.id, sharing_status: true }, function(err, publicReference) {
                 if (err || req.underscore.isNull(publicReference)) {
                     res.status(404).end();
                     return;
@@ -155,7 +155,7 @@ module.exports = function () {
             reference.creation_datetime = req.moment().format();
             reference.last_modifier_id = "";
             reference.last_modification_datetime = "";            
-            req.collection.insert(reference, {w:1}, function(err, reference) {
+            req.referencesCollection.insert(reference, {w:1}, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
@@ -232,7 +232,7 @@ module.exports = function () {
             reference.user_hash = ""; 
             reference.last_modifier_id = req.user.id;
             reference.last_modification_datetime = req.moment().format();          
-            req.collection.update({ _id: req.params.id }, { $set: reference }, {w: 1}, function(err, reference) {
+            req.referencesCollection.update({ _id: req.params.id }, { $set: reference }, {w: 1}, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;

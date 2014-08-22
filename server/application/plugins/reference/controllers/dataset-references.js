@@ -9,7 +9,7 @@ var model = require("../models/dataset-references.js")();
 module.exports = function () {
     return {        
         getDatasetReferences: function(req, res) {
-            req.collection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
+            req.datasetReferencesCollections[req.params.datasetId].find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
                 if (err || req.underscore.isNull(references)) {
                     res.status(404).end();
                     return;
@@ -20,7 +20,7 @@ module.exports = function () {
             });            
         },
         getPublicDatasetReferences: function(req, res) {
-            req.collection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
+            req.datasetReferencesCollections[req.params.datasetId].find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
                 if (err || req.underscore.isNull(references)) {
                     res.status(404).end();
                     return;
@@ -31,7 +31,7 @@ module.exports = function () {
             });            
         },        
         getDatasetReference: function(req, res) {
-            req.collection.findOne({ _id: req.params.referenceId }, function(err, reference) {
+            req.datasetReferencesCollections[req.params.datasetId].findOne({ _id: req.params.referenceId }, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
@@ -42,7 +42,7 @@ module.exports = function () {
             });                
         },
         getPublicDatasetReference: function(req, res) {
-            req.collection.findOne({ _id: req.params.referenceId }, function(err, reference) {
+            req.datasetReferencesCollections[req.params.datasetId].findOne({ _id: req.params.referenceId }, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
@@ -91,7 +91,7 @@ module.exports = function () {
             reference.creation_datetime = req.moment().format();
             reference.last_modifier_id = "";
             reference.last_modification_datetime = "";
-            req.collection.insert(reference, {w:1}, function(err, reference) {
+            req.datasetReferencesCollections[req.params.datasetId].insert(reference, {w:1}, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;

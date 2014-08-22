@@ -9,7 +9,7 @@ var model = require("../models/peer-datasets.js")();
 module.exports = function () {
     return {        
         getPeerPublicDatasets: function(req, res) {
-            req.collection.findOne({ _id: req.params.id }, function(err, peer) {
+            req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -29,7 +29,7 @@ module.exports = function () {
         },
         
         getPeerPublicDataset: function(req, res) {
-            req.collection.findOne({ _id: req.params.peerId }, function(err, peer) {
+            req.peersCollection.findOne({ _id: req.params.peerId }, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;

@@ -17,6 +17,7 @@ var http = require("http");
 var https = require("https");
 var jsonWebToken = require("jsonwebtoken");
 var moment = require("moment");
+var nodeSchedule = require("node-schedule");
 var path = require("path");
 var request = require("request");
 var tingodb = require("tingodb");
@@ -24,7 +25,6 @@ var underscore = require("underscore");
 var application = express();
 
 var configuration = require("./configuration/default.js")();
-var seeds = require("./seeds.js")();
 
 var datasetsController = require("./application/plugins/dataset/controllers/default.js")();
 var peerDatasetsController = require("./application/plugins/dataset/controllers/peer-datasets.js")();
@@ -42,11 +42,124 @@ var settingsController = require("./application/plugins/setting/controllers/defa
 var systemController = require("./application/plugins/system/controllers/default.js")();
 var usersController = require("./application/plugins/user/controllers/default.js")();
 
+// Initializes databases
+var databaseEngine = tingodb({});
+var database;
+        
+var adCollection;
+var apCollection;
+var arCollection;
+var datasetsCollection;
+var peersCollection;
+var repositoriesCollection;
+var referencesCollection;
+var usersCollection;
+var datasetReferencesCollections = [];
+async.series([
+    function(seriesCallback) {
+        database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
+        seriesCallback();
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("activated-datasets.db", function(err, collection) {
+                adCollection = collection;
+                seriesCallback();
+            });
+        });  
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("activated-peers.db", function(err, collection) {
+                apCollection = collection;
+                seriesCallback();
+            });
+        }); 
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("activated-repositories.db", function(err, collection) {
+                arCollection = collection;
+                seriesCallback();
+            });
+        });  
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("datasets.db", function(err, collection) {
+                datasetsCollection = collection;
+                seriesCallback();
+            });
+        });
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("peers.db", function(err, collection) {
+                peersCollection = collection;
+                seriesCallback();
+            });
+        });
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("repositories.db", function(err, collection) {
+                repositoriesCollection = collection;
+                seriesCallback();
+            });
+        }); 
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("references.db", function(err, collection) {
+                referencesCollection = collection;
+                seriesCallback();
+            });
+        });
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("users.db", function(err, collection) {
+                usersCollection = collection;
+                seriesCallback();
+            });
+        });
+    },
+    function(seriesCallback) {
+        database = new databaseEngine.Db(path.resolve(__dirname + "/../files/datasets/") + path.sep, {});
+        seriesCallback();
+    },
+    function(seriesCallback) {
+        var datasetFileNames = fs.readdirSync(path.resolve(__dirname + "/../files/datasets/") + path.sep);
+        async.eachSeries(
+            datasetFileNames,
+            function(datasetFileName, eachSeriesCallback) {
+                if (datasetFileName !== "." && datasetFileName !== "..") {
+                    database.open(function(err, database) {
+                        database.collection(datasetFileName, function(err, collection) {
+                            datasetReferencesCollections[datasetFileName.replace(".db", "")] = collection;
+                            eachSeriesCallback();
+                        });
+                    }); 
+                }
+            },
+            seriesCallback
+        );        
+    }
+]);
+
+// Configures scheduling
+var jobToSchedule = function jobToSchedule() {
+    peersController.discoverPeers();
+    repositoriesController.discoverRepositories();
+    
+    return jobToSchedule;
+}();
+var recurrenceRule = new nodeSchedule.RecurrenceRule();
+recurrenceRule.hour = [2, new nodeSchedule.Range(0, 23)];
+recurrenceRule.minute = 0;
+nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+
 // Executes middlewares
-application.use("/client", express.static(require('path').resolve(__dirname + "/../client")));
-
-application.use("*", bodyParser.json());
-
 application.use("*", function(req, res, next) {
 	req.async = async;
     req.bcryptNodejs = bcryptNodejs;
@@ -55,167 +168,25 @@ application.use("*", function(req, res, next) {
     req.jsonWebToken = jsonWebToken;    
     req.moment = moment;
     req.request = request;
-    req.seeds = seeds;
-    req.underscore = underscore;    
+    req.underscore = underscore;
+    req.adCollection = adCollection;
+    req.apCollection = apCollection;
+    req.arCollection = arCollection;
+    req.datasetsCollection = datasetsCollection;
+    req.peersCollection = peersCollection;
+    req.repositoriesCollection = repositoriesCollection;
+    req.referencesCollection = referencesCollection;
+    req.usersCollection = usersCollection;
+    req.datasetReferencesCollections = datasetReferencesCollections;
     next();    
 });
 
+application.use("*", bodyParser.json());
+
+application.use("/client", express.static(require('path').resolve(__dirname + "/../client")));
+
 application.get("/", function(req, res, next) {
     res.redirect("/client");
-});
-
-application.all("*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("users.db", function(err, collection) {
-            req.usersCollection = collection;
-            next();
-        });
-    });    
-});
-
-application.all("/*", function(req, res, next) {
-    var adDatabaseEngine = tingodb({});
-    var adDatabase = new adDatabaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    adDatabase.open(function(err, adDatabase) {
-        adDatabase.collection("activated-datasets.db", function(err, adCollection) {
-            req.adCollection = adCollection;
-            next();
-        });
-    });   
-});
-
-application.all("/*", function(req, res, next) {
-    var apDatabaseEngine = tingodb({});
-    var apDatabase = new apDatabaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    apDatabase.open(function(err, apDatabase) {
-        apDatabase.collection("activated-peers.db", function(err, apCollection) {
-            req.apCollection = apCollection;
-            next();
-        });
-    });   
-});
-
-application.all("/*", function(req, res, next) {
-    var arDatabaseEngine = tingodb({});
-    var arDatabase = new arDatabaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    arDatabase.open(function(err, arDatabase) {
-        arDatabase.collection("activated-repositories.db", function(err, arCollection) {
-            req.arCollection = arCollection;
-            next();
-        });
-    });    
-});
-
-application.all("/api/datasets*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("datasets.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });   
-});
-
-application.all("/api/public-datasets*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("datasets.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });   
-});
-
-application.all("/api/peers*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("peers.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });    
-});
-
-application.all("/api/public-peers*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("peers.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });    
-});
-
-application.all("/api/repositories*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("repositories.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });    
-});
-
-application.all("/api/public-repositories*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("repositories.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });    
-});
-
-application.all("/api/references*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("references.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });    
-});
-
-application.all("/api/public-references*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection("references.db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });    
-});
-
-application.all("/api/datasets/:datasetId/references*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/datasets") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection(req.params.datasetId + ".db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });     
-});
-
-application.all("/api/public-datasets/:datasetId/references*", function(req, res, next) {
-    var databaseEngine = tingodb({});
-    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/datasets") + path.sep, {});
-    database.open(function(err, database) {
-        database.collection(req.params.datasetId + ".db", function(err, collection) {
-            req.collection = collection;
-            next();
-        });
-    });     
 });
 
 // Routes requests
