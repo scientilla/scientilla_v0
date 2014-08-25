@@ -14,7 +14,7 @@ angular.module("system").controller(
             /* jQuery code start */
             if (!$scope.bSidebarVisualizationStatus) {
                 $("#sidebar-container").stop(true).animate({"left": "-270px"});
-                $("#toolbar-and-content-container").stop(true).animate({"left": "0px", "border-width": "0px 0px 0px 15px"});
+                $("#toolbar-and-content-container").stop(true).animate({"left": "0px", "border-width": "0px 0px 0px 1px"});
             } else {
                 $("#toolbar-and-content-container").stop(true).animate({"left": "270px", "border-width": "0px 0px 0px 1px"});
                 $("#sidebar-container").stop(true).animate({"left": "0px"});                

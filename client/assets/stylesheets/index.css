@@ -32,7 +32,7 @@ html, body {
 	left: 0px;
 	right: 0px;
     bottom: 0px;
-	border-width: 0px 0px 0px 15px;
+	border-width: 0px 0px 0px 1px;
     border-style: solid;    
     border-color: #CCCCCC;    
     overflow: hidden;
@@ -116,6 +116,7 @@ html, body {
 
 #sidebar > ul > li > ul > li > a i {
     width: 30px;
+    margin-left: 10px;
 }
 
 .sidebar-divider {

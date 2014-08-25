@@ -18,14 +18,21 @@
             <div id="sidebar" class="container-fluid">
                 <ul class="sidebar-nav nav nav-stacked nav-pills">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleSettingsMenu()" href="#/edit-user/" class="tree-toggle nav-header"><i class="fa fa-mortar-board"></i> <strong>Profile</strong></a>                       
+                        <a ng-click="toggleSettingsMenu()" href="#/edit-user/" class="tree-toggle nav-header"><i class="fa fa-mortar-board"></i> <strong>Antonio De Luca</strong></a>                       
                     </li>                    
                     <li class="sidebar-divider">
 
                     </li>
+                    <li>
+                        <a activate href="#"><i class="fa fa-search"></i> Searches</a>
+                    </li>
+                    <li class="sidebar-divider">
+
+                    </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><i class="glyphicon glyphicon-book"></i> References</a>
+                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><i class="glyphicon glyphicon-book"></i> Your Publications List</a>
                         <ul collapse_stop="referencesCollapseStatus" id="referencesMenu" class="nav nav-stacked nav-pills tree">
+                            <!--                            
                             <li>
                                 <a activate href="#/browse-references/"><i class="fa fa-user"></i> from <strong>Official List</strong></a>
                             </li>
@@ -38,7 +45,6 @@
                             <li>
                                 <a activate href="#/browse-activated-peer-references/"><i class="glyphicon glyphicon-cloud-download"></i> from Peers</a>
                             </li>                            
-                            <!--
                             <li>
                                 <a href="#/browse-received-references/"><i class="glyphicon glyphicon-inbox"></i> List of Received ones</a>
                             </li>
@@ -49,14 +55,17 @@
 
                     </li>
                     <li>
-                        <a activate href="#/browse-datasets/"><i class="fa fa-database"></i> Datasets</a>
-                    </li>                    
+                        <a activate href="#"><i class="fa fa-database"></i> Statistics</a>
+                    </li>
                     <li class="sidebar-divider">
 
                     </li>                                        
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a ng-click="toggleSettingsMenu()" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Settings</a>
                         <ul collapse_stop="settingsCollapseStatus" id="settingsMenu" class="nav nav-stacked nav-pills tree">
+                            <li>
+                                <a activate href="#/edit-user/"><i class="fa fa-mortar-board"></i> Your Profile</a>
+                            </li>                            
                             <li>
                                 <a activate href="#/browse-users/"><i class="fa fa-users"></i> Users</a>
                             </li>                            
@@ -65,6 +74,9 @@
                             </li>
                             <li>
                                 <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers (Other Installations)</a>
+                            </li>
+                            <li>
+                                <a activate href="#/browse-datasets/"><i class="fa fa-database"></i> Datasets</a>
                             </li>                            
                             <!--
                             <li>
