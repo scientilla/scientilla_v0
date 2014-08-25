@@ -122,8 +122,8 @@ module.exports = function () {
                     method: "GET",
                     url: seedsConfiguration[seedKey] + "/api/public-peers", 
                     strictSSL: false 
-                }, function (error, response, body) {
-                    if (body != "") {
+                }, function (err, res, body) {
+                    if (!err && body != "") {
                         var peers = JSON.parse(body);
                         for (peerKey in peers) {
                             peersCollection.findOne({ url: peers[peerKey].url }, function(err, peer) {
@@ -152,7 +152,7 @@ module.exports = function () {
                                 url: installationConfiguration.installation_url 
                             },
                             strictSSL: false 
-                        }, function (error, response, body) {
+                        }, function (err, res, body) {
                             //
                         });
                     }
