@@ -5,6 +5,7 @@
  */
 
 // Resolves dependencies
+var async = require("async");
 var request = require("request");
 var underscore = require("underscore");
 
@@ -125,23 +126,26 @@ module.exports = function () {
                 }, function (err, res, body) {
                     if (!err && body != "") {
                         var peers = JSON.parse(body);
-                        for (peerKey in peers) {
-                            peersCollection.findOne({ url: peers[peerKey].url }, function(err, peer) {
-                                if (err || underscore.isNull(peer)) {                        
-                                    var peer = {};
-                                    peer.name = peers[peerKey].name;
-                                    peer.url = peers[peerKey].url;
-                                    peer.sharing_status = true; 
-                                    peer.creator_id = "";
-                                    peer.creation_datetime = peers[peerKey].creation_datetime;
-                                    peer.last_modifier_id = "";
-                                    peer.last_modification_datetime = "";            
-                                    peersCollection.insert(peer, {w:1}, function(err, peer) {
-                                        //
-                                    }); 
-                                }
-                            });
-                        }
+						async.eachSeries(
+							peers,
+							function(peer, eachSeriesCallback) {
+								peersCollection.findOne({ url: peer.url }, function(err, knownPeer) {
+									if (err || underscore.isNull(knownPeer)) {
+										var discoveredPeer = {};
+										discoveredPeer.name = peer.name;
+										discoveredPeer.url = peer.url;
+										discoveredPeer.sharing_status = true; 
+										discoveredPeer.creator_id = "";
+										discoveredPeer.creation_datetime = peer.creation_datetime;
+										discoveredPeer.last_modifier_id = "";
+										discoveredPeer.last_modification_datetime = "";            
+										peersCollection.insert(discoveredPeer, {w:1}, function(err, createdPeer) {
+											eachSeriesCallback();
+										}); 
+									}
+								});
+							}
+						);
                     }
                     if (seedsConfiguration[seedKey] != installationConfiguration.url) {
                         request({
