@@ -80,7 +80,7 @@ module.exports = function () {
             });            
         },
         discoverRepositories: function(installationConfiguration, seedsConfiguration, peersCollection) {
-            for (key in seeds) {
+            for (key in seedsConfiguration) {
                 
             }
         } 
