@@ -24,7 +24,8 @@ var tingodb = require("tingodb");
 var underscore = require("underscore");
 var application = express();
 
-var configuration = require("./configuration/default.js")();
+var installationConfiguration = require("./configuration/installation.js")();
+var seedsConfiguration = require("./configuration/seeds.js")();
 
 var datasetsController = require("./application/plugins/dataset/controllers/default.js")();
 var peerDatasetsController = require("./application/plugins/dataset/controllers/peer-datasets.js")();
@@ -55,6 +56,7 @@ var repositoriesCollection;
 var referencesCollection;
 var usersCollection;
 var datasetReferencesCollections = [];
+
 async.series([
     function(seriesCallback) {
         database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
@@ -144,20 +146,24 @@ async.series([
             },
             seriesCallback
         );        
+    },
+    function(seriesCallback) {
+        var jobToSchedule = function jobToSchedule() {
+            peersController.discoverPeers(installationConfiguration, seedsConfiguration, peersCollection);
+            repositoriesController.discoverRepositories(installationConfiguration, seedsConfiguration, peersCollection);
+            
+            return jobToSchedule;
+        }();
+        var recurrenceRule = new nodeSchedule.RecurrenceRule();
+        recurrenceRule.hour = [2, new nodeSchedule.Range(0, 23)];
+        recurrenceRule.minute = 0;
+        nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+        seriesCallback();
     }
 ]);
 
 // Configures scheduling
-var jobToSchedule = function jobToSchedule() {
-    peersController.discoverPeers();
-    repositoriesController.discoverRepositories();
-    
-    return jobToSchedule;
-}();
-var recurrenceRule = new nodeSchedule.RecurrenceRule();
-recurrenceRule.hour = [2, new nodeSchedule.Range(0, 23)];
-recurrenceRule.minute = 0;
-nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+
 
 // Executes middlewares
 application.use("*", function(req, res, next) {
@@ -168,6 +174,7 @@ application.use("*", function(req, res, next) {
     req.jsonWebToken = jsonWebToken;    
     req.moment = moment;
     req.request = request;
+    req.underscore = underscore;
     req.underscore = underscore;
     req.adCollection = adCollection;
     req.apCollection = apCollection;
@@ -294,6 +301,11 @@ application.post("/api/peers", expressJwt({secret: 'scientilla'}), function(req,
     console.log("Request to Create a Peer");
     systemController.checkUserCoherence(req, res);
     peersController.createPeer(req, res);
+});
+
+application.post("/api/public-peers", cors(), function(req, res) {
+    console.log("Request to Create a Public Peer");
+    peersController.createPublicPeer(req, res);
 });
 
 application.put("/api/peers/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
@@ -487,12 +499,12 @@ application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), functio
 });
 
 // Bootstraps application
-var ssl_key = fs.readFileSync(path.resolve(__dirname + configuration.ssl_key_path));
-var ssl_cert = fs.readFileSync(path.resolve(__dirname + configuration.ssl_cert_path));
+var ssl_key = fs.readFileSync(path.resolve(__dirname + installationConfiguration.ssl_key_path));
+var ssl_cert = fs.readFileSync(path.resolve(__dirname + installationConfiguration.ssl_cert_path));
 var options = {
     key: ssl_key,
     cert: ssl_cert
 };
-https.createServer(options, application).listen(configuration.ssl_port, function() {
-    console.log("Listening on SSL port %d", configuration.ssl_port);
+https.createServer(options, application).listen(installationConfiguration.ssl_port, function() {
+    console.log("Listening on SSL port %d", installationConfiguration.ssl_port);
 });
