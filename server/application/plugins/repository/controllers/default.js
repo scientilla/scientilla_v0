@@ -79,8 +79,10 @@ module.exports = function () {
                 res.end();
             });            
         },
-        discoverRepositories: function() {
-            
+        discoverRepositories: function(installationConfiguration, seedsConfiguration, peersCollection) {
+            for (key in seeds) {
+                
+            }
         } 
     };
 };
