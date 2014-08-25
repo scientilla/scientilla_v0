@@ -123,23 +123,25 @@ module.exports = function () {
                     url: seedsConfiguration[seedKey] + "/api/public-peers", 
                     strictSSL: false 
                 }, function (error, response, body) {
-                    var peers = JSON.parse(body);
-                    for (peerKey in peers) {
-                        peersCollection.findOne({ url: peers[peerKey].url }, function(err, peer) {
-                            if (err || underscore.isNull(peer)) {                        
-                                var peer = {};
-                                peer.name = peers[peerKey].name;
-                                peer.url = peers[peerKey].url;
-                                peer.sharing_status = true; 
-                                peer.creator_id = "";
-                                peer.creation_datetime = peers[peerKey].creation_datetime;
-                                peer.last_modifier_id = "";
-                                peer.last_modification_datetime = "";            
-                                peersCollection.insert(peer, {w:1}, function(err, peer) {
-                                    //
-                                }); 
-                            }
-                        });
+                    if (body != "") {
+                        var peers = JSON.parse(body);
+                        for (peerKey in peers) {
+                            peersCollection.findOne({ url: peers[peerKey].url }, function(err, peer) {
+                                if (err || underscore.isNull(peer)) {                        
+                                    var peer = {};
+                                    peer.name = peers[peerKey].name;
+                                    peer.url = peers[peerKey].url;
+                                    peer.sharing_status = true; 
+                                    peer.creator_id = "";
+                                    peer.creation_datetime = peers[peerKey].creation_datetime;
+                                    peer.last_modifier_id = "";
+                                    peer.last_modification_datetime = "";            
+                                    peersCollection.insert(peer, {w:1}, function(err, peer) {
+                                        //
+                                    }); 
+                                }
+                            });
+                        }
                     }
                     if (seedsConfiguration[seedKey] != installationConfiguration.url) {
                         request({
