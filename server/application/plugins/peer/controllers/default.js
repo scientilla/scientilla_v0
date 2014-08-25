@@ -4,8 +4,13 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+// Resolves dependencies
+var request = require("request");
+var underscore = require("underscore");
+
 var model = require("../models/default.js")();
 
+// Defines actions
 module.exports = function () {
     return {
         getPeers: function(req, res) {
@@ -70,6 +75,31 @@ module.exports = function () {
                 res.end();
             });            
         },
+        createPublicPeer: function(req, res) {
+            req.peersCollection.findOne({ url: req.body.url }, function(err, peer) {
+                if (err || req.underscore.isNull(peer)) {
+                    var peer = {};
+                    !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : peer.name = "";
+                    !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : peer.url = "";
+                    peer.sharing_status = true; 
+                    peer.creator_id = "";
+                    peer.creation_datetime = req.moment().format();
+                    peer.last_modifier_id = "";
+                    peer.last_modification_datetime = "";            
+                    req.peersCollection.insert(peer, {w:1}, function(err, peer) {
+                        if (err || req.underscore.isNull(peer)) {
+                            res.status(500).end();
+                            return;
+                        }
+
+                        res.end();
+                    });                    
+                } else {
+                    res.status(500).end();
+                    return;
+                }
+            });
+        },        
         updatePeer: function(req, res) { 
             var peer = {};
             !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : null;
@@ -86,8 +116,46 @@ module.exports = function () {
                 res.end();
             });            
         },
-        discoverPeers: function() {
-            
+        discoverPeers: function(installationConfiguration, seedsConfiguration, peersCollection) {
+            for (var seedKey in seedsConfiguration) {
+                request({
+                    method: "GET",
+                    url: seedsConfiguration[seedKey] + "/api/public-peers", 
+                    strictSSL: false 
+                }, function (error, response, body) {
+                    var peers = JSON.parse(body);
+                    for (peerKey in peers) {
+                        peersCollection.findOne({ url: peers[peerKey].url }, function(err, peer) {
+                            if (err || underscore.isNull(peer)) {                        
+                                var peer = {};
+                                peer.name = peers[peerKey].name;
+                                peer.url = peers[peerKey].url;
+                                peer.sharing_status = true; 
+                                peer.creator_id = "";
+                                peer.creation_datetime = peers[peerKey].creation_datetime;
+                                peer.last_modifier_id = "";
+                                peer.last_modification_datetime = "";            
+                                peersCollection.insert(peer, {w:1}, function(err, peer) {
+                                    //
+                                }); 
+                            }
+                        });
+                    }
+                    if (seedsConfiguration[seedKey] != installationConfiguration.url) {
+                        request({
+                            method: "POST",
+                            url: seedsConfiguration[seedKey] + "/api/public-peers", 
+                            json: { 
+                                name: installationConfiguration.installation_name, 
+                                url: installationConfiguration.installation_url 
+                            },
+                            strictSSL: false 
+                        }, function (error, response, body) {
+                            //
+                        });
+                    }
+                });                               
+            }
         } 
     };
 };
