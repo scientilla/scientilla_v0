@@ -1,10 +1,7 @@
-/client/application/libraries
 /server/node_modules/
 /client/libraries/
-/server/api/
 /logs
-
 /files
-/server/api
-/server/configuration/default.js
 /certs
+/server/configuration/installation.js
+/server/configuration/seeds.js
