@@ -6,9 +6,8 @@
 
 module.exports = function () {
     return {
-        port: 3000,
-        ssl_port: 30000,
-        ssl_key_path: "/../certs/certificate.key",
-        ssl_cert_path: "/../certs/certificate.cert"
+        urls: [
+            "https://scientilla.iit.it"
+        ]       
     };
 };
