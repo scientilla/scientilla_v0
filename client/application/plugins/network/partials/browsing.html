@@ -1,0 +1,52 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-chevron-left"></span>
+                    </a>
+                    <span class="navbar-brand" id="tools-link">TOOLS</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                        
+                        <div class="input-group">                                        
+                            <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search on...</button>
+                            </span>                            
+                        </div>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default active">
+                                <input type="checkbox" checked> Peers
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="checkbox"> Repositories
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="checkbox"> Datasets
+                            </label>
+                        </div>
+                        <button id="help-button" data-toggle="popover" title="Help" data-content="<b>Peers</b>: search is made among all knew installations over the network.<br /><b>Repositories</b>: search is made among all knew web services over the network.<br /><b>Datasets</b>: search is made among collected data that are available locally as well on knew installations over the network." data-placement="left" data-html="true" class="btn btn-default">
+                            <i class="fa fa-question-circle"></i>
+                        </button>                        
+                    </form>                              
+                </div>
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">        
+        <div class="row">   
+            <div class="col-xs-offset-1 col-xs-10 text-center">    
+                <h1>Network Browsing</h1>
+            </div>
+        </div>        
+    </div>
+</div>

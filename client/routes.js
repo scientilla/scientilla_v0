@@ -28,6 +28,11 @@ angular.module("scientilla").config([
             templateUrl: "application/plugins/dataset/partials/deletion.html",
             controller: "datasetDeletionController"
             
+        // NETWORK
+        }).when("/browse-network/", {
+            templateUrl: "application/plugins/network/partials/browsing.html",
+            controller: "networkBrowsingController"            
+            
         // PEERS
         }).when("/browse-peers/", {
             templateUrl: "application/plugins/peer/partials/local-browsing.html",

@@ -6,6 +6,13 @@
 
 angular.module("reference").controller(
     "activatedDatasetReferencesBrowsingController", ["$scope", "datasetReferencesService", "peerDatasetReferencesService", "activatedDatasetsService", "datasetsService", "systemStatusService", "$window", "$location", function($scope, datasetReferencesService, peerDatasetReferencesService, activatedDatasetsService, datasetsService, systemStatusService, $window, $location) {
+        /* TO-DO: substitute with a directive. */
+        /* code start */            
+        $("#help-button").popover({
+            trigger: "focus"
+        });
+        /* code end */
+        
         $scope.empty = false;
         $scope.ready = false;
         $scope.error = false;

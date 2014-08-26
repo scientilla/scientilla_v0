@@ -5,6 +5,7 @@
  */
 
 angular.module('dataset', []);
+angular.module('network', []);
 angular.module('peer', []);
 angular.module('reference', []);
 angular.module('repository', []);
@@ -16,6 +17,7 @@ angular.module("scientilla", [
     "ngRoute",
     "ui.bootstrap",
     "dataset",
+    "network",
     "peer",
     "reference",
     "repository",

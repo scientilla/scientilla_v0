@@ -6,6 +6,13 @@
 
 angular.module("reference").controller(
     "receivedReferencesBrowsingController", ["$scope", "referencesService", "systemStatusService", "$window", "$location", function($scope, referencesService, systemStatusService, $window, $location) {
+        /* TO-DO: substitute with a directive. */
+        /* code start */            
+        $("#help-button").popover({
+            trigger: "focus"
+        });
+        /* code end */
+        
         $scope.aReceivedReferences = [];
         $scope.empty = false;
         $scope.ready = false;
