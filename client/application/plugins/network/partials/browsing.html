@@ -14,25 +14,33 @@
                     <span class="navbar-brand" id="tools-link">TOOLS</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                        
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                       
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default active">
+                                <input type="radio" checked><i class="fa fa-list"></i> List
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio"><i class="fa fa-globe"></i> Graph
+                            </label>
+                        </div>                        
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default active">
+                                <input type="checkbox" checked><i class="fa fa-cloud"></i> Peers
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="checkbox"><i class="fa fa-exchange"></i> Repositories
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="checkbox"><i class="fa fa-database"></i> Datasets
+                            </label>
+                        </div>                        
                         <div class="input-group">                                        
                             <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search on...</button>
+                                <button type="button" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</button>
                             </span>                            
                         </div>
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default active">
-                                <input type="checkbox" checked> Peers
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="checkbox"> Repositories
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="checkbox"> Datasets
-                            </label>
-                        </div>
-                        <button id="help-button" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<b>Peers</b>: search is made among all other knew installations over the SCIENTILLA network.<br /><br /><b>Repositories</b>: search is made among all knew free web services around the internet as well as among web services available on your intranet.<br /><br /><b>Datasets</b>: search is made among all collected data that are available locally as well as on other knew installations over the SCIENTILLA network.<br /><br /><b>IMPORTANT</b>: search is always made also on among Your Publications List." data-placement="left" data-html="true" class="btn btn-default">
+                        <button id="help-button" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-cloud'></i> <b>Peers</b>: search is made among all other knew installations over the SCIENTILLA network.<br /><br /><i class='fa fa-exchange'></i> <b>Repositories</b>: search is made among all knew free web services around the internet as well as among web services available on your intranet.<br /><br /><i class='fa fa-database'></i> <b>Datasets</b>: search is made among all collected data that are available locally as well as on other knew installations over the SCIENTILLA network." data-placement="left" data-html="true" class="btn btn-default">
                             <i class="fa fa-question-circle"></i>
                         </button>                        
                     </form>                              

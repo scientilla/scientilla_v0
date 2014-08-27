@@ -24,7 +24,7 @@
 
                     </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><i class="glyphicon glyphicon-book"></i> Your Publications List</a>
+                        <a activate ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><i class="glyphicon glyphicon-book"></i> Local Publications List</a>
                         <ul collapse_stop="referencesCollapseStatus" id="referencesMenu" class="nav nav-stacked nav-pills tree">
                             <!--                            
                             <li>
@@ -62,7 +62,8 @@
                             </li>                            
                             <li>
                                 <a activate href="#/browse-users/"><i class="fa fa-users"></i> Users</a>
-                            </li>                            
+                            </li>
+                            <!--
                             <li>
                                 <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers (Other Installations)</a>
                             </li>
@@ -72,7 +73,6 @@
                             <li>
                                 <a activate href="#/browse-datasets/"><i class="fa fa-database"></i> Datasets (Collected Data)</a>
                             </li>                            
-                            <!--
                             <li>
                                 <a href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Settings</a>
                             </li>
@@ -83,7 +83,7 @@
 
                     </li>                    
                     <li>
-                        <a href="#/logout/" id="logout-link"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
+                        <a activate href="#/logout/" id="logout-link"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
                     </li>                    
                 </ul>
             </div>

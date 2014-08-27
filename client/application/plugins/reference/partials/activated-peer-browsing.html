@@ -15,15 +15,26 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default active">
+                                <input type="radio" name="owner" value="you" checked><i class="fa fa-mortar-board"></i> Only You
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="owner" value="others"><i class="fa fa-users"></i> Only Others
+                            </label>                            
+                            <label class="btn btn-default">
+                                <input type="radio" name="owner" value="all"><i class="fa fa-institution"></i> All
+                            </label>
+                        </div>                        
                         <div class="input-group">                                        
                             <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</button>
                             </span>                            
                         </div>
-                        <button id="help-button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="Search is made among publications contained into the <b>Peer</b>." data-placement="left" data-html="true">
+                        <button id="help-button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-mortar-board'></i> <b>Only You</b>: means that only publications confirmed by you, or supposed to be yours, are shown.<br /><br /><i class='fa fa-users'></i> <b>Only Others</b>: means that only other publications than yours are shown.<br /><br /><i class='fa fa-institution'></i> <b>Only You</b>: means that all publications are shown.<br /><br /><i class='fa fa-search'></i> Search is made among the <b>Local Publications List</b>." data-placement="left" data-html="true">
                             <i class="fa fa-question-circle"></i>
-                        </button>                        
+                        </button>                       
                     </form>                              
                 </div>
             </div>
