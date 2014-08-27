@@ -9,12 +9,12 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
-                        <span class="fa fa-chevron-left"></span>
+                        <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">TOOLS</span>
+                    <span class="navbar-brand" id="tools-link">SCIENTILLA</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                       
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">                       
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-default active">
                                 <input type="radio" checked><i class="fa fa-list"></i> List
@@ -33,12 +33,36 @@
                             <label class="btn btn-default">
                                 <input type="checkbox"><i class="fa fa-database"></i> Datasets
                             </label>
-                        </div>                        
+                        </div>                                                
+                    </form>                    
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                               
                         <div class="input-group">                                        
                             <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</button>
-                            </span>                            
+                            <div class="input-group-btn">
+                                <a href="#" class="btn btn-default"><i class="fa fa-search"></i> Search</a>
+                                <button type="button" class="btn btn-default dropdown-toggle" tabindex="-1" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <li>
+                                        <a href="#"><i class="fa fa-book"></i> Publications among <b>most important</b> (default)</a>
+                                    </li>                                    
+                                    <li>
+                                        <a href="#"><i class="fa fa-book"></i> Publications among <b>preferred</b></a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-cloud"></i> Peers</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-exchange"></i> Repositories</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-database"></i> Datasets</a>
+                                    </li>                                    
+                                </ul>                                
+                            </div>                            
                         </div>
                         <button id="help-button" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-cloud'></i> <b>Peers</b>: search is made among all other knew installations over the SCIENTILLA network.<br /><br /><i class='fa fa-exchange'></i> <b>Repositories</b>: search is made among all knew free web services around the internet as well as among web services available on your intranet.<br /><br /><i class='fa fa-database'></i> <b>Datasets</b>: search is made among all collected data that are available locally as well as on other knew installations over the SCIENTILLA network." data-placement="left" data-html="true" class="btn btn-default">
                             <i class="fa fa-question-circle"></i>
