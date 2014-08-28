@@ -9,7 +9,21 @@ var model = require("../models/default.js")();
 module.exports = function () {
     return {
         getReferences: function(req, res) {
-            req.referencesCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
+            var regexQuery = ".*(" + req.query.keywords.replace(" ", "|") + ").*";
+            req.referencesCollection.find({
+                "$or": [
+                    {
+                        title: { 
+                            $regex: regexQuery 
+                        }
+                    },
+                    {
+                        authors: { 
+                            $regex: regexQuery
+                        }
+                    }
+                ]
+            }).sort({ creation_datetime: -1 }).toArray(function(err, references) {
                 if (err || req.underscore.isNull(references)) {
                     res.status(404).end();
                     return;

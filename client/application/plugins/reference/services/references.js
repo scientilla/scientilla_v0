@@ -8,10 +8,10 @@ angular.module("reference").factory(
     "referencesService", function($http) {
         var referencesProvider = {};
         
-        referencesProvider.getReferences = function(token) {
+        referencesProvider.getReferences = function(keywords, token) {
             return $http({
 				method: "GET",
-				url: "/api/references",
+				url: "/api/references?keywords=" + keywords,
                 cache: false,
                 timeout: 30000,
                 headers: {
