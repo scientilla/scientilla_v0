@@ -5,8 +5,9 @@
  */
 
 angular.module("system").controller(
-    "systemLayoutController", ["$scope", "$location", function($scope, $location) {
+    "systemLayoutController", ["$scope", "$window", "$location", function($scope, $window, $location) {
         $scope.bSidebarVisualizationStatus = false;
+        $scope.userScientillaNominative = "SCIENTILLA";
         
         $scope.toggleSidebar = function() {
             $scope.bSidebarVisualizationStatus = !$scope.bSidebarVisualizationStatus;
@@ -25,5 +26,13 @@ angular.module("system").controller(
         $scope.toggleMenu = function() {
             console.log($location.path());
         }
+        
+        $scope.updateScientillaNominative = function updateScientillaNominative() {
+            $scope.userScientillaNominative = $window.sessionStorage.userScientillaNominative;
+            
+            return updateScientillaNominative;
+        }();
+        
+        $scope.$on("scientillaNominativeUpdateEvent", $scope.updateScientillaNominative);        
     }]
 );

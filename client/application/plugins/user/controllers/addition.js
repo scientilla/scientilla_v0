@@ -9,6 +9,7 @@ angular.module("user").controller(
         $scope.oUser = {
             type: "",
             rights: "",
+            scientilla_nominative: "",
             first_name: "",
             middle_name: "",
             last_name: "",
@@ -29,6 +30,7 @@ angular.module("user").controller(
             usersService.createUser({
                 type: $scope.oUser.type,
                 rights: $scope.oUser.rights,
+                scientilla_nominative: $scope.oUser.scientilla_nominative,
                 first_name: $scope.oUser.first_name,
                 middle_name: $scope.oUser.middle_name,
                 last_name: $scope.oUser.last_name,

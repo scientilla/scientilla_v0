@@ -19,11 +19,14 @@ angular.module("system").controller(
                 $window.sessionStorage.token = data.token;
                 $window.sessionStorage.userType = data.user_type;
                 $window.sessionStorage.userRights = data.user_rights;
+                $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
+                $scope.$emit("scientillaNominativeUpdateEvent");
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 delete $window.sessionStorage.token;
                 delete $window.sessionStorage.userType;
                 delete $window.sessionStorage.userRights;
+                delete $window.sessionStorage.userScientillaNominative;
                 systemStatusService.react(status);
             });
         };
@@ -31,7 +34,8 @@ angular.module("system").controller(
         $scope.logout = function() {            
             delete $window.sessionStorage.token;
             delete $window.sessionStorage.userType;
-            delete $window.sessionStorage.userRights;            
+            delete $window.sessionStorage.userRights;
+            delete $window.sessionStorage.userScientillaNominative;
             $window.location.href = "/";
         };
     }]

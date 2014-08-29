@@ -45,6 +45,7 @@ module.exports = function () {
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
             user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
+            user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
             user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
@@ -99,6 +100,7 @@ module.exports = function () {
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
             user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
+            user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
             user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
@@ -130,6 +132,7 @@ module.exports = function () {
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
             user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
+            user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
             user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
@@ -170,6 +173,7 @@ module.exports = function () {
 							var user = {};
 							user.type = "";
                             user.rights = "";
+                            user.scientilla_nominative = "";
 							user.first_name = "";
 							user.middle_name = "";
 							user.last_name = "";
@@ -227,7 +231,8 @@ module.exports = function () {
 						res.json({
                             token: token,
                             user_type: user.type,
-                            user_rights: user.rights
+                            user_rights: user.rights,
+                            user_scientilla_nominative: user.scientilla_nominative
                         });
 						
 						callback();
