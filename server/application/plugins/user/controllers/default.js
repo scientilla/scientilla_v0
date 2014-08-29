@@ -220,7 +220,11 @@ module.exports = function () {
 						var token = req.jsonWebToken.sign(userDataForToken, "scientilla", {expiresInMinutes: 60});
 						
 						res.setHeader("Content-Type", "application/json");
-						res.json({token: token});
+						res.json({
+                            token: token,
+                            user_type: user.type,
+                            user_rights: user.rights
+                        });
 						
 						callback();
 					});				

@@ -17,6 +17,8 @@ angular.module("system").controller(
                 password: $scope.oUser.password
             }).success(function(data, status, headers, config) {
                 $window.sessionStorage.token = data.token;
+                $window.sessionStorage.userType = data.user_type;
+                $window.sessionStorage.userRights = data.user_rights;
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 delete $window.sessionStorage.token;
