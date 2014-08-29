@@ -22,12 +22,16 @@ angular.module("system").controller(
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 delete $window.sessionStorage.token;
+                delete $window.sessionStorage.userType;
+                delete $window.sessionStorage.userRights;
                 systemStatusService.react(status);
             });
         };
         
         $scope.logout = function() {            
-            delete $window.sessionStorage.token;            
+            delete $window.sessionStorage.token;
+            delete $window.sessionStorage.userType;
+            delete $window.sessionStorage.userRights;            
             $window.location.href = "/";
         };
     }]

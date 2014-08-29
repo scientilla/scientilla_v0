@@ -50,16 +50,16 @@
                             <td>
                                 {{reference.authors}}<br />
                                 <i>{{reference.title}}</i><br />
-                                <span ng-if="reference.journal !== ''">
-                                    {{reference.journal}}{{reference.hasOwnProperty("volume") && reference.volume !== "" ? ", " + reference.volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                <span ng-if="reference.journal_name != ''">
+                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
                                 </span>
-                                <span ng-if="reference.conference !== ''">
-                                    {{reference.conference}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                <span ng-if="reference.conference_name != ''">
+                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
                                 </span>
-                                <span ng-if="reference.book !== ''">
-                                    {{reference.book}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                <span ng-if="reference.book_title != ''">
+                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
-                                <strong ng-if="reference.doi !== ''">
+                                <strong ng-if="reference.doi != ''">
                                     {{reference.doi}}
                                 </strong>
                             </td>
@@ -70,8 +70,8 @@
                             <td>
                                 <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>                                
                                 <!-- <button type="button" class="btn btn-default btn-block"><i class="glyphicon glyphicon-cloud-upload"></i> Push</button> -->                            
-                                <button ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
-                                <button ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
+                                <button ng-if="userRights == 'A'" ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
+                                <button ng-if="userRights == 'A'" ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
                                 <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
                                 <!-- <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                             </td>
@@ -108,14 +108,14 @@
                                 <h4><i class="fa fa-file-text"></i> Bibliographic Data:</h4>
                                 {{reference.authors}}<br />
                                 <i>{{reference.title}}</i><br />
-                                <span ng-if="reference.journal !== ''">
-                                    {{reference.journal}}{{reference.hasOwnProperty("volume") && reference.volume !== "" ? ", " + reference.volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                <span ng-if="reference.journal_name !== ''">
+                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
                                 </span>
-                                <span ng-if="reference.conference !== ''">
-                                    {{reference.conference}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                <span ng-if="reference.conference_name !== ''">
+                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
                                 </span>
-                                <span ng-if="reference.book !== ''">
-                                    {{reference.book}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                <span ng-if="reference.book_title !== ''">
+                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi !== ''">
                                     {{reference.doi}}
@@ -128,8 +128,8 @@
                             <div class="panel-footer">
                                 <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>                                
                                 <!-- <button type="button" class="btn btn-default btn-block"><i class="glyphicon glyphicon-cloud-upload"></i> Push</button> -->                               
-                                <button ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
-                                <button ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
+                                <button ng-if="userRights == 'A'" ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
+                                <button ng-if="userRights == 'A'" ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
                                 <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
                                 <!-- <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                                 <div class="clearfix"></div>

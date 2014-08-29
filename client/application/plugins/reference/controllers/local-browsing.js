@@ -13,6 +13,9 @@ angular.module("reference").controller(
         });
         /* code end */
         
+        $scope.userType = $window.sessionStorage.userType;
+        $scope.userRights = $window.sessionStorage.userRights;
+        
         $scope.generateReferenceIdsApprovingMap = function(aReferences) {
             var referenceIdsApprovingMap = {};
             for (lpKey in aReferences) {
