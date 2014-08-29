@@ -50,16 +50,16 @@
                             <td>
                                 {{reference.authors}}<br />
                                 <i>{{reference.title}}</i><br />
-                                <span ng-if="reference.journal_name != ''">
+                                <span ng-if="reference.journal_name">
                                     {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
                                 </span>
-                                <span ng-if="reference.conference_name != ''">
+                                <span ng-if="reference.conference_name">
                                     {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
                                 </span>
-                                <span ng-if="reference.book_title != ''">
+                                <span ng-if="reference.book_title">
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
-                                <strong ng-if="reference.doi != ''">
+                                <strong ng-if="reference.doi">
                                     {{reference.doi}}
                                 </strong>
                             </td>
@@ -108,16 +108,16 @@
                                 <h4><i class="fa fa-file-text"></i> Bibliographic Data:</h4>
                                 {{reference.authors}}<br />
                                 <i>{{reference.title}}</i><br />
-                                <span ng-if="reference.journal_name !== ''">
+                                <span ng-if="reference.journal_name">
                                     {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
                                 </span>
-                                <span ng-if="reference.conference_name !== ''">
+                                <span ng-if="reference.conference_name">
                                     {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
                                 </span>
-                                <span ng-if="reference.book_title !== ''">
+                                <span ng-if="reference.book_title">
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
-                                <strong ng-if="reference.doi !== ''">
+                                <strong ng-if="reference.doi">
                                     {{reference.doi}}
                                 </strong>
                                 <h4><i class="fa fa-calendar"></i> Year:</h4>
