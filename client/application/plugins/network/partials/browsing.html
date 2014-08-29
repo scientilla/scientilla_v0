@@ -14,23 +14,15 @@
                     <span class="navbar-brand" id="tools-link">NETWORK DATA</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">                       
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default active">
-                                <input type="radio" checked><i class="fa fa-list"></i> List
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio"><i class="fa fa-globe"></i> Graph
-                            </label>
-                        </div>                        
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default active">
-                                <input type="radio" checked><i class="fa fa-cloud"></i> Peers
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio"><i class="fa fa-exchange"></i> Repositories
-                            </label>
-                        </div>                                                
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">
+                        <div class="btn-group">
+                            <label ng-change="saveVisualizationMode()" class="btn btn-default" ng-model="visualizationMode" btn-radio="'L'"><i class="fa fa-list"></i> List</label>
+                            <label ng-change="saveVisualizationMode()" class="btn btn-default" ng-model="visualizationMode" btn-radio="'G'"><i class="fa fa-globe"></i> Graph</label>
+                        </div>
+                        <div class="btn-group">
+                            <label ng-change="saveListingType()" class="btn btn-default" ng-model="listingType" btn-radio="'P'"><i class="fa fa-cloud"></i> Peers</label>
+                            <label ng-change="saveListingType()" class="btn btn-default" ng-model="listingType" btn-radio="'R'"><i class="fa fa-exchange"></i> Repositories</label>
+                        </div>                                                                        
                     </form>                    
                     <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                               
                         <div class="input-group">                                        
@@ -67,8 +59,8 @@
         </nav>
     </div>			
 </div>
-<div id="content-container">
-    <div id="content" class="container-fluid">        
+<div ng-switch on="listingType" id="content-container">
+    <div ng-switch-when="P" id="content" class="container-fluid">        
         <div class="row">            
             <div class="col-lg-12 visible-md visible-lg">
                 <table class="table table-bordered table-hover">
@@ -144,4 +136,80 @@
             </div>
         </div>        
     </div>
+    <div ng-switch-when="R" id="content" class="container-fluid">        
+        <div class="row">             
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fa fa-users"></i> Repository Name</th>
+                            <th><i class="fa fa-file-text"></i> URL</th>
+                            <th class="fixed-th-3x">
+                                <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr ng-repeat="repository in aRepositories">
+                            <td>{{repository.name}}</td>
+                            <td>{{repository.url}}</td>
+                            <td>
+                                <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Selected' : 'Select' }}</button>
+                                <button ng-click="switchRepositorySharingStatus(repository._id)" type="button" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[dataset._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i> {{repositoryIdsSharingMap[repository._id] ? "Public" : "Private" }}</button>
+                                <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
+                                <!-- <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                            </td>
+                        </tr> 
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="3">
+                                <div class="col-lg-12 empty-message">
+                                    No repositories available in this installation.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="5">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving repositories.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+            <div class="col-sm-12 visible-xs visible-sm">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                    </div>                           
+                    <div class="col-xs-12 col-sm-12" ng-repeat="repository in aRepositories">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4><i class="fa fa-file-text"></i> Peer Name:</h4>
+                                {{repository.name}}<br />
+                                <h4><i class="fa fa-tags"></i> URL:</h4>
+                                {{repository.url}}<br />
+                            </div>
+                            <div class="panel-footer">
+                                <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Selected' : 'Select' }}</button>
+                                <button ng-click="switchRepositorySharingStatus(repository._id)" type="button" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[dataset._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i> {{repositoryIdsSharingMap[repository._id] ? "Public" : "Private" }}</button>
+                                <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
+                                <!-- <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                                <div class="clearfix"></div>
+                            </div>                                    
+                        </div>
+                    </div>                                
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>        
+    </div>    
 </div>
