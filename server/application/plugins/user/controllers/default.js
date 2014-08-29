@@ -111,9 +111,11 @@ module.exports = function () {
             user.email = !req.underscore.isUndefined(req.body.email) ? req.body.email.trim() : "";
             user.username = !req.underscore.isUndefined(req.body.username) ? req.body.username.trim() : "";
             var passwordToEncrypt = !req.underscore.isUndefined(req.body.password) ? req.body.password.trim() : "";
-            var encryptionSalt = req.bcryptNodejs.genSaltSync();
-            var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
-            user.password = encryptedPassword;
+            if (passwordToEncrypt != "") {
+                var encryptionSalt = req.bcryptNodejs.genSaltSync();
+                var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
+                user.password = encryptedPassword;
+            }
             user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";          
             req.usersCollection.update({ _id: req.params.id }, { $set: user }, {w: 1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
@@ -140,9 +142,11 @@ module.exports = function () {
             user.email = !req.underscore.isUndefined(req.body.email) ? req.body.email.trim() : "";
             user.username = !req.underscore.isUndefined(req.body.username) ? req.body.username.trim() : "";
             var passwordToEncrypt = !req.underscore.isUndefined(req.body.password) ? req.body.password.trim() : "";
-            var encryptionSalt = req.bcryptNodejs.genSaltSync();
-            var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
-            user.password = encryptedPassword;
+            if (passwordToEncrypt != "") {
+                var encryptionSalt = req.bcryptNodejs.genSaltSync();
+                var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
+                user.password = encryptedPassword;
+            }
             user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";          
             req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
