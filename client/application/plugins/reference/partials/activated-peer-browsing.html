@@ -11,17 +11,20 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-chevron-left"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">SCIENTILLA</span>
+                    <span class="navbar-brand" id="tools-link">PEER PUBLICATIONS</span>
                 </div>
                 <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">                       
+                        <a class="btn btn-default"><i class="fa fa-database"></i> Show Peer Datasets</a>
+                    </form>                    
                     <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                        
                         <div class="input-group">                                        
                             <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
-                                <a href="#" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                                <a class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>
-                        <button id="help-button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-mortar-board'></i> <b>Only You</b>: means that only publications confirmed by you, or supposed to be yours, are shown.<br /><br /><i class='fa fa-users'></i> <b>Only Others</b>: means that only other publications than yours are shown.<br /><br /><i class='fa fa-institution'></i> <b>Only You</b>: means that all publications are shown.<br /><br /><i class='fa fa-search'></i> Search is made among the <b>Local Publications List</b>." data-placement="left" data-html="true">
+                        <button id="help-button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-search'></i> Search is made among Publication titles and authors." data-placement="left" data-html="true">
                             <i class="fa fa-question-circle"></i>
                         </button>                       
                     </form>                              
