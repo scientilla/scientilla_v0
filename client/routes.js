@@ -15,9 +15,9 @@ angular.module("scientilla").config([
         }).when("/browse-datasets/", {
             templateUrl: "application/plugins/dataset/partials/local-browsing.html",
             controller: "localDatasetsBrowsingController"
-        }).when("/browse-activated-peer-datasets/", {
-            templateUrl: "application/plugins/dataset/partials/activated-peer-browsing.html",
-            controller: "activatedPeerDatasetsBrowsingController"              
+        }).when("/browse-peer-datasets/:peerId/", {
+            templateUrl: "application/plugins/dataset/partials/peer-browsing.html",
+            controller: "peerDatasetsBrowsingController"              
         }).when("/add-dataset/", {
             templateUrl: "application/plugins/dataset/partials/addition.html",
             controller: "datasetAdditionController"
@@ -54,12 +54,12 @@ angular.module("scientilla").config([
         }).when("/browse-activated-dataset-references/", {
             templateUrl: "application/plugins/reference/partials/activated-dataset-browsing.html",
             controller: "activatedDatasetReferencesBrowsingController"            
-        }).when("/browse-activated-peer-references/", {
-            templateUrl: "application/plugins/reference/partials/activated-peer-browsing.html",
-            controller: "activatedPeerReferencesBrowsingController"
-        }).when("/browse-activated-repository-references/", {
-            templateUrl: "application/plugins/reference/partials/activated-repository-browsing.html",
-            controller: "activatedRepositoryReferencesBrowsingController"
+        }).when("/browse-peer-references/:peerId/", {
+            templateUrl: "application/plugins/reference/partials/peer-browsing.html",
+            controller: "peerReferencesBrowsingController"
+        }).when("/browse-repository-references/:repositoryId/", {
+            templateUrl: "application/plugins/reference/partials/repository-browsing.html",
+            controller: "repositoryReferencesBrowsingController"
         }).when("/browse-received-references/", {
             templateUrl: "application/plugins/reference/partials/received-browsing.html",
             controller: "receivedReferencesBrowsingController"
@@ -78,12 +78,12 @@ angular.module("scientilla").config([
         }).when("/clone-activated-dataset-reference/:id/", {
             templateUrl: "application/plugins/reference/partials/activated-dataset-cloning.html",
             controller: "activatedDatasetReferenceCloningController"             
-        }).when("/clone-activated-peer-reference/:id/", {
-            templateUrl: "application/plugins/reference/partials/activated-peer-cloning.html",
-            controller: "activatedPeerReferenceCloningController"
-        }).when("/clone-activated-repository-reference/:index/", {
-            templateUrl: "application/plugins/reference/partials/activated-repository-cloning.html",
-            controller: "activatedRepositoryReferenceCloningController"
+        }).when("/clone-peer-reference/:peerId/:referenceId/", {
+            templateUrl: "application/plugins/reference/partials/peer-cloning.html",
+            controller: "peerReferenceCloningController"
+        }).when("/clone-repository-reference/:repositoryId/:index/", {
+            templateUrl: "application/plugins/reference/partials/repository-cloning.html",
+            controller: "repositoryReferenceCloningController"
         }).when("/accept-received-reference/:id/", {
             templateUrl: "application/plugins/reference/partials/acceptation.html",
             controller: "receivedReferencesBrowsingController"            

@@ -11,19 +11,22 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">SCIENTILLA</span>
+                    <span class="navbar-brand" id="tools-link">PEER PUBLICATIONS</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                         
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">                       
+                        <a href="#/browse-peer-datasets/{{peerId}}/" class="btn btn-default"><i class="fa fa-database"></i> Show Peer Datasets</a>
+                    </form>                    
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                        
                         <div class="input-group">                                        
                             <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
-                                <a href="#" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                                <a class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>
-                        <button id="help-button" type="button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-mortar-board'></i> <b>Only You</b>: means that only publications confirmed by you, or supposed to be yours, are shown.<br /><br /><i class='fa fa-users'></i> <b>Only Others</b>: means that only other publications than yours are shown.<br /><br /><i class='fa fa-institution'></i> <b>Only You</b>: means that all publications are shown.<br /><br /><i class='fa fa-search'></i> Search is made among the <b>Local Publications List</b>." data-placement="left" data-html="true">
+                        <button id="help-button" type="button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-search'></i> Search is made among Publication titles and authors." data-placement="left" data-html="true">
                             <i class="fa fa-question-circle"></i>
-                        </button>                        
+                        </button>                       
                     </form>                              
                 </div>
             </div>
@@ -32,13 +35,14 @@
 </div>
 <div id="content-container">
     <div id="content" class="container-fluid">        
-        <div class="row">           
+        <div class="row">          
             <div class="col-lg-12 visible-md visible-lg">
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
+                            <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
                             <th class="fixed-th-3x"></th>
                         </tr>
                     </thead>
@@ -62,17 +66,18 @@
                             </td>
                             <td class="text-center">
                                 <strong>{{reference.year}}</strong>
-                            </td>
+                            </td>        
+                            <td>{{reference.tags}}</td>
                             <td>
-                                <a href="#/clone-activated-repository-reference/{{$index}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
+                                <a href="#/clone-peer-reference/{{peerId}}/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
                             </td>
                         </tr>
                     </tbody>
                     <tbody ng-show="empty">
                         <tr>
-                            <td colspan="3">
+                            <td colspan="4">
                                 <div class="col-lg-12 empty-message">
-                                    No references available on the repository.
+                                    No references available on the peer.
                                 </div>
                             </td>
                         </tr>
@@ -81,7 +86,7 @@
                         <tr>
                             <td colspan="5">
                                 <div class="col-lg-12 error-message">
-                                    Error in retrieving references from the repository.
+                                    Error in retrieving references from the peer.
                                 </div>
                             </td>
                         </tr>
@@ -89,7 +94,7 @@
                 </table>
             </div>
             <div class="col-sm-12 visible-xs visible-sm">
-                <div class="row">                          
+                <div class="row">                           
                     <div class="col-xs-12 col-sm-12" ng-repeat="reference in aReferences">
                         <div class="panel panel-default">
                             <div class="panel-body">
@@ -110,9 +115,11 @@
                                 </strong>
                                 <h4><i class="fa fa-calendar"></i> Year:</h4>
                                 <strong>{{reference.year}}</strong>
+                                <h4><i class="fa fa-tags"></i> Tags:</h4>
+                                {{reference.tags}}<br />
                             </div>
                             <div class="panel-footer">
-                                <a href="#/clone-activated-repository-reference/{{$index}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
+                                <a href="#/clone-peer-reference/{{peerId}}/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
                                 <div class="clearfix"></div>
                             </div>                                    
                         </div>

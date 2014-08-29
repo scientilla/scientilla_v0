@@ -99,10 +99,10 @@
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="peer in aPeers" class="fixed-tr-1x">
                             <td>
-                                <a href="#" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-default btn-mini"><i class="fa fa-database"></i></a>
+                                <a href="#/browse-peer-datasets/{{peer._id}}/" class="btn btn-default btn-mini"><i class="fa fa-database"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-peer/{{peer._id}}/">
@@ -205,7 +205,7 @@
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="repository in aRepositories" class="fixed-tr-1x">
                             <td>
-                                <a href="#" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                                <a href="#/browse-repository-references/{{repository._id}}/" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-repository/{{repository._id}}/">

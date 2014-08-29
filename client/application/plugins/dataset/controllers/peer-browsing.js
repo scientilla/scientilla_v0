@@ -5,14 +5,8 @@
  */
          
 angular.module("dataset").controller(
-    "activatedPeerDatasetsBrowsingController", ["$scope", "peerDatasetsService", "activatedPeersService", "peersService", "activatedDatasetsService", "systemStatusService", "$window", "$location", function($scope, peerDatasetsService, activatedPeersService, peersService, activatedDatasetsService, systemStatusService, $window, $location) { 
-        /* TO-DO: substitute with a directive. */
-        /* code start */            
-        $("#help-button").popover({
-            trigger: "focus"
-        });
-        /* code end */
-        
+    "peerDatasetsBrowsingController", ["$scope", "$routeParams", "peerDatasetsService", "activatedPeersService", "peersService", "activatedDatasetsService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerDatasetsService, activatedPeersService, peersService, activatedDatasetsService, systemStatusService, $window, $location) { 
+        $scope.peerId = $routeParams.peerId;
         $scope.changingActivatedDatasetId = "";
         $scope.aDatasets = [];        
         
@@ -21,15 +15,6 @@ angular.module("dataset").controller(
             $scope.ready = false;
             $scope.error = false;
             async.series([
-                function(callback) {
-                    $scope.oActivatedPeer = {};
-                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
-                        $scope.oActivatedPeer.id = data.peer_id;
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        systemStatusService.react(status, callback);
-                    });
-                },
                 function(callback) {
                     $scope.oActivatedDataset = {};
                     activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
@@ -47,7 +32,7 @@ angular.module("dataset").controller(
                 },            
                 function(callback) {
                     peerDatasetsService.getDatasets(
-                        $scope.oActivatedPeer.id,
+                        $scope.peerId,
                         $window.sessionStorage.token
                     ).success(function(data, status, headers, config) {
                         $scope.aDatasets = data;

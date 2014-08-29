@@ -5,8 +5,9 @@
  */
 
 angular.module("reference").controller(
-    "activatedRepositoryReferencesBrowsingController", ["$scope", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location) {
-        $scope.aReferences = [];        
+    "peerReferencesBrowsingController", ["$scope", "$routeParams", "peerReferencesService", "peersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerReferencesService, peersService, systemStatusService, $window, $location) {       
+        $scope.peerId = $routeParams.peerId;
+        $scope.aReferences = [];
         
         $scope.retrieveReferences = function retrieveReferences() {
             $scope.empty = false;
@@ -14,20 +15,10 @@ angular.module("reference").controller(
             $scope.error = false;
             async.series([
                 function(callback) {
-                    $scope.oActivatedRepository = {};
-                    activatedRepositoriesService.getActivatedRepository($window.sessionStorage.token).success(function(data, status, headers, config) {
-                        $scope.oActivatedRepository.id = data.repository_id;
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    repositoryReferencesService.getReferences(
-                        $scope.oActivatedRepository.id,
+                    peerReferencesService.getReferences(
+                        $scope.peerId,
                         $window.sessionStorage.token
                     ).success(function(data, status, headers, config) {
-                        repositoryReferencesService.aReferences = data;                   
                         $scope.aReferences = data;
                         if ($scope.aReferences.length === 0) {
                             $scope.empty = true;
