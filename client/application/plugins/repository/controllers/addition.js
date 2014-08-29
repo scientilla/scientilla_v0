@@ -20,7 +20,7 @@ angular.module("repository").controller(
                 query: $scope.oRepository.query,
                 parameter: $scope.oRepository.parameter
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                $location.path("browse-repositories");
+                $location.path("browse-network");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });

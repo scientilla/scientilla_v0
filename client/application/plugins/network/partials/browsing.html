@@ -79,7 +79,7 @@
                                     <i class="fa fa-question-circle"></i>
                                 </button>                                
                             </th>                            
-                            <th><i class="fa fa-cloud"></i> SCIENTILLA Nominative</th>
+                            <th><i class="fa fa-cloud"></i> Peer Name</th>
                             <th><i class="fa fa-link"></i> URL</th>
                             <th class="fixed-th-1x">
                                 <button data-toggle="modal" data-target="#editing-button-help" class="btn btn-default help-button">
@@ -181,21 +181,45 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th><i class="fa fa-users"></i> Repository Name</th>
-                            <th><i class="fa fa-file-text"></i> URL</th>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#publications-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>                            
+                            <th><i class="fa fa-exchange"></i> Repository Name</th>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#editing-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#sharing-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>                            
                             <th class="fixed-th-3x">
                                 <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
                             </th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
-                        <tr ng-repeat="repository in aRepositories">
-                            <td>{{repository.name}}</td>
-                            <td>{{repository.url}}</td>
+                        <tr ng-repeat="repository in aRepositories" class="fixed-tr-1x">
                             <td>
-                                <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Preferred' : 'Prefer' }}</button>
-                                <button ng-click="switchRepositorySharingStatus(repository._id)" type="button" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[dataset._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i> {{repositoryIdsSharingMap[repository._id] ? "Public" : "Private" }}</button>
-                                <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
+                                <a href="#" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                            </td>                            
+                            <td>
+                                <a href="#/edit-repository/{{repository._id}}/">
+                                    <strong>{{repository.name}}</strong>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <a ng-click="switchRepositorySharingStatus(repository._id)" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i></a>
+                            </td>                            
+                            <td>
+                                <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Preferred' : 'Prefer' }}</button>                        
                                 <!-- <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                             </td>
                         </tr> 
@@ -228,14 +252,14 @@
                     <div class="col-xs-12 col-sm-12" ng-repeat="repository in aRepositories">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <h4><i class="fa fa-file-text"></i> Peer Name:</h4>
+                                <h4><i class="fa fa-file-text"></i> Repository Name:</h4>
                                 {{repository.name}}<br />
                                 <h4><i class="fa fa-tags"></i> URL:</h4>
                                 {{repository.url}}<br />
                             </div>
                             <div class="panel-footer">
                                 <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Preferred' : 'Prefer' }}</button>
-                                <button ng-click="switchRepositorySharingStatus(repository._id)" type="button" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[dataset._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i> {{repositoryIdsSharingMap[repository._id] ? "Public" : "Private" }}</button>
+                                <button ng-click="switchRepositorySharingStatus(repository._id)" type="button" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i> {{repositoryIdsSharingMap[repository._id] ? "Public" : "Private" }}</button>
                                 <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>                            
                                 <!-- <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                                 <div class="clearfix"></div>
@@ -292,7 +316,7 @@
                 <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
             </div>
             <div class="modal-body">
-                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-book"></i></button> to show the publications from the relative Peer.
+                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-book"></i></button> to show the publications from the relative Peer or Repository.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -308,7 +332,7 @@
                 <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
             </div>
             <div class="modal-body">
-                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-database"></i></button> to show the datasets from the relative Peer.
+                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-database"></i></button> to show the datasets from the relative Peer or Repository.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -324,8 +348,8 @@
                 <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
             </div>
             <div class="modal-body">
-                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-edit"></i></button> to modify the details of the relative Peer.<br /><br />
-                Consider that you can click also on the SCIENTILLA Nominative to obtain the same effect.
+                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-edit"></i></button> to modify the details of the relative Peer or Repository.<br /><br />
+                Consider that you can click also on the Peer or Repository Name to obtain the same effect.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -341,10 +365,10 @@
                 <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
             </div>
             <div class="modal-body">
-                The button <button class="btn btn-default btn-mini"><i class="fa fa-lock"></i></button> means that the relative Peer details are not visible to the network.<br /><br />
-                Clicking on the button <button class="btn btn-default btn-mini"><i class="fa fa-lock"></i></button> the relative Peer details becomes unlocked and than visible to the network.<br /><br />
-                The button <button class="btn btn-default btn-mini"><i class="fa fa-unlock"></i></button> means that the relative Peer details are visible to the network.<br /><br />
-                Clicking on the button <button class="btn btn-default btn-mini"><i class="fa fa-unlock"></i></button> the relative Peer details becomes locked and than not visible to the network.
+                The button <button class="btn btn-default btn-mini"><i class="fa fa-lock"></i></button> means that the relative Peer or Repository details are not visible to the network.<br /><br />
+                Clicking on the button <button class="btn btn-default btn-mini"><i class="fa fa-lock"></i></button> the relative Peer or Repository details becomes unlocked and than visible to the network.<br /><br />
+                The button <button class="btn btn-default btn-mini"><i class="fa fa-unlock"></i></button> means that the relative Peer or Repository details are visible to the network.<br /><br />
+                Clicking on the button <button class="btn btn-default btn-mini"><i class="fa fa-unlock"></i></button> the relative Peer or Repository details becomes locked and than not visible to the network.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
