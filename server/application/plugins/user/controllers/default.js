@@ -44,6 +44,7 @@ module.exports = function () {
         createUser: function(req, res) {
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
+            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
             user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
@@ -97,6 +98,7 @@ module.exports = function () {
         updateUser: function(req, res) { 
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
+            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
             user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
@@ -125,6 +127,7 @@ module.exports = function () {
         updateLoggedUser: function(req, res) { 
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
+            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
             user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
@@ -162,6 +165,7 @@ module.exports = function () {
                             console.log("Needed to Create the Default User");
 							var user = {};
 							user.type = "";
+                            user.rights = "";
 							user.first_name = "";
 							user.middle_name = "";
 							user.last_name = "";

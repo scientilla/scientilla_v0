@@ -44,9 +44,13 @@
                                     <label class="btn btn-default" ng-model="oUser.type" btn-radio="'R'">Researcher</label>
                                     <label class="btn btn-default" ng-model="oUser.type" btn-radio="'O'">Organization</label>
                                 </div>
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="oUser.rights" btn-radio="'O'">Operative</label>
+                                    <label class="btn btn-default" ng-model="oUser.rights" btn-radio="'A'">Administrative</label>
+                                </div>                                
                             </div>                            
                         </div>
-                    </div>
+                    </div>                    
                     <div ng-switch on="oUser.type">
                         <div ng-switch-when="R">
                             <div class="form-group">

@@ -8,6 +8,7 @@ angular.module("user").controller(
     "userEditingController", ["$scope", "$routeParams", "usersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, usersService, systemStatusService, $window, $location) {
         $scope.oUser = {
             type: "",
+            rights: "",
             first_name: "",
             middle_name: "",
             last_name: "",
@@ -39,6 +40,7 @@ angular.module("user").controller(
         $scope.updateUser = function() {
             usersService.updateUser({
                 type: $scope.oUser.type,
+                rights: $scope.oUser.rights,
                 first_name: $scope.oUser.first_name,
                 middle_name: $scope.oUser.middle_name,
                 last_name: $scope.oUser.last_name,
