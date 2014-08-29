@@ -83,16 +83,13 @@ angular.module("user").factory(
 			});
         };        
         
-        usersProvider.loginUser = function(data, token) {
+        usersProvider.loginUser = function(data) {
             return $http({
 				method: "POST",
 				url: "/api/logged-users",
                 data: data,
                 cache: false,
-                timeout: 30000,
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
+                timeout: 30000
 			});
         };        
         
