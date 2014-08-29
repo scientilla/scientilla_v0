@@ -6,30 +6,6 @@
 
 angular.module("reference").controller(
     "localReferenceCloningController", ["$scope", "$routeParams", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, referencesService, systemStatusService, $window, $location) {
-        $scope.extractAuthors = function() {
-            if ($scope.oReference.aAuthors !== "") { 
-                $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(", "); 
-            } else {
-                $scope.oReference.aAuthors = [];
-            }
-        };
-        
-        $scope.extractOrganizations = function() {
-            if ($scope.oReference.aOrganizations !== "") { 
-                $scope.oReference.aOrganizations = $scope.oReference.organizations.split(", "); 
-            } else {
-                $scope.oReference.aOrganizations = [];
-            }
-        };
-        
-        $scope.extractTags = function() {
-            if ($scope.oReference.aTags !== "") { 
-                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
-            } else {
-                $scope.oReference.aTags = [];
-            }
-        };
-        
         $scope.oReference = {
             title: "",
             authors: "",
@@ -61,19 +37,48 @@ angular.module("reference").controller(
             print_status: "",
             note: ""
         };
-        referencesService.getReference(
-            $routeParams.id, 
-            $window.sessionStorage.token
-        ).success(function(data, status, headers, config) {
-            for (key in data) {
-                $scope.oReference[key] = data[key];
+        
+        $scope.extractAuthors = function() {
+            if ($scope.oReference.aAuthors !== "") { 
+                $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(", "); 
+            } else {
+                $scope.oReference.aAuthors = [];
             }
-            $scope.extractAuthors();
-            $scope.extractOrganizations();
-            $scope.extractTags();            
-        }).error(function(data, status, headers, config) {
-            systemStatusService.react(status);
-        });
+        };
+        
+        $scope.extractOrganizations = function() {
+            if ($scope.oReference.aOrganizations !== "") { 
+                $scope.oReference.aOrganizations = $scope.oReference.organizations.split(", "); 
+            } else {
+                $scope.oReference.aOrganizations = [];
+            }
+        };
+        
+        $scope.extractTags = function() {
+            if ($scope.oReference.aTags !== "") { 
+                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
+            } else {
+                $scope.oReference.aTags = [];
+            }
+        };
+        
+        $scope.retrieveReference = function retrieveReference() {
+            referencesService.getReference(
+                $routeParams.id, 
+                $window.sessionStorage.token
+            ).success(function(data, status, headers, config) {
+                for (key in data) {
+                    $scope.oReference[key] = data[key];
+                }
+                $scope.extractAuthors();
+                $scope.extractOrganizations();
+                $scope.extractTags();            
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+            
+            return retrieveReference;
+        }();
         
         $scope.cloneReference = function() {
             referencesService.createReference({

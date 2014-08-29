@@ -6,6 +6,38 @@
 
 angular.module("reference").controller(
     "activatedPeerReferenceCloningController", ["$scope", "$routeParams", "peerReferencesService", "activatedPeersService", "peersService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerReferencesService, activatedPeersService, peersService, referencesService, systemStatusService, $window, $location) {
+        $scope.oReference = {
+            title: "",
+            authors: "",
+            aAuthors: [],
+            organizations: "",
+            aOrganization: [],
+            tags: "",
+            aTags: [],
+            year: "",
+            doi: "",
+            journal_name: "",
+            journal_acronym: "",
+            journal_pissn: "",
+            journal_eissn: "",
+            journal_issnl: "",
+            journal_volume: "",
+            journal_year: "",
+            conference_name: "",
+            conference_acronym: "",
+            conference_place: "",
+            conference_year: "",
+            book_title: "",
+            book_isbn: "",
+            book_pages: "",
+            book_editor: "",
+            book_year: "",
+            abstract: "",
+            month: "",
+            print_status: "",
+            note: ""
+        };
+                
         $scope.extractAuthors = function() {
             if ($scope.oReference.aAuthors !== "") { 
                 $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(", "); 
@@ -30,65 +62,38 @@ angular.module("reference").controller(
             }
         };
         
-        async.series([
-            function(callback) {
-                $scope.oActivatedPeer = {};
-                activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedPeer.id = data.peer_id;
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.oReference = {
-                    title: "",
-                    authors: "",
-                    aAuthors: [],
-                    organizations: "",
-                    aOrganization: [],
-                    tags: "",
-                    aTags: [],
-                    year: "",
-                    doi: "",
-                    journal_name: "",
-                    journal_acronym: "",
-                    journal_pissn: "",
-                    journal_eissn: "",
-                    journal_issnl: "",
-                    journal_volume: "",
-                    journal_year: "",
-                    conference_name: "",
-                    conference_acronym: "",
-                    conference_place: "",
-                    conference_year: "",
-                    book_title: "",
-                    book_isbn: "",
-                    book_pages: "",
-                    book_editor: "",
-                    book_year: "",
-                    abstract: "",
-                    month: "",
-                    print_status: "",
-                    note: ""
-                };
-                peerReferencesService.getReference(
-                    $scope.oActivatedPeer.id, 
-                    $routeParams.id,
-                    $window.sessionStorage.token
-                ).success(function(data, status, headers, config) {
-                    for (key in data) {
-                        $scope.oReference[key] = data[key];
-                    }
-                    $scope.extractAuthors();
-                    $scope.extractOrganizations();
-                    $scope.extractTags();                    
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            }
-        ]);
+        $scope.retrieveReference = function retrieveReference() {
+            async.series([
+                function(callback) {
+                    $scope.oActivatedPeer = {};
+                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedPeer.id = data.peer_id;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    peerReferencesService.getReference(
+                        $scope.oActivatedPeer.id, 
+                        $routeParams.id,
+                        $window.sessionStorage.token
+                    ).success(function(data, status, headers, config) {
+                        for (key in data) {
+                            $scope.oReference[key] = data[key];
+                        }
+                        $scope.extractAuthors();
+                        $scope.extractOrganizations();
+                        $scope.extractTags();                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                }
+            ]);
+            
+            return retrieveReference;
+        }();
         
         $scope.cloneReference = function() {
             referencesService.createReference({

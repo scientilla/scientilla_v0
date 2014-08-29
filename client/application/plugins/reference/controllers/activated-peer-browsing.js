@@ -13,39 +13,44 @@ angular.module("reference").controller(
         });
         /* code end */
         
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        async.series([
-            function(callback) {
-                $scope.oActivatedPeer = {};
-                activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedPeer.id = data.peer_id;
+        $scope.aReferences = [];
+        
+        $scope.retrieveReferences = function retrieveReferences() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    $scope.oActivatedPeer = {};
+                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedPeer.id = data.peer_id;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    peerReferencesService.getReferences(
+                        $scope.oActivatedPeer.id,
+                        $window.sessionStorage.token
+                    ).success(function(data, status, headers, config) {
+                        $scope.aReferences = data;
+                        if ($scope.aReferences.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.ready = true;
                     callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.aReferences = [];
-                peerReferencesService.getReferences(
-                    $scope.oActivatedPeer.id,
-                    $window.sessionStorage.token
-                ).success(function(data, status, headers, config) {
-                    $scope.aReferences = data;
-                    if ($scope.aReferences.length === 0) {
-                        $scope.empty = true;
-                    }                    
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    $scope.error = true;
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.ready = true;
-                callback();
-            }
-        ]);        
+                }
+            ]);
+            
+            return retrieveReferences;
+        }();
     }]
 );

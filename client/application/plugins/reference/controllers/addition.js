@@ -6,30 +6,6 @@
 
 angular.module("reference").controller(
     "referenceAdditionController", ["$scope", "referencesService", "systemStatusService", "$window", "$location", function($scope, referencesService, systemStatusService, $window, $location) {
-        $scope.extractAuthors = function() {
-            if ($scope.oReference.aAuthors !== "") { 
-                $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(", "); 
-            } else {
-                $scope.oReference.aAuthors = [];
-            }
-        };
-        
-        $scope.extractOrganizations = function() {
-            if ($scope.oReference.aOrganizations !== "") { 
-                $scope.oReference.aOrganizations = $scope.oReference.organizations.split(", "); 
-            } else {
-                $scope.oReference.aOrganizations = [];
-            }
-        };
-        
-        $scope.extractTags = function() {
-            if ($scope.oReference.aTags !== "") { 
-                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
-            } else {
-                $scope.oReference.aTags = [];
-            }
-        };
-        
         $scope.oReference = {
             title: "",
             authors: "",
@@ -60,6 +36,30 @@ angular.module("reference").controller(
             month: "",
             print_status: "",
             note: ""
+        };
+        
+        $scope.extractAuthors = function() {
+            if ($scope.oReference.aAuthors !== "") { 
+                $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(", "); 
+            } else {
+                $scope.oReference.aAuthors = [];
+            }
+        };
+        
+        $scope.extractOrganizations = function() {
+            if ($scope.oReference.aOrganizations !== "") { 
+                $scope.oReference.aOrganizations = $scope.oReference.organizations.split(", "); 
+            } else {
+                $scope.oReference.aOrganizations = [];
+            }
+        };
+        
+        $scope.extractTags = function() {
+            if ($scope.oReference.aTags !== "") { 
+                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
+            } else {
+                $scope.oReference.aTags = [];
+            }
         };
         
         $scope.createReference = function() {

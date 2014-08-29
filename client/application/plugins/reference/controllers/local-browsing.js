@@ -15,6 +15,10 @@ angular.module("reference").controller(
         
         $scope.userType = $window.sessionStorage.userType;
         $scope.userRights = $window.sessionStorage.userRights;
+        $scope.keywords = "";
+        $scope.changingApprovedReferenceId = "";
+        $scope.changingSharedReferenceId = "";
+        $scope.aReferences = [];        
         
         $scope.generateReferenceIdsApprovingMap = function(aReferences) {
             var referenceIdsApprovingMap = {};
@@ -32,7 +36,6 @@ angular.module("reference").controller(
             return referenceIdsSharingMap;
         }
         
-        $scope.changingApprovedReferenceId = "";
         $scope.switchReferenceApprovingStatus = function(id) {
             $scope.changingApprovedReferenceId = id;
             if (!$scope.referenceIdsApprovingMap[id]) {
@@ -60,7 +63,6 @@ angular.module("reference").controller(
             }
         }        
         
-        $scope.changingSharedReferenceId = "";
         $scope.switchReferenceSharingStatus = function(id) {
             $scope.changingSharedReferenceId = id;
             if (!$scope.referenceIdsSharingMap[id]) {
@@ -87,10 +89,8 @@ angular.module("reference").controller(
                 });
             }
         }
-        
-        $scope.aReferences = [];
-        $scope.keywords = "";        
-        $scope.retrieveReferences = function() {
+               
+        $scope.retrieveReferences = function retrieveReferences() {
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
@@ -120,8 +120,8 @@ angular.module("reference").controller(
                     callback();
                 }
             ]);
-        }        
-        
-        $scope.retrieveReferences();
+            
+            return retrieveReferences;
+        }();
     }]
 );

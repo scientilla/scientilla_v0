@@ -24,17 +24,22 @@ angular.module("user").controller(
             password_repetition: "",
             status: ""
         };
-        usersService.getLoggedUser( 
-            $window.sessionStorage.token
-        ).success(function(data, status, headers, config) {
-            for (key in data) {
-                if (key !== "password" && key !== "password_repetition") {
-                    $scope.oUser[key] = data[key];
+        
+        $scope.retrieveUser = function retrieveUser() {
+            usersService.getLoggedUser( 
+                $window.sessionStorage.token
+            ).success(function(data, status, headers, config) {
+                for (key in data) {
+                    if (key !== "password" && key !== "password_repetition") {
+                        $scope.oUser[key] = data[key];
+                    }
                 }
-            }
-        }).error(function(data, status, headers, config) {
-            systemStatusService.react(status);
-        });
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+            
+            return retrieveUser;
+        }();
         
         $scope.updateLoggedUser = function() {
             usersService.updateLoggedUser({

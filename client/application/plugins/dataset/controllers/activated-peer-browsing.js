@@ -11,59 +11,64 @@ angular.module("dataset").controller(
         $("#help-button").popover({
             trigger: "focus"
         });
-        /* code end */        
-        
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        async.series([
-            function(callback) {
-                $scope.oActivatedPeer = {};
-                activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedPeer.id = data.peer_id;
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.oActivatedDataset = {};
-                activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedDataset.id = data.dataset_id;
-                    $scope.oActivatedDataset.peerId = data.peer_id;
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.activatedDatasetId = $scope.oActivatedDataset.id;
-                $scope.activatedDatasetPeerId = $scope.oActivatedDataset.peerId;
-                callback();
-            },            
-            function(callback) {
-                $scope.aDatasets = [];
-                peerDatasetsService.getDatasets(
-                    $scope.oActivatedPeer.id,
-                    $window.sessionStorage.token
-                ).success(function(data, status, headers, config) {
-                    $scope.aDatasets = data;
-                    if ($scope.aDatasets.length === 0) {
-                        $scope.empty = true;
-                    }                     
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    $scope.error = true;
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.ready = true;
-                callback();
-            }
-        ]);
+        /* code end */
         
         $scope.changingActivatedDatasetId = "";
+        $scope.aDatasets = [];        
+        
+        $scope.retrieveDatasets = function retrieveDatasets() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    $scope.oActivatedPeer = {};
+                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedPeer.id = data.peer_id;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.oActivatedDataset = {};
+                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedDataset.id = data.dataset_id;
+                        $scope.oActivatedDataset.peerId = data.peer_id;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.activatedDatasetId = $scope.oActivatedDataset.id;
+                    $scope.activatedDatasetPeerId = $scope.oActivatedDataset.peerId;
+                    callback();
+                },            
+                function(callback) {
+                    peerDatasetsService.getDatasets(
+                        $scope.oActivatedPeer.id,
+                        $window.sessionStorage.token
+                    ).success(function(data, status, headers, config) {
+                        $scope.aDatasets = data;
+                        if ($scope.aDatasets.length === 0) {
+                            $scope.empty = true;
+                        }                     
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+            
+            return retrieveDatasets 
+        }();
+        
         $scope.setDatasetAsActivated = function(id, peerId) {
             $scope.changingActivatedDatasetId = id;
             activatedDatasetsService.setDatasetAsActivated(

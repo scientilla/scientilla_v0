@@ -14,18 +14,23 @@ angular.module("reference").controller(
         /* code end */
         
         $scope.aReceivedReferences = [];
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        referencesService.getReceivedReferences($window.sessionStorage.token).success(function(data, status, headers, config) {
-            $scope.aReceivedReferences = data;
-            if ($scope.aReferences.length === 0) {
-                $scope.empty = true;
-            }            
-            $scope.ready = true;            
-        }).error(function(data, status, headers, config) {
-            $scope.error = true;
-            systemStatusService.react(status);
-        });
+        
+        $scope.retrieveReferences = function retrieveReferences() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            referencesService.getReceivedReferences($window.sessionStorage.token).success(function(data, status, headers, config) {
+                $scope.aReceivedReferences = data;
+                if ($scope.aReferences.length === 0) {
+                    $scope.empty = true;
+                }            
+                $scope.ready = true;            
+            }).error(function(data, status, headers, config) {
+                $scope.error = true;
+                systemStatusService.react(status);
+            });
+            
+            return retrieveReferences;
+        }();
     }]
 );

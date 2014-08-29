@@ -12,16 +12,21 @@ angular.module("dataset").controller(
             initiated_at: "",
             completed_at: ""
         };
-        datasetsService.getDataset(
-            $routeParams.id,
-            $window.sessionStorage.token
-        ).success(function(data, status, headers, config) {
-            for (key in data) {
-                $scope.oDataset[key] = data[key];
-            }
-        }).error(function(data, status, headers, config) {
-            systemStatusService.react(status);
-        });
+        
+        $scope.retrieveDataset = function retrieveDataset() {
+            datasetsService.getDataset(
+                $routeParams.id,
+                $window.sessionStorage.token
+            ).success(function(data, status, headers, config) {
+                for (key in data) {
+                    $scope.oDataset[key] = data[key];
+                }
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+            
+            return retrieveDataset;
+        }();
         
         $scope.updateDataset = function() {
             datasetsService.updateDataset({

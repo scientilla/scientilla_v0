@@ -6,6 +6,10 @@
 
 angular.module("peer").controller(
     "localPeersBrowsingController", ["$scope", "peersService", "activatedPeersService", "systemStatusService", "$window", "$location", function($scope, peersService, activatedPeersService, systemStatusService, $window, $location) {
+        $scope.changingActivatedPeerId = "";
+        $scope.changingSharedPeerId = "";        
+        $scope.aPeers = [];
+            
         $scope.generatePeerIdsSharingMap = function(aPeers) {
             var peerIdsSharingMap = {};
             for (lpKey in aPeers) {
@@ -14,47 +18,6 @@ angular.module("peer").controller(
             return peerIdsSharingMap;
         }
         
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        async.series([
-            function(callback) {
-                $scope.aPeers = [];
-                peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.aPeers = data;
-                    if ($scope.aPeers.length === 0) {
-                        $scope.empty = true;
-                    }                    
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    $scope.error = true;
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.oActivatedPeer = {};
-                activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedPeer = data;
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.activatedPeerId = $scope.oActivatedPeer.peer_id;
-                callback();
-            },
-            function(callback) {
-                $scope.peerIdsSharingMap = $scope.generatePeerIdsSharingMap($scope.aPeers);
-                callback();
-            },
-            function(callback) {
-                $scope.ready = true;
-                callback();
-            }
-        ]);
-        
-        $scope.changingActivatedPeerId = "";
         $scope.setPeerAsActivated = function(id) {
             $scope.changingActivatedPeerId = id;
             activatedPeersService.setPeerAsActivated(
@@ -69,7 +32,6 @@ angular.module("peer").controller(
             });
         }
         
-        $scope.changingSharedPeerId = "";
         $scope.switchPeerSharingStatus = function(id) {
             $scope.changingSharedPeerId = id;
             if (!$scope.peerIdsSharingMap[id]) {
@@ -96,5 +58,48 @@ angular.module("peer").controller(
                 });
             }
         }
+        
+        $scope.retrievePeers = function retrievePeers() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aPeers = data;
+                        if ($scope.aPeers.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.oActivatedPeer = {};
+                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedPeer = data;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.activatedPeerId = $scope.oActivatedPeer.peer_id;
+                    callback();
+                },
+                function(callback) {
+                    $scope.peerIdsSharingMap = $scope.generatePeerIdsSharingMap($scope.aPeers);
+                    callback();
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+            
+            return retrievePeers;
+        }();
     }]
 );

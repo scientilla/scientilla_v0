@@ -6,6 +6,10 @@
 
 angular.module("repository").controller(
     "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, activatedRepositoriesService, systemStatusService, $window, $location) {
+        $scope.aRepositories = [];
+        $scope.changingActivatedRepositoryId = "";
+        $scope.changingSharedRepositoryId = "";        
+        
         $scope.generateRepositoryIdsSharingMap = function(aRepositories) {
             var repositoryIdsSharingMap = {};
             for (lpKey in aRepositories) {
@@ -14,47 +18,6 @@ angular.module("repository").controller(
             return repositoryIdsSharingMap;
         }        
         
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        async.series([
-            function(callback) {
-                $scope.aRepositories = [];
-                repositoriesService.getRepositories($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.aRepositories = data;
-                    if ($scope.aRepositories.length === 0) {
-                        $scope.empty = true;
-                    }
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    $scope.error = true;
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.oActivatedRepository = {};
-                activatedRepositoriesService.getActivatedRepository($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedRepository = data;
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.activatedRepositoryId = $scope.oActivatedRepository.repository_id;
-                callback();
-            },
-            function(callback) {
-                $scope.repositoryIdsSharingMap = $scope.generateRepositoryIdsSharingMap($scope.aRepositories);
-                callback();
-            },            
-            function(callback) {
-                $scope.ready = true;
-                callback();
-            }
-        ]);
-        
-        $scope.changingActivatedRepositoryId = "";
         $scope.setRepositoryAsActivated = function(id) {
             $scope.changingActivatedRepositoryId = id;
             activatedRepositoriesService.setRepositoryAsActivated(
@@ -69,7 +32,6 @@ angular.module("repository").controller(
             });
         }
         
-        $scope.changingSharedRepositoryId = "";
         $scope.switchRepositorySharingStatus = function(id) {
             $scope.changingSharedRepositoryId = id;
             if (!$scope.repositoryIdsSharingMap[id]) {
@@ -95,6 +57,49 @@ angular.module("repository").controller(
                     systemStatusService.react(status);
                 });
             }
-        }        
+        }
+        
+        $scope.retrieveRepositories = function retrieveRepositories() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    repositoriesService.getRepositories($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aRepositories = data;
+                        if ($scope.aRepositories.length === 0) {
+                            $scope.empty = true;
+                        }
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.oActivatedRepository = {};
+                    activatedRepositoriesService.getActivatedRepository($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedRepository = data;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.activatedRepositoryId = $scope.oActivatedRepository.repository_id;
+                    callback();
+                },
+                function(callback) {
+                    $scope.repositoryIdsSharingMap = $scope.generateRepositoryIdsSharingMap($scope.aRepositories);
+                    callback();
+                },            
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+            
+            return retrieveRepositories;
+        }();
     }]
 );

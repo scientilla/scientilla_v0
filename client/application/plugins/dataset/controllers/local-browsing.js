@@ -6,6 +6,10 @@
          
 angular.module("dataset").controller(
     "localDatasetsBrowsingController", ["$scope", "datasetsService", "activatedDatasetsService", "peersService", "peerReferencesService", "datasetReferencesService", "systemStatusService", "$window", "$location", function($scope, datasetsService, activatedDatasetsService, peersService, peerReferencesService, datasetReferencesService, systemStatusService, $window, $location) {
+        $scope.changingCollectedDatasetId = "";
+        $scope.changingSharedDatasetId = "";
+        $scope.aDatasets = [];        
+        
         $scope.generateDatasetIdsSharingMap = function(aDatasets) {
             var datasetIdsSharingMap = {};
             for (lpKey in aDatasets) {
@@ -14,54 +18,10 @@ angular.module("dataset").controller(
             return datasetIdsSharingMap;
         }
         
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        async.series([
-            function(callback) {
-                $scope.aDatasets = [];
-                datasetsService.getDatasets($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.aDatasets = data;
-                    if ($scope.aDatasets.length === 0) {
-                        $scope.empty = true;
-                    }                    
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    $scope.error = true;
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.oActivatedDataset = {};
-                activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedDataset.id = data.dataset_id;
-                    $scope.oActivatedDataset.peerId = data.peer_id;
-                    callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.activatedDatasetId = $scope.oActivatedDataset.id;
-                $scope.activatedDatasetPeerId = $scope.oActivatedDataset.peerId;
-                callback();
-            },
-            function(callback) {
-                $scope.datasetIdsSharingMap = $scope.generateDatasetIdsSharingMap($scope.aDatasets);
-                callback();
-            },
-            function(callback) {
-                $scope.ready = true;
-                callback();
-            }
-        ]);
-        
-        $scope.changingCollectedDatasetId = "";
         $scope.collect = function(id) {
 
         }        
         
-        $scope.changingActivatedDatasetId = "";
         $scope.setDatasetAsActivated = function(id) {
             $scope.changingActivatedDatasetId = id;
             activatedDatasetsService.setDatasetAsActivated(
@@ -78,7 +38,6 @@ angular.module("dataset").controller(
             });
         }
         
-        $scope.changingSharedDatasetId = "";
         $scope.switchDatasetSharingStatus = function(id) {
             $scope.changingSharedDatasetId = id;
             if (!$scope.datasetIdsSharingMap[id]) {
@@ -104,6 +63,51 @@ angular.module("dataset").controller(
                     systemStatusService.react(status);
                 });
             }
-        }        
+        }
+        
+        $scope.retrieveDatasets = function retrieveDatasets() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    datasetsService.getDatasets($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aDatasets = data;
+                        if ($scope.aDatasets.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.oActivatedDataset = {};
+                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedDataset.id = data.dataset_id;
+                        $scope.oActivatedDataset.peerId = data.peer_id;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.activatedDatasetId = $scope.oActivatedDataset.id;
+                    $scope.activatedDatasetPeerId = $scope.oActivatedDataset.peerId;
+                    callback();
+                },
+                function(callback) {
+                    $scope.datasetIdsSharingMap = $scope.generateDatasetIdsSharingMap($scope.aDatasets);
+                    callback();
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+            
+            return retrieveDatasets;
+        }();
     }]
 );

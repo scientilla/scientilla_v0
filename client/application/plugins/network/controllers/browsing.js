@@ -15,6 +15,13 @@ angular.module("network").controller(
         
         $scope.visualizationMode = $window.sessionStorage.visualizationMode ? $window.sessionStorage.visualizationMode : "L";
         $scope.listingType = $window.sessionStorage.listingType ? $window.sessionStorage.listingType : "P";
+        $scope.keywords = "";
+        $scope.changingActivatedPeerId = "";
+        $scope.changingActivatedRepositoryId = "";
+        $scope.changingSharedPeerId = "";
+        $scope.changingSharedRepositoryId = "";
+        $scope.aPeers = [];
+        $scope.aRepositories = [];
         
         $scope.saveVisualizationMode = function() {
             $window.sessionStorage.visualizationMode = $scope.visualizationMode;
@@ -40,7 +47,6 @@ angular.module("network").controller(
             return repositoryIdsSharingMap;
         }        
         
-        $scope.changingActivatedPeerId = "";
         $scope.setPeerAsActivated = function(id) {
             $scope.changingActivatedPeerId = id;
             activatedPeersService.setPeerAsActivated(
@@ -55,7 +61,6 @@ angular.module("network").controller(
             });
         }
         
-        $scope.changingActivatedRepositoryId = "";
         $scope.setRepositoryAsActivated = function(id) {
             $scope.changingActivatedRepositoryId = id;
             activatedRepositoriesService.setRepositoryAsActivated(
@@ -70,7 +75,6 @@ angular.module("network").controller(
             });
         }        
         
-        $scope.changingSharedPeerId = "";
         $scope.switchPeerSharingStatus = function(id) {
             $scope.changingSharedPeerId = id;
             if (!$scope.peerIdsSharingMap[id]) {
@@ -98,7 +102,6 @@ angular.module("network").controller(
             }
         }
         
-        $scope.changingSharedRepositoryId = "";
         $scope.switchRepositorySharingStatus = function(id) {
             $scope.changingSharedRepositoryId = id;
             if (!$scope.repositoryIdsSharingMap[id]) {
@@ -125,85 +128,91 @@ angular.module("network").controller(
                 });
             }
         }        
-        
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        async.series([
-            function(callback) {
-                $scope.aPeers = [];
-                peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.aPeers = data;
-                    if ($scope.aPeers.length === 0) {
-                        $scope.empty = true;
-                    }                    
+               
+        $scope.retrievePeers = function retrievePeers() {        
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aPeers = data;
+                        if ($scope.aPeers.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.oActivatedPeer = {};
+                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedPeer = data;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.activatedPeerId = $scope.oActivatedPeer.peer_id;
                     callback();
-                }).error(function(data, status, headers, config) {
-                    $scope.error = true;
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.oActivatedPeer = {};
-                activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedPeer = data;
+                },
+                function(callback) {
+                    $scope.peerIdsSharingMap = $scope.generatePeerIdsSharingMap($scope.aPeers);
                     callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.activatedPeerId = $scope.oActivatedPeer.peer_id;
-                callback();
-            },
-            function(callback) {
-                $scope.peerIdsSharingMap = $scope.generatePeerIdsSharingMap($scope.aPeers);
-                callback();
-            },
-            function(callback) {
-                $scope.ready = true;
-                callback();
-            }
-        ]);    
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+            
+            return retrievePeers;
+        }();
 
-        $scope.empty = false;
-        $scope.ready = false;
-        $scope.error = false;
-        async.series([
-            function(callback) {
-                $scope.aRepositories = [];
-                repositoriesService.getRepositories($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.aRepositories = data;
-                    if ($scope.aRepositories.length === 0) {
-                        $scope.empty = true;
-                    }
+        $scope.retrieveRepositories = function retrieveRepositories() {    
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    repositoriesService.getRepositories($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aRepositories = data;
+                        if ($scope.aRepositories.length === 0) {
+                            $scope.empty = true;
+                        }
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.oActivatedRepository = {};
+                    activatedRepositoriesService.getActivatedRepository($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.oActivatedRepository = data;
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.activatedRepositoryId = $scope.oActivatedRepository.repository_id;
                     callback();
-                }).error(function(data, status, headers, config) {
-                    $scope.error = true;
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.oActivatedRepository = {};
-                activatedRepositoriesService.getActivatedRepository($window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $scope.oActivatedRepository = data;
+                },
+                function(callback) {
+                    $scope.repositoryIdsSharingMap = $scope.generateRepositoryIdsSharingMap($scope.aRepositories);
                     callback();
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status, callback);
-                });
-            },
-            function(callback) {
-                $scope.activatedRepositoryId = $scope.oActivatedRepository.repository_id;
-                callback();
-            },
-            function(callback) {
-                $scope.repositoryIdsSharingMap = $scope.generateRepositoryIdsSharingMap($scope.aRepositories);
-                callback();
-            },            
-            function(callback) {
-                $scope.ready = true;
-                callback();
-            }
-        ]);        
+                },            
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+            
+            return retrieveRepositories;
+        }();
     }]        
 );

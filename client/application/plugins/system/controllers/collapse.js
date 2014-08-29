@@ -13,11 +13,13 @@ angular.module("system").controller(
             $("#referencesMenu").slideUp();
             $("#datasetsMenu").slideUp();
         }
+        
         $scope.toggleReferencesMenu = function() {
             $("#settingsMenu").slideUp();
             $("#referencesMenu").slideDown();
             $("#datasetsMenu").slideUp();            
         }
+        
         $scope.toggleDatasetsMenu = function() {
             $("#settingsMenu").slideUp();
             $("#referencesMenu").slideUp();

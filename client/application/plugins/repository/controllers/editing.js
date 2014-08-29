@@ -12,16 +12,21 @@ angular.module("repository").controller(
             query: "",
             parameter: ""
         };
-        repositoriesService.getRepository(
-            $routeParams.id, 
-            $window.sessionStorage.token
-        ).success(function(data, status, headers, config) {
-            for (key in data) {
-                $scope.oRepository[key] = data[key];
-            }
-        }).error(function(data, status, headers, config) {
-            systemStatusService.react(status);
-        });
+        
+        $scope.retrieveRepository = function retrieveRepository() {
+            repositoriesService.getRepository(
+                $routeParams.id, 
+                $window.sessionStorage.token
+            ).success(function(data, status, headers, config) {
+                for (key in data) {
+                    $scope.oRepository[key] = data[key];
+                }
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+            
+            return retrieveRepository;
+        }();
         
         $scope.updateRepository = function() {
             repositoriesService.updateRepository({

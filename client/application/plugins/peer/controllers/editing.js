@@ -10,16 +10,21 @@ angular.module("peer").controller(
             name: "",
             url: ""
         };
-        peersService.getPeer(
-            $routeParams.id, 
-            $window.sessionStorage.token
-        ).success(function(data, status, headers, config) {
-            for (key in data) {
-                $scope.oPeer[key] = data[key];
-            }
-        }).error(function(data, status, headers, config) {
-            systemStatusService.react(status);
-        });
+        
+        $scope.retrievePeer = function retrievePeer() {
+            peersService.getPeer(
+                $routeParams.id, 
+                $window.sessionStorage.token
+            ).success(function(data, status, headers, config) {
+                for (key in data) {
+                    $scope.oPeer[key] = data[key];
+                }
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+            
+            return retrievePeer;
+        }();
         
         $scope.updatePeer = function() {
             peersService.updatePeer({
