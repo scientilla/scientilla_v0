@@ -208,7 +208,7 @@ html, body {
     color: #999999;    
 }
 
-.fixed-th {
+.fixed-th-1x {
     width: 50px;
 }
 
@@ -230,6 +230,7 @@ html, body {
 
 #content td {
     background-color: transparent;
+    line-height: 34px;
 }
 
 #content h4 {

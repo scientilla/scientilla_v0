@@ -22,9 +22,15 @@
                         <div class="btn-group">
                             <label ng-change="saveListingType()" class="btn btn-default" ng-model="listingType" btn-radio="'P'"><i class="fa fa-cloud"></i> Peers</label>
                             <label ng-change="saveListingType()" class="btn btn-default" ng-model="listingType" btn-radio="'R'"><i class="fa fa-exchange"></i> Repositories</label>
-                        </div>                                                                        
+                        </div>
+                        <button data-toggle="modal" data-target="#sources-button-help" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </button>                        
                     </form>                    
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                               
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </button>                        
                         <div class="input-group">                                        
                             <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
                             <div class="input-group-btn">
@@ -49,10 +55,7 @@
                                     </li>                                    
                                 </ul>                                
                             </div>                            
-                        </div>
-                        <button id="help-button" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-cloud'></i> <b>Peers</b>: the knew installations over the SCIENTILLA network (included this one).<br /><br /><i class='fa fa-exchange'></i> <b>Repositories</b>: the knew free web services around the internet as well as those available on your intranet." data-placement="left" data-html="true" class="btn btn-default">
-                            <i class="fa fa-question-circle"></i>
-                        </button>                        
+                        </div>                        
                     </form>                              
                 </div>
             </div>
@@ -66,8 +69,28 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th><i class="fa fa-users"></i> Peer Name</th>
-                            <th><i class="fa fa-file-text"></i> URL</th>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#publications-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#datasets-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>                            
+                            <th><i class="fa fa-cloud"></i> SCIENTILLA Nominative</th>
+                            <th><i class="fa fa-link"></i> URL</th>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#editing-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#sharing-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>                            
                             <th class="fixed-th-3x">
                                 <a href="#/add-peer/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
                             </th>
@@ -75,12 +98,28 @@
                     </thead>
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="peer in aPeers">
-                            <td>{{peer.name}}</td>
-                            <td><a href="{{peer.url}}/client/" target="PeerWindow">{{peer.url}}</a></td>
                             <td>
-                                <button ng-click="setPeerAsActivated(peer._id)" type="button" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-circle-o turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peer._id == activatedPeerId ? 'fa fa-circle turned-on' : '' }}"></i> {{peer._id == activatedPeerId ? 'Preferred' : 'Prefer' }}</button>
-                                <button ng-click="switchPeerSharingStatus(peer._id)" type="button" class="btn btn-default btn-block"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock' : '' }}"></i> {{peerIdsSharingMap[peer._id] ? "Public" : "Private" }}</button>
-                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="#" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-default btn-mini"><i class="fa fa-database"></i></a>
+                            </td>                            
+                            <td>
+                                <a href="#/edit-peer/{{peer._id}}/">
+                                    <strong>{{peer.name}}</strong>
+                                </a>
+                            </td>                            
+                            <td>
+                                <a href="{{peer.url}}/client/" target="PeerWindow">{{peer.url}}</a>
+                            </td>                            
+                            <td>
+                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <a ng-click="switchPeerSharingStatus(peer._id)" class="btn btn-default btn-block"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock' : '' }}"></i></a>
+                            </td>
+                            <td>
+                                <a ng-click="setPeerAsActivated(peer._id)" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-circle-o turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peer._id == activatedPeerId ? 'fa fa-circle turned-on' : '' }}"></i> {{peer._id == activatedPeerId ? 'Preferred' : 'Prefer' }}</a>
                                 <!-- <a href="#/delete-peer/{{peer._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                             </td>
                         </tr>
@@ -213,3 +252,103 @@
         </div>        
     </div>    
 </div>
+<div class="modal fade" id="sources-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                <i class="fa fa-cloud"></i> <b>Peers</b>: the knew installations over the SCIENTILLA network (included this one).<br /><br /><i class="fa fa-exchange"></i> <b>Repositories</b>: the knew free web services around the internet as well as those available on your intranet.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="searches-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                <i class="fa fa-search"></i> Search is made among Publication titles and authors on all Peers or all Repositories as by left selector.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="publications-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-book"></i></button> to show the publications from the relative Peer.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="datasets-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-database"></i></button> to show the datasets from the relative Peer.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editing-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                Click on the button <button class="btn btn-default btn-mini"><i class="fa fa-edit"></i></button> to modify the details of the relative Peer.<br /><br />
+                Consider that you can click also on the SCIENTILLA Nominative to obtain the same effect.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="sharing-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                The button <button class="btn btn-default btn-mini"><i class="fa fa-lock"></i></button> means that the relative Peer details are not visible to the network.<br /><br />
+                Clicking on the button <button class="btn btn-default btn-mini"><i class="fa fa-lock"></i></button> the relative Peer details becomes unlocked and than visible to the network.<br /><br />
+                The button <button class="btn btn-default btn-mini"><i class="fa fa-unlock"></i></button> means that the relative Peer details are visible to the network.<br /><br />
+                Clicking on the button <button class="btn btn-default btn-mini"><i class="fa fa-unlock"></i></button> the relative Peer details becomes locked and than not visible to the network.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 
