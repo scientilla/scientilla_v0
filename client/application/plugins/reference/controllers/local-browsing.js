@@ -29,40 +29,6 @@ angular.module("reference").controller(
             return referenceIdsSharingMap;
         }
         
-        $scope.aReferences = [];
-        $scope.keywords = "";        
-        $scope.retrieveReferences = function() {
-            $scope.empty = false;
-            $scope.ready = false;
-            $scope.error = false;
-            async.series([
-                function(callback) {
-                    referencesService.getReferences($scope.keywords, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                        $scope.aReferences = data;
-                        if ($scope.aReferences.length === 0) {
-                            $scope.empty = true;
-                        }                    
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        $scope.error = true;
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    $scope.referenceIdsApprovingMap = $scope.generateReferenceIdsApprovingMap($scope.aReferences);
-                    callback();
-                },           
-                function(callback) {
-                    $scope.referenceIdsSharingMap = $scope.generateReferenceIdsSharingMap($scope.aReferences);
-                    callback();
-                },
-                function(callback) {
-                    $scope.ready = true;
-                    callback();
-                }
-            ]);
-        }
-        
         $scope.changingApprovedReferenceId = "";
         $scope.switchReferenceApprovingStatus = function(id) {
             $scope.changingApprovedReferenceId = id;
@@ -118,6 +84,40 @@ angular.module("reference").controller(
                 });
             }
         }
+        
+        $scope.aReferences = [];
+        $scope.keywords = "";        
+        $scope.retrieveReferences = function() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    referencesService.getReferences($scope.keywords, $window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aReferences = data;
+                        if ($scope.aReferences.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.referenceIdsApprovingMap = $scope.generateReferenceIdsApprovingMap($scope.aReferences);
+                    callback();
+                },           
+                function(callback) {
+                    $scope.referenceIdsSharingMap = $scope.generateReferenceIdsSharingMap($scope.aReferences);
+                    callback();
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+        }        
         
         $scope.retrieveReferences();
     }]
