@@ -6,13 +6,6 @@
 
 angular.module("network").controller(
     "networkBrowsingController", ["$scope", "peersService", "repositoriesService", "activatedPeersService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, peersService, repositoriesService, activatedPeersService, activatedRepositoriesService, systemStatusService, $window, $location) {
-        /* TO-DO: substitute with a directive. */
-        /* code start */            
-        $(".help-button").popover({
-            trigger: "focus"
-        });
-        /* code end */  
-        
         $scope.visualizationMode = $window.sessionStorage.visualizationMode ? $window.sessionStorage.visualizationMode : "L";
         $scope.listingType = $window.sessionStorage.listingType ? $window.sessionStorage.listingType : "P";
         $scope.keywords = "";

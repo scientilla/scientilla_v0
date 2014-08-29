@@ -6,13 +6,6 @@
 
 angular.module("reference").controller(
     "localReferencesBrowsingController", ["$scope", "referencesService", "systemStatusService", "$window", "$location", function($scope, referencesService, systemStatusService, $window, $location) {
-        /* TO-DO: substitute with a directive. */
-        /* code start */            
-        $("#help-button").popover({
-            trigger: "focus"
-        });
-        /* code end */
-        
         $scope.userType = $window.sessionStorage.userType;
         $scope.userRights = $window.sessionStorage.userRights;
         $scope.keywords = "";

@@ -6,13 +6,6 @@
 
 angular.module("reference").controller(
     "activatedRepositoryReferencesBrowsingController", ["$scope", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location) {
-        /* TO-DO: substitute with a directive. */
-        /* code start */            
-        $("#help-button").popover({
-            trigger: "focus"
-        });
-        /* code end */
-        
         $scope.aReferences = [];        
         
         $scope.retrieveReferences = function retrieveReferences() {
