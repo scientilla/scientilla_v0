@@ -16,7 +16,7 @@ angular.module("peer").controller(
                 name: $scope.oPeer.name,
                 url: $scope.oPeer.url
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                $location.path("browse-peers");
+                $location.path("browse-network");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
