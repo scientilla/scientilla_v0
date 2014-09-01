@@ -21,7 +21,7 @@ SCIENTILLA is in Alpha phase. While we are writing documentation to help people 
 
 
 
-## Creators
+## Inventors
 
 **Antonio De Luca**
 
@@ -37,6 +37,16 @@ SCIENTILLA is in Alpha phase. While we are writing documentation to help people 
 
 - <http://www.iit.it/en/people/eleonora-palmaro.html>
 - <http://www.eleonorapalmaro.info>
+
+
+
+## Team
+
+**The Inventors**
+
+**Federico Bozzini**
+
+- <http://www.iit.it/en/people/federico-bozzini.html>
 
 
 
