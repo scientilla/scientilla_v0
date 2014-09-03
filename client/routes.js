@@ -51,9 +51,9 @@ angular.module("scientilla").config([
         }).when("/browse-references/", {
             templateUrl: "application/plugins/reference/partials/local-browsing.html",
             controller: "localReferencesBrowsingController"
-        }).when("/browse-activated-dataset-references/", {
-            templateUrl: "application/plugins/reference/partials/activated-dataset-browsing.html",
-            controller: "activatedDatasetReferencesBrowsingController"            
+        }).when("/browse-dataset-references/:peerId/:datasetId/", {
+            templateUrl: "application/plugins/reference/partials/dataset-browsing.html",
+            controller: "datasetReferencesBrowsingController"            
         }).when("/browse-peer-references/:peerId/", {
             templateUrl: "application/plugins/reference/partials/peer-browsing.html",
             controller: "peerReferencesBrowsingController"
@@ -75,9 +75,9 @@ angular.module("scientilla").config([
         }).when("/clone-reference/:id/", {
             templateUrl: "application/plugins/reference/partials/local-cloning.html",
             controller: "localReferenceCloningController"              
-        }).when("/clone-activated-dataset-reference/:id/", {
-            templateUrl: "application/plugins/reference/partials/activated-dataset-cloning.html",
-            controller: "activatedDatasetReferenceCloningController"             
+        }).when("/clone-dataset-reference/:peerId/:datasetId/:referenceId/", {
+            templateUrl: "application/plugins/reference/partials/dataset-cloning.html",
+            controller: "datasetReferenceCloningController"             
         }).when("/clone-peer-reference/:peerId/:referenceId/", {
             templateUrl: "application/plugins/reference/partials/peer-cloning.html",
             controller: "peerReferenceCloningController"
