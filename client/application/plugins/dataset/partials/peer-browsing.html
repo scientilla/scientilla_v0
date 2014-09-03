@@ -40,6 +40,11 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
+                            <th class="fixed-th-1x">
+                                <button data-toggle="modal" data-target="#publications-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>                                
+                            </th>                            
                             <th><i class="fa fa-users"></i> Dataset Name</th>
                             <th><i class="fa fa-flag-o"></i> Status</th>
                             <th><i class="fa fa-clock-o"></i> Initiated At</th>
@@ -49,6 +54,9 @@
                     </thead>
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="dataset in aDatasets">
+                            <td>
+                                <a href="#/browse-dataset-references/{{peerId}}/{{dataset._id}}/" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                            </td>                            
                             <td>{{dataset.name}}</td>
                             <td>{{dataset.status}}</td>
                             <td>{{dataset.initiated_at}}</td>

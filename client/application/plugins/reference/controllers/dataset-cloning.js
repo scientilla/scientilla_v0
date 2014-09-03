@@ -5,7 +5,10 @@
  */
 
 angular.module("reference").controller(
-    "activatedDatasetReferenceCloningController", ["$scope", "$routeParams", "datasetReferencesService", "peerDatasetReferencesService", "activatedDatasetsService", "datasetsService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, datasetReferencesService, peerDatasetReferencesService, activatedDatasetsService, datasetsService, referencesService, systemStatusService, $window, $location) {
+    "datasetReferenceCloningController", ["$scope", "$routeParams", "datasetReferencesService", "peerDatasetReferencesService", "activatedDatasetsService", "datasetsService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, datasetReferencesService, peerDatasetReferencesService, activatedDatasetsService, datasetsService, referencesService, systemStatusService, $window, $location) {
+        $scope.peerId = $routeParams.peerId; 
+        $scope.datasetId = $routeParams.datasetId; 
+        $scope.referenceId = $routeParams.referenceId; 
         $scope.oReference = {
             title: "",
             authors: "",
@@ -65,50 +68,22 @@ angular.module("reference").controller(
         $scope.retrieveReference = function retrieveReference() {
             async.series([
                 function(callback) {
-                    $scope.oActivatedDataset = {};
-                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
-                        $scope.oActivatedDataset.id = data.dataset_id;
-                        $scope.oActivatedDataset.peerId = data.peer_id;
+                    peerDatasetReferencesService.getReference(
+                        $scope.peerId, 
+                        $scope.datasetId, 
+                        $scope.referenceId,
+                        $window.sessionStorage.token
+                    ).success(function(data, status, headers, config) {
+                        for (key in data) {
+                            $scope.oReference[key] = data[key];
+                        }
+                        $scope.extractAuthors();
+                        $scope.extractOrganizations();
+                        $scope.extractTags();                    
                         callback();
                     }).error(function(data, status, headers, config) {
                         systemStatusService.react(status, callback);
                     });
-                },
-                function(callback) {
-                    if ($scope.oActivatedDataset.peerId === "") {
-                        datasetReferencesService.getReference(
-                            $scope.oActivatedDataset.id, 
-                            $routeParams.id,
-                            $window.sessionStorage.token
-                        ).success(function(data, status, headers, config) {
-                            for (key in data) {
-                                $scope.oReference[key] = data[key];
-                            }
-                            $scope.extractAuthors();
-                            $scope.extractOrganizations();
-                            $scope.extractTags();                    
-                            callback();
-                        }).error(function(data, status, headers, config) {
-                            systemStatusService.react(status, callback);
-                        });
-                    } else {
-                        peerDatasetReferencesService.getReference(
-                            $scope.oActivatedDataset.peerId, 
-                            $scope.oActivatedDataset.id, 
-                            $routeParams.id,
-                            $window.sessionStorage.token
-                        ).success(function(data, status, headers, config) {
-                            for (key in data) {
-                                $scope.oReference[key] = data[key];
-                            }
-                            $scope.extractAuthors();
-                            $scope.extractOrganizations();
-                            $scope.extractTags();                    
-                            callback();
-                        }).error(function(data, status, headers, config) {
-                            systemStatusService.react(status, callback);
-                        });
-                    }
                 }
             ]);
             
@@ -145,7 +120,7 @@ angular.module("reference").controller(
                 note: $scope.oReference.note,
                 hash: $scope.oReference.hash
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                $location.path("browse-activated-dataset-references");
+                $location.path("browse-dataset-references/" + $scope.peerId + "/" + $scope.datasetId);
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
