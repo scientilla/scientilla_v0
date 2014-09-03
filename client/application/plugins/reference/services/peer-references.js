@@ -8,10 +8,10 @@ angular.module("reference").factory(
     "peerReferencesService", function($http) {
         var peerReferencesProvider = {};
         
-        peerReferencesProvider.getReferences = function(id, token) {
+        peerReferencesProvider.getReferences = function(id, keywords, token) {
             return $http({
 				method: "GET",
-				url: "/api/peers/" + id + "/public-references",
+				url: "/api/peers/" + id + "/public-references?keywords=" + keywords,
                 cache: false,
                 timeout: 30000,
                 headers: {

@@ -7,6 +7,7 @@
 angular.module("reference").controller(
     "peerReferencesBrowsingController", ["$scope", "$routeParams", "peerReferencesService", "peersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerReferencesService, peersService, systemStatusService, $window, $location) {       
         $scope.peerId = $routeParams.peerId;
+        $scope.keywords = "";
         $scope.aReferences = [];
         
         $scope.retrieveReferences = function retrieveReferences() {
@@ -17,6 +18,7 @@ angular.module("reference").controller(
                 function(callback) {
                     peerReferencesService.getReferences(
                         $scope.peerId,
+                        $scope.keywords,
                         $window.sessionStorage.token
                     ).success(function(data, status, headers, config) {
                         $scope.aReferences = data;

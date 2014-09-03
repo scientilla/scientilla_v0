@@ -9,17 +9,19 @@ var model = require("../models/default.js")();
 module.exports = function () {
     return {
         getReferences: function(req, res) {
-            var regexQuery = ".*(" + req.query.keywords.replace(" ", "|") + ").*";
+            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({
                 "$or": [
                     {
                         title: { 
-                            $regex: regexQuery 
+                            $regex: regexQuery,
+                            $options: 'i'
                         }
                     },
                     {
                         authors: { 
-                            $regex: regexQuery
+                            $regex: regexQuery,
+                            $options: 'i'
                         }
                     }
                 ]
@@ -34,7 +36,24 @@ module.exports = function () {
             });            
         },
         getPublicReferences: function(req, res) {
-            req.referencesCollection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, publicReferences) {
+            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
+            req.referencesCollection.find({ 
+                sharing_status: true,
+                "$or": [
+                    {
+                        title: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        authors: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    }
+                ]                
+            }).sort({ creation_datetime: -1 }).toArray(function(err, publicReferences) {
                 if (err || req.underscore.isNull(publicReferences)) {
                     res.status(404).end();
                     return;
