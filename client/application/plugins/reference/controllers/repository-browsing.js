@@ -8,8 +8,9 @@ angular.module("reference").controller(
     "repositoryReferencesBrowsingController", ["$scope", "$routeParams", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location) {
         $scope.repositoryId = $routeParams.repositoryId;            
         $scope.aReferences = [];        
+        $scope.keywords = "";
         
-        $scope.retrieveReferences = function retrieveReferences() {
+        $scope.retrieveReferences = function() {
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
@@ -17,7 +18,8 @@ angular.module("reference").controller(
                 function(callback) {
                     repositoryReferencesService.getReferences(
                         $scope.repositoryId,
-                        $window.sessionStorage.token
+                        $window.sessionStorage.token,
+                        $scope.keywords
                     ).success(function(data, status, headers, config) {
                         repositoryReferencesService.aReferences = data;                   
                         $scope.aReferences = data;
@@ -35,8 +37,20 @@ angular.module("reference").controller(
                     callback();
                 }
             ]);
-            
-            return retrieveReferences;
-        }();
+        };
+        
+        $scope.init = function(){
+            repositoriesService.getRepository(
+                $scope.repositoryId,
+                $window.sessionStorage.token
+            ).success(function(data, status, headers, config){
+                var repository = data;
+                $scope.keywords = repository.keywords;
+                $scope.retrieveReferences();
+            }).error(function(data, status, headers, config) {
+                $scope.error = true;
+                systemStatusService.react(status);
+            });
+        };
     }]
 );

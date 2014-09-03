@@ -14,7 +14,9 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                var keywordsEncoded = encodeURIComponent(repository.keywords);
+                var keywordsEncoded = req.underscore.isUndefined(req.query.keywords) 
+                                        ? encodeURIComponent(repository.keywords)
+                                        : req.query.keywords;
                 var url =  repository.url.replace('{{keywords}}', keywordsEncoded);
                 url =  url.replace('{{rows}}', repository.rows);
                 req.request({ 
