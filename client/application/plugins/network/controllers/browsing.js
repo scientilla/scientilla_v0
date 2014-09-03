@@ -15,6 +15,7 @@ angular.module("network").controller(
         $scope.changingSharedRepositoryId = "";
         $scope.aPeers = [];
         $scope.aRepositories = [];
+        $scope.aReferences = [];
         
         $scope.saveVisualizationMode = function() {
             $window.sessionStorage.visualizationMode = $scope.visualizationMode;
@@ -202,6 +203,67 @@ angular.module("network").controller(
             ]);
             
             return retrieveRepositories;
+        }();
+        
+        $scope.retrievePeerReferences = function retrievePeerReferences() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    peerReferencesService.getReferences(
+                        $scope.peerId,
+                        $scope.keywords,
+                        $window.sessionStorage.token
+                    ).success(function(data, status, headers, config) {
+                        $scope.aReferences = data;
+                        if ($scope.aReferences.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);            
+            
+            return retrievePeerReferences;
+        }();        
+        
+        $scope.retrieveRepositoryReferences = function retrieveRepositoryReferences() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    repositoryReferencesService.getReferences(
+                        $scope.repositoryId,
+                        $window.sessionStorage.token,
+                        $scope.keywords
+                    ).success(function(data, status, headers, config) {
+                        repositoryReferencesService.aReferences = data;                   
+                        $scope.aReferences = data;
+                        if ($scope.aReferences.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+            
+            return retrieveRepositoryReferences;
         }();
     }]        
 );

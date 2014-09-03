@@ -36,9 +36,10 @@
                         </button> 
                         -->
                         <div class="input-group">                                        
-                            <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
+                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">                            
                             <div class="input-group-btn">
-                                <a href="#" class="btn btn-default"><i class="fa fa-search"></i> Search</a>
+                                <a ng-if="listingType == 'P'" ng-click="retrievePeerReferences()" class="btn btn-default"><i class="fa fa-search"></i> Search</a>
+                                <a ng-if="listingType == 'R'" ng-click="retrieveRepositoryReferences()" class="btn btn-default"><i class="fa fa-search"></i> Search</a>
                                 <button type="button" class="btn btn-default dropdown-toggle" tabindex="-1" data-toggle="dropdown">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
