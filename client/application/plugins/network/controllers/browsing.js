@@ -123,16 +123,14 @@ angular.module("network").controller(
         }        
                
         $scope.retrievePeers = function retrievePeers() {        
-            $scope.empty = false;
+            $scope.iPeers = false;
             $scope.ready = false;
             $scope.error = false;
             async.series([
                 function(callback) {
                     peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
                         $scope.aPeers = data;
-                        if ($scope.aPeers.length === 0) {
-                            $scope.empty = true;
-                        }                    
+                        $scope.iPeers = $scope.aPeers.length;                  
                         callback();
                     }).error(function(data, status, headers, config) {
                         $scope.error = true;
@@ -166,16 +164,14 @@ angular.module("network").controller(
         }();
 
         $scope.retrieveRepositories = function retrieveRepositories() {    
-            $scope.empty = false;
+            $scope.iRepositories = 0;
             $scope.ready = false;
             $scope.error = false;
             async.series([
                 function(callback) {
                     repositoriesService.getRepositories($window.sessionStorage.token).success(function(data, status, headers, config) {
                         $scope.aRepositories = data;
-                        if ($scope.aRepositories.length === 0) {
-                            $scope.empty = true;
-                        }
+                        $scope.iRepositories = $scope.aRepositories.length;
                         callback();
                     }).error(function(data, status, headers, config) {
                         $scope.error = true;

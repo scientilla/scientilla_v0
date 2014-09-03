@@ -5,3 +5,4 @@
 /certs
 /server/configuration/installation.js
 /server/configuration/seeds.js
+/npm-debug.log
