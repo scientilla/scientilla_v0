@@ -167,14 +167,13 @@ async.series([
 
 // Executes middlewares
 application.use("*", function(req, res, next) {
-	req.async = async;
+    req.async = async;
     req.bcryptNodejs = bcryptNodejs;
     req.crypto = crypto;
     req.expressJwt = expressJwt;
     req.jsonWebToken = jsonWebToken;    
     req.moment = moment;
     req.request = request;
-    req.underscore = underscore;
     req.underscore = underscore;
     req.adCollection = adCollection;
     req.apCollection = apCollection;
