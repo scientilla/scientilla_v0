@@ -45,8 +45,8 @@ module.exports = function () {
             var repository = {};
             !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : repository.name = "";
             !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : repository.url = "";
-            !req.underscore.isUndefined(req.body.query) ? repository.query = req.body.query.trim() : repository.query = "";
-            !req.underscore.isUndefined(req.body.parameter) ? repository.parameter = req.body.parameter.trim() : repository.parameter = ""; 
+            !req.underscore.isUndefined(req.body.keywords) ? repository.keywords = req.body.keywords.trim() : repository.keywords = "";
+            !req.underscore.isUndefined(req.body.rows) ? repository.rows = req.body.rows.trim() : repository.rows = ""; 
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : repository.sharing_status = "";
             repository.creator_id = req.user.id;
             repository.creation_datetime = req.moment().format();
@@ -65,8 +65,8 @@ module.exports = function () {
             var repository = {};
             !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : null;
             !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : null;  
-            !req.underscore.isUndefined(req.body.query) ? repository.query = req.body.query.trim() : null;   
-            !req.underscore.isUndefined(req.body.parameter) ? repository.parameter = req.body.parameter.trim() : null; 
+            !req.underscore.isUndefined(req.body.keywords) ? repository.keywords = req.body.keywords.trim() : null;   
+            !req.underscore.isUndefined(req.body.rows) ? repository.rows = req.body.rows.trim() : null; 
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : null;
             repository.last_modifier_id = req.user.id;
             repository.last_modification_datetime = req.moment().format();         

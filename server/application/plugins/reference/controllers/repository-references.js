@@ -14,8 +14,11 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
+                var keywordsEncoded = encodeURIComponent(repository.keywords);
+                var url =  repository.url.replace('{{keywords}}', keywordsEncoded);
+                url =  url.replace('{{rows}}', repository.rows);
                 req.request({ 
-                    url: repository.url + "?" + repository.query + repository.parameter, 
+                    url: url, 
                     strictSSL: false 
                 }, function (error, response, body) {
                     if (error) {

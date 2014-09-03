@@ -6,11 +6,12 @@
 
 angular.module("repository").controller(
     "repositoryEditingController", ["$scope", "$routeParams", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoriesService, systemStatusService, $window, $location) {
+        $scope.defaultRows = "20";
         $scope.oRepository = {
             name: "",
             url: "",
-            query: "",
-            parameter: ""
+            keywords: "",
+            rows: $scope.defaultRows
         };
         
         $scope.retrieveRepository = function retrieveRepository() {
@@ -32,8 +33,8 @@ angular.module("repository").controller(
             repositoriesService.updateRepository({
                 name: $scope.oRepository.name,
                 url: $scope.oRepository.url,
-                query: $scope.oRepository.query,
-                parameter: $scope.oRepository.parameter,
+                keywords: $scope.oRepository.keywords,
+                rows: $scope.oRepository.rows,
                 id: $scope.oRepository._id
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-network");
