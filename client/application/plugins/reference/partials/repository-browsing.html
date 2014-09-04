@@ -16,9 +16,9 @@
                 <div class="collapse navbar-collapse">
                     <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                         
                         <div class="input-group">                                        
-                            <input id="action-input" type="text" placeholder="Type something to..." class="form-control" ng-model="keywords">
+                            <input id="action-input" type="text" placeholder="Type something to..." class="form-control" ng-model="oRepository.config.keywords">
                             <span class="input-group-btn">
-                                <a href="#" ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                                <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>
                         <!--
@@ -26,7 +26,7 @@
                             <i class="fa fa-question-circle"></i>
                         </button>
                         -->
-                    </form>                              
+                    </form>
                 </div>
             </div>
         </nav>

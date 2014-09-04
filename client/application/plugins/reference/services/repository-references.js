@@ -10,9 +10,9 @@ angular.module("reference").factory(
         
         repositoryReferencesProvider.aReferences = [];
        
-        repositoryReferencesProvider.getReferences = function(id, token, keywords) {
+        repositoryReferencesProvider.getReferences = function(id, token, config) {
             var url = "/api/repositories/" + id + "/references";
-            keywords = keywords || "";
+            var keywords = config.keywords || "";
             if (keywords !== "") {
                 url+="?keywords="+encodeURIComponent(keywords);
             }

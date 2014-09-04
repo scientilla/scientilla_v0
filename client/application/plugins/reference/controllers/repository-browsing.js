@@ -7,8 +7,15 @@
 angular.module("reference").controller(
     "repositoryReferencesBrowsingController", ["$scope", "$routeParams", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location) {
         $scope.repositoryId = $routeParams.repositoryId;            
-        $scope.aReferences = [];        
-        $scope.keywords = "";
+        $scope.aReferences = [];     
+        $scope.oRepository = {
+            name: "",
+            url: "",
+            config: {
+                keywords: "",
+                rows: ""
+            }
+        };
         
         $scope.retrieveReferences = function() {
             $scope.empty = false;
@@ -19,7 +26,7 @@ angular.module("reference").controller(
                     repositoryReferencesService.getReferences(
                         $scope.repositoryId,
                         $window.sessionStorage.token,
-                        $scope.keywords
+                        $scope.oRepository.config
                     ).success(function(data, status, headers, config) {
                         repositoryReferencesService.aReferences = data;                   
                         $scope.aReferences = data;
@@ -44,8 +51,8 @@ angular.module("reference").controller(
                 $scope.repositoryId,
                 $window.sessionStorage.token
             ).success(function(data, status, headers, config){
-                var repository = data;
-                $scope.keywords = repository.keywords;
+                var oRepository = data;
+                $scope.oRepository = oRepository;
                 $scope.retrieveReferences();
             }).error(function(data, status, headers, config) {
                 $scope.error = true;
