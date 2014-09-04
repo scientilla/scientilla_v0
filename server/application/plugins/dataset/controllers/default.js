@@ -9,7 +9,17 @@ var model = require("../models/default.js")();
 module.exports = function () {
     return {
         getDatasets: function(req, res) {
-            req.datasetsCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
+            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
+            req.datasetsCollection.find({
+                "$or": [
+                    {
+                        name: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    }
+                ]                
+            }).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
                 if (err || req.underscore.isNull(datasets)) {
                     res.status(404).end();
                     return;
@@ -20,7 +30,18 @@ module.exports = function () {
             });            
         },
         getPublicDatasets: function(req, res) {
-            req.datasetsCollection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
+            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
+            req.datasetsCollection.find({ 
+                sharing_status: true,
+                "$or": [
+                    {
+                        name: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    }
+                ]                
+            }).sort({ creation_datetime: -1 }).toArray(function(err, datasets) {
                 if (err || req.underscore.isNull(datasets)) {
                     res.status(404).end();
                     return;

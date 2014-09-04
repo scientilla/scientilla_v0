@@ -14,11 +14,11 @@
                     <span class="navbar-brand" id="tools-link">DATASETS</span>
                 </div>
                 <div class="collapse navbar-collapse">                 
-                    <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                    <form ng-submit="retrieveDatasets()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
                         <div class="input-group">                                        
-                            <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
+                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                                <a ng-click="retrieveDatasets()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>
                         <a href="#/browse-peer-references/{{peerId}}/" class="btn btn-default"><i class="fa fa-book"></i> Go to Publications List</a>                        
