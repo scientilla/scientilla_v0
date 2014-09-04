@@ -7,6 +7,21 @@
 var model = require("../models/default.js")();
 
 module.exports = function () {
+    var getEmptyConfig = function(){
+        var defaultRows = 20; 
+        return {
+            keywords: "",
+            rows: defaultRows
+        };
+    };
+    var trimConfig = function(config) {
+        for(var key in config) {
+            if(config.hasOwnProperty(key)) {
+                config[key] = config[key].trim();
+            }
+        }
+        return config;
+    };
     return {
         getRepositories: function(req, res) {
             req.repositoriesCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, repositories) {
@@ -45,8 +60,7 @@ module.exports = function () {
             var repository = {};
             !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : repository.name = "";
             !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : repository.url = "";
-            !req.underscore.isUndefined(req.body.keywords) ? repository.keywords = req.body.keywords.trim() : repository.keywords = "";
-            !req.underscore.isUndefined(req.body.rows) ? repository.rows = req.body.rows.trim() : repository.rows = ""; 
+            !req.underscore.isUndefined(req.body.config) ? repository.config = trimConfig(req.body.config) : repository.config = getEmptyConfig();
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : repository.sharing_status = "";
             repository.creator_id = req.user.id;
             repository.creation_datetime = req.moment().format();
@@ -65,8 +79,7 @@ module.exports = function () {
             var repository = {};
             !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : null;
             !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : null;  
-            !req.underscore.isUndefined(req.body.keywords) ? repository.keywords = req.body.keywords.trim() : null;   
-            !req.underscore.isUndefined(req.body.rows) ? repository.rows = req.body.rows.trim() : null; 
+            !req.underscore.isUndefined(req.body.config) ? repository.config = trimConfig(req.body.config) : repository.config = getEmptyConfig();
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : null;
             repository.last_modifier_id = req.user.id;
             repository.last_modification_datetime = req.moment().format();         

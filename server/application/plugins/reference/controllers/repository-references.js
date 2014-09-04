@@ -15,10 +15,10 @@ module.exports = function () {
                     return;
                 }
                 var keywordsEncoded = req.underscore.isUndefined(req.query.keywords) 
-                                        ? encodeURIComponent(repository.keywords)
+                                        ? encodeURIComponent(repository.config.keywords)
                                         : req.query.keywords;
                 var url =  repository.url.replace('{{keywords}}', keywordsEncoded);
-                url =  url.replace('{{rows}}', repository.rows);
+                url =  url.replace('{{rows}}', repository.config.rows);
                 req.request({ 
                     url: url, 
                     strictSSL: false 

@@ -10,16 +10,20 @@ angular.module("repository").controller(
         $scope.oRepository = {
             name: "",
             url: "",
-            keywords: "",
-            rows: $scope.defaultRows
+            config: {
+                keywords: "",
+                rows: $scope.defaultRows
+            }
         };
         
         $scope.createRepository = function() {
             repositoriesService.createRepository({
                 name: $scope.oRepository.name,
                 url: $scope.oRepository.url,
-                keywords: $scope.oRepository.keywords,
-                rows: $scope.oRepository.rows
+                config: {
+                    keywords: $scope.oRepository.config.keywords,
+                    rows: $scope.oRepository.config.rows
+                }
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-network");
             }).error(function(data, status, headers, config) {
