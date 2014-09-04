@@ -35,6 +35,17 @@ module.exports = function () {
                 res.setHeader("Content-Type", "application/json");
                 res.json(peers);
             });            
+        },
+        getSeedPeers: function(req, res) {
+            var seedPeers = [];
+            for (key in req.seedsConfiguration) {
+                seedPeers[seedPeers.length] = {
+                    url: req.seedsConfiguration[key]
+                }
+            }
+            
+            res.setHeader("Content-Type", "application/json");
+            res.json(seedPeers);            
         },        
         getPeer: function(req, res) {
             req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {
