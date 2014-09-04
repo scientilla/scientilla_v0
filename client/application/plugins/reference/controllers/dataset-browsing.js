@@ -20,6 +20,7 @@ angular.module("reference").controller(
                     peerDatasetReferencesService.getReferences(
                         $scope.peerId,
                         $scope.datasetId,
+                        $scope.keywords,
                         $window.sessionStorage.token
                     ).success(function(data, status, headers, config) {
                         $scope.aReferences = data;

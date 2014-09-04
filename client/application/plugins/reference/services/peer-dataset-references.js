@@ -8,10 +8,10 @@ angular.module("reference").factory(
     "peerDatasetReferencesService", function($http) {
         var peerDatasetReferencesProvider = {};
         
-        peerDatasetReferencesProvider.getReferences = function(peerId, datasetId, token) {
+        peerDatasetReferencesProvider.getReferences = function(peerId, datasetId, keywords, token) {
             return $http({
 				method: "GET",
-				url: "/api/peers/" + peerId + "/public-datasets/" + datasetId + "/references",
+				url: "/api/peers/" + peerId + "/public-datasets/" + datasetId + "/references?keywords=" + keywords,
                 cache: false,
                 timeout: 30000,
                 headers: {
