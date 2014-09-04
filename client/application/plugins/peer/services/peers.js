@@ -20,6 +20,18 @@ angular.module("peer").factory(
 			});
         };
         
+        peersProvider.getSeedPeers = function(token) {
+            return $http({
+				method: "GET",
+				url: "/api/seed-peers",
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };        
+        
         peersProvider.getPeer = function(id, token) {
             return $http({
 				method: "GET",
