@@ -24,7 +24,7 @@ angular.module("system").controller(
         };
         
         $scope.toggleMenu = function() {
-            console.log($location.path());
+
         }
         
         $scope.updateScientillaNominative = function updateScientillaNominative() {

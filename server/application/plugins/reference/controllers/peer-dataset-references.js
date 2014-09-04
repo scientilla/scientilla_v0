@@ -15,7 +15,7 @@ module.exports = function () {
                     return;
                 }
                 req.request({ 
-                    url: peer.url + "/api/public-datasets/" + req.params.datasetId + "/references", 
+                    url: peer.url + "/api/public-datasets/" + req.params.datasetId + "/references?keywords=" + req.query.keywords, 
                     strictSSL: false 
                 }, function (error, response, body) {
                     if (error) {

@@ -9,7 +9,23 @@ var model = require("../models/dataset-references.js")();
 module.exports = function () {
     return {        
         getDatasetReferences: function(req, res) {
-            req.datasetReferencesCollections[req.params.datasetId].find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
+            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
+            req.datasetReferencesCollections[req.params.datasetId].find({
+                "$or": [
+                    {
+                        title: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        authors: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    }
+                ]                
+            }).sort({ creation_datetime: -1 }).toArray(function(err, references) {
                 if (err || req.underscore.isNull(references)) {
                     res.status(404).end();
                     return;
@@ -20,7 +36,23 @@ module.exports = function () {
             });            
         },
         getPublicDatasetReferences: function(req, res) {
-            req.datasetReferencesCollections[req.params.datasetId].find({}).sort({ creation_datetime: -1 }).toArray(function(err, references) {
+            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
+            req.datasetReferencesCollections[req.params.datasetId].find({
+                "$or": [
+                    {
+                        title: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        authors: { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    }
+                ]                
+            }).sort({ creation_datetime: -1 }).toArray(function(err, references) {
                 if (err || req.underscore.isNull(references)) {
                     res.status(404).end();
                     return;

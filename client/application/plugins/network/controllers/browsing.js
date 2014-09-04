@@ -5,7 +5,7 @@
  */
 
 angular.module("network").controller(
-    "networkBrowsingController", ["$scope", "peersService", "repositoriesService", "activatedPeersService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, peersService, repositoriesService, activatedPeersService, activatedRepositoriesService, systemStatusService, $window, $location) {
+    "networkBrowsingController", ["$scope", "peersService", "repositoriesService", "activatedPeersService", "activatedRepositoriesService", "peerReferencesService", "repositoryReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, repositoriesService, activatedPeersService, activatedRepositoriesService, peerReferencesService, repositoryReferencesService, systemStatusService, $window, $location) {
         $scope.visualizationMode = $window.sessionStorage.visualizationMode ? $window.sessionStorage.visualizationMode : "L";
         $scope.listingType = $window.sessionStorage.listingType ? $window.sessionStorage.listingType : "P";
         $scope.keywords = "";
@@ -14,7 +14,9 @@ angular.module("network").controller(
         $scope.changingSharedPeerId = "";
         $scope.changingSharedRepositoryId = "";
         $scope.aPeers = [];
+        $scope.aSeedPeers = [];
         $scope.aRepositories = [];
+        $scope.aReferences = [];
         
         $scope.saveVisualizationMode = function() {
             $window.sessionStorage.visualizationMode = $scope.visualizationMode;
@@ -123,7 +125,7 @@ angular.module("network").controller(
         }        
                
         $scope.retrievePeers = function retrievePeers() {        
-            $scope.iPeers = false;
+            $scope.iPeers = 0;
             $scope.ready = false;
             $scope.error = false;
             async.series([
@@ -137,6 +139,15 @@ angular.module("network").controller(
                         systemStatusService.react(status, callback);
                     });
                 },
+                function(callback) {
+                    peersService.getSeedPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aSeedPeers = data; 
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },                
                 function(callback) {
                     $scope.oActivatedPeer = {};
                     activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
@@ -203,5 +214,62 @@ angular.module("network").controller(
             
             return retrieveRepositories;
         }();
+        
+        $scope.retrievePeerReferences = function() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    peerReferencesService.getReferences(
+                        $scope.peerId,
+                        $scope.keywords,
+                        $window.sessionStorage.token
+                    ).success(function(data, status, headers, config) {
+                        $scope.aReferences = data;
+                        if ($scope.aReferences.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);            
+        };        
+        
+        $scope.retrieveRepositoryReferences = function() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            async.series([
+                function(callback) {
+                    repositoryReferencesService.getReferences(
+                        $scope.repositoryId,
+                        $window.sessionStorage.token,
+                        $scope.keywords
+                    ).success(function(data, status, headers, config) {
+                        repositoryReferencesService.aReferences = data;                   
+                        $scope.aReferences = data;
+                        if ($scope.aReferences.length === 0) {
+                            $scope.empty = true;
+                        }                    
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    callback();
+                }
+            ]);
+        };
     }]        
 );

@@ -175,6 +175,8 @@ application.use("*", function(req, res, next) {
     req.moment = moment;
     req.request = request;
     req.underscore = underscore;
+    req.installationConfiguration = installationConfiguration;
+    req.seedsConfiguration = seedsConfiguration;
     req.adCollection = adCollection;
     req.apCollection = apCollection;
     req.arCollection = arCollection;
@@ -283,6 +285,11 @@ application.get("/api/peers", expressJwt({secret: 'scientilla'}), cors(), functi
 application.get("/api/public-peers", cors(), function(req, res) {
     console.log("Request to Read all Public Peers");   
     peersController.getPublicPeers(req, res);
+});
+
+application.get("/api/seed-peers", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read all Seed Peers");   
+    peersController.getSeedPeers(req, res);
 });
 
 application.get("/api/peers/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
