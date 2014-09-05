@@ -14,11 +14,15 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                var keywordsEncoded = req.underscore.isUndefined(req.query.keywords) 
-                                        ? encodeURIComponent(repository.config.keywords)
-                                        : req.query.keywords;
-                var url =  repository.url.replace('{{keywords}}', keywordsEncoded);
-                url =  url.replace('{{rows}}', repository.config.rows);
+                var url =  repository.url;
+                var configParameters = ['keywords', 'page', 'rows'];
+                configParameters.forEach(function(param){
+                    var paramEncoded = req.underscore.isUndefined(req.query[param]) 
+                                        ? encodeURIComponent(repository.config[param])
+                                        : req.query[param];
+                    var paramPlaceholder = '{{'+param+'}}';
+                    url = url.replace(paramPlaceholder, paramEncoded);
+                });
                 req.request({ 
                     url: url, 
                     strictSSL: false 

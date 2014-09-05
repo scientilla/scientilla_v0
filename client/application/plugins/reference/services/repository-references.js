@@ -12,15 +12,12 @@ angular.module("reference").factory(
        
         repositoryReferencesProvider.getReferences = function(id, token, config) {
             var url = "/api/repositories/" + id + "/references";
-            var keywords = config.keywords || "";
-            if (keywords !== "") {
-                url+="?keywords="+encodeURIComponent(keywords);
-            }
             return $http({
 				method: "GET",
 				url: url,
                 cache: false,
                 timeout: 30000,
+                params: config,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
