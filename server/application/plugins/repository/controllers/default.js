@@ -9,18 +9,58 @@ var model = require("../models/default.js")();
 module.exports = function () {
     var getEmptyConfig = function(){
         var defaultRows = 20; 
+        var defaultPage = 1; 
         return {
             keywords: "",
-            rows: defaultRows
+            rows: defaultRows,
+            page: defaultPage
         };
     };
-    var trimConfig = function(config) {
-        for(var key in config) {
-            if(config.hasOwnProperty(key)) {
-                config[key] = config[key].trim();
+    var getEmptyExtractors = function(){
+        return {
+            authors: {
+                field: "authors",
+                regex: ".*"
+            },
+            title: {
+                field: "title",
+                regex: ".*"
+            },
+            journal_name: {
+                field: "journal_name",
+                regex: ".*"
+            },
+            conference_name: {
+                field: "conference_name",
+                regex: ".*"
+            },
+            book_title: {
+                field: "book_title",
+                regex: ".*"
+            },
+            doi: {
+                field: "doi",
+                regex: ".*"
+            },
+            year: {
+                field: "year",
+                regex: ".*"
+            }
+        };
+    };
+    var trimObject = function(obj) {
+        if (typeof obj !== "object") {
+            return obj;
+        }
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key) && typeof obj[key] === "string") {
+                obj[key] = obj[key].trim();
+            }
+            if(obj.hasOwnProperty(key) && typeof obj[key] === "object") {
+                obj[key] = trimObject(obj[key]);
             }
         }
-        return config;
+        return obj;
     };
     return {
         getRepositories: function(req, res) {
@@ -60,7 +100,8 @@ module.exports = function () {
             var repository = {};
             !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : repository.name = "";
             !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : repository.url = "";
-            !req.underscore.isUndefined(req.body.config) ? repository.config = trimConfig(req.body.config) : repository.config = getEmptyConfig();
+            !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
+            !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getEmptyExtractors();
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : repository.sharing_status = "";
             repository.creator_id = req.user.id;
             repository.creation_datetime = req.moment().format();
@@ -79,7 +120,8 @@ module.exports = function () {
             var repository = {};
             !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : null;
             !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : null;  
-            !req.underscore.isUndefined(req.body.config) ? repository.config = trimConfig(req.body.config) : repository.config = getEmptyConfig();
+            !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
+            !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getEmptyExtractors();
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : null;
             repository.last_modifier_id = req.user.id;
             repository.last_modification_datetime = req.moment().format();         

@@ -6,13 +6,45 @@
 
 angular.module("repository").controller(
     "repositoryEditingController", ["$scope", "$routeParams", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoriesService, systemStatusService, $window, $location) {
-        $scope.defaultRows = "20";
+        $scope.defaultRows = 20;
+        $scope.defaultPage = 1;
         $scope.oRepository = {
             name: "",
             url: "",
             config: {
                 keywords: "",
-                rows: $scope.defaultRows
+                rows: $scope.defaultRows,
+                page: $scope.page
+            },
+            extractors: {
+                authors: {
+                    field: "authors",
+                    regex: ".*"
+                },
+                title: {
+                    field: "title",
+                    regex: ".*"
+                },
+                journal_name: {
+                    field: "journal_name",
+                    regex: ".*"
+                },
+                conference_name: {
+                    field: "conference_name",
+                    regex: ".*"
+                },
+                book_title: {
+                    field: "book_title",
+                    regex: ".*"
+                },
+                doi: {
+                    field: "doi",
+                    regex: ".*"
+                },
+                year: {
+                    field: "year",
+                    regex: ".*"
+                }
             }
         };
         
@@ -37,8 +69,10 @@ angular.module("repository").controller(
                 url: $scope.oRepository.url,
                 config: {
                     keywords: $scope.oRepository.config.keywords,
-                    rows: $scope.oRepository.config.rows
+                    rows: $scope.oRepository.config.rows,
+                    page: $scope.oRepository.config.page
                 },
+                extractors: $scope.oRepository.extractors,
                 id: $scope.oRepository._id
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-network");

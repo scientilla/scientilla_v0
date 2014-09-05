@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "dependencies": {
         "async": "latest",
+        "lodash": "latest",
         "angular": "latest",
         "angular-route": "latest",
         "angular-resource": "latest",
