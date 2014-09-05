@@ -50,7 +50,7 @@
                             <label for="authors" class="label label-default">Authors</label>
                             <label for="authors" class="label label-danger" ng-show="form.authors.$error.required">Required</label>
                             <label for="authors" class="label label-danger" ng-show="!form.authors.$valid">Not correctly typed</label>                           
-                            <input id="authors" name="authors" ng-model="oReference.authors" ng-required="true" ng-pattern="/^([^,]+\.)+(, [^,]+\.)*( and [^,]+\.)?$/" ng-change="extractAuthors()" type="text" placeholder="Eg: Molinari E., Palmaro E., De Luca A." class="form-control">                            
+                            <input id="authors" name="authors" ng-model="oReference.authors" ng-required="true"  ng-change="extractAuthors()" type="text" placeholder="Eg: Molinari E., Palmaro E., De Luca A." class="form-control">                            
                         </div>
                     </div>
                     <div class="form-group" ng-show="form.authors.$valid">
