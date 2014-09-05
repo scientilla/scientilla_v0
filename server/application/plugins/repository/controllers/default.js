@@ -16,7 +16,7 @@ module.exports = function () {
     };
     var trimConfig = function(config) {
         for(var key in config) {
-            if(config.hasOwnProperty(key)) {
+            if(config.hasOwnProperty(key) && typeof config[key] === "string") {
                 config[key] = config[key].trim();
             }
         }
