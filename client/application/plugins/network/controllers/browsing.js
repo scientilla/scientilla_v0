@@ -5,9 +5,10 @@
  */
 
 angular.module("network").controller(
-    "networkBrowsingController", ["$scope", "peersService", "repositoriesService", "activatedPeersService", "activatedRepositoriesService", "peerReferencesService", "repositoryReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, repositoriesService, activatedPeersService, activatedRepositoriesService, peerReferencesService, repositoryReferencesService, systemStatusService, $window, $location) {
-        $scope.visualizationMode = $window.sessionStorage.visualizationMode ? $window.sessionStorage.visualizationMode : "L";
-        $scope.listingType = $window.sessionStorage.listingType ? $window.sessionStorage.listingType : "P";
+    "networkBrowsingController", ["$scope", "peersService", "repositoriesService", "activatedPeersService", "activatedRepositoriesService", "peerReferencesService", "seedPeerReferencesService", "repositoryReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, repositoriesService, activatedPeersService, activatedRepositoriesService, peerReferencesService, seedPeerReferencesService, repositoryReferencesService, systemStatusService, $window, $location) {
+        $scope.sourcesListingMode = $window.sessionStorage.sourcesListingMode ? $window.sessionStorage.sourcesListingMode : "L"; // L = List, G = Graph
+        $scope.sourcesType = $window.sessionStorage.sourcesType ? $window.sessionStorage.sourcesType : "P"; // P = Peers, R = Repositories
+        $scope.resultsListingMode = "OFF"; // OFF = Disabled, MPR = Main Peers Results
         $scope.keywords = "";
         $scope.changingActivatedPeerId = "";
         $scope.changingActivatedRepositoryId = "";
@@ -16,15 +17,15 @@ angular.module("network").controller(
         $scope.aPeers = [];
         $scope.aSeedPeers = [];
         $scope.aRepositories = [];
-        $scope.aReferences = [];
+        $scope.aReferences = [];       
         
-        $scope.saveVisualizationMode = function() {
-            $window.sessionStorage.visualizationMode = $scope.visualizationMode;
+        $scope.saveSourcesListingMode = function() {
+            $window.sessionStorage.sourcesListingMode = $scope.sourcesListingMode;
         }
         
-        $scope.saveListingType = function() {
-            $window.sessionStorage.listingType = $scope.listingType;
-        }        
+        $scope.saveSourcesType = function() {
+            $window.sessionStorage.sourcesType = $scope.sourcesType;
+        }
             
         $scope.generatePeerIdsSharingMap = function(aPeers) {
             var peerIdsSharingMap = {};
@@ -138,15 +139,6 @@ angular.module("network").controller(
                         $scope.error = true;
                         systemStatusService.react(status, callback);
                     });
-                },
-                function(callback) {
-                    peersService.getSeedPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
-                        $scope.aSeedPeers = data; 
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        $scope.error = true;
-                        systemStatusService.react(status, callback);
-                    });
                 },                
                 function(callback) {
                     $scope.oActivatedPeer = {};
@@ -173,6 +165,22 @@ angular.module("network").controller(
             
             return retrievePeers;
         }();
+        
+        $scope.retrieveSeedPeers = function retrieveSeedPeers() {        
+            async.series([
+                function(callback) {
+                    peersService.getSeedPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aSeedPeers = data; 
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                }
+            ]);
+            
+            return retrieveSeedPeers;
+        }();        
 
         $scope.retrieveRepositories = function retrieveRepositories() {    
             $scope.iRepositories = 0;
@@ -215,35 +223,37 @@ angular.module("network").controller(
             return retrieveRepositories;
         }();
         
-        $scope.retrievePeerReferences = function() {
+        $scope.retrievePeersReferences = function() {
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
-            async.series([
-                function(callback) {
-                    peerReferencesService.getReferences(
-                        $scope.peerId,
-                        $scope.keywords,
-                        $window.sessionStorage.token
-                    ).success(function(data, status, headers, config) {
-                        $scope.aReferences = data;
-                        if ($scope.aReferences.length === 0) {
-                            $scope.empty = true;
-                        }                    
+            for (var seedPeerIndex = 0; seedPeerIndex < $scope.aSeedPeers.length; seedPeerIndex++) {
+                async.series([
+                    function(callback) {
+                        seedPeerReferencesService.getReferences(
+                            seedPeerIndex,
+                            $scope.keywords,
+                            $window.sessionStorage.token
+                        ).success(function(data, status, headers, config) {
+                            $scope.aReferences = data;
+                            if ($scope.aReferences.length === 0) {
+                                $scope.empty = true;
+                            }                    
+                            callback();
+                        }).error(function(data, status, headers, config) {
+                            $scope.error = true;
+                            systemStatusService.react(status, callback);
+                        });
+                    },
+                    function(callback) {
+                        $scope.ready = true;
                         callback();
-                    }).error(function(data, status, headers, config) {
-                        $scope.error = true;
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    $scope.ready = true;
-                    callback();
-                }
-            ]);            
+                    }
+                ]);
+            }
         };        
         
-        $scope.retrieveRepositoryReferences = function() {
+        $scope.retrieveRepositoriesReferences = function() {
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
@@ -270,6 +280,34 @@ angular.module("network").controller(
                     callback();
                 }
             ]);
+        };
+        
+        $scope.showPeersListing = function() {
+            $scope.resultsListingMode = "OFF";
+            $scope.saveSourcesListingMode();
+            $scope.saveSourcesType();
+            $scope.retrievePeers();
+        };
+        
+        $scope.showRepositoriesListing = function() {
+            $scope.resultsListingMode = "OFF";
+            $scope.saveSourcesListingMode();
+            $scope.saveSourcesType();
+            $scope.retrieveRepositories();
+        };        
+        
+        $scope.searchSeedPeersReferences = function() {
+            $scope.resultsListingMode = "MPR";
+            $scope.saveSourcesListingMode();
+            $scope.saveSourcesType();
+            $scope.retrievePeersReferences();
+        };
+        
+        $scope.searchRepositoriesReferences = function() {
+            $scope.resultsListingMode = "MRR";
+            $scope.saveSourcesListingMode();
+            $scope.saveSourcesType();
+            $scope.retrieveRepositoriesReferences();
         };
     }]        
 );

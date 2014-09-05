@@ -37,6 +37,7 @@ var datasetReferencesController = require("./application/plugins/reference/contr
 var peerReferencesController = require("./application/plugins/reference/controllers/peer-references.js")();
 var peerDatasetReferencesController = require("./application/plugins/reference/controllers/peer-dataset-references.js")();
 var repositoryReferencesController = require("./application/plugins/reference/controllers/repository-references.js")();
+var seedPeerReferencesController = require("./application/plugins/reference/controllers/seed-peer-references.js")();
 var repositoriesController = require("./application/plugins/repository/controllers/default.js")();
 var activatedRepositoriesController = require("./application/plugins/repository/controllers/activated-repositories.js")();
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
@@ -287,11 +288,6 @@ application.get("/api/public-peers", cors(), function(req, res) {
     peersController.getPublicPeers(req, res);
 });
 
-application.get("/api/seed-peers", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Read all Seed Peers");   
-    peersController.getSeedPeers(req, res);
-});
-
 application.get("/api/peers/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read a Peer");
     systemController.checkUserCoherence(req, res);
@@ -370,6 +366,26 @@ application.put("/api/activated-peers/:id", expressJwt({secret: 'scientilla'}), 
     console.log("Request to Create/Update an Activated Peer");
     systemController.checkUserCoherence(req, res);
     activatedPeersController.setPeerAsActivated(req, res);
+});
+
+// SEED PEERS
+application.get("/api/seed-peers", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read all Seed Peers");
+    systemController.checkUserCoherence(req, res);
+    peersController.getSeedPeers(req, res);
+});
+
+// SEED PEER REFERENCES
+application.get("/api/seed-peers/:seedPeerIndex/public-references", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read all Seed Peer Public References"); 
+    systemController.checkUserCoherence(req, res);
+    seedPeerReferencesController.getSeedPeerPublicReferences(req, res);
+});
+
+application.get("/api/seed-peers/:seedPeerIndex/public-references/:referenceId", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read a Seed Peer Public Reference");
+    systemController.checkUserCoherence(req, res);
+    seedPeerReferencesController.getPeerPublicReference(req, res);
 });
 
 // REFERENCES
@@ -490,7 +506,8 @@ application.put("/api/users/:id", expressJwt({secret: 'scientilla'}), function(r
 
 // LOGGED USERS
 application.get("/api/logged-users", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Read the Logged User");  
+    console.log("Request to Read the Logged User");
+    systemController.checkUserCoherence(req, res);
     usersController.getLoggedUser(req, res);
 });
 
@@ -501,6 +518,7 @@ application.post("/api/logged-users", function(req, res) {
 
 application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Update the Logged User");
+    systemController.checkUserCoherence(req, res);
     usersController.updateLoggedUser(req, res);
 });
 
