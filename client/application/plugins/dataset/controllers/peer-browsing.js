@@ -8,6 +8,7 @@ angular.module("dataset").controller(
     "peerDatasetsBrowsingController", ["$scope", "$routeParams", "peerDatasetsService", "activatedPeersService", "peersService", "activatedDatasetsService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerDatasetsService, activatedPeersService, peersService, activatedDatasetsService, systemStatusService, $window, $location) { 
         $scope.peerId = $routeParams.peerId;
         $scope.changingActivatedDatasetId = "";
+        $scope.keywords = "";
         $scope.aDatasets = [];        
         
         $scope.retrieveDatasets = function retrieveDatasets() {
@@ -33,6 +34,7 @@ angular.module("dataset").controller(
                 function(callback) {
                     peerDatasetsService.getDatasets(
                         $scope.peerId,
+                        $scope.keywords,
                         $window.sessionStorage.token
                     ).success(function(data, status, headers, config) {
                         $scope.aDatasets = data;

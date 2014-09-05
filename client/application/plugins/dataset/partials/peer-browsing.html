@@ -11,19 +11,17 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">PEER DATASETS</span>
+                    <span class="navbar-brand" id="tools-link">DATASETS</span>
                 </div>
-                <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">                       
-                        <a href="#/browse-peer-references/{{peerId}}/" class="btn btn-default"><i class="fa fa-book"></i> Show Peer Publications</a>
-                    </form>                 
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                        
+                <div class="collapse navbar-collapse">                 
+                    <form ng-submit="retrieveDatasets()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
                         <div class="input-group">                                        
-                            <input id="action-input" type="text" placeholder="Type something to..." class="form-control">
+                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                                <a ng-click="retrieveDatasets()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>
+                        <a href="#/browse-peer-references/{{peerId}}/" class="btn btn-default"><i class="fa fa-book"></i> Go to Publications List</a>                        
                         <!--
                         <button id="help-button" type="button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-search'></i> Search is made among Dataset names." data-placement="left" data-html="true">
                             <i class="fa fa-question-circle"></i>
@@ -43,9 +41,11 @@
                     <thead>
                         <tr>
                             <th class="fixed-th-1x">
+                                <!--
                                 <button data-toggle="modal" data-target="#publications-button-help" class="btn btn-default help-button">
                                     <i class="fa fa-question-circle"></i>
-                                </button>                                
+                                </button> 
+                                -->
                             </th>                            
                             <th><i class="fa fa-users"></i> Dataset Name</th>
                             <th><i class="fa fa-flag-o"></i> Status</th>
@@ -57,7 +57,7 @@
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="dataset in aDatasets">
                             <td>
-                                <a href="#/browse-dataset-references/{{peerId}}/{{dataset._id}}/" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                                <a href="#/browse-dataset-references/{{peerId}}/{{dataset._id}}/" class="btn btn-default btn-mini"><i class="fa fa-folder-open"></i></a>
                             </td>                            
                             <td>{{dataset.name}}</td>
                             <td>{{dataset.status}}</td>
@@ -71,7 +71,7 @@
                     </tbody>
                     <tbody ng-show="empty">
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div class="col-lg-12 empty-message">
                                     No datasets available on the peer.
                                 </div>
@@ -80,7 +80,7 @@
                     </tbody>
                     <tbody ng-show="error">
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div class="col-lg-12 error-message">
                                     Error in retrieving datasets from the peer.
                                 </div>

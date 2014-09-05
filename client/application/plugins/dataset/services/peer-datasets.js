@@ -8,10 +8,10 @@ angular.module("dataset").factory(
     "peerDatasetsService", function($http) {
         var peerDatasetsProvider = {};
         
-        peerDatasetsProvider.getDatasets = function(peerId, token) {
+        peerDatasetsProvider.getDatasets = function(peerId, keywords, token) {
             return $http({
 				method: "GET",
-				url: "/api/peers/" + peerId + "/public-datasets",
+				url: "/api/peers/" + peerId + "/public-datasets?keywords=" + keywords,
                 cache: false,
                 timeout: 30000,
                 headers: {
