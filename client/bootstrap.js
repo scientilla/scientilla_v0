@@ -23,5 +23,6 @@ angular.module("scientilla", [
     "repository",
     "setting",
     "system",
-    "user"
+    "user",
+    "jlareau.pnotify"
 ]);
