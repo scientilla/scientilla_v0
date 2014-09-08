@@ -66,12 +66,12 @@
                     <div class="form-group">
                         <div class="col-xs-12 nowrap">
                             <label for="organizations" class="label label-default">Organizations</label>
-                            <label for="organizations" class="label label-danger" ng-show="form.organizations.$error.required">Required</label>
+                            <!--<label for="organizations" class="label label-danger" ng-show="form.organizations.$error.required">Required</label>-->
                             <label for="organizations" class="label label-danger" ng-show="!form.organizations.$valid">Not correctly typed</label>                          
-                            <input id="organizations" name="organizations" ng-model="oReference.organizations" ng-required="true" ng-pattern="/^([^,]+)+(, [^,]+)*$/" ng-change="extractOrganizations()" type="text" placeholder="Eg.: Istituto Italiano di Tecnologia, Università di Genova" class="form-control">                            
+                            <input id="organizations" name="organizations" ng-model="oReference.organizations" ng-change="extractOrganizations()" type="text" placeholder="Eg.: Istituto Italiano di Tecnologia, Università di Genova" class="form-control">                            
                         </div>
                     </div>
-                    <div class="form-group" ng-show="form.organizations.$valid">
+                    <div class="form-group" ng-show="oReference.organizations">
                         <div class="col-xs-12 nowrap">
                             <h4>Who are you?</h4>
                             <ul>
@@ -84,12 +84,12 @@
                     <div class="form-group">
                         <div class="col-xs-12 nowrap">
                             <label for="tags" class="label label-default">Tags</label>
-                            <label for="tags" class="label label-danger" ng-show="form.tags.$error.required">Required</label>
+<!--                            <label for="tags" class="label label-danger" ng-show="form.tags.$error.required">Required</label>-->
                             <label for="tags" class="label label-danger" ng-show="!form.tags.$valid">Not correctly typed</label>                        
-                            <input id="tags" name="tags" ng-model="oReference.tags" ng-required="true" ng-pattern="/^([a-zA-Z0-9 \-\/]+[a-zA-Z0-9])(, [a-zA-Z0-9 \-\/]+[a-zA-Z0-9])*$/" ng-change="extractTags()" type="text" class="form-control">                           
+                            <input id="tags" name="tags" ng-model="oReference.tags" ng-change="extractTags()" type="text" class="form-control">                           
                         </div>
                     </div>
-                    <div class="form-group" ng-show="form.tags.$valid">
+                    <div class="form-group" ng-show="oReference.tags">
                         <div class="col-xs-12">
                             <ul>
                                 <li ng-repeat="tag in oReference.aTags">
