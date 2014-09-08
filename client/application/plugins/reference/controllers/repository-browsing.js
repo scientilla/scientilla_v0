@@ -12,6 +12,7 @@ angular.module("reference").controller(
         $scope.lastPage = null;
         $scope.firstPage = 1;
         $scope.oRepository = null;
+        $scope.hasPaginationData = false;
         
         $scope.retrievePrevReferences = function() {
             $scope.retrieveReferences(-1);
@@ -120,7 +121,19 @@ angular.module("reference").controller(
                 $scope.oRepository = data;
                 $scope.currentPage = $scope.oRepository.config.page;
                 $scope.firstPage = $scope.oRepository.config.page;
-                $scope.retrieveReferences();
+                $scope.hasPaginationData = $scope.oRepository 
+                                            && $scope.oRepository.config 
+                                            && !_.isNull($scope.oRepository.config.page)
+                                            && !_.isUndefined($scope.oRepository.config.page)
+                                            && !_.isNull($scope.oRepository.config.rows)
+                                            && !_.isUndefined($scope.oRepository.config.rows)
+                                            && _.contains($scope.oRepository.url, '{{page}}')
+                                            && _.contains($scope.oRepository.url, '{{rows}}');
+                if (!$scope.hasPaginationData) {
+                    $scope.error = true;
+                } else {
+                    $scope.retrieveReferences();
+                }
             }).error(function(data, status, headers, config) {
                 $scope.error = true;
                 systemStatusService.react(status);
