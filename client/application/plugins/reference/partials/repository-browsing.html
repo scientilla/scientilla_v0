@@ -43,7 +43,12 @@
                         <tr>
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
-                            <th class="fixed-th-3x"></th>
+                            <th class="fixed-th-3x">
+                                <button ng-click="cloneSelectedReferences()" class="btn btn-default"><i class="fa fa-code-fork"></i> Clone all selected</button>
+                            </th>
+                            <th class="fixed-th-1x">
+                                <input type="checkbox" ng-model="allSelected"/>
+                            </th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
@@ -68,7 +73,10 @@
                                 <strong>{{reference.year}}</strong>
                             </td>
                             <td>
-                                <a href="#/clone-repository-reference/{{repositoryId}}/{{$index}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
+                                <button class="btn btn-default btn-block" ng-click="cloneReference(reference)"><i class="fa fa-code-fork"></i> Clone</button>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="reference.selected" />
                             </td>
                         </tr>
                     </tbody>
