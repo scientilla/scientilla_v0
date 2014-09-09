@@ -108,6 +108,8 @@
                                 -->
                             </th>                            
                             <th><i class="fa fa-cloud"></i> Peer Name</th>
+                            <th class="fixed-th-2x text-center"><i class="fa fa-line-chart"></i> Size</th>
+                            <th class="fixed-th-1x text-center"><i class="fa fa-certificate"></i></th>
                             <th><i class="fa fa-link"></i> URL</th>
                             <th class="fixed-th-1x">
                                 <!--
@@ -123,35 +125,41 @@
                                 </button>
                                 -->
                             </th>                            
-                            <th class="fixed-th-3x">
-                                <a href="#/add-peer/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                            <th class="fixed-th-1x">
+                                <a href="#/add-peer/" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
                             </th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && iPeers > 0">
                         <tr ng-repeat="peer in aPeers" class="fixed-tr-1x">
                             <td>
-                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-book primary-feature"></i></a>
                             </td>
                             <td>
-                                <a href="#/browse-peer-datasets/{{peer._id}}/" class="btn btn-default btn-mini"><i class="fa fa-database"></i></a>
+                                <a href="#/browse-peer-datasets/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-database primary-feature"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-peer/{{peer._id}}/">
                                     <strong>{{peer.name}}</strong>
                                 </a>
+                            </td>
+                            <td class="text-center">
+                                <span>10000</span>
                             </td>                            
-                            <td>
-                                <a href="{{peer.url}}/client/" target="PeerWindow">{{peer.url}}</a>
-                            </td>                            
-                            <td>
-                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i></a>
+                            <td class="text-center">
+                                <i class="fa fa-thumbs-o-up"></i>
                             </td>
                             <td>
-                                <a ng-click="switchPeerSharingStatus(peer._id)" class="btn btn-default btn-block"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock' : '' }}"></i></a>
+                                <span>{{peer.url}}</span>
+                            </td>                            
+                            <td>
+                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature"><i class="fa fa-edit secondary-feature"></i></a>
                             </td>
                             <td>
-                                <a ng-click="setPeerAsActivated(peer._id)" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-circle-o turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peer._id == activatedPeerId ? 'fa fa-circle turned-on' : '' }}"></i> {{peer._id == activatedPeerId ? 'Preferred' : 'Prefer' }}</a>
+                                <a ng-click="switchPeerSharingStatus(peer._id)" class="{{peerIdsSharingMap[peer._id] ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off'}}"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
+                            </td>
+                            <td>
+                                <a ng-click="setPeerAsActivated(peer._id)" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-star-o secondary-feature turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peer._id == activatedPeerId ? 'fa fa-star secondary-feature turned-on' : '' }}"></i></a>
                                 <!-- <a href="#/delete-peer/{{peer._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                             </td>
                         </tr>
