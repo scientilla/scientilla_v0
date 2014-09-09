@@ -5,7 +5,9 @@
  */
 
 angular.module("reference").controller(
-    "repositoryReferencesBrowsingController", ["$scope", "$routeParams", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", "referencesService", function($scope, $routeParams, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location, referencesService) {
+    "repositoryReferencesBrowsingController", 
+    ["$scope", "$routeParams", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", "referencesService", 'notificationService',
+    function($scope, $routeParams, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location, referencesService, notificationService) {
         $scope.repositoryId = $routeParams.repositoryId;            
         $scope.aReferences = [];      
         $scope.currentPage = 1;
@@ -17,7 +19,7 @@ angular.module("reference").controller(
         
 
         
-        $scope.cloneReference = function(reference) {
+        $scope.cloneReference = function(reference, notify) {
             referencesService.createReference({
                 title: reference.title,
                 authors: reference.authors,
@@ -46,17 +48,35 @@ angular.module("reference").controller(
                 print_status: reference.print_status,
                 note: reference.note
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-//                console.log('cloned');
+                if (notify) {
+                    notificationService.info('Reference cloned');
+                }
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
         };        
 
         $scope.cloneSelectedReferences = function(){
+            var clonedNum = 0;
             var selectedReferences = _.filter($scope.aReferences, {selected: true});
-            _.each(selectedReferences, function(reference) {
-               $scope.cloneReference(reference); 
-            });
+            
+            var initCloned = function(callback){
+                    callback(null, clonedNum);
+                };
+            var cloneReferences = _.map(selectedReferences, function(reference) {
+                   $scope.cloneReference(reference, false);
+                   return function(clonedNum, callback) {
+                       callback(null, clonedNum+1);
+                   };
+                });
+            var notifyResults = function(err, clonedNum){
+                    if (clonedNum > 0) {
+                        notificationService.info(clonedNum + ' reference cloned');
+                    }
+                };
+            var cloneProcess = [initCloned];
+            cloneProcess = cloneProcess.concat(cloneReferences);
+            async.waterfall(cloneProcess, notifyResults);
         };
         
         $scope.retrievePrevReferences = function() {
