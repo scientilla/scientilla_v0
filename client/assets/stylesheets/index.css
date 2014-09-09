@@ -233,6 +233,10 @@ html, body {
     width: 250px;
 }
 
+.fixed-button-1x {
+    width: 40px;
+}
+
 #content td {
     background-color: transparent;
 }
