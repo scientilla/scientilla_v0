@@ -5,7 +5,15 @@
  */
 
 angular.module("reference").controller(
-    "referenceDeletionController", ["$scope", "$routeParams", "referencesService", "$window", "$location", function($scope, $routeParams, referencesService, $window, $location) {
-        
+    "referenceDeletionController", ["$scope", "$routeParams", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, referencesService, systemStatusService, $window, $location) {
+        $scope.deleteReference = function() {
+            referencesService.deleteReference({              
+                id: $routeParams.id
+            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+                $location.path("browse-references");
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+        };
     }]
 );

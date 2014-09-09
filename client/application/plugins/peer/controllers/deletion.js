@@ -5,7 +5,15 @@
  */
 
 angular.module("peer").controller(
-    "peerDeletionController", ["$scope", "$routeParams", "peersService", "$window", "$location", function($scope, $routeParams, peersService, $window, $location) {
-        
+    "peerDeletionController", ["$scope", "$routeParams", "peersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peersService, systemStatusService, $window, $location) {
+        $scope.deletePeer = function() {
+            peersService.deletePeer({              
+                id: $routeParams.id
+            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+                $location.path("browse-network");
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+        };
     }]
 );

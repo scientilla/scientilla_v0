@@ -42,8 +42,8 @@
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
-                            <th class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x"></th>
+                            <th ng-if="userRights == 'A'" class="fixed-th-1x"></th>
+                            <th ng-if="userRights == 'A'" class="fixed-th-1x"></th>
                             <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x">
@@ -97,7 +97,7 @@
                     </tbody>
                     <tbody ng-show="empty">
                         <tr>
-                            <td colspan="4">
+                            <td colspan="{{userRights == 'A' ? 8 : 6}}">
                                 <div class="col-lg-12 empty-message">
                                     No references available in this installation.
                                 </div>
@@ -106,7 +106,7 @@
                     </tbody>
                     <tbody ng-show="error">
                         <tr>
-                            <td colspan="4">
+                            <td colspan="{{userRights == 'A' ? 8 : 6}}">
                                 <div class="col-lg-12 error-message">
                                     Error in retrieving references.
                                 </div>

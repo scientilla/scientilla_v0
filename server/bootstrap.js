@@ -316,6 +316,12 @@ application.put("/api/peers/:id", expressJwt({secret: 'scientilla'}), function(r
     peersController.updatePeer(req, res);
 });
 
+application.delete("/api/peers/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Delete a Peer");
+    systemController.checkUserCoherence(req, res);
+    peersController.deletePeer(req, res);
+});
+
 // PEER DATASETS
 application.get("/api/peers/:id/public-datasets", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all Peer Public Datasets");
@@ -421,6 +427,12 @@ application.put("/api/references/:id", expressJwt({secret: 'scientilla'}), funct
     console.log("Request to Update a Reference");
     systemController.checkUserCoherence(req, res);
     referencesController.updateReference(req, res);
+});
+
+application.delete("/api/references/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Delete a Reference");
+    systemController.checkUserCoherence(req, res);
+    referencesController.deleteReference(req, res);
 });
 
 application.get("/api/received-references", expressJwt({secret: 'scientilla'}), function(req, res) {
