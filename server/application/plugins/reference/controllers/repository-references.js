@@ -14,7 +14,7 @@ module.exports = function () {
         !_.isUndefined(reference.authors) ? cleanedReference.authors = reference.authors.trim() : cleanedReference.authors = "";
         !_.isUndefined(reference.organizations) ? cleanedReference.organizations = reference.organizations.trim() : cleanedReference.organizations = "";
         !_.isUndefined(reference.tags) ? cleanedReference.tags = reference.tags.trim() : cleanedReference.tags = "";            
-        !_.isUndefined(reference.year) ? cleanedReference.year = reference.year.trim() : cleanedReference.year = "";
+        !_.isUndefined(reference.year) ? cleanedReference.year = reference.year : cleanedReference.year = "";
         !_.isUndefined(reference.doi) ? cleanedReference.doi = reference.doi.trim() : cleanedReference.doi = "";    
         !_.isUndefined(reference.journal_name) ? cleanedReference.journal_name = reference.journal_name.trim() : cleanedReference.journal_name = "";
         !_.isUndefined(reference.journal_acronym) ? cleanedReference.journal_acronym = reference.journal_acronym.trim() : cleanedReference.journal_acronym = "";
