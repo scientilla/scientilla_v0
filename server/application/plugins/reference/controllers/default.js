@@ -115,69 +115,47 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.note) ? reference.note = req.body.note.trim() : reference.note = "";       
             !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : reference.approving_status = "";
             !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : reference.sharing_status = "";
+            var hashBase = (
+                reference.title + ", " +
+                reference.authors + ", " +
+                reference.organizations + ", " +
+                reference.title + ", " +
+                reference.year + ", " +
+                reference.doi + ", " +
+                reference.journal_name + ", " +
+                reference.journal_acronym + ", " +
+                reference.journal_pissn + ", " +
+                reference.journal_eissn + ", " +
+                reference.journal_issnl + ", " +
+                reference.journal_volume + ", " +
+                reference.journal_year + ", " +
+                reference.conference_name + ", " +
+                reference.conference_acronym + ", " +
+                reference.conference_place + ", " +
+                reference.conference_year + ", " +
+                reference.book_title + ", " +
+                reference.book_isbn + ", " +
+                reference.book_pages + ", " +
+                reference.book_editor + ", " +
+                reference.book_year + ", " +
+                reference.abstract + ", " +
+                reference.month + ", " +
+                reference.abstract
+            ).trim();
             if (req.underscore.isUndefined(req.body.hash)) {
-                reference.hash = req.crypto.createHash("sha256").update(
-                    (
-                        reference.title + ", " +
-                        reference.authors + ", " +
-                        reference.organizations + ", " +
-                        reference.title + ", " +
-                        reference.year + ", " +
-                        reference.doi + ", " +
-                        reference.journal_name + ", " +
-                        reference.journal_acronym + ", " +
-                        reference.journal_pissn + ", " +
-                        reference.journal_eissn + ", " +
-                        reference.journal_issnl + ", " +
-                        reference.journal_volume + ", " +
-                        reference.journal_year + ", " +
-                        reference.conference_name + ", " +
-                        reference.conference_acronym + ", " +
-                        reference.conference_place + ", " +
-                        reference.conference_year + ", " +
-                        reference.book_title + ", " +
-                        reference.book_isbn + ", " +
-                        reference.book_pages + ", " +
-                        reference.book_editor + ", " +
-                        reference.book_year + ", " +
-                        reference.abstract + ", " +
-                        reference.month + ", " +
-                        reference.abstract
-                    ).trim()
-                ).digest("hex"); 
+                reference.hash = 
+                    req.crypto
+                        .createHash("sha256")
+                        .update(hashBase)
+                        .digest("hex"); 
             } else {
                 reference.hash = req.body.hash;
             }
             if (!req.underscore.isUndefined(req.body.hash)) {
-                reference.clone_hash = req.crypto.createHash("sha256").update(
-                    (
-                        reference.title + ", " +
-                        reference.authors + ", " +
-                        reference.organizations + ", " +
-                        reference.title + ", " +
-                        reference.year + ", " +
-                        reference.doi + ", " +
-                        reference.journal_name + ", " +
-                        reference.journal_acronym + ", " +
-                        reference.journal_pissn + ", " +
-                        reference.journal_eissn + ", " +
-                        reference.journal_issnl + ", " +
-                        reference.journal_volume + ", " +
-                        reference.journal_year + ", " +
-                        reference.conference_name + ", " +
-                        reference.conference_acronym + ", " +
-                        reference.conference_place + ", " +
-                        reference.conference_year + ", " +
-                        reference.book_title + ", " +
-                        reference.book_isbn + ", " +
-                        reference.book_pages + ", " +
-                        reference.book_editor + ", " +
-                        reference.book_year + ", " +
-                        reference.abstract + ", " +
-                        reference.month + ", " +
-                        reference.abstract
-                    ).trim()
-                ).digest("hex");
+                reference.clone_hash = req.crypto
+                        .createHash("sha256")
+                        .update(hashBase)
+                        .digest("hex"); 
             } else {
                 reference.clone_hash = "";
             }
@@ -187,15 +165,26 @@ module.exports = function () {
             reference.creator_id = req.user.id;
             reference.creation_datetime = req.moment().format();
             reference.last_modifier_id = "";
-            reference.last_modification_datetime = "";            
-            req.referencesCollection.insert(reference, {w:1}, function(err, reference) {
-                if (err || req.underscore.isNull(reference)) {
-                    res.status(404).end();
-                    return;
+            reference.last_modification_datetime = "";  
+            req.referencesCollection
+                .find({hash: reference.hash})
+                .toArray(function(err, references) {
+                    if (err) {
+                        res.status(404).end();
+                    }
+                    if (references.length > 0) {
+                        res.status(409).end();
+                    }
+                    req.referencesCollection.insert(reference, {w:1}, function(err, reference) {
+                        if (err || req.underscore.isNull(reference)) {
+                            res.status(404).end();
+                            return;
+                        }
+
+                        res.end();
+                    });
                 }
-                
-                res.end();
-            });
+            );
         },
         updateReference: function(req, res) {
             var reference = {};
