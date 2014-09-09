@@ -99,6 +99,7 @@ angular.module("reference").controller(
                         }
                     }
                 }
+                extractedReference.clonable = reference.clonable;
                 return extractedReference;
             });
             return extractedReferences;
@@ -188,7 +189,8 @@ angular.module("reference").controller(
                     if (_.isEmpty(newReferences)) {
                         return;
                     }
-                    var allSelected =  _.every(newReferences, { selected: true });
+                    var clonableReferences = _.filter(newReferences, {clonable: true});
+                    var allSelected =  _.every(clonableReferences, { selected: true});
                     if (!allSelected) {
                         $scope.allSelected = allSelected;
                     }
@@ -198,10 +200,13 @@ angular.module("reference").controller(
             $scope.$watch(
                 'allSelected', 
                 function(newAllSelected) {
-                    var allSelected =  _.every($scope.aReferences, { selected: true });
+                    var clonableReferences = _.filter($scope.aReferences, {clonable: true});
+                    var allSelected =  _.every(clonableReferences, { selected: true });
                     if (newAllSelected || allSelected) {
                         _.each($scope.aReferences, function(reference) {
-                            reference.selected = newAllSelected;
+                            if (reference.clonable) {
+                                reference.selected = newAllSelected;
+                            }
                         });
                     }
                 }
