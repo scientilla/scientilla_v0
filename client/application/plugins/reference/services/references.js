@@ -70,6 +70,19 @@ angular.module("reference").factory(
 			});
         };
         
+        referencesProvider.deleteReference = function(data, token) {
+            return $http({
+				method: "DELETE",
+				url: "/api/references/" + data.id,
+                data: data,
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };        
+        
         referencesProvider.setReferenceAsApproved = function(id, token) {
             return $http({
 				method: "PUT",

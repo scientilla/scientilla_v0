@@ -273,6 +273,16 @@ module.exports = function () {
                 
                 res.end();
             });
+        },
+        deleteReference: function(req, res) {          
+            req.referencesCollection.remove({ _id: req.params.id }, {w: 1}, function(err) {
+                if (err) {
+                    res.status(500).end();
+                    return;
+                }
+                
+                res.end();
+            });
         }        
     };
 };

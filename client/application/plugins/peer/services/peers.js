@@ -70,6 +70,19 @@ angular.module("peer").factory(
 			});
         };
         
+        peersProvider.deletePeer = function(data, token) {
+            return $http({
+				method: "DELETE",
+				url: "/api/peers/" + data.id,
+                data: data,
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };        
+        
         peersProvider.setPeerAsShared = function(id, token) {
             return $http({
 				method: "PUT",

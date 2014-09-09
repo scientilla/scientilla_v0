@@ -128,6 +128,16 @@ module.exports = function () {
                 res.end();
             });            
         },
+        deletePeer: function(req, res) {          
+            req.peersCollection.remove({ _id: req.params.id }, {w: 1}, function(err) {
+                if (err) {
+                    res.status(500).end();
+                    return;
+                }
+                
+                res.end();
+            });            
+        },        
         discoverPeers: function(installationConfiguration, seedsConfiguration, peersCollection) {
             for (var seedKey in seedsConfiguration) {
                 request({
