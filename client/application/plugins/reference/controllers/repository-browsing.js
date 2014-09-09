@@ -70,9 +70,8 @@ angular.module("reference").controller(
                    };
                 });
             var notifyResults = function(err, clonedNum){
-                    if (clonedNum > 0) {
-                        notificationService.info(clonedNum + ' reference cloned');
-                    }
+                    var msg = (clonedNum > 0) ? clonedNum + ' reference cloned' : 'No References Selected';
+                    notificationService.info(msg);
                 };
             var cloneProcess = [initCloned];
             cloneProcess = cloneProcess.concat(cloneReferences);
