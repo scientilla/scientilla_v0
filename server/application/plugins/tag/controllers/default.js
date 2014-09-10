@@ -4,3 +4,10 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var model = require("../models/default.js")();
+
+module.exports = function () {
+    return {
+        
+    };
+};
