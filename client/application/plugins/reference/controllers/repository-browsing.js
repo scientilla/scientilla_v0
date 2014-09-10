@@ -86,25 +86,6 @@ angular.module("reference").controller(
             $scope.retrieveReferences(+1);
         };
         
-        $scope.extract = function(extractors, references) {
-            var extractedReferences = references.map(function(reference) {
-                var extractedReference = {};
-                for(var key in extractors) {
-                    var extractorField = extractors[key].field;
-                    var extractorRegex = new RegExp(extractors[key].regex);
-                    if (!_.isUndefined(reference[extractorField]) && !_.isNull(reference[extractorField])) {
-                        var matches = reference[extractorField].match(extractorRegex);
-                        if (!_.isNull(matches) && matches.length > 0) {
-                            extractedReference[key] = _.last(matches);
-                        }
-                    }
-                }
-                extractedReference.clonable = reference.clonable;
-                return extractedReference;
-            });
-            return extractedReferences;
-        };
-        
         $scope.retrieveReferences = function(pageIncr) {
             pageIncr = pageIncr || 0;
             $scope.empty = false;
@@ -135,7 +116,7 @@ angular.module("reference").controller(
                         if (data.length < $scope.oRepository.config.rows) {
                             $scope.lastPage = $scope.currentPage;
                         }
-                        repositoryReferencesService.aReferences = $scope.extract($scope.oRepository.extractors, data);                   
+                        repositoryReferencesService.aReferences = data;                   
                         $scope.aReferences = repositoryReferencesService.aReferences;
                         _.each($scope.aReferences, function(reference) {
                             reference.selected = false;

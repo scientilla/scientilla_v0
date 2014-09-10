@@ -7,7 +7,7 @@
 var model = require("../models/repository-references.js")();
 
 module.exports = function () {
-    var createReference = function(_, reference) {
+    var createReference = function(_, reference, repository) {
         var getCleanProperty = function(reference, field) {
             var cleanItem = function(item) {
                 if (typeof item === "string") {
@@ -17,8 +17,24 @@ module.exports = function () {
             };
             return (_.isUndefined(reference[field]) || _.isNull(reference[field])) ? "" : cleanItem(reference[field]);
         };
+        var extract = function(reference, extractors) {
+            var extractedReference = {};
+            for(var key in extractors) {
+                var extractorField = extractors[key].field;
+                var extractorRegex = new RegExp(extractors[key].regex);
+                if (!_.isUndefined(reference[extractorField]) && !_.isNull(reference[extractorField])) {
+                    var matches = reference[extractorField].match(extractorRegex);
+                    if (!_.isNull(matches) && matches.length > 0) {
+                        extractedReference[key] = _.last(matches);
+                    } else {
+                        extractedReference[key] = "";
+                    }
+                }
+            }
+            return extractedReference;
+        };
         
-        var cleanedReference = {};
+        var extractedReference = extract(reference, repository.extractors);
         
         var referenceFields = [
             'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
@@ -26,8 +42,10 @@ module.exports = function () {
             'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
             'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
          
+        
+        var cleanedReference = {};
         referenceFields.forEach(function(field) {
-            cleanedReference[field] = getCleanProperty(reference, field);
+            cleanedReference[field] = getCleanProperty(extractedReference, field);
         });
         
         return cleanedReference;
@@ -97,7 +115,7 @@ module.exports = function () {
                         .toArray(function(err, existingReferences) {
                             var existingHashes = req.underscore.pluck(existingReferences, 'hash');
                             repositoryReferences = repositoryReferences.map(function(reference){
-                                var newReference = createReference(req.underscore, reference);
+                                var newReference = createReference(req.underscore, reference, repository);
                                 var hash = referenceHash(req.crypto, newReference);
                                 newReference.clonable = !req.underscore.contains(existingHashes, hash);
                                 return newReference;
