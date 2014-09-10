@@ -8,43 +8,28 @@ var model = require("../models/repository-references.js")();
 
 module.exports = function () {
     var createReference = function(_, reference) {
-        var cleanItem = function(item) {
-            if (typeof item === "string") {
-                return item.trim();
-            }
-            return item;
+        var getCleanProperty = function(reference, field) {
+            var cleanItem = function(item) {
+                if (typeof item === "string") {
+                    return item.trim();
+                }
+                return item;
+            };
+            return (_.isUndefined(reference[field]) || _.isNull(reference[field])) ? "" : cleanItem(reference[field]);
         };
+        
         var cleanedReference = {};
         
-        cleanedReference.title = !_.isUndefined(reference.title) ? cleanItem(reference.title) : "";            
-        cleanedReference.authors = !_.isUndefined(reference.authors) ? cleanItem(reference.authors) : "";
-        cleanedReference.organizations = !_.isUndefined(reference.organizations) ? cleanItem(reference.organizations) : "";
-        cleanedReference.tags = !_.isUndefined(reference.tags) ? cleanItem(reference.tags) : "";            
-        cleanedReference.year = !_.isUndefined(reference.year) ? cleanItem(reference.year) : "";
-        cleanedReference.doi = !_.isUndefined(reference.doi) ? cleanItem(reference.doi) : "";    
-        cleanedReference.journal_name = !_.isUndefined(reference.journal_name) ? cleanItem(reference.journal_name) : "";
-        cleanedReference.journal_acronym = !_.isUndefined(reference.journal_acronym) ? cleanItem(reference.journal_acronym) : "";
-        cleanedReference.journal_pissn = !_.isUndefined(reference.journal_pissn) ? cleanItem(reference.journal_pissn) : "";
-        cleanedReference.journal_eissn = !_.isUndefined(reference.journal_eissn) ? cleanItem(reference.journal_eissn) : "";
-        cleanedReference.journal_issnl = !_.isUndefined(reference.journal_issnl) ? cleanItem(reference.journal_issnl) : "";
-        cleanedReference.journal_volume = !_.isUndefined(reference.journal_volume) ? cleanItem(reference.journal_volume) : "";
-        cleanedReference.journal_year = !_.isUndefined(reference.journal_year) ? cleanItem(reference.journal_year) : "";
-        cleanedReference.conference_name = !_.isUndefined(reference.conference_name) ? cleanItem(reference.conference_name) : "";
-        cleanedReference.conference_acronym = !_.isUndefined(reference.conference_acronym) ? cleanItem(reference.conference_acronym) : "";
-        cleanedReference.conference_place = !_.isUndefined(reference.conference_place) ? cleanItem(reference.conference_place) : "";
-        cleanedReference.conference_year = !_.isUndefined(reference.conference_year) ? cleanItem(reference.conference_year) : "";
-        cleanedReference.book_title = !_.isUndefined(reference.book_title) ? cleanItem(reference.book_title) : "";
-        cleanedReference.book_isbn = !_.isUndefined(reference.book_isbn) ? cleanItem(reference.book_isbn) : "";
-        cleanedReference.book_pages = !_.isUndefined(reference.book_pages) ? cleanItem(reference.book_pages) : "";
-        cleanedReference.book_editor = !_.isUndefined(reference.book_editor) ? cleanItem(reference.book_editor) : "";
-        cleanedReference.book_year = !_.isUndefined(reference.book_year) ? cleanItem(reference.book_year) : "";
-        cleanedReference.abstract = !_.isUndefined(reference.abstract) ? cleanItem(reference.abstract) : "";
-        cleanedReference.month = !_.isUndefined(reference.month) ? cleanItem(reference.month) : "";
-        cleanedReference.print_status = !_.isUndefined(reference.print_status) ? cleanItem(reference.print_status) : "";
-        cleanedReference.note = !_.isUndefined(reference.note) ? cleanItem(reference.note) : "";       
-        cleanedReference.approving_status = !_.isUndefined(reference.approving_status) ? cleanItem(reference.approving_status) : "";
-        cleanedReference.sharing_status = !_.isUndefined(reference.sharing_status) ? cleanItem(reference.sharing_status) : "";
-            
+        var referenceFields = [
+            'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
+            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
+            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
+            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
+         
+        referenceFields.forEach(function(field) {
+            cleanedReference[field] = getCleanProperty(reference, field);
+        });
+        
         return cleanedReference;
     };
     var referenceHash = function(crypto, reference) {
