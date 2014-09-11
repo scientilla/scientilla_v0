@@ -9,6 +9,7 @@ angular.module('network', []);
 angular.module('peer', []);
 angular.module('reference', []);
 angular.module('repository', []);
+angular.module('tags', []);
 angular.module('setting', []);
 angular.module('system', []);
 angular.module('user', []);
@@ -21,6 +22,7 @@ angular.module("scientilla", [
     "peer",
     "reference",
     "repository",
+    "tags",
     "setting",
     "system",
     "user",
