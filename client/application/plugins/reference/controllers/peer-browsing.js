@@ -9,6 +9,10 @@ angular.module("reference").controller(
         $scope.peerId = $routeParams.peerId;
         $scope.keywords = "";
         $scope.aReferences = [];
+        $scope.startPageNumber = 1;
+        $scope.currentPageNumber = 1;
+        $scope.numberOfItemsPerPage = 25;
+        $scope.totalNumberOfItems = 10000;        
         
         $scope.retrieveReferences = function retrieveReferences() {
             $scope.empty = false;
@@ -39,5 +43,29 @@ angular.module("reference").controller(
             
             return retrieveReferences;
         }();
+        
+        $scope.retrievePreviousItemsPage = function() {
+            if ($scope.startPageNumber > 1) {
+                $scope.startPageNumber--;
+            }            
+            if ($scope.currentPageNumber > 1) {
+                $scope.currentPageNumber--;
+            }
+        };
+        
+        $scope.retrieveCustomItemsPage = function(customPageNumber) {            
+            if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber = customPageNumber;
+            }
+        };         
+        
+        $scope.retrieveNextItemsPage = function() {
+            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+                $scope.startPageNumber++;
+            }
+            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber++; 
+            }
+        };        
     }]
 );
