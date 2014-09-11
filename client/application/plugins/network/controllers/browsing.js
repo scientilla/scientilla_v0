@@ -17,7 +17,11 @@ angular.module("network").controller(
         $scope.aPeers = [];
         $scope.aSeedPeers = [];
         $scope.aRepositories = [];
-        $scope.aReferences = [];       
+        $scope.aReferences = [];
+        $scope.startPageNumber = 1;
+        $scope.currentPageNumber = 1;
+        $scope.numberOfItemsPerPage = 25;
+        $scope.totalNumberOfItems = 10000;        
         
         $scope.saveSourcesListingMode = function() {
             $window.sessionStorage.sourcesListingMode = $scope.sourcesListingMode;
@@ -309,5 +313,29 @@ angular.module("network").controller(
             $scope.saveSourcesType();
             $scope.retrieveRepositoriesReferences();
         };
+        
+        $scope.retrievePreviousItemsPage = function() {
+            if ($scope.startPageNumber > 1) {
+                $scope.startPageNumber--;
+            }            
+            if ($scope.currentPageNumber > 1) {
+                $scope.currentPageNumber--;
+            }
+        };
+        
+        $scope.retrieveCustomItemsPage = function(customPageNumber) {            
+            if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber = customPageNumber;
+            }
+        };         
+        
+        $scope.retrieveNextItemsPage = function() {
+            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+                $scope.startPageNumber++;
+            }
+            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber++; 
+            }
+        };        
     }]        
 );
