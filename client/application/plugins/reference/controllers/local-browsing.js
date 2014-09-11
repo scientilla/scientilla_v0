@@ -121,7 +121,7 @@ angular.module("reference").controller(
             return retrieveReferences;
         }();
         
-        $scope.retrievePreviousReferencesPage = function() {
+        $scope.retrievePreviousItemsPage = function() {
             if ($scope.startPageNumber > 1) {
                 $scope.startPageNumber--;
             }            
@@ -130,13 +130,13 @@ angular.module("reference").controller(
             }
         };
         
-        $scope.retrieveCustomReferencesPage = function(customPageNumber) {            
+        $scope.retrieveCustomItemsPage = function(customPageNumber) {            
             if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber = customPageNumber;
             }
         };         
         
-        $scope.retrieveNextReferencesPage = function() {
+        $scope.retrieveNextItemsPage = function() {
             if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
                 $scope.startPageNumber++;
             }
