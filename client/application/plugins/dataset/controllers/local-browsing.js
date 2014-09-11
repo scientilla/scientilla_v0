@@ -8,7 +8,11 @@ angular.module("dataset").controller(
     "localDatasetsBrowsingController", ["$scope", "datasetsService", "activatedDatasetsService", "peersService", "peerReferencesService", "datasetReferencesService", "systemStatusService", "$window", "$location", function($scope, datasetsService, activatedDatasetsService, peersService, peerReferencesService, datasetReferencesService, systemStatusService, $window, $location) {
         $scope.changingCollectedDatasetId = "";
         $scope.changingSharedDatasetId = "";
-        $scope.aDatasets = [];        
+        $scope.aDatasets = [];
+        $scope.startPageNumber = 1;
+        $scope.currentPageNumber = 1;
+        $scope.numberOfItemsPerPage = 25;
+        $scope.totalNumberOfItems = 10000;        
         
         $scope.generateDatasetIdsSharingMap = function(aDatasets) {
             var datasetIdsSharingMap = {};
@@ -109,5 +113,29 @@ angular.module("dataset").controller(
             
             return retrieveDatasets;
         }();
+        
+        $scope.retrievePreviousItemsPage = function() {
+            if ($scope.startPageNumber > 1) {
+                $scope.startPageNumber--;
+            }            
+            if ($scope.currentPageNumber > 1) {
+                $scope.currentPageNumber--;
+            }
+        };
+        
+        $scope.retrieveCustomItemsPage = function(customPageNumber) {            
+            if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber = customPageNumber;
+            }
+        };         
+        
+        $scope.retrieveNextItemsPage = function() {
+            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+                $scope.startPageNumber++;
+            }
+            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber++; 
+            }
+        };        
     }]
 );
