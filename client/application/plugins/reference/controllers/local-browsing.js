@@ -11,7 +11,11 @@ angular.module("reference").controller(
         $scope.keywords = "";
         $scope.changingApprovedReferenceId = "";
         $scope.changingSharedReferenceId = "";
-        $scope.aReferences = [];        
+        $scope.aReferences = [];
+        $scope.startPageNumber = 1;
+        $scope.currentPageNumber = 1;
+        $scope.numberOfItemsPerPage = 25;
+        $scope.totalNumberOfItems = 110;
         
         $scope.generateReferenceIdsApprovingMap = function(aReferences) {
             var referenceIdsApprovingMap = {};
@@ -116,5 +120,29 @@ angular.module("reference").controller(
             
             return retrieveReferences;
         }();
+        
+        $scope.retrievePreviousReferencesPage = function() {
+            if ($scope.startPageNumber > 1) {
+                $scope.startPageNumber--;
+            }            
+            if ($scope.currentPageNumber > 1) {
+                $scope.currentPageNumber--;
+            }
+        };
+        
+        $scope.retrieveCustomReferencesPage = function(customPageNumber) {            
+            if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber = customPageNumber;
+            }
+        };         
+        
+        $scope.retrieveNextReferencesPage = function() {
+            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+                $scope.startPageNumber++;
+            }
+            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber++; 
+            }
+        };
     }]
 );

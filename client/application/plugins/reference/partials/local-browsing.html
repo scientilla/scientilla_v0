@@ -25,7 +25,12 @@
                             <span class="input-group-btn">
                                 <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
-                        </div>                        
+                        </div>
+                        <a ng-click="retrievePreviousReferencesPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-click="retrieveCustomReferencesPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
+                        <a ng-click="retrieveCustomReferencesPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
+                        <a ng-click="retrieveCustomReferencesPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextReferencesPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                        
                     </form>                              
                 </div>
             </div>
