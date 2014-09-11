@@ -15,7 +15,7 @@ angular.module("reference").controller(
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
         $scope.numberOfItemsPerPage = 25;
-        $scope.totalNumberOfItems = 110;
+        $scope.totalNumberOfItems = 10000;
         
         $scope.generateReferenceIdsApprovingMap = function(aReferences) {
             var referenceIdsApprovingMap = {};
