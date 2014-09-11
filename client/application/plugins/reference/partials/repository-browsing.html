@@ -21,8 +21,8 @@
                                 <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown" ng-disabled="error"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>
-                        <a ng-click="retrievePrevReferences()" class="btn btn-default" data-toggle="dropdown" ng-disabled="error || !ready || currentPage === firstPage"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-click="retrieveNextReferences()" class="btn btn-default" data-toggle="dropdown" ng-disabled="error || !ready || currentPage === lastPage"><i class="fa fa-angle-double-right"></i> Next</a>
+                        <a ng-click="retrievePrevReferences()" class="btn btn-default" ng-disabled="error || !ready || currentPage === firstPage"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-click="retrieveNextReferences()" class="btn btn-default" ng-disabled="error || !ready || currentPage === lastPage"><i class="fa fa-angle-double-right"></i> Next</a>
                         <!--
                         <button id="help-button" type="button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-mortar-board'></i> <b>Only You</b>: means that only publications confirmed by you, or supposed to be yours, are shown.<br /><br /><i class='fa fa-users'></i> <b>Only Others</b>: means that only other publications than yours are shown.<br /><br /><i class='fa fa-institution'></i> <b>Only You</b>: means that all publications are shown.<br /><br /><i class='fa fa-search'></i> Search is made among the <b>Local Publications List</b>." data-placement="left" data-html="true">
                             <i class="fa fa-question-circle"></i>
