@@ -7,7 +7,10 @@
 var model = require("../models/default.js")();
 
 module.exports = function () {
+    var tags = [];
     return {
-        
+        getTags: function(req, res) {
+            res.json(tags);
+        }
     };
 };
