@@ -20,7 +20,7 @@ angular.module("system").controller(
                 $window.sessionStorage.userType = data.user_type;
                 $window.sessionStorage.userRights = data.user_rights;
                 $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
-                // $scope.$emit("scientillaNominativeUpdateEvent");
+                $scope.$emit("scientillaNominativeUpdateEvent");
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 delete $window.sessionStorage.token;
