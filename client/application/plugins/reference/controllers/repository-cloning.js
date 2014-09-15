@@ -99,7 +99,7 @@ angular.module("reference").controller(
         }();
         
         $scope.cloneReference = function() {
-            referencesService.createReference({
+            referencesService.cloneReference({
                 title: $scope.oReference.title,
                 authors: $scope.oReference.authors,
                 organizations: $scope.oReference.organizations,
@@ -125,7 +125,10 @@ angular.module("reference").controller(
                 abstract: $scope.oReference.abstract,
                 month: $scope.oReference.month,
                 print_status: $scope.oReference.print_status,
-                note: $scope.oReference.note
+                note: $scope.oReference.note,
+                source: {
+                    type: "R"
+                }                
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-repository-references/" + $scope.repositoryId);
             }).error(function(data, status, headers, config) {

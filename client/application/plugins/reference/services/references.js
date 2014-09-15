@@ -81,6 +81,19 @@ angular.module("reference").factory(
                     Authorization: 'Bearer ' + token
                 }
 			});
+        };
+        
+        referencesProvider.cloneReference = function(data, token) {
+            return $http({
+				method: "POST",
+				url: "/api/cloned-references",
+                data: data,
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
         };        
         
         referencesProvider.setReferenceAsApproved = function(id, token) {

@@ -442,6 +442,13 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
     referencesController.getReceivedReferences(req, res);
 });
 
+// CLONED REFERENCES
+application.post("/api/cloned-references", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Clone a Reference");
+    systemController.checkUserCoherence(req, res);
+    referencesController.cloneReference(req, res);
+});
+
 // REPOSITORIES
 application.get("/api/repositories", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all Repositories");

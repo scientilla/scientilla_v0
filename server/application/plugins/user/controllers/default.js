@@ -222,6 +222,7 @@ module.exports = function () {
 							last_name: user.last_name,
 							business_name: user.business_name,
 							email: user.email,
+                            hash: user.hash,
 							id: user._id
 						}
 
