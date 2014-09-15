@@ -35,9 +35,9 @@ angular.module("user").controller(
                         $scope.oUser[key] = data[key];
                     }
                 }
-            }).error(function(data, status, headers, config) {
+            }); /*.error(function(data, status, headers, config) {
                 systemStatusService.react(status);
-            });
+            });*/
             
             return retrieveUser;
         }();
