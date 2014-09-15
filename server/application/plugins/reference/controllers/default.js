@@ -156,7 +156,10 @@ module.exports = function () {
             reference.last_modifier_id = "";
             reference.last_modification_datetime = "";  
             req.referencesCollection
-                .find({ original_hash: reference.original_hash })
+                .find({ 
+                    original_hash: reference.original_hash,
+                    user_hash: req.user.hash
+                })
                 .toArray(function(err, references) {
                     if (err) {
                         res.status(404).end();
@@ -291,7 +294,36 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.note) ? reference.note = req.body.note.trim() : null;
             !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : null;
             !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : null;
-            reference.original_hash = "";
+            switch (req.body.source.type) {
+                case "I":
+                    // Cloning a reference from the installation 
+                    reference.original_hash = "";
+                    break;
+                    
+                case "ID":
+                    // Cloning a reference from an installation dataset
+                    reference.original_hash = "";
+                    break;
+                
+                case "P":
+                    // Cloning a reference from a peer
+                    reference.original_hash = "";
+                    break;
+                    
+                case "PD":
+                    // Cloning a reference from a peer dataset
+                    reference.original_hash = "";
+                    break;
+                    
+                case "R":
+                    // Cloning a reference from a repository
+                    reference.original_hash = "";
+                    break;
+                
+                default:
+                    reference.original_hash = "";
+                    break;
+            }
             var cloneHash = (
                 reference.title + ", " +
                 reference.authors + ", " +
