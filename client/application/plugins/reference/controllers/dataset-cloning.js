@@ -91,7 +91,7 @@ angular.module("reference").controller(
         }();
         
         $scope.cloneReference = function() {
-            referencesService.createReference({
+            referencesService.cloneReference({
                 title: $scope.oReference.title,
                 authors: $scope.oReference.authors,
                 organizations: $scope.oReference.organizations,
@@ -118,7 +118,12 @@ angular.module("reference").controller(
                 month: $scope.oReference.month,
                 print_status: $scope.oReference.print_status,
                 note: $scope.oReference.note,
-                hash: $scope.oReference.hash
+                source: {
+                    type: "PD",
+                    peer_id: $scope.peerId,
+                    dataset_id: $scope.datasetId,
+                    reference_id: $scope.referenceId
+                }
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-dataset-references/" + $scope.peerId + "/" + $scope.datasetId);
             }).error(function(data, status, headers, config) {

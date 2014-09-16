@@ -442,6 +442,13 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
     referencesController.getReceivedReferences(req, res);
 });
 
+// CLONED REFERENCES
+application.post("/api/cloned-references", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Clone a Reference");
+    systemController.checkUserCoherence(req, res);
+    referencesController.cloneReference(req, res);
+});
+
 // REPOSITORIES
 application.get("/api/repositories", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all Repositories");
@@ -527,7 +534,6 @@ application.put("/api/users/:id", expressJwt({secret: 'scientilla'}), function(r
 // LOGGED USERS
 application.get("/api/logged-users", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read the Logged User");
-    systemController.checkUserCoherence(req, res);
     usersController.getLoggedUser(req, res);
 });
 
@@ -538,7 +544,6 @@ application.post("/api/logged-users", function(req, res) {
 
 application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Update the Logged User");
-    systemController.checkUserCoherence(req, res);
     usersController.updateLoggedUser(req, res);
 });
 

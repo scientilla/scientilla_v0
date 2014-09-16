@@ -11,7 +11,7 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">NETWORK DATA</span>
+                    <span class="navbar-brand" id="tools-link">SCIENTILLA NETWORK</span>
                 </div>
                 <div class="collapse navbar-collapse">
                     <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">
@@ -22,6 +22,7 @@
                         <div class="btn-group">
                             <label ng-change="showPeersListing()" class="btn btn-default" ng-model="sourcesType" btn-radio="'P'"><i class="fa fa-cloud"></i> Peers</label>
                             <label ng-change="showRepositoriesListing()" class="btn btn-default" ng-model="sourcesType" btn-radio="'R'"><i class="fa fa-exchange"></i> Repositories</label>
+                            <label ng-change="showDatasetsListing()" class="btn btn-default disabled" ng-model="sourcesType" btn-radio="'D'"><i class="fa fa-database"></i> Datasets</label>
                         </div>
                         <!--
                         <button data-toggle="modal" data-target="#sources-button-help" class="btn btn-default help-button">
@@ -104,13 +105,6 @@
                                     <i class="fa fa-question-circle"></i>
                                 </button>
                                 -->
-                            </th>
-                            <th class="fixed-th-1x">
-                                <!--
-                                <button data-toggle="modal" data-target="#datasets-button-help" class="btn btn-default help-button">
-                                    <i class="fa fa-question-circle"></i>
-                                </button>
-                                -->
                             </th>                            
                             <th><i class="fa fa-cloud"></i> Peer Name</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-line-chart"></i> Size</th>
@@ -140,9 +134,6 @@
                         <tr ng-repeat="peer in aPeers" class="fixed-tr-1x">
                             <td>
                                 <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-book primary-feature"></i></a>
-                            </td>
-                            <td>
-                                <a href="#/browse-peer-datasets/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-database primary-feature"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-peer/{{peer._id}}/">

@@ -191,7 +191,7 @@ module.exports = function () {
                             user.password = encryptedPassword;
 							user.status = "U";
 							user.hash = "";
-							req.usersCollection.insert(user, {w:1}, function(err, user) {
+							req.usersCollection.insert(user, { w: 1 }, function(err, user) {
 								if (err || req.underscore.isNull(user)) {
 								    console.log("Failed to Create the Default User");
 								}
@@ -202,7 +202,7 @@ module.exports = function () {
 						}
 					})
 				},
-				function(callback) {                    
+				function(callback) {
 					req.usersCollection.findOne({ username: req.body.username }, function(err, user) {
 						if (err || req.underscore.isNull(user)) {
 							res.status(401).end();
@@ -222,10 +222,11 @@ module.exports = function () {
 							last_name: user.last_name,
 							business_name: user.business_name,
 							email: user.email,
+                            // hash: user.hash,
 							id: user._id
 						}
 
-						var token = req.jsonWebToken.sign(userDataForToken, "scientilla", {expiresInMinutes: 60});
+						var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
 						
 						res.setHeader("Content-Type", "application/json");
 						res.json({
