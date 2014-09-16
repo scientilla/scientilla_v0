@@ -59,23 +59,21 @@ angular.module("peer").controller(
             }
         }
         
-        $scope.retrievePeers = function retrievePeers() {
-            $scope.empty = false;
+        $scope.retrievePeers = function retrievePeers() {        
+            $scope.iPeers = 0;
             $scope.ready = false;
             $scope.error = false;
             async.series([
                 function(callback) {
                     peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
                         $scope.aPeers = data;
-                        if ($scope.aPeers.length === 0) {
-                            $scope.empty = true;
-                        }                    
+                        $scope.iPeers = $scope.aPeers.length;                  
                         callback();
                     }).error(function(data, status, headers, config) {
                         $scope.error = true;
                         systemStatusService.react(status, callback);
                     });
-                },
+                },                
                 function(callback) {
                     $scope.oActivatedPeer = {};
                     activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
@@ -101,5 +99,21 @@ angular.module("peer").controller(
             
             return retrievePeers;
         }();
+        
+        $scope.retrieveSeedPeers = function retrieveSeedPeers() {        
+            async.series([
+                function(callback) {
+                    peersService.getSeedPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        $scope.aSeedPeers = data; 
+                        callback();
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                }
+            ]);
+            
+            return retrieveSeedPeers;
+        }();        
     }]
 );
