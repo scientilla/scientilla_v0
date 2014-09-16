@@ -7,23 +7,15 @@
 angular.module("system").controller(
     "systemCollapseController", ["$scope", function($scope) {  
         /* TO-DO: substitute the jQuery code with a directive. */
-        /* jQuery code start */        
-        $scope.toggleSettingsMenu = function() {
-            $("#settingsMenu").slideDown();
-            $("#referencesMenu").slideUp();
-            $("#datasetsMenu").slideUp();
+        /* jQuery code start */
+        $scope.toggleNetworkMenu = function() {
+            $("#networkMenu").slideDown();
+            $("#configurationMenu").slideUp();
         }
         
-        $scope.toggleReferencesMenu = function() {
-            $("#settingsMenu").slideUp();
-            $("#referencesMenu").slideDown();
-            $("#datasetsMenu").slideUp();            
-        }
-        
-        $scope.toggleDatasetsMenu = function() {
-            $("#settingsMenu").slideUp();
-            $("#referencesMenu").slideUp();
-            $("#datasetsMenu").slideDown();            
+        $scope.toggleConfigurationMenu = function() {
+            $("#networkMenu").slideUp();
+            $("#configurationMenu").slideDown();
         }
         /* jQuery code end */        
     }]

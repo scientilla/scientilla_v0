@@ -134,6 +134,10 @@ html, body {
     margin-left: 15px;
 }
 
+.scientilla-globe {
+    font-size: 125%;
+}
+
 /* Toolbar */
 #toolbar {
     margin: 0px;

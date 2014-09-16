@@ -26,59 +26,46 @@
 
                     </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a activate ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><i class="glyphicon glyphicon-book"></i> Your Publications</a>
-                        <ul collapse_stop="referencesCollapseStatus" id="referencesMenu" class="nav nav-stacked nav-pills tree">
-                            <!--                            
-                            <li>
-                                <a activate href="#/browse-references/"><i class="fa fa-user"></i> from <strong>Official List</strong></a>
-                            </li>
-                            <li>
-                                <a activate href="#/browse-activated-dataset-references/"><i class="fa fa-database"></i> from Datasets</a>
-                            </li>                            
-                            <li>
-                                <a activate href="#/browse-activated-repository-references/"><i class="glyphicon glyphicon-cloud-download"></i> from Repositories</a>
-                            </li>
-                            <li>
-                                <a activate href="#/browse-activated-peer-references/"><i class="glyphicon glyphicon-cloud-download"></i> from Peers</a>
-                            </li>                            
-                            <li>
-                                <a href="#/browse-received-references/"><i class="glyphicon glyphicon-inbox"></i> List of Received ones</a>
-                            </li>
-                            -->
-                        </ul>
+                        <a activate ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><b><i class="glyphicon glyphicon-book"></i> Your Publications</b></a>
                     </li>
                     <li class="sidebar-divider">
 
                     </li>
                     <li>
-                        <a activate href="#/browse-network/"><i class="fa fa-cloud"></i> SCIENTILLA Network</a>
+                        <a activate><i class="fa fa-sitemap"></i> Your Network</a>
+                    </li>                    
+                    <li class="sidebar-divider">
+
                     </li>
+                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
+                        <a ng-click="toggleNetworkMenu()" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> SCIENTILLA Network</a>
+                        <ul id="networkMenu" class="nav nav-stacked nav-pills tree">
+                            <li>
+                                <a activate><i class="fa fa-cloud"></i> Peers</a>
+                            </li>                            
+                            <li>
+                                <a activate><i class="fa fa-exchange"></i> Repositories</a>
+                            </li>
+                            <li>
+                                <a activate><i class="fa fa-database"></i> Datasets</a>
+                            </li>                            
+                        </ul>                        
+                    </li>                    
                     <li class="sidebar-divider">
 
                     </li>                                                            
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleSettingsMenu()" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Settings</a>
-                        <ul collapse_stop="settingsCollapseStatus" id="settingsMenu" class="nav nav-stacked nav-pills tree">
+                        <a ng-click="toggleConfigurationMenu()" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Configuration</a>
+                        <ul id="configurationMenu" class="nav nav-stacked nav-pills tree">
                             <li>
                                 <a activate href="#/edit-user/"><i class="fa fa-mortar-board"></i> Your Profile</a>
                             </li>                            
                             <li>
                                 <a activate href="#/browse-users/"><i class="fa fa-users"></i> Users</a>
-                            </li>
-                            <!--
-                            <li>
-                                <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers (Other Installations)</a>
-                            </li>
-                            <li>
-                                <a activate href="#/browse-repositories/"><i class="fa fa-exchange"></i> Repositories (Web Services)</a>
                             </li>                            
                             <li>
-                                <a activate href="#/browse-datasets/"><i class="fa fa-database"></i> Datasets (Collected Data)</a>
+                                <a activate href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Global Settings</a>
                             </li>                            
-                            <li>
-                                <a href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Settings</a>
-                            </li>
-                            -->                            
                         </ul>                        
                     </li>
                     <li class="sidebar-divider">
