@@ -26,5 +26,6 @@ angular.module("scientilla", [
     "setting",
     "system",
     "user",
-    "jlareau.pnotify"
+    "jlareau.pnotify",
+    "ui.select2"
 ]);
