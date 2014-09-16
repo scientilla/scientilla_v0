@@ -12,6 +12,8 @@
     "font-awesome": "latest",
     "jquery": "latest",
     "pnotify": "latest",
-    "angular-pnotify" : "latest"
+    "angular-pnotify" : "latest",
+    "select2": "latest",
+    "angular-ui-select2": "latest"
   }
 }
