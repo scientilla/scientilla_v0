@@ -324,6 +324,12 @@ html, body {
     white-space: nowrap;
 }
 
+.disabled-link {
+    color: #DDDDDD !important;
+    pointer-events: none;
+    cursor: default;
+}
+
 /* Presentation */
 .tagSelector, .select2-container.tagSelector {
     width: 500px;
