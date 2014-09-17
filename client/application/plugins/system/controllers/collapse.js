@@ -8,13 +8,13 @@ angular.module("system").controller(
     "systemCollapseController", ["$scope", function($scope) {  
         /* TO-DO: substitute the jQuery code with a directive. */
         /* jQuery code start */
-        $scope.toggleNetworkMenu = function() {
-            $("#networkMenu").slideDown();
+        $scope.toggleWholeNetworkMenu = function() {
+            $("#wholeNetworkMenu").slideDown();
             $("#configurationMenu").slideUp();
         }
         
         $scope.toggleConfigurationMenu = function() {
-            $("#networkMenu").slideUp();
+            $("#wholeNetworkMenu").slideUp();
             $("#configurationMenu").slideDown();
         }
         /* jQuery code end */        

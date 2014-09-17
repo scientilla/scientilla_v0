@@ -33,14 +33,20 @@
 
                     </li>
                     <li>
-                        <a activate href="#/browse-network/"><i class="fa fa-sitemap"></i> Publications of your Network</a>
+                        <a activate href="#/browse-network/"><i class="fa fa-sitemap"></i> Your Network's Publications</a>
                     </li>                    
                     <li class="sidebar-divider">
 
                     </li>
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleNetworkMenu()" href="#/browse-peers/" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> Whole Network</a>
-                        <ul id="networkMenu" class="nav nav-stacked nav-pills tree">
+                        <a ng-click="toggleWholeNetworkMenu()" href="#/browse-peers/" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> World Data</a>
+                        <ul id="wholeNetworkMenu" class="nav nav-stacked nav-pills tree">
+                            <li>
+                                <a class="disabled-link"><i class="fa fa-institution"></i> Organizations</a>
+                            </li>
+                            <li>
+                                <a class="disabled-link"><i class="fa fa-mortar-board"></i> Researchers</a>
+                            </li>                             
                             <li>
                                 <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers</a>
                             </li>                            
@@ -49,13 +55,7 @@
                             </li>
                             <li>
                                 <a class="disabled-link"><i class="fa fa-database"></i> Datasets</a>
-                            </li>
-                            <li>
-                                <a class="disabled-link"><i class="fa fa-institution"></i> Organizations</a>
-                            </li>
-                            <li>
-                                <a class="disabled-link"><i class="fa fa-mortar-board"></i> Researchers</a>
-                            </li>                            
+                            </li>                           
                         </ul>                        
                     </li>                    
                     <li class="sidebar-divider">
