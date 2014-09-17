@@ -71,6 +71,19 @@ angular.module("repository").factory(
 			});
         };
         
+        repositoriesProvider.deleteRepository = function(data, token) {
+            return $http({
+				method: "DELETE",
+				url: "/api/repositories/" + data.id,
+                data: data,
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };        
+        
         repositoriesProvider.setRepositoryAsShared = function(id, token) {
             return $http({
 				method: "PUT",

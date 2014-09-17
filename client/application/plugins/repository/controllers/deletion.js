@@ -5,7 +5,15 @@
  */
 
 angular.module("repository").controller(
-    "repositoryDeletionController", ["$scope", "$routeParams", "repositoriesService", "$window", "$location", function($scope, $routeParams, repositoriesService, $window, $location) {
-        
+    "repositoryDeletionController", ["$scope", "$routeParams", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoriesService, systemStatusService, $window, $location) {
+        $scope.deleteRepository = function() {
+            repositoriesService.deleteRepository({              
+                id: $routeParams.id
+            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+                $location.path("browse-repositories");
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+        };
     }]
 );

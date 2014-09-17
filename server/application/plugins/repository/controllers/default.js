@@ -134,6 +134,16 @@ module.exports = function () {
                 res.end();
             });            
         },
+        deleteRepository: function(req, res) {          
+            req.repositoriesCollection.remove({ _id: req.params.id }, {w: 1}, function(err) {
+                if (err) {
+                    res.status(500).end();
+                    return;
+                }
+                
+                res.end();
+            });            
+        },
         discoverRepositories: function(installationConfiguration, seedsConfiguration, peersCollection) {
             for (key in seedsConfiguration) {
                 

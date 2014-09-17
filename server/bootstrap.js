@@ -479,6 +479,12 @@ application.put("/api/repositories/:id", expressJwt({secret: 'scientilla'}), fun
     repositoriesController.updateRepository(req, res);
 });
 
+application.delete("/api/repositories/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Delete a Repository");
+    systemController.checkUserCoherence(req, res);
+    repositoriesController.deleteRepository(req, res);
+});
+
 // REPOSITORY REFERENCES
 application.get("/api/repositories/:id/references", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all Repository References");
