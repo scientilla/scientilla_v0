@@ -39,7 +39,7 @@
 
                     </li>
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleNetworkMenu()" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> Whole Network</a>
+                        <a ng-click="toggleNetworkMenu()" href="#/browse-peers/" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> Whole Network</a>
                         <ul id="networkMenu" class="nav nav-stacked nav-pills tree">
                             <li>
                                 <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers</a>
@@ -62,17 +62,17 @@
 
                     </li>                                                            
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleConfigurationMenu()" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Configuration</a>
+                        <a ng-click="toggleConfigurationMenu()" href="#/browse-settings/" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Configuration</a>
                         <ul id="configurationMenu" class="nav nav-stacked nav-pills tree">
+                            <li>
+                                <a activate href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Settings</a>
+                            </li>                            
                             <li>
                                 <a activate href="#/edit-user/"><i class="fa fa-mortar-board"></i> Your Profile</a>
                             </li>                            
                             <li>
                                 <a activate href="#/browse-users/"><i class="fa fa-users"></i> Users</a>
-                            </li>                            
-                            <li>
-                                <a activate href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Settings</a>
-                            </li>                            
+                            </li>                                                        
                         </ul>                        
                     </li>
                     <li class="sidebar-divider">
