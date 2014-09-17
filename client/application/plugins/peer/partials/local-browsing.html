@@ -39,28 +39,73 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
+                            <th class="fixed-th-1x">
+                                <!--
+                                <button data-toggle="modal" data-target="#publications-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>
+                                -->
+                            </th>                            
                             <th><i class="fa fa-cloud"></i> Peer Name</th>
+                            <th class="fixed-th-2x text-center"><i class="fa fa-line-chart"></i> Size</th>
+                            <th class="fixed-th-1x text-center"><i class="fa fa-certificate"></i></th>
                             <th><i class="fa fa-link"></i> URL</th>
-                            <th class="fixed-th-3x">
-                                <a href="#/add-peer/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                            <th class="fixed-th-1x">
+                                <!--
+                                <button data-toggle="modal" data-target="#sharing-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>
+                                -->
+                            </th>
+                            <th class="fixed-th-1x"></th>
+                            <th class="fixed-th-1x">
+                                <!--
+                                <button data-toggle="modal" data-target="#editing-button-help" class="btn btn-default help-button">
+                                    <i class="fa fa-question-circle"></i>
+                                </button>
+                                -->
+                            </th>                            
+                            <th class="fixed-th-1x">
+                                <a href="#/add-peer/" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
                             </th>
                         </tr>
                     </thead>
-                    <tbody ng-show="ready && !empty">
-                        <tr ng-repeat="peer in aPeers">
-                            <td>{{peer.name}}</td>
-                            <td><a href="{{peer.url}}/client/" target="PeerWindow">{{peer.url}}</a></td>
+                    <tbody ng-show="ready && iPeers > 0">
+                        <tr ng-repeat="peer in aPeers" class="fixed-tr-1x">
                             <td>
-                                <button ng-click="setPeerAsActivated(peer._id)" type="button" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-circle-o turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peer._id == activatedPeerId ? 'fa fa-circle turned-on' : '' }}"></i> {{peer._id == activatedPeerId ? 'Preferred' : 'Prefer' }}</button>
-                                <button ng-click="switchPeerSharingStatus(peer._id)" type="button" class="btn btn-default btn-block"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock' : '' }}"></i> {{peerIdsSharingMap[peer._id] ? "Public" : "Private" }}</button>
-                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
-                                <!-- <a href="#/delete-peer/{{peer._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-book primary-feature"></i></a>
+                            </td>                            
+                            <td>
+                                <a href="#/edit-peer/{{peer._id}}/">
+                                    <strong>{{peer.name}}</strong>
+                                </a>
                             </td>
+                            <td class="text-center">
+                                <span>10000</span>
+                            </td>                            
+                            <td class="text-center">
+                                <i class="fa fa-thumbs-o-up"></i>
+                            </td>
+                            <td>
+                                <span>{{peer.url}}</span>
+                            </td>                            
+                            <td>
+                                <a ng-click="switchPeerSharingStatus(peer._id)" class="{{peerIdsSharingMap[peer._id] ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off'}}"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
+                            </td>
+                            <td>
+                                <a ng-click="setPeerAsActivated(peer._id)" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-star-o secondary-feature turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peer._id == activatedPeerId ? 'fa fa-star secondary-feature turned-on' : '' }}"></i></a>
+                            </td>
+                            <td>
+                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature"><i class="fa fa-edit secondary-feature"></i></a>
+                            </td>                            
+                            <td>
+                                <a href="#/delete-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature"><i class="fa fa-trash-o secondary-feature"></i></a>
+                            </td>                            
                         </tr>
                     </tbody>
-                    <tbody ng-show="empty">
+                    <tbody ng-show="iPeers === 0">
                         <tr>
-                            <td colspan="3">
+                            <td colspan="10">
                                 <div class="col-lg-12 empty-message">
                                     No peers available in this installation.
                                 </div>
@@ -69,7 +114,7 @@
                     </tbody>
                     <tbody ng-show="error">
                         <tr>
-                            <td colspan="5">
+                            <td colspan="10">
                                 <div class="col-lg-12 error-message">
                                     Error in retrieving peers.
                                 </div>
