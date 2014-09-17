@@ -34,7 +34,7 @@ module.exports = function () {
                     if (err) {
                         callback(err, null);
                     }
-                    callback(body);
+                    callback(err, body);
                 });
             });
         }

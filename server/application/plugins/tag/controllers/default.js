@@ -15,6 +15,10 @@ module.exports = function () {
                 keywords = [keywords];
             }
             network.getTags(req.seedsConfiguration, keywords, function(err, tags) {
+                if (err) {
+                    res.status(404).end();
+                    return;
+                }
             });
         }
     };
