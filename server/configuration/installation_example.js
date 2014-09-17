@@ -10,6 +10,7 @@ module.exports = function () {
         ssl_key_path: "/../certs/certificate.key",
         ssl_cert_path: "/../certs/certificate.cert",
         installation_name: "Your Installation Name",
-        installation_url: "https://your.domain.com[:port]"
+        installation_url: "https://your.domain.com[:port]",
+        seed: false
     };
 };

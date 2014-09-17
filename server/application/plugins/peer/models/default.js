@@ -6,6 +6,14 @@
 
 module.exports = function () {
     return {
-        
+        getSeedPeers: function(seedsConfiguration, callback) {
+            var seedPeers = [];
+            for (var key in seedsConfiguration) {
+                seedPeers[seedPeers.length] = {
+                    url: seedsConfiguration[key]
+                };
+            }
+            callback(null, seedPeers);
+        }
     };
 };
