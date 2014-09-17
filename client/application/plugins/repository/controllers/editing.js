@@ -75,7 +75,7 @@ angular.module("repository").controller(
                 extractors: $scope.oRepository.extractors,
                 id: $scope.oRepository._id
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                $location.path("browse-network");
+                $location.path("browse-repositories");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });

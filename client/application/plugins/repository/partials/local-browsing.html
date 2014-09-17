@@ -13,26 +13,58 @@
                     </a>
                     <span class="navbar-brand" id="tools-link">REPOSITORIES</span>
                 </div>
-                <!--
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                       
-                        <div id="toolbar-actions-control" class="input-group">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">development in progress...</a></li>
-                                </ul>
-                            </div>                                        
-                            <input id="action-input" type="text" class="form-control">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">
+                        <div class="btn-group">
+                            <label ng-change="saveSourcesListingMode()" class="btn btn-default" ng-model="sourcesListingMode" btn-radio="'L'"><i class="fa fa-list"></i> List</label>
+                            <label ng-change="saveSourcesListingMode()" class="btn btn-default disabled" ng-model="sourcesListingMode" btn-radio="'G'"><i class="fa fa-globe"></i> Graph</label>
                         </div>
+                        <!--
+                        <button data-toggle="modal" data-target="#sources-button-help" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </button>  
+                        -->
+                    </form>
+                    <form ng-submit="searchRepositoriesReferences()" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <!--
+                        <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </button> 
+                        -->
+                        <div class="input-group">
+                            <input ng-model="keywords" type="text" placeholder="Type something to..." class="form-control" readonly>
+                            <div class="input-group-btn">
+                                <a ng-click="searchRepositoriesReferences()" class="btn btn-default disabled"><i class="fa fa-search"></i> Search</a>
+                                <button type="button" class="btn btn-default dropdown-toggle disabled" tabindex="-1" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>                                
+                                <ul class="dropdown-menu dropdown-menu-right disabled" role="menu">
+                                    <li>
+                                        <a href="#"><i class="fa fa-book"></i> Publications among <b>most important</b> (default)</a>
+                                    </li>                                    
+                                    <li>
+                                        <a href="#"><i class="fa fa-book"></i> Publications among <b>preferred</b></a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-cloud"></i> Repositories</a>
+                                    </li>                                    
+                                </ul>                                
+                            </div>                            
+                        </div>
+                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                        
                     </form>                              
                 </div>
-                -->
             </div>
         </nav>
     </div>			
 </div>
-<div id="content-container">
+<div ng-if="resultsListingMode == 'OFF'" id="content-container">
     <div id="content" class="container-fluid">        
         <div class="row">             
             <div class="col-lg-12 visible-md visible-lg">
@@ -54,6 +86,7 @@
                                 </button>
                                 -->
                             </th>
+                            <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x">
                                 <!--
                                 <button data-toggle="modal" data-target="#sharing-button-help" class="btn btn-default help-button">
@@ -61,15 +94,15 @@
                                 </button>
                                 -->
                             </th>                            
-                            <th class="fixed-th-3x">
-                                <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                            <th class="fixed-th-1x">
+                                <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
                             </th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && iRepositories > 0">
                         <tr ng-repeat="repository in aRepositories" class="fixed-tr-1x">
                             <td>
-                                <a href="#/browse-repository-references/{{repository._id}}/" class="btn btn-default btn-mini"><i class="fa fa-book"></i></a>
+                                <a href="#/browse-repository-references/{{repository._id}}/" class="btn btn-default btn-mini primary-feature"><i class="glyphicon glyphicon-book primary-feature"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-repository/{{repository._id}}/">
@@ -77,15 +110,17 @@
                                 </a>
                             </td>
                             <td>
+                                <a ng-click="switchRepositorySharingStatus(repository._id)" class="{{repositoryIdsSharingMap[repository._id] ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off'}}"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
+                            </td>
+                            <td>
+                                <a ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-star-o secondary-feature turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-star secondary-feature turned-on' : '' }}"></i></a>                        
+                            </td>                            
+                            <td>
                                 <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i></a>
                             </td>
                             <td>
-                                <a ng-click="switchRepositorySharingStatus(repository._id)" class="btn btn-default btn-block"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock' : '' }}"></i></a>
+                                <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i></a>
                             </td>                            
-                            <td>
-                                <button ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-circle-o turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-circle turned-on' : '' }}"></i> {{repository._id == activatedRepositoryId ? 'Preferred' : 'Prefer' }}</button>                        
-                                <!-- <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
-                            </td>
                         </tr> 
                     </tbody>
                     <tbody ng-show="iRepositories === 0">
@@ -138,5 +173,106 @@
                 <i class="fa fa-refresh fa-spin fa-5x"></i>
             </div>
         </div>        
+    </div>
+</div>
+<div ng-if="resultsListingMode == 'RR'" id="content-container">
+    <div id="content" class="container-fluid">
+        <div class="row">          
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
+                            <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
+                            <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
+                            <th class="fixed-th-3x"></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr ng-repeat="reference in aReferences">
+                            <td>
+                                {{reference.authors}}<br />
+                                <i>{{reference.title}}</i><br />
+                                <span ng-if="reference.journal_name">
+                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                </span>
+                                <span ng-if="reference.conference_name">
+                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                </span>
+                                <span ng-if="reference.book_title">
+                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                </span>
+                                <strong ng-if="reference.doi">
+                                    {{reference.doi}}
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>{{reference.year}}</strong>
+                            </td>        
+                            <td>{{reference.tags}}</td>
+                            <td>
+                                <a href="#/clone-repository-reference/{{peerId}}/{{reference._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-code-fork"></i> Clone</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="4">
+                                <div class="col-lg-12 empty-message">
+                                    No references available on the peer.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="5">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving references from the peer.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+            <div class="col-sm-12 visible-xs visible-sm">
+                <div class="row">                           
+                    <div class="col-xs-12 col-sm-12" ng-repeat="reference in aReferences">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4><i class="fa fa-file-text"></i> Bibliographic Data:</h4>
+                                {{reference.authors}}<br />
+                                <i>{{reference.title}}</i><br />
+                                <span ng-if="reference.journal_name">
+                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                </span>
+                                <span ng-if="reference.conference_name">
+                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                </span>
+                                <span ng-if="reference.book_title">
+                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                </span>
+                                <strong ng-if="reference.doi">
+                                    {{reference.doi}}
+                                </strong>
+                                <h4><i class="fa fa-calendar"></i> Year:</h4>
+                                <strong>{{reference.year}}</strong>
+                                <h4><i class="fa fa-tags"></i> Tags:</h4>
+                                {{reference.tags}}<br />
+                            </div>
+                            <div class="panel-footer">
+                                <a href="#/clone-repository-reference/{{peerId}}/{{reference._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-code-fork"></i> Clone</a>
+                                <div class="clearfix"></div>
+                            </div>                                    
+                        </div>
+                    </div>                                
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>
     </div>
 </div>
