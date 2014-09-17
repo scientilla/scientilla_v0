@@ -33,19 +33,19 @@
 
                     </li>
                     <li>
-                        <a><i class="fa fa-sitemap"></i> Your Network</a>
+                        <a><i activate href="#/browse-network/" class="fa fa-sitemap"></i> Publications of your Network</a>
                     </li>                    
                     <li class="sidebar-divider">
 
                     </li>
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleNetworkMenu()" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> SCIENTILLA Network</a>
+                        <a ng-click="toggleNetworkMenu()" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> Whole Network</a>
                         <ul id="networkMenu" class="nav nav-stacked nav-pills tree">
                             <li>
                                 <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers</a>
                             </li>                            
                             <li>
-                                <a><i class="fa fa-exchange"></i> Repositories</a>
+                                <a activate href="#/browse-repositories/"><i class="fa fa-exchange"></i> Repositories</a>
                             </li>
                             <li>
                                 <a><i class="fa fa-database"></i> Datasets</a>
@@ -65,7 +65,7 @@
                                 <a activate href="#/browse-users/"><i class="fa fa-users"></i> Users</a>
                             </li>                            
                             <li>
-                                <a activate href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Global Settings</a>
+                                <a activate href="#/browse-settings/"><i class="glyphicon glyphicon-wrench"></i> Settings</a>
                             </li>                            
                         </ul>                        
                     </li>
