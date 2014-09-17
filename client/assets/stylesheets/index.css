@@ -241,6 +241,22 @@ html, body {
     width: 40px;
 }
 
+.fixed-button-2x {
+    width: 90px;
+}
+
+.fixed-button-3x {
+    width: 140px;
+}
+
+.fixed-button-4x {
+    width: 190px;
+}
+
+.fixed-button-5x {
+    width: 240px;
+}
+
 #content td {
     background-color: transparent;
 }

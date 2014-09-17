@@ -110,16 +110,16 @@
                                 </a>
                             </td>
                             <td>
-                                <a ng-click="switchRepositorySharingStatus(repository._id)" class="{{repositoryIdsSharingMap[repository._id] ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off'}}"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
+                                <a ng-click="switchRepositorySharingStatus(repository._id)" class="{{repositoryIdsSharingMap[repository._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
                             </td>
                             <td>
-                                <a ng-click="setRepositoryAsActivated(repository._id)" type="button" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-star-o secondary-feature turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-star secondary-feature turned-on' : '' }}"></i></a>                        
+                                <a ng-click="setRepositoryAsActivated(repository._id)" class="{{repository._id == activatedRepositoryId ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off' }}"><i class="{{repository._id != activatedRepositoryId && changingActivatedRepositoryId == '' ? 'fa fa-star-o secondary-feature turned-off' : '' }}{{repository._id == changingActivatedRepositoryId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{repository._id == activatedRepositoryId ? 'fa fa-star secondary-feature turned-on' : '' }}"></i></a>                        
                             </td>                            
                             <td>
-                                <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i></a>
+                                <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-edit"></i></a>
                             </td>
                             <td>
-                                <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i></a>
+                                <a href="#/delete-repository/{{repository._id}}/" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-trash-o"></i></a>
                             </td>                            
                         </tr> 
                     </tbody>
