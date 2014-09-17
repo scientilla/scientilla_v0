@@ -5,10 +5,23 @@
  */
 
 angular.module("peer").controller(
-    "localPeersBrowsingController", ["$scope", "peersService", "activatedPeersService", "systemStatusService", "$window", "$location", function($scope, peersService, activatedPeersService, systemStatusService, $window, $location) {
+    "localPeersBrowsingController", ["$scope", "peersService", "activatedPeersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, activatedPeersService, seedPeerReferencesService, systemStatusService, $window, $location) {
+        $scope.sourcesListingMode = $window.sessionStorage.sourcesListingMode ? $window.sessionStorage.sourcesListingMode : "L"; // L = List, G = Graph
+        $scope.resultsListingMode = "OFF"; // OFF = Disabled, MPR = Main Peers Results
         $scope.changingActivatedPeerId = "";
-        $scope.changingSharedPeerId = "";        
+        $scope.changingSharedPeerId = ""; 
+        $scope.keywords = "";        
         $scope.aPeers = [];
+        $scope.aSeedPeers = [];
+        $scope.aReferences = [];        
+        $scope.startPageNumber = 1;
+        $scope.currentPageNumber = 1;
+        $scope.numberOfItemsPerPage = 25;
+        $scope.totalNumberOfItems = 10000;        
+        
+        $scope.saveSourcesListingMode = function() {
+            $window.sessionStorage.sourcesListingMode = $scope.sourcesListingMode;
+        }        
             
         $scope.generatePeerIdsSharingMap = function(aPeers) {
             var peerIdsSharingMap = {};
@@ -114,6 +127,66 @@ angular.module("peer").controller(
             ]);
             
             return retrieveSeedPeers;
-        }();        
+        }();
+        
+        $scope.retrieveSeedPeersReferences = function() {
+            $scope.empty = false;
+            $scope.ready = false;
+            $scope.error = false;
+            for (var seedPeerIndex = 0; seedPeerIndex < $scope.aSeedPeers.length; seedPeerIndex++) {
+                async.series([
+                    function(callback) {
+                        seedPeerReferencesService.getReferences(
+                            seedPeerIndex,
+                            $scope.keywords,
+                            $window.sessionStorage.token
+                        ).success(function(data, status, headers, config) {
+                            $scope.aReferences = data;
+                            if ($scope.aReferences.length === 0) {
+                                $scope.empty = true;
+                            }                    
+                            callback();
+                        }).error(function(data, status, headers, config) {
+                            $scope.error = true;
+                            systemStatusService.react(status, callback);
+                        });
+                    },
+                    function(callback) {
+                        $scope.ready = true;
+                        callback();
+                    }
+                ]);
+            }
+        };
+        
+        $scope.searchSeedPeersReferences = function() {
+            $scope.resultsListingMode = "MPR";
+            $scope.saveSourcesListingMode();
+            $scope.retrieveSeedPeersReferences();
+        };        
+        
+        $scope.retrievePreviousItemsPage = function() {
+            if ($scope.startPageNumber > 1) {
+                $scope.startPageNumber--;
+            }            
+            if ($scope.currentPageNumber > 1) {
+                $scope.currentPageNumber--;
+            }
+        };
+        
+        $scope.retrieveCustomItemsPage = function(customPageNumber) {            
+            if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber = customPageNumber;
+            }
+        };         
+        
+        $scope.retrieveNextItemsPage = function() {
+            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+                $scope.startPageNumber++;
+            }
+            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber++; 
+            }
+        };        
     }]
 );
