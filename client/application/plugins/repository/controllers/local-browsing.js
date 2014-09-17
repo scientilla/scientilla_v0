@@ -6,9 +6,9 @@
 
 angular.module("repository").controller(
     "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, activatedRepositoriesService, systemStatusService, $window, $location) {
-        $scope.aRepositories = [];
         $scope.changingActivatedRepositoryId = "";
-        $scope.changingSharedRepositoryId = "";        
+        $scope.changingSharedRepositoryId = "";
+        $scope.aRepositories = [];
         
         $scope.generateRepositoryIdsSharingMap = function(aRepositories) {
             var repositoryIdsSharingMap = {};
@@ -59,17 +59,15 @@ angular.module("repository").controller(
             }
         }
         
-        $scope.retrieveRepositories = function retrieveRepositories() {
-            $scope.empty = false;
+        $scope.retrieveRepositories = function retrieveRepositories() {    
+            $scope.iRepositories = 0;
             $scope.ready = false;
             $scope.error = false;
             async.series([
                 function(callback) {
                     repositoriesService.getRepositories($window.sessionStorage.token).success(function(data, status, headers, config) {
                         $scope.aRepositories = data;
-                        if ($scope.aRepositories.length === 0) {
-                            $scope.empty = true;
-                        }
+                        $scope.iRepositories = $scope.aRepositories.length;
                         callback();
                     }).error(function(data, status, headers, config) {
                         $scope.error = true;
