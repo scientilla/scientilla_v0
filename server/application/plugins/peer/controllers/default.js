@@ -9,7 +9,7 @@ var async = require("async");
 var request = require("request");
 var underscore = require("underscore");
 
-var model = require("../models/default.js")();
+var peerManager = require("../models/default.js")();
 
 // Defines actions
 module.exports = function () {
@@ -37,15 +37,10 @@ module.exports = function () {
             });            
         },
         getSeedPeers: function(req, res) {
-            var seedPeers = [];
-            for (key in req.seedsConfiguration) {
-                seedPeers[seedPeers.length] = {
-                    url: req.seedsConfiguration[key]
-                }
-            }
-            
-            res.setHeader("Content-Type", "application/json");
-            res.json(seedPeers);            
+            peerManager.getSeedPeers(req.seedsConfiguration, function(seedPeers) {
+                res.setHeader("Content-Type", "application/json");
+                res.json(seedPeers);            
+            });
         },        
         getPeer: function(req, res) {
             req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {

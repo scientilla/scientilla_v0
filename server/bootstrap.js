@@ -43,7 +43,9 @@ var activatedRepositoriesController = require("./application/plugins/repository/
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
 var systemController = require("./application/plugins/system/controllers/default.js")();
 var usersController = require("./application/plugins/user/controllers/default.js")();
-var tagsController = require("./application/plugins/tag/controllers/default.js")();
+var isSeed = installationConfiguration.seed;
+var requirePrefix = (isSeed) ? 'seed.' : '';
+var tagsController = require("./application/plugins/tag/controllers/"+requirePrefix+"default.js")();
 
 // Initializes databases
 var databaseEngine = tingodb({});
@@ -506,9 +508,8 @@ application.put("/api/activated-repositories/:id", expressJwt({secret: 'scientil
 });
 
 // TAGS
-application.get("/api/tags", expressJwt({secret: 'scientilla'}), function(req, res) {
+application.get("/api/tags", function(req, res) {
     console.log("Request to Read the Tags");
-    systemController.checkUserCoherence(req, res);
     tagsController.getTags(req, res);
 });
 
