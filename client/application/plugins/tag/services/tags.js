@@ -7,12 +7,13 @@
 angular.module("tags").factory(
     "tagsService", function($http) {
         var tagsProvider = {};
+        var url = "/api/tags";
         
         tagsProvider.getTags = function(keywords, token) {
             return $http({
 				method: "GET",
-				url: "/api/tags",
-                data: {keywords: keywords},
+				url: url,
+                params: {keywords: keywords},
                 cache: false,
                 timeout: 30000,
                 headers: {

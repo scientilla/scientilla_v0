@@ -319,3 +319,9 @@ html, body {
 .nowrap {
     white-space: nowrap;
 }
+
+/* Presentation */
+.tagSelector, .select2-container.tagSelector {
+    width: 500px;
+    display: block;
+}

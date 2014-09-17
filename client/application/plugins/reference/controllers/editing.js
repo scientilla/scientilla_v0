@@ -5,7 +5,9 @@
  */
 
 angular.module("reference").controller(
-    "referenceEditingController", ["$scope", "$routeParams", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, referencesService, systemStatusService, $window, $location) {
+    "referenceEditingController", 
+    ["$scope", "$routeParams", "referencesService", "systemStatusService", "$window", "$location", "tagsService",
+    function($scope, $routeParams, referencesService, systemStatusService, $window, $location, tagsService) {
         $scope.oReference = {
             title: "",
             authors: "",
@@ -37,6 +39,32 @@ angular.module("reference").controller(
             print_status: "",
             note: ""
         };
+        $scope.select2Options = {
+            placeholder: "Search for a tag",
+            minimumInputLength: 1,
+            separator: " ",
+            query: function (query) {
+                var data = {results: []};
+                var keywords = query.term.trim().split(" ");
+                tagsService
+                    .getTags(keywords, $window.sessionStorage.token)
+                    .success(function(results){
+                        var newCategory = keywords.join(".");
+                        if (!_.isEmpty(newCategory) && !_.contains(results, newCategory)) {
+                            results.unshift(newCategory);
+                        }
+                        var filteredResults = _.filter(results, function(r){ return !_.contains($scope.oReference.aTags, r);});
+                        var reformattedResults = _.map(filteredResults, function(r){return {id: r, text:r};});
+                        data.results = data.results.concat(reformattedResults);
+                        query.callback(data);
+                    });
+            },
+            initSelection : function (element, callback) {
+                var data = {id: element.val(), text: element.val()};
+                callback(data);
+            }
+        };
+        $scope.tag = "";
         
         $scope.extractAuthors = function() {
             if ($scope.oReference.aAuthors !== "") { 
@@ -54,15 +82,15 @@ angular.module("reference").controller(
             }
         };
         
-        $scope.extractTags = function() {
-            if ($scope.oReference.aTags !== "") { 
-                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
-            } else {
-                $scope.oReference.aTags = [];
-            }
-        };
+//        $scope.extractTags = function() {
+//            if ($scope.oReference.aTags !== "") { 
+//                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
+//            } else {
+//                $scope.oReference.aTags = [];
+//            }
+//        };
         
-        $scope.retrieveReference = function retrieveReference() {
+        $scope.retrieveReference = function() {
             referencesService.getReference(
                 $routeParams.id, 
                 $window.sessionStorage.token
@@ -72,13 +100,12 @@ angular.module("reference").controller(
                 }
                 $scope.extractAuthors();
                 $scope.extractOrganizations();
-                $scope.extractTags();
+//                $scope.extractTags();
+                
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
-            
-            return retrieveReference;
-        }();
+        };
         
         $scope.updateReference = function() {
             referencesService.updateReference({
@@ -114,6 +141,17 @@ angular.module("reference").controller(
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
-        };        
+        };    
+        
+        $scope.init = function() {
+            $scope.$watch('tag', function(newTag) {
+                if (_.isEmpty(newTag) || _.isNull(newTag)) {
+                    return;
+                }
+                $scope.oReference.aTags.push(newTag);
+                $scope.tag = "";
+            });
+            $scope.retrieveReference();
+        };
     }]
 );
