@@ -5,15 +5,16 @@
  */
 
 angular.module("reference").controller(
-    "referenceAdditionController", ["$scope", "referencesService", "systemStatusService", "$window", "$location", function($scope, referencesService, systemStatusService, $window, $location) {
+    "referenceAdditionController", 
+    ["$scope", "referencesService", "systemStatusService", "$window", "$location",  "tagsService",
+    function($scope, referencesService, systemStatusService, $window, $location, tagsService) {
         $scope.oReference = {
             title: "",
             authors: "",
             aAuthors: [],
             organizations: "",
             aOrganization: [],
-            tags: "",
-            aTags: [],
+            tags: [],
             year: "",
             doi: "",
             journal_name: "",
@@ -37,6 +38,32 @@ angular.module("reference").controller(
             print_status: "",
             note: ""
         };
+        $scope.select2Options = {
+            placeholder: "Search for a tag",
+            minimumInputLength: 1,
+            separator: " ",
+            query: function (query) {
+                var data = {results: []};
+                var keywords = query.term.trim().split(" ");
+                tagsService
+                    .getTags(keywords, $window.sessionStorage.token)
+                    .success(function(results){
+                        var newCategory = keywords.join(".");
+                        if (!_.isEmpty(newCategory) && !_.contains(results, newCategory)) {
+                            results.unshift(newCategory);
+                        }
+                        var filteredResults = _.filter(results, function(r){ return !_.contains($scope.oReference.tags, r);});
+                        var reformattedResults = _.map(filteredResults, function(r){return {id: r, text:r};});
+                        data.results = data.results.concat(reformattedResults);
+                        query.callback(data);
+                    });
+            },
+            initSelection : function (element, callback) {
+                var data = {id: element.val(), text: element.val()};
+                callback(data);
+            }
+        };
+        $scope.tag = "";
         
         $scope.extractAuthors = function() {
             if ($scope.oReference.aAuthors !== "") { 
@@ -51,14 +78,6 @@ angular.module("reference").controller(
                 $scope.oReference.aOrganizations = $scope.oReference.organizations.split(", "); 
             } else {
                 $scope.oReference.aOrganizations = [];
-            }
-        };
-        
-        $scope.extractTags = function() {
-            if ($scope.oReference.aTags !== "") { 
-                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
-            } else {
-                $scope.oReference.aTags = [];
             }
         };
         
@@ -98,5 +117,15 @@ angular.module("reference").controller(
                 systemStatusService.react(status);
             });
         };        
+        
+        $scope.init = function() {
+            $scope.$watch('tag', function(newTag) {
+                if (_.isEmpty(newTag) || _.isNull(newTag)) {
+                    return;
+                }
+                $scope.oReference.tags.push(newTag);
+                $scope.tag = "";
+            });
+        };
     }]
 );

@@ -14,8 +14,7 @@ angular.module("reference").controller(
             aAuthors: [],
             organizations: "",
             aOrganization: [],
-            tags: "",
-            aTags: [],
+            tags: [],
             year: "",
             doi: "",
             journal_name: "",
@@ -53,7 +52,7 @@ angular.module("reference").controller(
                         if (!_.isEmpty(newCategory) && !_.contains(results, newCategory)) {
                             results.unshift(newCategory);
                         }
-                        var filteredResults = _.filter(results, function(r){ return !_.contains($scope.oReference.aTags, r);});
+                        var filteredResults = _.filter(results, function(r){ return !_.contains($scope.oReference.tags, r);});
                         var reformattedResults = _.map(filteredResults, function(r){return {id: r, text:r};});
                         data.results = data.results.concat(reformattedResults);
                         query.callback(data);
@@ -82,25 +81,16 @@ angular.module("reference").controller(
             }
         };
         
-//        $scope.extractTags = function() {
-//            if ($scope.oReference.aTags !== "") { 
-//                $scope.oReference.aTags = $scope.oReference.tags.split(", "); 
-//            } else {
-//                $scope.oReference.aTags = [];
-//            }
-//        };
-        
         $scope.retrieveReference = function() {
             referencesService.getReference(
                 $routeParams.id, 
                 $window.sessionStorage.token
             ).success(function(data, status, headers, config) {
-                for (key in data) {
+                for (var key in data) {
                     $scope.oReference[key] = data[key];
                 }
                 $scope.extractAuthors();
                 $scope.extractOrganizations();
-//                $scope.extractTags();
                 
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
@@ -148,7 +138,7 @@ angular.module("reference").controller(
                 if (_.isEmpty(newTag) || _.isNull(newTag)) {
                     return;
                 }
-                $scope.oReference.aTags.push(newTag);
+                $scope.oReference.tags.push(newTag);
                 $scope.tag = "";
             });
             $scope.retrieveReference();

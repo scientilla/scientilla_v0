@@ -3,7 +3,7 @@
  ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  -->
-<div id="toolbar-container">
+<div id="toolbar-container" ng-init="init()">
     <div id="toolbar" class="container-fluid">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -83,16 +83,14 @@
                     </div>                    
                     <div class="form-group">
                         <div class="col-xs-12 nowrap">
-                            <label for="tags" class="label label-default">Tags</label>
-                            <label for="tags" class="label label-danger" ng-show="form.tags.$error.required">Required</label>
-                            <label for="tags" class="label label-danger" ng-show="!form.tags.$valid">Not correctly typed</label>                        
-                            <input id="tags" name="tags" ng-model="oReference.tags" ng-required="true" ng-pattern="/^([a-zA-Z0-9 \-\/]+[a-zA-Z0-9])(, [a-zA-Z0-9 \-\/]+[a-zA-Z0-9])*$/" ng-change="extractTags()" type="text" class="form-control">                           
+                            <label for="tag" class="label label-default">Tags</label>
+                            <input ui-select2="select2Options" id="tag" ng-model="tag" data-placeholder="Tag keywords" class="tagSelector" /> 
                         </div>
                     </div>
-                    <div class="form-group" ng-show="form.tags.$valid">
+                    <div class="form-group">
                         <div class="col-xs-12">
                             <ul>
-                                <li ng-repeat="tag in oReference.aTags">
+                                <li ng-repeat="tag in oReference.tags">
                                     <b>{{tag}}</b>
                                 </li>
                             </ul>

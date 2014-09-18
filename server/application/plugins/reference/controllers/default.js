@@ -5,8 +5,28 @@
  */
 
 var model = require("../models/default.js")();
+var _ = require("underscore");
 
 module.exports = function () {
+    var cleanReferenceTags = function(reference) {
+        if (_.isArray(reference.tags)) {
+            return reference;
+        }
+        if (_.isNull(reference.tags) || _.isEmpty(reference.tags)) {
+            reference.tags = [];
+        } else {
+            reference.tags = reference.tags.split(', ');
+        }
+        return reference;
+    };
+    var cleanReferencesTags = function(references) {
+        var cleanedReferences = _.map(
+            references, 
+            function(r) {
+                return cleanReferenceTags(r);
+        });
+        return cleanedReferences;
+    };
     return {
         getReferences: function(req, res) {
             var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
@@ -30,7 +50,7 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                
+                references = cleanReferencesTags(references);
                 res.setHeader("Content-Type", "application/json");
                 res.json(references);
             });            
@@ -69,7 +89,7 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                
+                reference = cleanReferenceTags(reference);
                 res.setHeader("Content-Type", "application/json");
                 res.json(reference);
             });                
@@ -90,7 +110,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : reference.title = "";            
             !req.underscore.isUndefined(req.body.authors) ? reference.authors = req.body.authors.trim() : reference.authors = "";
             !req.underscore.isUndefined(req.body.organizations) ? reference.organizations = req.body.organizations.trim() : reference.organizations = "";
-            !req.underscore.isUndefined(req.body.tags) ? reference.tags = req.body.tags.trim() : reference.tags = "";            
+            !req.underscore.isUndefined(req.body.tags) ? reference.tags = req.body.tags : reference.tags = [];            
             !req.underscore.isUndefined(req.body.year) ? reference.year = req.body.year.trim() : reference.year = "";
             !req.underscore.isUndefined(req.body.doi) ? reference.doi = req.body.doi.trim() : reference.doi = "";    
             !req.underscore.isUndefined(req.body.journal_name) ? reference.journal_name = req.body.journal_name.trim() : reference.journal_name = "";
@@ -183,7 +203,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : null;      
             !req.underscore.isUndefined(req.body.authors) ? reference.authors = req.body.authors.trim() : null;
             !req.underscore.isUndefined(req.body.organizations) ? reference.organizations = req.body.organizations.trim() : null;
-            !req.underscore.isUndefined(req.body.tags) ? reference.tags = req.body.tags.trim() : null; 
+            !req.underscore.isUndefined(req.body.tags) ? reference.tags = req.body.tags : []; 
             !req.underscore.isUndefined(req.body.year) ? reference.year = req.body.year.trim() : null;
             !req.underscore.isUndefined(req.body.doi) ? reference.doi = req.body.doi.trim() : null;
             !req.underscore.isUndefined(req.body.journal_name) ? reference.journal_name = req.body.journal_name.trim() : null;
