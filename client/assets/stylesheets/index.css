@@ -358,6 +358,7 @@ html, body {
     list-style-type: none;
     white-space: nowrap;
     display: inline-block;
+    margin-bottom: 2px;
 }
 
 .tag {
@@ -365,4 +366,8 @@ html, body {
 }
 .tag > b, .tag > i {
     padding: 1px 3px;
+}
+
+.tagList.tagInsertion > li {
+    display:table;
 }
