@@ -29,7 +29,8 @@ module.exports = function () {
     };
     return {
         getReferences: function(req, res) {
-            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
+            var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({
                 "$or": [
                     {
@@ -56,7 +57,8 @@ module.exports = function () {
             });            
         },
         getPublicReferences: function(req, res) {
-            var regexQuery = "^(?=.*(" + req.query.keywords.replace(" ", "))(?=.*(") + "))";
+            var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({ 
                 sharing_status: true,
                 "$or": [

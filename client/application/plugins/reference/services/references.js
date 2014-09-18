@@ -9,9 +9,14 @@ angular.module("reference").factory(
         var referencesProvider = {};
         
         referencesProvider.getReferences = function(keywords, token) {
+            var params = {};
+            if (keywords) {
+                params.keywords = keywords;
+            }
             return $http({
 				method: "GET",
-				url: "/api/references?keywords=" + keywords,
+				url: "/api/references",
+                params: params,
                 cache: false,
                 timeout: 30000,
                 headers: {
