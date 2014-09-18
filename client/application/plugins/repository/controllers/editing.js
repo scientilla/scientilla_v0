@@ -5,7 +5,9 @@
  */
 
 angular.module("repository").controller(
-    "repositoryEditingController", ["$scope", "$routeParams", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoriesService, systemStatusService, $window, $location) {
+    "repositoryEditingController", 
+    ["$scope", "$routeParams", "repositoriesService", "systemStatusService", "$window", "$location", 
+    function($scope, $routeParams, repositoriesService, systemStatusService, $window, $location) {
         $scope.defaultRows = 20;
         $scope.defaultPage = 1;
         $scope.oRepository = {
@@ -53,7 +55,7 @@ angular.module("repository").controller(
                 $routeParams.id, 
                 $window.sessionStorage.token
             ).success(function(data, status, headers, config) {
-                for (key in data) {
+                for (var key in data) {
                     $scope.oRepository[key] = data[key];
                 }
             }).error(function(data, status, headers, config) {
