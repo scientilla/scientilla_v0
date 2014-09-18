@@ -351,3 +351,18 @@ html, body {
     width: 500px;
     display: block;
 }
+
+.tagList > li {
+    border: 1px #CCCCCC solid;
+    border-radius: 3px 3px;
+    list-style-type: none;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.tag {
+    display: inline-block;
+}
+.tag > b, .tag > i {
+    padding: 1px 3px;
+}

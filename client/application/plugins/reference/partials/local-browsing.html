@@ -78,11 +78,15 @@
                                 <strong>{{reference.year}}</strong>
                             </td>        
                             <td>
-                                <ul>
-                                    <li ng-repeat="tag in reference.tags">
-                                        {{tag}}
-                                    </li>
-                                </ul>
+                                <div class="col-xs-12">
+                                    <ul  class="tagList">
+                                        <li ng-repeat="tag in reference.tags">
+                                            <div class="tag">
+                                                <i class="fa fa-tag"></i><b>{{tag}}</b>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                             <td>
                                 <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature fixed-button-1x"><i class="fa fa-code-fork secondary-feature"></i></a>
