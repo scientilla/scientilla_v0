@@ -70,11 +70,11 @@ angular.module("reference").controller(
                         break;
                     case 404:
                     case 500:
-                        systemStatusService.react(status);
+                        systemStatusService.react(result.status);
                         notificationService.error('An error happened');
                         break;
                     default:
-                        systemStatusService.react(status);
+                        systemStatusService.react(result.status);
                         notificationService.error('An error happened');
                 }
             });
