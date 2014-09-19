@@ -17,67 +17,31 @@ angular.module("reference").controller(
         $scope.hasPaginationData = false;
         $scope.allSelected = false;
         
-
-        $scope.doCloneReference = function(reference, callback) {
-            referencesService.createReference({
-                title: reference.title,
-                authors: reference.authors,
-                organizations: reference.organizations,
-                tags: reference.tags,
-                year: reference.year,
-                doi: reference.doi,
-                journal_name: reference.journal_name,
-                journal_acronym: reference.journal_acronym,
-                journal_pissn: reference.journal_pissn,
-                journal_eissn: reference.journal_eissn,
-                journal_issnl: reference.journal_issnl,
-                journal_volume: reference.journal_volume,
-                journal_year: reference.journal_year,
-                conference_name: reference.conference_name,
-                conference_acronym: reference.conference_acronym,
-                conference_place: reference.conference_place,
-                conference_year: reference.conference_year,
-                book_title: reference.book_title,
-                book_isbn: reference.book_isbn,
-                book_pages: reference.book_pages,
-                book_editor: reference.book_editor,
-                book_year: reference.book_year,
-                abstract: reference.abstract,
-                month: reference.month,
-                print_status: reference.print_status,
-                note: reference.note
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                if (_.isFunction(callback)) {
-                    callback({reference: reference, status: status});
-                }
-            }).error(function(data, status, headers, config) {
-                if (_.isFunction(callback)) {
-                    callback({reference: reference, status: status});
-                }
-            });
-        };        
-
         $scope.cloneReference = function(reference) {
-            $scope.doCloneReference(reference, function(result) {
-                switch(result.status) {
-                    case 200: 
-                        notificationService.info('Reference cloned');
-                        result.reference.clonable = false;
-                        result.reference.selected = false;
-                        break;
-                    case 409:
-                        notificationService.warning('Element already cloned');
-                        break;
-                    case 404:
-                    case 500:
-                        systemStatusService.react(result.status);
-                        notificationService.error('An error happened');
-                        break;
-                    default:
-                        systemStatusService.react(result.status);
-                        notificationService.error('An error happened');
+            referencesService.createReferenceAsync(
+                reference, 
+                $window.sessionStorage.token, 
+                function(result) {
+                    switch(result.status) {
+                        case 200: 
+                            notificationService.info('Reference cloned');
+                            result.reference.clonable = false;
+                            result.reference.selected = false;
+                            break;
+                        case 409:
+                            notificationService.warning('Element already cloned');
+                            break;
+                        case 404:
+                        case 500:
+                            systemStatusService.react(result.status);
+                            notificationService.error('An error happened');
+                            break;
+                        default:
+                            systemStatusService.react(result.status);
+                            notificationService.error('An error happened');
+                    }
                 }
-            });
+            );
         };        
         
         $scope.cloneSelectedReferences = function(){
@@ -86,9 +50,13 @@ angular.module("reference").controller(
             var cloneReferences = 
                 _.map(selectedReferences, function(reference) {
                    return function(callback) {
-                       $scope.doCloneReference(reference, function(result) {
-                           callback(null, result);
-                       });
+                       referencesService.createReferenceAsync(
+                           reference, 
+                           $window.sessionStorage.token,
+                            function(result) {
+                               callback(null, result);
+                            }
+                       );
                    };
                 });
                 

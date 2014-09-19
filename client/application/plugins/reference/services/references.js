@@ -8,6 +8,45 @@ angular.module("reference").factory(
     "referencesService", function($http) {
         var referencesProvider = {};
         
+        referencesProvider.createReferenceAsync = function(reference, token, callback) {
+            referencesProvider.createReference({
+                title: reference.title,
+                authors: reference.authors,
+                organizations: reference.organizations,
+                tags: reference.tags,
+                year: reference.year,
+                doi: reference.doi,
+                journal_name: reference.journal_name,
+                journal_acronym: reference.journal_acronym,
+                journal_pissn: reference.journal_pissn,
+                journal_eissn: reference.journal_eissn,
+                journal_issnl: reference.journal_issnl,
+                journal_volume: reference.journal_volume,
+                journal_year: reference.journal_year,
+                conference_name: reference.conference_name,
+                conference_acronym: reference.conference_acronym,
+                conference_place: reference.conference_place,
+                conference_year: reference.conference_year,
+                book_title: reference.book_title,
+                book_isbn: reference.book_isbn,
+                book_pages: reference.book_pages,
+                book_editor: reference.book_editor,
+                book_year: reference.book_year,
+                abstract: reference.abstract,
+                month: reference.month,
+                print_status: reference.print_status,
+                note: reference.note
+            }, token).success(function(data, status, headers, config) {
+                if (_.isFunction(callback)) {
+                    callback({reference: reference, status: status});
+                }
+            }).error(function(data, status, headers, config) {
+                if (_.isFunction(callback)) {
+                    callback({reference: reference, status: status});
+                }
+            });
+        };     
+        
         referencesProvider.getReferences = function(keywords, token) {
             var params = {};
             if (keywords) {
