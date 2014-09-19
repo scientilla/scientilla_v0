@@ -113,7 +113,7 @@ module.exports = function () {
                     req.referencesCollection
                         .find()
                         .toArray(function(err, existingReferences) {
-                            var existingHashes = req.underscore.pluck(existingReferences, 'hash');
+                            var existingHashes = req.underscore.pluck(existingReferences, 'original_hash');
                             repositoryReferences = repositoryReferences.map(function(reference){
                                 var newReference = createReference(req.underscore, reference, repository);
                                 var hash = referenceHash(req.crypto, newReference);
