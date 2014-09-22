@@ -4,7 +4,9 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var referenceManager = require("../../reference/models/default.js")();
 var model = require("../models/peer-references.js")();
+var _ = require("underscore");
 
 module.exports = function () {
     return {        
@@ -16,14 +18,26 @@ module.exports = function () {
                 }
                 req.request({ 
                     url: peer.url + "/api/public-references?keywords=" + req.query.keywords, 
-                    strictSSL: false 
-                }, function (error, response, body) {
+                    strictSSL: false,
+                    json: true 
+                }, function (error, response, peerReferences) {
                     if (error) {
                         res.status(404).end();
                         return;
                     }
-                    res.setHeader("Content-Type", "application/json");
-                    res.status(200).send(body).end();
+                    referenceManager.getVerifiedReferences(
+                        req.referencesCollection,
+                        peerReferences, 
+                        null,
+                        function (err, verifiedReferences) {
+                            if (err) {
+                                res.status(404).end();
+                                return;
+                            }
+                            res.setHeader("Content-Type", "application/json");
+                            res.status(200).send(verifiedReferences).end();
+                        }
+                    );
                 });
             });            
         },

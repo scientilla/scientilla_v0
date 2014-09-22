@@ -80,7 +80,7 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                
+                publicReferences = cleanReferencesTags(publicReferences);
                 res.setHeader("Content-Type", "application/json");
                 res.json(publicReferences);
             });            
