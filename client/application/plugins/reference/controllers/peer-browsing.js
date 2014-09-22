@@ -5,16 +5,117 @@
  */
 
 angular.module("reference").controller(
-    "peerReferencesBrowsingController", ["$scope", "$routeParams", "peerReferencesService", "peersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerReferencesService, peersService, systemStatusService, $window, $location) {       
+    "peerReferencesBrowsingController", 
+    ["$scope", "$routeParams", "peerReferencesService", "peersService", "systemStatusService", "$window", "$location", "referencesService", 'notificationService', 
+    function($scope, $routeParams, peerReferencesService, peersService, systemStatusService, $window, $location, referencesService, notificationService) {       
         $scope.peerId = $routeParams.peerId;
         $scope.keywords = "";
         $scope.aReferences = [];
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
         $scope.numberOfItemsPerPage = 25;
-        $scope.totalNumberOfItems = 10000;        
+        $scope.totalNumberOfItems = 10000;
+        $scope.allSelected = false;      
         
-        $scope.retrieveReferences = function retrieveReferences() {
+        $scope.cloneReference = function(reference) {
+            referencesService.createReferenceAsync(
+                reference, 
+                $window.sessionStorage.token, 
+                function(result) {
+                    switch(result.status) {
+                        case 200: 
+                            notificationService.info('Reference cloned');
+                            result.reference.clonable = false;
+                            result.reference.selected = false;
+                            break;
+                        case 409:
+                            notificationService.warning('Element already cloned');
+                            break;
+                        case 404:
+                        case 500:
+                            systemStatusService.react(result.status);
+                            notificationService.error('An error happened');
+                            break;
+                        default:
+                            systemStatusService.react(result.status);
+                            notificationService.error('An error happened');
+                    }
+                }
+            );
+        };        
+        
+        $scope.cloneSelectedReferences = function(){
+            var selectedReferences = _.filter($scope.aReferences, {selected: true});
+            
+            var cloneReferences = 
+                _.map(selectedReferences, function(reference) {
+                   return function(callback) {
+                       referencesService.createReferenceAsync(
+                           reference, 
+                           $window.sessionStorage.token,
+                            function(result) {
+                               callback(null, result);
+                            }
+                       );
+                   };
+                });
+                
+            var notifyResults = function(err, results){
+                if (err) {
+                    notificationService.info('Some error happened');
+                    return;
+                }
+                var clonedReferences = 0;
+                var duplicatedReferences = 0;
+                var errors = 0;
+                results.forEach(function(result) {
+                    switch(result.status) {
+                        case 200: 
+                            result.reference.clonable = false;
+                            result.reference.selected = false;
+                            clonedReferences++;
+                            break;
+                        case 409:
+                            duplicatedReferences++;
+                            break;
+                        case 404:
+                        case 500:
+                            systemStatusService.react(result.status);
+                            errors++;
+                            break;
+                        default:
+                            systemStatusService.react(result.status);
+                            errors++;
+                    }
+                });
+                var msg = "";
+                if (results.length === 0) {
+                    msg = 'No References Selected';
+                } else {
+                    if (clonedReferences > 0) {
+                        if (clonedReferences === 1) {
+                            msg += clonedReferences + ' Reference Cloned.\n';
+                        } else {
+                            msg += clonedReferences + ' References Cloned.\n';
+                        }
+                    }
+                    if (duplicatedReferences > 0 ) {
+                        if (duplicatedReferences === 1) {
+                            msg += duplicatedReferences + ' Reference is not clonable.\n';
+                        } else {
+                            msg += duplicatedReferences + ' References are not clonable.\n';
+                        }
+                    }
+                    if (errors > 0 ) {
+                        msg += 'Some error happened.\n';
+                    }
+                }
+                notificationService.info(msg);
+            };
+            async.parallel(cloneReferences, notifyResults);
+        };  
+        
+        $scope.retrieveReferences = function() {
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
@@ -40,9 +141,7 @@ angular.module("reference").controller(
                     callback();
                 }
             ]);
-            
-            return retrieveReferences;
-        }();
+        };
         
         $scope.retrievePreviousItemsPage = function() {
             if ($scope.startPageNumber > 1) {
@@ -66,6 +165,39 @@ angular.module("reference").controller(
             if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber++; 
             }
-        };        
+        };
+        
+            
+        $scope.init = function() {
+            $scope.$watch(
+                'aReferences', 
+                function(newReferences) {
+                    if (_.isEmpty(newReferences)) {
+                        return;
+                    }
+                    var clonableReferences = _.filter(newReferences, {clonable: true});
+                    var allSelected =  _.every(clonableReferences, { selected: true});
+                    if (!allSelected) {
+                        $scope.allSelected = allSelected;
+                    }
+                },
+                true
+            );
+            $scope.$watch(
+                'allSelected', 
+                function(newAllSelected) {
+                    var clonableReferences = _.filter($scope.aReferences, {clonable: true});
+                    var allSelected =  _.every(clonableReferences, { selected: true });
+                    if (newAllSelected || allSelected) {
+                        _.each($scope.aReferences, function(reference) {
+                            if (reference.clonable) {
+                                reference.selected = newAllSelected;
+                            }
+                        });
+                    }
+                }
+            );
+            $scope.retrieveReferences();
+        };
     }]
 );
