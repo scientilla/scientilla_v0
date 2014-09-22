@@ -5,9 +5,11 @@
  */
 
 var model = require("../models/repository-references.js")();
+var _ = require("underscore");
+var crypto = require("crypto");
 
 module.exports = function () {
-    var createReference = function(_, reference, repository) {
+    var createReference = function(reference, repository) {
         var getCleanProperty = function(reference, field) {
             var cleanItem = function(item) {
                 if (typeof item === "string") {
@@ -50,7 +52,7 @@ module.exports = function () {
         
         return cleanedReference;
     };
-    var referenceHash = function(crypto, reference) {
+    var referenceHash = function(reference) {
         var hashBase = (
             reference.title + ", " +
             reference.authors + ", " +
@@ -115,8 +117,8 @@ module.exports = function () {
                         .toArray(function(err, existingReferences) {
                             var existingHashes = req.underscore.pluck(existingReferences, 'original_hash');
                             repositoryReferences = repositoryReferences.map(function(reference){
-                                var newReference = createReference(req.underscore, reference, repository);
-                                var hash = referenceHash(req.crypto, newReference);
+                                var newReference = createReference(reference, repository);
+                                var hash = referenceHash(newReference);
                                 newReference.clonable = !req.underscore.contains(existingHashes, hash);
                                 return newReference;
                             });
