@@ -89,7 +89,7 @@ module.exports = function () {
     return {        
         getRepositoryReferences: function(req, res) {
             req.repositoriesCollection.findOne({ _id: req.params.id }, function(err, repository) {
-                if (err || req.underscore.isNull(repository)) {
+                if (err || _.isNull(repository)) {
                     res.status(404).end();
                     return;
                 }
@@ -97,7 +97,7 @@ module.exports = function () {
                 var configParameters = ['keywords', 'page', 'rows'];
                 configParameters.forEach(function(param){
                     var paramEncoded = 
-                        req.underscore.isUndefined(req.query[param]) 
+                        _.isUndefined(req.query[param]) 
                         ? encodeURIComponent(repository.config[param])
                         : req.query[param];
                     var paramPlaceholder = '{{'+param+'}}';
@@ -115,11 +115,11 @@ module.exports = function () {
                     req.referencesCollection
                         .find()
                         .toArray(function(err, existingReferences) {
-                            var existingHashes = req.underscore.pluck(existingReferences, 'original_hash');
+                            var existingHashes = _.pluck(existingReferences, 'original_hash');
                             repositoryReferences = repositoryReferences.map(function(reference){
                                 var newReference = createReference(reference, repository);
                                 var hash = referenceHash(newReference);
-                                newReference.clonable = !req.underscore.contains(existingHashes, hash);
+                                newReference.clonable = !_.contains(existingHashes, hash);
                                 return newReference;
                             });
                             res.setHeader("Content-Type", "application/json");
