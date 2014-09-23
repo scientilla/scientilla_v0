@@ -35,8 +35,8 @@ angular.module("setting").controller(
                 }
             ]);
            
-           return retrieveSettings;
-       }();
+            return retrieveSettings;
+        }();
        
         $scope.updateSettings = function() {
             settingsService.updateSettings({
