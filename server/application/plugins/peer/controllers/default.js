@@ -168,8 +168,8 @@ module.exports = function () {
                             method: "POST",
                             url: seedsConfiguration[seedKey] + "/api/public-peers", 
                             json: { 
-                                name: installationConfiguration.installation_name, 
-                                url: installationConfiguration.installation_url 
+                                name: installationConfiguration.name, 
+                                url: installationConfiguration.url 
                             },
                             strictSSL: false 
                         }, function (err, res, body) {
