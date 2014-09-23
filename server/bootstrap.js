@@ -26,6 +26,8 @@ var application = express();
 
 var installationConfiguration = require("./configuration/installation.js")();
 var seedsConfiguration = require("./configuration/seeds.js")();
+var isSeed = installationConfiguration.seed;
+var requirePrefix = (isSeed) ? 'seed.' : '';
 
 var datasetsController = require("./application/plugins/dataset/controllers/default.js")();
 var peerDatasetsController = require("./application/plugins/dataset/controllers/peer-datasets.js")();
@@ -43,9 +45,7 @@ var activatedRepositoriesController = require("./application/plugins/repository/
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
 var systemController = require("./application/plugins/system/controllers/default.js")();
 var usersController = require("./application/plugins/user/controllers/default.js")();
-var isSeed = installationConfiguration.seed;
-var requirePrefix = (isSeed) ? 'seed.' : '';
-var tagsController = require("./application/plugins/tag/controllers/"+requirePrefix+"default.js")();
+var tagsController = require("./application/plugins/tag/controllers/" + requirePrefix + "default.js")();
 
 // Initializes databases
 var databaseEngine = tingodb({});
