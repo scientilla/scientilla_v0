@@ -24,8 +24,8 @@ var tingodb = require("tingodb");
 var underscore = require("underscore");
 var application = express();
 
-var installationConfiguration = require("./configuration/installation.js")();
-var seedsConfiguration = require("./configuration/seeds.js")();
+var installationConfiguration = require("./configuration/installation.json");
+var seedsConfiguration = require("./configuration/seeds.json");
 var isSeed = installationConfiguration.seed;
 var requirePrefix = (isSeed) ? 'seed.' : '';
 
@@ -568,6 +568,6 @@ var options = {
     key: ssl_key,
     cert: ssl_cert
 };
-https.createServer(options, application).listen(installationConfiguration.ssl_port, function() {
-    console.log("Listening on SSL port %d", installationConfiguration.ssl_port);
+https.createServer(options, application).listen(installationConfiguration.port, function() {
+    console.log("Listening on port %d", installationConfiguration.port);
 });
