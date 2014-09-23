@@ -77,7 +77,17 @@
                             <td class="text-center">
                                 <strong>{{reference.year}}</strong>
                             </td>        
-                            <td>{{reference.tags}}</td>
+                            <td>
+                                <div class="col-xs-12">
+                                    <ul  class="tagList">
+                                        <li ng-repeat="tag in reference.tags">
+                                            <div class="tag">
+                                                <i class="fa fa-tag"></i><b>{{tag}}</b>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
                             <td>
                                 <button ng-click="cloneReference(reference)" ng-disabled="!reference.clonable" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</button>
                             </td>
