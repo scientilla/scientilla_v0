@@ -55,86 +55,76 @@
     <div id="content" class="container-fluid">       
         <div class="row">
             <div class="col-lg-12 visible-md visible-lg">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th class="fixed-th-4x">Parameter Name</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody ng-show="ready && !empty">
-                        <tr>
-                            <td>
-                                SSL Port
-                            </td>
-                            <td>
-                                {{oSettings.ssl_port}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                SSL Key Path
-                            </td>
-                            <td>
-                                {{oSettings.ssl_key_path}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                SSL Certificate Path
-                            </td>
-                            <td>
-                                {{oSettings.ssl_cert_path}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                URL
-                            </td>
-                            <td>
-                                {{oSettings.url}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Owner User
-                            </td>
-                            <td>
-                                <select>
-                                    
-                                </select>
-                            </td>
-                        </tr>                        
-                    </tbody>
-                    <tbody ng-show="empty">
-                        <tr>
-                            <td colspan="2">
-                                <div class="col-lg-12 empty-message">
-                                    No settings available in this installation.
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody ng-show="error">
-                        <tr>
-                            <td colspan="2">
-                                <div class="col-lg-12 error-message">
-                                    Error in retrieving settings.
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>                    
-                </table>
+                <form name="form" class="form-horizontal" role="form" novalidate>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="port" class="label label-default">Port</label>                          
+                            <input id="port" ng-model="oSettings.port" ng-required="true" type="text" class="form-control">                             
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="ssl-key-path" class="label label-default">SSL Key Path</label>                          
+                            <input id="ssl-key-path" ng-model="oSettings.ssl_key_path" ng-required="true" type="text" class="form-control">                             
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="ssl-certificate-path" class="label label-default">SSL Certificate Path</label>                          
+                            <input id="ssl-certificate-path" ng-model="oSettings.ssl_cert_path" ng-required="true" type="text" class="form-control">                             
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="name" class="label label-default">Name</label>                          
+                            <input id="name" ng-model="oSettings.name" ng-required="true" type="text" class="form-control">                             
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="url" class="label label-default">URL</label>                          
+                            <input id="url" ng-model="oSettings.url" ng-required="true" type="text" class="form-control">                             
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="owner-user-id" class="label label-default">Owner User</label>                          
+                            <select id="owner-user-id" ng-model="oSettings.owner_user_id" ng-required="true" class="form-control">
+                                <option value="{{user._id}}" ng-repeat="user in aUsers" ng-selected="user._id == oSettings.owner_user_id">{{(((user.first_name + ' ' + user.last_name).trim() + ' ' + user.middle_name).trim() + ' ' + user.business_name).trim()}}</option>    
+                            </select>                            
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button ng-click="updateSettings()" ng-show="form.$valid" type="button" class="btn btn-default form-control">Update</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <a href="#/browse-references/" class="btn btn-default form-control">Cancel</a>
+                        </div>
+                    </div>                    
+                </form>
             </div>
             <div class="col-sm-12 visible-xs visible-sm">
                 <div class="row">                           
                     <div class="col-xs-12 col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <h4>Parameter Name:</h4>
-                                SSL PORT
-                                <h4>Parameter Value:</h4>
-                                {{oSettings.ssl_port}}
+                                <h4>Port:</h4>
+                                {{oSettings.port}}
+                                <h4>SSL Key Path:</h4>
+                                {{oSettings.ssl_key_path}}
+                                <h4>SSL Certificate Path:</h4>
+                                {{oSettings.ssl_cert_path}}
+                                <h4>Name:</h4>
+                                {{oSettings.name}}                                
+                                <h4>URL:</h4>
+                                {{oSettings.url}}
+                                <h4>Owner User:</h4>
+                                <select ng-model="oSettings.owner_user_id">
+                                    <option value="{{user._id}}" ng-repeat="user in aUsers" ng-selected="user._id == oSettings.owner_user_id">{{(((user.first_name + ' ' + user.last_name).trim() + ' ' + user.middle_name).trim() + ' ' + user.business_name).trim()}}</option>    
+                                </select>                                
                             </div>                                    
                         </div>
                     </div>                                

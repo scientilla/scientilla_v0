@@ -17,6 +17,8 @@ angular.module('user', []);
 angular.module("scientilla", [
     "ngRoute",
     "ui.bootstrap",
+    "jlareau.pnotify",
+    "ui.select2",    
     "dataset",
     "network",
     "peer",
@@ -25,7 +27,5 @@ angular.module("scientilla", [
     "tags",
     "setting",
     "system",
-    "user",
-    "jlareau.pnotify",
-    "ui.select2"
+    "user"
 ]);

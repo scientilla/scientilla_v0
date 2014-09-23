@@ -175,6 +175,7 @@ application.use("*", function(req, res, next) {
     req.bcryptNodejs = bcryptNodejs;
     req.crypto = crypto;
     req.expressJwt = expressJwt;
+    req.fs = fs;
     req.jsonWebToken = jsonWebToken;    
     req.moment = moment;
     req.request = request;
@@ -512,6 +513,12 @@ application.get("/api/settings", expressJwt({secret: 'scientilla'}), function(re
     console.log("Request to Read all Settings");
     systemController.checkUserCoherence(req, res);
     settingsController.getSettings(req, res);
+});
+
+application.put("/api/settings", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Update all Settings");
+    systemController.checkUserCoherence(req, res);
+    settingsController.updateSettings(req, res);
 });
 
 // TAGS

@@ -20,6 +20,19 @@ angular.module("setting").factory(
 			});
         };
         
+        settingsProvider.updateSettings = function(data, token) {
+            return $http({
+				method: "PUT",
+				url: "/api/settings",
+                data: data,
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };        
+        
         return settingsProvider;
     }    
 );
