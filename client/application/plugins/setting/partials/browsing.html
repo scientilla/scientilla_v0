@@ -51,3 +51,100 @@
         </div>        
     </div>
 </div>
+<div id="content-container">
+    <div id="content" class="container-fluid">       
+        <div class="row">
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="fixed-th-4x">Parameter Name</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr>
+                            <td>
+                                SSL Port
+                            </td>
+                            <td>
+                                {{oSettings.ssl_port}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SSL Key Path
+                            </td>
+                            <td>
+                                {{oSettings.ssl_key_path}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SSL Certificate Path
+                            </td>
+                            <td>
+                                {{oSettings.ssl_cert_path}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                URL
+                            </td>
+                            <td>
+                                {{oSettings.url}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Owner User
+                            </td>
+                            <td>
+                                <select>
+                                    
+                                </select>
+                            </td>
+                        </tr>                        
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="2">
+                                <div class="col-lg-12 empty-message">
+                                    No settings available in this installation.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="2">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving settings.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+            <div class="col-sm-12 visible-xs visible-sm">
+                <div class="row">                           
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4>Parameter Name:</h4>
+                                SSL PORT
+                                <h4>Parameter Value:</h4>
+                                {{oSettings.ssl_port}}
+                            </div>                                    
+                        </div>
+                    </div>                                
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>
+    </div>
+</div>

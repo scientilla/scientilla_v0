@@ -8,6 +8,9 @@ var model = require("../models/default.js")();
 
 module.exports = function () {
     return {
-        
+        getSettings: function(req, res) {
+            res.setHeader("Content-Type", "application/json");
+            res.json(req.installationConfiguration);           
+        }
     };
 };

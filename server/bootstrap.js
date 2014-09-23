@@ -507,6 +507,13 @@ application.put("/api/activated-repositories/:id", expressJwt({secret: 'scientil
     activatedRepositoriesController.setRepositoryAsActivated(req, res);
 });
 
+// SETTINGS
+application.get("/api/settings", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read all Settings");
+    systemController.checkUserCoherence(req, res);
+    settingsController.getSettings(req, res);
+});
+
 // TAGS
 application.get("/api/tags", function(req, res) {
     console.log("Request to Read the Tags");

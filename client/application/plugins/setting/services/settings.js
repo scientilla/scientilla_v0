@@ -8,16 +8,17 @@ angular.module("setting").factory(
     "settingsService", function($http) {
         var settingsProvider = {};
         
-        /*
-        settingsProvider.getSettings = function() {
+        settingsProvider.getSettings = function(token) {
             return $http({
 				method: "GET",
 				url: "/api/settings",
                 cache: false,
-                timeout: 30000
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
 			});
         };
-        */
         
         return settingsProvider;
     }    

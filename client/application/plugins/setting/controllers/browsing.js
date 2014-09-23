@@ -11,17 +11,12 @@ angular.module("setting").controller(
         $scope.retrieveSettings = function retrieveSettings() {
             $scope.empty = false;
             $scope.ready = false;
-            /*
-            settingsService.getSettings().success(function(data, status, headers, config) {
-                $scope.aSettings = data;
-                if ($scope.aSettings.length === 0) {
-                    $scope.empty = true;
-                }            
+            settingsService.getSettings($window.sessionStorage.token).success(function(data, status, headers, config) {
+                $scope.oSettings = data;          
                 $scope.ready = true;
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
-            */
            
            return retrieveSettings;
        }();
