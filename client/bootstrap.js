@@ -17,8 +17,9 @@ angular.module('user', []);
 angular.module("scientilla", [
     "ngRoute",
     "ui.bootstrap",
-    "jlareau.pnotify",
-    "ui.select2",    
+    "ui.select2",   
+    "ngAnimate",
+    "toaster",
     "dataset",
     "network",
     "peer",
