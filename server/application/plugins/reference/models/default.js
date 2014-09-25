@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
-var _ = require("underscore");
+var _ = require("lodash");
 var crypto = require("crypto");
 
 module.exports = function () {
@@ -85,21 +85,21 @@ module.exports = function () {
             .digest("hex"); 
     };
     return {
-        getVerifiedReferences: function(referencesCollection, references, repository, callback) {
+        getVerifiedReferences: function(referencesCollection, userHash, references, repository, callback) {
             referencesCollection
                 .find()
                 .toArray(function(err, existingReferences) {
                     if (err) {
                         callback(err, null);
+                        return;
                     }
-                    var existingHashes = _.pluck(existingReferences, 'original_hash');
                     var verifiedReferences = references.map(function(reference){
-                        var verifiedeReference = createReference(reference, repository);
-                        var hash = referenceHash(verifiedeReference);
-                        verifiedeReference.clonable = !_.contains(existingHashes, hash);
-                        return verifiedeReference;
+                        var verifiedReferences = createReference(reference, repository);
+                        var hash = referenceHash(verifiedReferences);
+                        verifiedReferences.clonable = ! _.some(existingReferences, {original_hash: hash, user_hash: userHash});
+                        return verifiedReferences;
                     });
-                    callback(err, verifiedReferences);
+                    callback(null, verifiedReferences);
                 });
             }
     };
