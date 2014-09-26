@@ -138,8 +138,8 @@ module.exports = function () {
         },
         updateLoggedUser: function(req, res) { 
             var user = {};
-            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
-            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
+            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
+            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights : "";
             user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
