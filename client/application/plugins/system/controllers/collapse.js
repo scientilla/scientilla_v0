@@ -10,15 +10,15 @@ angular.module("system").controller(
         /* jQuery code start */
         $scope.toggleReferencesMenu = function() {
             // $("#referencesMenu").slideDown();
-            // $("#networkReferencesMenu").slideUp();
+            $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideUp();
             $("#configurationMenu").slideUp();
             // $("#logoutMenu").slideUp();
         }
         
-        $scope.toggleNetworkReferencesMenu = function() {
+        $scope.toggleNetworkMenu = function() {
             // $("#referencesMenu").slideUp();
-            // $("#networkReferencesMenu").slideDown();
+            $("#networkMenu").slideDown();
             $("#worldNetworkMenu").slideUp();
             $("#configurationMenu").slideUp();
             // $("#logoutMenu").slideUp();
@@ -26,7 +26,7 @@ angular.module("system").controller(
         
         $scope.toggleWorldNetworkMenu = function() {
             // $("#referencesMenu").slideUp();
-            // $("#networkReferencesMenu").slideUp();
+            $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideDown();
             $("#configurationMenu").slideUp();
             // $("#logoutMenu").slideUp();
@@ -34,7 +34,7 @@ angular.module("system").controller(
         
         $scope.toggleConfigurationMenu = function() {
             // $("#referencesMenu").slideUp();
-            // $("#networkReferencesMenu").slideUp();
+            $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideUp();
             $("#configurationMenu").slideDown();
             // $("#logoutMenu").slideUp();
@@ -42,7 +42,7 @@ angular.module("system").controller(
         
         $scope.toggleLogoutMenu = function() {
             // $("#referencesMenu").slideUp();
-            // $("#networkReferencesMenu").slideUp();
+            $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideUp();
             $("#configurationMenu").slideUp();
             // $("#logoutMenu").slideDown();
