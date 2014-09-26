@@ -5,13 +5,13 @@
  */
 
 angular.module("network").controller(
-    "networkBrowsingController", ["$scope", "peersService", "repositoriesService", "activatedPeersService", "activatedRepositoriesService", "peerReferencesService", "seedPeerReferencesService", "repositoryReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, repositoriesService, activatedPeersService, activatedRepositoriesService, peerReferencesService, seedPeerReferencesService, repositoryReferencesService, systemStatusService, $window, $location) {
+    "worldNetworkBrowsingController", ["$scope", "peersService", "repositoriesService", "activatedPeersService", "activatedRepositoriesService", "peerReferencesService", "seedPeerReferencesService", "repositoryReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, repositoriesService, activatedPeersService, activatedRepositoriesService, peerReferencesService, seedPeerReferencesService, repositoryReferencesService, systemStatusService, $window, $location) {
         $scope.keywords = "";
         $scope.aReferences = [];
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
         $scope.numberOfItemsPerPage = 25;
-        $scope.totalNumberOfItems = 10000;                                       
+        $scope.totalNumberOfItems = 10000;                               
         
         $scope.retrievePeersReferences = function() {
             $scope.empty = false;
