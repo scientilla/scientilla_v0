@@ -9,10 +9,10 @@ angular.module("system").factory(
     ['toaster',
     function(toaster) {
         var notificationService = {
-            info:    function(text) { toaster.pop('info', "", text); },
-            success: function(text) { toaster.pop('success', "", text); },
-            warning: function(text) { toaster.pop('warning', "", text); },
-            error:   function(text) { toaster.pop('error', "", text); }
+            info:    function(text) { toaster.pop('info', "", text, 2000); },
+            success: function(text) { toaster.pop('success', "", text, 2000); },
+            warning: function(text) { toaster.pop('warning', "", text, 2000); },
+            error:   function(text) { toaster.pop('error', "", text, 2000); }
         };
         return notificationService;
     }]
