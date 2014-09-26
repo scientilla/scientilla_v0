@@ -4,9 +4,40 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var crypto = require("crypto");
+
 var model = require("../models/default.js")();
+var userManager = require("../../user/models/default.js")();
 
 module.exports = function () {
+    var getUserHash = function(user) {
+        switch (user.type) {
+            case "":
+                break;
+            case "R":
+                return crypto.createHash("sha256").update(
+                    (
+                        user.first_name + ", " +
+                        user.middle_name + ", " +
+                        user.last_name + ", " +
+                        user.birth_date + ", " +
+                        user.birth_city + ", " +
+                        user.birth_state + ", " +
+                        user.birth_country + ", " +
+                        user.sex
+                    ).trim()
+                ).digest("hex");
+                break;
+            case "O":
+                return crypto.createHash("sha256").update(
+                    (
+                        user.business_name
+                    ).trim()
+                ).digest("hex");                    
+                break;
+        }
+    };
+    
     return {
         getUsers: function(req, res) {
             req.usersCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, users) {
@@ -62,31 +93,7 @@ module.exports = function () {
             var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
             user.password = encryptedPassword;
             user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";
-            switch (user.type) {
-                case "":
-                    break;
-                case "R":
-                    user.hash = req.crypto.createHash("sha256").update(
-                        (
-                            user.first_name + ", " +
-                            user.middle_name + ", " +
-                            user.last_name + ", " +
-                            user.birth_date + ", " +
-                            user.birth_city + ", " +
-                            user.birth_state + ", " +
-                            user.birth_country + ", " +
-                            user.sex
-                        ).trim()
-                    ).digest("hex");
-                    break;
-                case "O":
-                    user.hash = req.crypto.createHash("sha256").update(
-                        (
-                            user.business_name
-                        ).trim()
-                    ).digest("hex");                    
-                    break;
-            }
+            user.hash = getUserHash(user);
             req.usersCollection.insert(user, {w:1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
@@ -119,6 +126,7 @@ module.exports = function () {
                 user.password = encryptedPassword;
             }
             user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";          
+            user.hash = getUserHash(user);
             req.usersCollection.update({ _id: req.params.id }, { $set: user }, {w: 1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
@@ -150,7 +158,8 @@ module.exports = function () {
                 var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
                 user.password = encryptedPassword;
             }
-            user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";          
+            user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";         
+            user.hash = getUserHash(user); 
             req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
@@ -161,11 +170,11 @@ module.exports = function () {
             });
         },        
         loginUser: function(req, res){
-			req.async.series([
+			req.async.waterfall([
 				function(callback) {
 					req.usersCollection.find({}).toArray(function(err, users) {
 						if (err || req.underscore.isNull(users)) {
-							callback();
+							callback(null);
 							return;
 						}						
 						if (users.length === 0) {
@@ -193,53 +202,66 @@ module.exports = function () {
 							user.hash = "";
 							req.usersCollection.insert(user, { w: 1 }, function(err, user) {
 								if (err || req.underscore.isNull(user)) {
-								    console.log("Failed to Create the Default User");
+                                    var errorMsg = "Failed to Create the Default User";
+								    console.log(errorMsg);
 								}
-								callback();
+								callback(new Error(errorMsg));
 							});								
 						} else {
-						    callback();
+						    callback(null);
 						}
-					})
+					});
 				},
 				function(callback) {
 					req.usersCollection.findOne({ username: req.body.username }, function(err, user) {
 						if (err || req.underscore.isNull(user)) {
-							res.status(401).end();
-							callback();
+							callback(new Error());
 							return;
 						}
-                        
                         if (!req.bcryptNodejs.compareSync(req.body.password, user.password)) {
-                            res.status(401).end();
-							callback();
+							callback(new Error());
 							return;                            
                         }
+                        callback(null, user);
+					});
+                },
+                function(user, callback) {
+                    userManager.getUser(req.usersCollection, req.installationConfiguration.owner_user_id, function(err, owner) {
+                        if (err) {
+                            callback(err);
+                            return;
+                        }
+                        callback(null, user, owner);
+                    });
+                        
+                }],
+                function(err, user, owner) {
+                    if (err) {
+                        console.log('error');
+                        res.status(500).end();
+                        return;
+                    }
+                    var userDataForToken = {
+                        first_name: user.first_name,
+                        middle_name: user.middle_name,
+                        last_name: user.last_name,
+                        business_name: user.business_name,
+                        email: user.email,
+                        hash: user.rights==="A" ? owner.hash : user.hash,
+                        id: user._id
+                    };
 
-						var userDataForToken = {
-							first_name: user.first_name,
-							middle_name: user.middle_name,
-							last_name: user.last_name,
-							business_name: user.business_name,
-							email: user.email,
-                            hash: user.hash,
-							id: user._id
-						};
+                    var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
 
-						var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
-						
-						res.setHeader("Content-Type", "application/json");
-						res.json({
-                            token: token,
-                            user_type: user.type,
-                            user_rights: user.rights,
-                            user_scientilla_nominative: user.scientilla_nominative
-                        });
-						
-						callback();
-					});				
-				}
-            ]);					
+                    res.setHeader("Content-Type", "application/json");
+                    res.json({
+                        token: token,
+                        user_type: user.type,
+                        user_rights: user.rights,
+                        user_scientilla_nominative: user.scientilla_nominative
+                    });
+                }
+            );					
         }
     };
 };
