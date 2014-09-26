@@ -74,8 +74,8 @@ module.exports = function () {
         },        
         createUser: function(req, res) {
             var user = {};
-            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
-            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
+            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
+            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights : "";
             user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
@@ -105,8 +105,8 @@ module.exports = function () {
         },
         updateUser: function(req, res) { 
             var user = {};
-            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type.trim() : "";
-            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights.trim() : "";
+            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
+            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights : "";
             user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
             user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
             user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
@@ -170,98 +170,128 @@ module.exports = function () {
             });
         },        
         loginUser: function(req, res){
-			req.async.waterfall([
-				function(callback) {
-					req.usersCollection.find({}).toArray(function(err, users) {
-						if (err || req.underscore.isNull(users)) {
-							callback(null);
-							return;
-						}						
-						if (users.length === 0) {
-                            console.log("Needed to Create the Default User");
-							var user = {};
-							user.type = 0;
-                            user.rights = 0;
-                            user.scientilla_nominative = "";
-							user.first_name = "";
-							user.middle_name = "";
-							user.last_name = "";
-							user.business_name = "";
-							user.birth_date = "";
-							user.birth_city = "";
-							user.birth_state = "";
-							user.birth_country = "";
-							user.sex = "";
-							user.email = "";
-							user.username = "";
-                            var passwordToEncrypt = "";
-                            var encryptionSalt = req.bcryptNodejs.genSaltSync();
-                            var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
-                            user.password = encryptedPassword;
-							user.status = "U";
-							user.hash = "";
-							req.usersCollection.insert(user, { w: 1 }, function(err, user) {
-								if (err || req.underscore.isNull(user)) {
-                                    var errorMsg = "Failed to Create the Default User";
-								    console.log(errorMsg);
-								}
-								callback(new Error(errorMsg));
-							});								
-						} else {
-						    callback(null);
-						}
-					});
-				},
-				function(callback) {
-					req.usersCollection.findOne({ username: req.body.username }, function(err, user) {
-						if (err || req.underscore.isNull(user)) {
-							callback(new Error());
-							return;
-						}
-                        if (!req.bcryptNodejs.compareSync(req.body.password, user.password)) {
-							callback(new Error());
-							return;                            
-                        }
-                        callback(null, user);
-					});
-                },
-                function(user, callback) {
-                    userManager.getUser(req.usersCollection, req.installationConfiguration.owner_user_id, function(err, owner) {
-                        if (err) {
-                            callback(err);
+            req.usersCollection.find({}).toArray(function(err, users) {
+                if (err || req.underscore.isNull(users)) {
+                    var errorMsg = "Error while checking for users";
+                    console.log(errorMsg);
+                    res.status(500).end();
+                    return;
+                }		
+                if (users.length === 0) {
+                    console.log("Needed to Create the Default User");
+                    var user = {};
+                    user.type = 0;
+                    user.rights = 0;
+                    user.scientilla_nominative = "";
+                    user.first_name = "";
+                    user.middle_name = "";
+                    user.last_name = "";
+                    user.business_name = "";
+                    user.birth_date = "";
+                    user.birth_city = "";
+                    user.birth_state = "";
+                    user.birth_country = "";
+                    user.sex = "";
+                    user.email = "";
+                    user.username = "";
+                    var passwordToEncrypt = "";
+                    var encryptionSalt = req.bcryptNodejs.genSaltSync();
+                    var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
+                    user.password = encryptedPassword;
+                    user.status = "U";
+                    user.hash = "";
+                    req.usersCollection.insert(user, { w: 1 }, function(err, users) {
+                        if (err || req.underscore.isNull(users)) {
+                            var errorMsg = "Failed to Create the Default User";
+                            console.log(errorMsg);
+                            res.status(500).end();
                             return;
                         }
-                        callback(null, user, owner);
-                    });
-                        
-                }],
-                function(err, user, owner) {
-                    if (err) {
-                        console.log('error');
-                        res.status(500).end();
-                        return;
-                    }
-                    var userDataForToken = {
-                        first_name: user.first_name,
-                        middle_name: user.middle_name,
-                        last_name: user.last_name,
-                        business_name: user.business_name,
-                        email: user.email,
-                        hash: user.rights === 1 ? owner.hash : user.hash,
-                        id: user._id
-                    };
+                        var user = users[0];
+                        req.installationConfiguration.owner_user_id = user._id;
+                        req.fs.writeFile("./configuration/installation.json", JSON.stringify(req.installationConfiguration, null, 4), function(err) {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).end();
+                                return;
+                            }
+                            var userDataForToken = {
+                                first_name: user.first_name,
+                                middle_name: user.middle_name,
+                                last_name: user.last_name,
+                                business_name: user.business_name,
+                                email: user.email,
+                                hash: user.hash,
+                                id: user._id
+                            };
 
-                    var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
+                            var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
 
-                    res.setHeader("Content-Type", "application/json");
-                    res.json({
-                        token: token,
-                        user_type: user.type,
-                        user_rights: user.rights,
-                        user_scientilla_nominative: user.scientilla_nominative
-                    });
+                            res.setHeader("Content-Type", "application/json");
+                            res.json({
+                                token: token,
+                                user_type: user.type,
+                                user_rights: user.rights,
+                                user_scientilla_nominative: user.scientilla_nominative
+                            });
+                            return;
+                        }); 
+                    });								
+                } else {
+                    req.async.waterfall([
+                        function(callback) {
+                            req.usersCollection.findOne({ username: req.body.username }, function(err, user) {
+                                if (err || req.underscore.isNull(user)) {
+                                    callback(new Error());
+                                    return;
+                                }
+                                if (!req.bcryptNodejs.compareSync(req.body.password, user.password)) {
+                                    callback(new Error());
+                                    return;                            
+                                }
+                                callback(null, user);
+                            });
+                        },
+                        function(user, callback) {
+                            userManager.getUser(req.usersCollection, req.installationConfiguration.owner_user_id, function(err, owner) {
+                                if (err) {
+                                    callback(err);
+                                    return;
+                                }
+                                callback(null, user, owner);
+                            });
+
+                        }],
+                        function(err, user, owner) {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).end();
+                                return;
+                            }
+                            var hash = user.rights === 1 ? owner.hash : user.hash;
+                            var userDataForToken = {
+                                first_name: user.first_name,
+                                middle_name: user.middle_name,
+                                last_name: user.last_name,
+                                business_name: user.business_name,
+                                email: user.email,
+                                hash: hash,
+                                id: user._id
+                            };
+
+                            var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
+
+                            res.setHeader("Content-Type", "application/json");
+                            res.json({
+                                token: token,
+                                user_type: user.type,
+                                user_rights: user.rights,
+                                user_scientilla_nominative: user.scientilla_nominative
+                            });
+                        }
+                    );					
                 }
-            );					
+            });
         }
     };
 };
