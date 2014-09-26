@@ -12,9 +12,9 @@ var userManager = require("../../user/models/default.js")();
 module.exports = function () {
     var getUserHash = function(user) {
         switch (user.type) {
-            case "":
-                break;
-            case "R":
+            case 0:
+                break;                
+            case 1:
                 return crypto.createHash("sha256").update(
                     (
                         user.first_name + ", " +
@@ -28,7 +28,7 @@ module.exports = function () {
                     ).trim()
                 ).digest("hex");
                 break;
-            case "O":
+            case 2:
                 return crypto.createHash("sha256").update(
                     (
                         user.business_name
@@ -180,8 +180,8 @@ module.exports = function () {
 						if (users.length === 0) {
                             console.log("Needed to Create the Default User");
 							var user = {};
-							user.type = "";
-                            user.rights = "";
+							user.type = 0;
+                            user.rights = 0;
                             user.scientilla_nominative = "";
 							user.first_name = "";
 							user.middle_name = "";
@@ -247,7 +247,7 @@ module.exports = function () {
                         last_name: user.last_name,
                         business_name: user.business_name,
                         email: user.email,
-                        hash: user.rights==="A" ? owner.hash : user.hash,
+                        hash: user.rights === 1 ? owner.hash : user.hash,
                         id: user._id
                     };
 
