@@ -41,8 +41,9 @@
                         <div class="col-xs-12">
                             <div>
                                 <div class="btn-group">
-                                    <label class="btn btn-default" ng-model="oUser.type" btn-radio="'R'">Researcher</label>
-                                    <label class="btn btn-default" ng-model="oUser.type" btn-radio="'O'">Organization</label>
+                                    <label class="btn btn-default" ng-model="oUser.type" btn-radio="0">Operator</label>
+                                    <label class="btn btn-default" ng-model="oUser.type" btn-radio="1">Researcher</label>
+                                    <label class="btn btn-default" ng-model="oUser.type" btn-radio="2">Organization</label>
                                 </div>                                
                             </div>                            
                         </div>
@@ -56,14 +57,14 @@
                         <div class="col-xs-12">
                             <div>
                                 <div class="btn-group">
-                                    <label class="btn btn-default" ng-model="oUser.rights" btn-radio="'O'">Operative</label>
-                                    <label class="btn btn-default" ng-model="oUser.rights" btn-radio="'A'">Administrative</label>
+                                    <label class="btn btn-default" ng-model="oUser.rights" btn-radio="0">User</label>
+                                    <label class="btn btn-default" ng-model="oUser.rights" btn-radio="1">Administrator</label>
                                 </div>                                
                             </div>                            
                         </div>
                     </div>                    
-                    <div ng-switch on="oUser.type">
-                        <div ng-switch-when="R">
+                    <div>
+                        <div ng-if="oUser.type == 0 || oUser.type == 1">
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <input id="first_name" ng-model="oUser.first_name" type="text" placeholder="First Name" class="form-control">
@@ -110,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div ng-switch-when="O">
+                        <div ng-if="oUser.type == 2">
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <input id="business_name" ng-model="oUser.business_name" type="text" placeholder="Business Name" class="form-control">
