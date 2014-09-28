@@ -46,7 +46,7 @@ angular.module("setting").controller(
                 name: $scope.oSettings.name,
                 url: $scope.oSettings.url,
                 owner_user_id: $scope.oSettings.owner_user_id,
-                seed: false
+                seed: $scope.oSettings.seed
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
