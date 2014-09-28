@@ -53,11 +53,11 @@
                                 </ul>                                
                             </div>                            
                         </div>
-                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                        
+                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 1}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-right"></i> Next</a>                        
                     </form>                              
                 </div>
             </div>
