@@ -107,7 +107,33 @@ angular.module("peer").factory(
                     Authorization: 'Bearer ' + token
                 }
 			});
-        };        
+        };
+        
+        peersProvider.setPeerAsAggregated = function(id, token) {
+            return $http({
+				method: "PUT",
+				url: "/api/peers/" + id,
+                data: { aggregating_status: true },
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };
+        
+        peersProvider.setPeerAsNotAggregated = function(id, token) {
+            return $http({
+				method: "PUT",
+				url: "/api/peers/" + id,
+                data: { aggregating_status: false },
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };
         
         return peersProvider;
     }    

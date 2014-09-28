@@ -125,8 +125,13 @@
                                 <a ng-click="switchPeerSharingStatus(peer._id)" class="{{peerIdsSharingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
                             </td>
                             <td>
+                                <a ng-click="switchPeerAggregatingStatus(peer._id)" class="{{peerIdsAggregatingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-square-o secondary-feature turned-off' : '' }}{{peer._id == changingAggregatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-sitemap secondary-feature turned-on' : '' }}"></i></a>
+                            </td>
+                            <!--
+                            <td>
                                 <a ng-click="setPeerAsActivated(peer._id)" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-star-o secondary-feature turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peer._id == activatedPeerId ? 'fa fa-star secondary-feature turned-on' : '' }}"></i></a>
                             </td>
+                            -->
                             <td>
                                 <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature fixed-button-1x"><i class="fa fa-edit secondary-feature"></i></a>
                             </td>                            

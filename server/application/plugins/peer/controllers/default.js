@@ -69,6 +69,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : peer.name = "";
             !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : peer.url = "";
             !req.underscore.isUndefined(req.body.sharing_status) ? peer.sharing_status = req.body.sharing_status : peer.sharing_status = ""; 
+            !req.underscore.isUndefined(req.body.aggregating_status) ? peer.aggregating_status = req.body.aggregating_status : peer.aggregating_status = "";
             peer.creator_id = req.user.id;
             peer.creation_datetime = req.moment().format();
             peer.last_modifier_id = "";
@@ -88,7 +89,8 @@ module.exports = function () {
                     var peer = {};
                     !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : peer.name = "";
                     !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : peer.url = "";
-                    peer.sharing_status = true; 
+                    peer.sharing_status = true;
+                    peer.aggregating_status = false;
                     peer.creator_id = "";
                     peer.creation_datetime = req.moment().format();
                     peer.last_modifier_id = "";
@@ -112,6 +114,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : null;
             !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : null; 
             !req.underscore.isUndefined(req.body.sharing_status) ? peer.sharing_status = req.body.sharing_status : null;
+            !req.underscore.isUndefined(req.body.aggregating_status) ? peer.aggregating_status = req.body.aggregating_status : null;
             peer.last_modifier_id = req.user.id;
             peer.last_modification_datetime = req.moment().format();         
             req.peersCollection.update({ _id: req.params.id }, { $set: peer }, {w: 1}, function(err, peer) {
@@ -151,6 +154,7 @@ module.exports = function () {
 										discoveredPeer.name = peer.name;
 										discoveredPeer.url = peer.url;
 										discoveredPeer.sharing_status = true; 
+                                        discoveredPeer.aggregating_status = false; 
 										discoveredPeer.creator_id = "";
 										discoveredPeer.creation_datetime = peer.creation_datetime;
 										discoveredPeer.last_modifier_id = "";
