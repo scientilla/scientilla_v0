@@ -13,7 +13,6 @@ module.exports = function () {
     var getUserHash = function(user) {
         switch (user.type) {
             case 0:
-                break;                
             case 1:
                 return crypto.createHash("sha256").update(
                     (
@@ -199,7 +198,7 @@ module.exports = function () {
                     var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
                     user.password = encryptedPassword;
                     user.status = "U";
-                    user.hash = "";
+                    user.hash = getUserHash(user);
                     req.usersCollection.insert(user, { w: 1 }, function(err, users) {
                         if (err || req.underscore.isNull(users)) {
                             var errorMsg = "Failed to Create the Default User";
