@@ -9,7 +9,8 @@ angular.module("peer").controller(
         $scope.sourcesListingMode = $window.sessionStorage.sourcesListingMode ? $window.sessionStorage.sourcesListingMode : "L"; // L = List, G = Graph
         $scope.resultsListingMode = "OFF"; // OFF = Disabled, MPR = Main Peers Results
         $scope.changingActivatedPeerId = "";
-        $scope.changingSharedPeerId = ""; 
+        $scope.changingSharedPeerId = "";
+        $scope.changingAggregatedPeerId = "";
         $scope.keywords = "";        
         $scope.aPeers = [];
         $scope.aSeedPeers = [];
@@ -30,6 +31,14 @@ angular.module("peer").controller(
             }
             return peerIdsSharingMap;
         }
+        
+        $scope.generatePeerIdsAggregatingMap = function(aPeers) {
+            var peerIdsAggregatingMap = {};
+            for (lpKey in aPeers) {
+                peerIdsAggregatingMap[aPeers[lpKey]._id] = aPeers[lpKey].aggregating_status;
+            }
+            return peerIdsAggregatingMap;
+        }        
         
         $scope.setPeerAsActivated = function(id) {
             $scope.changingActivatedPeerId = id;
@@ -72,6 +81,33 @@ angular.module("peer").controller(
             }
         }
         
+        $scope.switchPeerAggregatingStatus = function(id) {
+            $scope.changingAggregatedPeerId = id;
+            if (!$scope.peerIdsAggregatingMap[id]) {
+                peersService.setPeerAsAggregated(
+                    id,
+                    $window.sessionStorage.token
+                ).success(function(data, status, headers, config) {
+                    $scope.peerIdsAggregatingMap[id] = true;
+                    $scope.changingAggregatedPeerId = ""; 
+                }).error(function(data, status, headers, config) {
+                    $scope.changingAggregatedPeerId = "";
+                    systemStatusService.react(status);
+                });
+            } else {
+                peersService.setPeerAsNotAggregated(
+                    id,
+                    $window.sessionStorage.token
+                ).success(function(data, status, headers, config) {
+                    $scope.peerIdsAggregatingMap[id] = false;
+                    $scope.changingAggregatedPeerId = ""; 
+                }).error(function(data, status, headers, config) {
+                    $scope.changingAggregatedPeerId = "";
+                    systemStatusService.react(status);
+                });
+            }
+        }        
+        
         $scope.retrievePeers = function retrievePeers() {        
             $scope.iPeers = 0;
             $scope.ready = false;
@@ -104,6 +140,10 @@ angular.module("peer").controller(
                     $scope.peerIdsSharingMap = $scope.generatePeerIdsSharingMap($scope.aPeers);
                     callback();
                 },
+                function(callback) {
+                    $scope.peerIdsAggregatingMap = $scope.generatePeerIdsAggregatingMap($scope.aPeers);
+                    callback();
+                },                
                 function(callback) {
                     $scope.ready = true;
                     callback();

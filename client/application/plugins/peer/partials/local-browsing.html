@@ -32,9 +32,9 @@
                         </button> 
                         -->
                         <div class="input-group">
-                            <input ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
+                            <input ng-model="keywords" type="text" placeholder="Type something to..." class="form-control" readonly>
                             <div class="input-group-btn">
-                                <a ng-click="searchSeedPeersReferences()" class="btn btn-default"><i class="fa fa-search"></i> Search</a>
+                                <a ng-click="searchSeedPeersReferences()" class="btn btn-default disabled"><i class="fa fa-search"></i> Search</a>
                                 <button type="button" class="btn btn-default dropdown-toggle disabled" tabindex="-1" data-toggle="dropdown">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
@@ -53,11 +53,11 @@
                                 </ul>                                
                             </div>                            
                         </div>
-                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                        
+                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 1}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-right"></i> Next</a>                        
                     </form>                    
                 </div>
             </div>
@@ -125,8 +125,13 @@
                                 <a ng-click="switchPeerSharingStatus(peer._id)" class="{{peerIdsSharingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
                             </td>
                             <td>
+                                <a ng-click="switchPeerAggregatingStatus(peer._id)" class="{{peerIdsAggregatingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-square-o secondary-feature turned-off' : '' }}{{peer._id == changingAggregatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-sitemap secondary-feature turned-on' : '' }}"></i></a>
+                            </td>
+                            <!--
+                            <td>
                                 <a ng-click="setPeerAsActivated(peer._id)" class="{{peer._id == activatedPeerId ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off' }}"><i class="{{peer._id != activatedPeerId && changingActivatedPeerId == '' ? 'fa fa-star-o secondary-feature turned-off' : '' }}{{peer._id == changingActivatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peer._id == activatedPeerId ? 'fa fa-star secondary-feature turned-on' : '' }}"></i></a>
                             </td>
+                            -->
                             <td>
                                 <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature fixed-button-1x"><i class="fa fa-edit secondary-feature"></i></a>
                             </td>                            

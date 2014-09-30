@@ -93,6 +93,17 @@
                                 <option value="{{user._id}}" ng-repeat="user in aUsers" ng-selected="user._id == oSettings.owner_user_id">{{(((user.first_name + ' ' + user.last_name).trim() + ' ' + user.middle_name).trim() + ' ' + user.business_name).trim()}}</option>    
                             </select>                            
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 nowrap">
+                            <label for="seed" class="label label-default">Mode</label>
+                            <div>
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="oSettings.seed" btn-radio="'false'">Peer</label>
+                                    <label class="btn btn-default" ng-model="oSettings.seed" btn-radio="'true'">Seed</label>
+                                </div>                                
+                            </div>                           
+                        </div>
                     </div>                    
                     <div class="form-group">
                         <div class="col-xs-12">

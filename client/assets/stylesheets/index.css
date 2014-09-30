@@ -298,27 +298,35 @@ html, body {
 }
 
 #content .turned-on {
+    /*
     background-color: #F5FBFF !important;
     border-color: #36A9E2 !important;
     color: #36A9E2 !important;
+    */
 }
 
 #content .turned-off {
+    /*
     background-color: #FFFFFF;
     border-color: #CCCCCC;
     color: #CCCCCC;
+    */
 }
 
 #content .primary-feature {
+    /* 
     background-color: #F2FFF3;
     border-color: #1BAD2F;
-    color: #1BAD2F;
+    color: #1BAD2F; 
+    */
 }
 
 #content .secondary-feature {
+    /*
     background-color: #FFFFFF;
     border-color: #888888;
     color: #888888;
+    */
 }
 
 #content .empty-message {
@@ -364,6 +372,7 @@ html, body {
 .tag {
     display: inline-block;
 }
+
 .tag > b, .tag > i {
     padding: 1px 3px;
 }
