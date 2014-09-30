@@ -6,46 +6,73 @@
 
 angular.module("reference").factory(
     "referencesService", function($http) {
+        var cleanReferenceData = function(referenceData) {
+            return {
+                title: referenceData.title,
+                authors: referenceData.authors,
+                organizations: referenceData.organizations,
+                tags: referenceData.tags,
+                year: referenceData.year,
+                doi: referenceData.doi,
+                journal_name: referenceData.journal_name,
+                journal_acronym: referenceData.journal_acronym,
+                journal_pissn: referenceData.journal_pissn,
+                journal_eissn: referenceData.journal_eissn,
+                journal_issnl: referenceData.journal_issnl,
+                journal_volume: referenceData.journal_volume,
+                journal_year: referenceData.journal_year,
+                conference_name: referenceData.conference_name,
+                conference_acronym: referenceData.conference_acronym,
+                conference_place: referenceData.conference_place,
+                conference_year: referenceData.conference_year,
+                book_title: referenceData.book_title,
+                book_isbn: referenceData.book_isbn,
+                book_pages: referenceData.book_pages,
+                book_editor: referenceData.book_editor,
+                book_year: referenceData.book_year,
+                abstract: referenceData.abstract,
+                month: referenceData.month,
+                print_status: referenceData.print_status,
+                note: referenceData.note
+            };
+        };
+        
         var referencesProvider = {};
         
-        referencesProvider.createReferenceAsync = function(reference, token, callback) {
-            referencesProvider.createReference({
-                title: reference.title,
-                authors: reference.authors,
-                organizations: reference.organizations,
-                tags: reference.tags,
-                year: reference.year,
-                doi: reference.doi,
-                journal_name: reference.journal_name,
-                journal_acronym: reference.journal_acronym,
-                journal_pissn: reference.journal_pissn,
-                journal_eissn: reference.journal_eissn,
-                journal_issnl: reference.journal_issnl,
-                journal_volume: reference.journal_volume,
-                journal_year: reference.journal_year,
-                conference_name: reference.conference_name,
-                conference_acronym: reference.conference_acronym,
-                conference_place: reference.conference_place,
-                conference_year: reference.conference_year,
-                book_title: reference.book_title,
-                book_isbn: reference.book_isbn,
-                book_pages: reference.book_pages,
-                book_editor: reference.book_editor,
-                book_year: reference.book_year,
-                abstract: reference.abstract,
-                month: reference.month,
-                print_status: reference.print_status,
-                note: reference.note
-            }, token).success(function(data, status, headers, config) {
-                if (_.isFunction(callback)) {
-                    callback({reference: reference, status: status});
-                }
-            }).error(function(data, status, headers, config) {
-                if (_.isFunction(callback)) {
-                    callback({reference: reference, status: status});
-                }
-            });
+        referencesProvider.createReferenceAsync = function(referenceData, token, callback) {
+            var reference = cleanReferenceData(referenceData);
+            referencesProvider
+                .createReference(reference, token)
+                .success(function(data, status, headers, config) {
+                    if (_.isFunction(callback)) {
+                        callback({reference: reference, status: status});
+                    }
+                }).error(function(data, status, headers, config) {
+                    if (_.isFunction(callback)) {
+                        callback({reference: reference, status: status});
+                    }
+                });
         };     
+        
+        referencesProvider.cloneReferenceFromPeer = function(peerId, referenceId, token, callback) {
+            var cloningData = {
+                source: {
+                    peer_id: peerId,
+                    reference_id: referenceId,
+                    type: "P"
+                }
+            };
+            this.cloneReference(cloningData, token)
+                .success(function(data, status, headers, config) {
+                    if (_.isFunction(callback)) {
+                        callback({data: cloningData, status: status});
+                    }
+                }).error(function(data, status, headers, config) {
+                    if (_.isFunction(callback)) {
+                        callback({data: cloningData, status: status});
+                    }
+                });
+        };
         
         referencesProvider.getReferences = function(keywords, token) {
             var params = {};

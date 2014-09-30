@@ -35,10 +35,12 @@ module.exports = function () {
             return extractedReference;
         };
         
-        var localReference = _.isNull(repository) ? reference : extract(reference, repository.extractors);
+        var localReference =    (_.isNull(repository) || _.isUndefined(repository)) 
+                                ? reference 
+                                : extract(reference, repository.extractors);
         
         var referenceFields = [
-            'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
+            '_id', 'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
             'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
             'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
             'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
@@ -85,9 +87,11 @@ module.exports = function () {
             .digest("hex"); 
     };
     return {
+        createReference: createReference,
+        getReferenceHash: referenceHash,
         getVerifiedReferences: function(referencesCollection, userHash, references, repository, callback) {
             referencesCollection
-                .find()
+                .find({user_hash: userHash})
                 .toArray(function(err, existingReferences) {
                     if (err) {
                         callback(err, null);
@@ -96,7 +100,7 @@ module.exports = function () {
                     var verifiedReferences = references.map(function(reference){
                         var verifiedReferences = createReference(reference, repository);
                         var hash = referenceHash(verifiedReferences);
-                        verifiedReferences.clonable = ! _.some(existingReferences, {original_hash: hash, user_hash: userHash});
+                        verifiedReferences.clonable = !_.some(existingReferences, {original_hash: hash});
                         return verifiedReferences;
                     });
                     callback(null, verifiedReferences);

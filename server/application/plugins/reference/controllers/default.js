@@ -4,8 +4,8 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
-var model = require("../models/default.js")();
-var _ = require("underscore");
+var referenceManager = require("../models/default.js")();
+var _ = require("lodash");
 
 module.exports = function () {
     var cleanReferenceTags = function(reference) {
@@ -329,9 +329,8 @@ module.exports = function () {
                 
                 case "P":
                     // Cloning a reference from a peer
-                    reference.original_hash = "";
-                    break;
-                    
+                    this.cloneReferenceFromPeer(req, res);
+                    return;
                 case "PD":
                     // Cloning a reference from a peer dataset
                     reference.original_hash = "";
@@ -391,6 +390,70 @@ module.exports = function () {
                 
                 res.end();
             });
-        },        
+        }, 
+        cloneReferenceFromPeer: function(req, res) {
+            if (_.isNull(req.body.source.peer_id)) {
+                res.status(400).end();
+                return;
+            }
+            if (_.isNull(req.body.source.reference_id)) {
+                res.status(400).end();
+                return;
+            }
+            var peerId = req.body.source.peer_id;
+            var referenceId = req.body.source.reference_id;
+            req.peersCollection.findOne({ _id: peerId }, function(err, peer) {
+                if (err || req.underscore.isNull(peer)) {
+                    res.status(404).end();
+                    return;
+                }
+                var url = peer.url + "/api/public-references/" + referenceId + "/";
+                req.request({ 
+                    url: url, 
+                    strictSSL: false,
+                    json: true
+                }, function (error, response, referenceData) {
+                    if (error) {
+                        console.log(error);
+                        res.status(400).end();
+                        return;
+                    }
+                    var reference = referenceManager.createReference(referenceData);
+                    reference.original_hash = referenceManager.getReferenceHash(reference);
+                    reference.clone_hash = reference.original_hash;
+                    reference.user_hash = req.user.hash; 
+                    reference.last_modifier_id = req.user.id;
+                    reference.last_modification_datetime = req.moment().format(); 
+                    delete reference._id;
+                    res.setHeader("Content-Type", "application/json");
+                    req.referencesCollection
+                        .find({ 
+                            original_hash: reference.original_hash,
+                            user_hash: req.user.hash
+                        })
+                        .toArray(function(err, references) {
+                            if (err) {
+                                console.log(err);
+                                res.status(404).end();
+                                return;
+                            }
+                            if (references.length > 0) {
+                                res.status(409).end();
+                                return;
+                            }
+                            req.referencesCollection.insert(reference, { w: 1 }, function(err, reference) {
+                                if (err || req.underscore.isNull(reference)) {
+                                    console.log(err);
+                                    res.status(404).end();
+                                    return;
+                                }
+                                res.end();
+                                return;
+                            });
+                        }
+                    );
+                });
+            });
+        }
     };
 };
