@@ -137,39 +137,8 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.note) ? reference.note = req.body.note.trim() : reference.note = "";       
             !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : reference.approving_status = "";
             !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : reference.sharing_status = "";
-            var originalHash = (
-                reference.title + ", " +
-                reference.authors + ", " +
-                reference.organizations + ", " +
-                reference.title + ", " +
-                reference.year + ", " +
-                reference.doi + ", " +
-                reference.journal_name + ", " +
-                reference.journal_acronym + ", " +
-                reference.journal_pissn + ", " +
-                reference.journal_eissn + ", " +
-                reference.journal_issnl + ", " +
-                reference.journal_volume + ", " +
-                reference.journal_year + ", " +
-                reference.conference_name + ", " +
-                reference.conference_acronym + ", " +
-                reference.conference_place + ", " +
-                reference.conference_year + ", " +
-                reference.book_title + ", " +
-                reference.book_isbn + ", " +
-                reference.book_pages + ", " +
-                reference.book_editor + ", " +
-                reference.book_year + ", " +
-                reference.abstract + ", " +
-                reference.month + ", " +
-                reference.abstract
-            ).trim();
-            reference.original_hash = 
-                req.crypto
-                    .createHash("sha256")
-                    .update(originalHash)
-                    .digest("hex");
-            reference.clone_hash = "";
+            reference.original_hash = referenceManager.getReferenceHash(reference);
+            reference.clone_hash = reference.original_hash;
             reference.author_hashes = "";
             reference.organization_hashes = "";
             reference.user_hash = req.user.hash;
@@ -230,38 +199,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.note) ? reference.note = req.body.note.trim() : null;
             !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : null;
             !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : null;
-            var cloneHash = (
-                reference.title + ", " +
-                reference.authors + ", " +
-                reference.organizations + ", " +
-                reference.title + ", " +
-                reference.year + ", " +
-                reference.doi + ", " +
-                reference.journal_name + ", " +
-                reference.journal_acronym + ", " +
-                reference.journal_pissn + ", " +
-                reference.journal_eissn + ", " +
-                reference.journal_issnl + ", " +
-                reference.journal_volume + ", " +
-                reference.journal_year + ", " +
-                reference.conference_name + ", " +
-                reference.conference_acronym + ", " +
-                reference.conference_place + ", " +
-                reference.conference_year + ", " +
-                reference.book_title + ", " +
-                reference.book_isbn + ", " +
-                reference.book_pages + ", " +
-                reference.book_editor + ", " +
-                reference.book_year + ", " +
-                reference.abstract + ", " +
-                reference.month + ", " +
-                reference.abstract
-            ).trim()
-            reference.clone_hash = 
-                req.crypto
-                    .createHash("sha256")
-                    .update(cloneHash)
-                    .digest("hex");
+            reference.clone_hash = reference.original_hash = referenceManager.getReferenceHash(reference);
             reference.author_hashes = "";
             reference.organization_hashes = "";
             reference.user_hash = req.user.hash; 
