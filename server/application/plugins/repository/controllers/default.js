@@ -35,16 +35,9 @@ module.exports = function () {
         return extractors;
     };
     var getCleanExtractors = function(extractors) {
-        extractorFields.forEach(function(extractorField){
-            if (!_.isUndefined(extractors[extractorField])) {
-                return;
-            }
-            extractors[extractorField] = {
-                field: extractorField,
-                regex: ".*"
-            }; 
-        });
-        return extractors;
+        var defaultExtractors = getDefaultExtractors();
+        var cleanExtractors = _.merge(defaultExtractors, extractors);
+        return cleanExtractors;
     };
     
     var trimObject = function(obj) {
