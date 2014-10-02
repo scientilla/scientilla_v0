@@ -39,10 +39,10 @@ angular.module("reference").factory(
         
         var referencesProvider = {};
         
-        referencesProvider.createReferenceAsync = function(referenceData, token, callback) {
-            var reference = cleanReferenceData(referenceData);
+        referencesProvider.createReferenceAsync = function(reference, token, callback) {
+            var referenceData = cleanReferenceData(reference);
             referencesProvider
-                .createReference(reference, token)
+                .createReference(referenceData, token)
                 .success(function(data, status, headers, config) {
                     if (_.isFunction(callback)) {
                         callback({reference: reference, status: status});

@@ -5,7 +5,14 @@
  */
 
 angular.module("repository").controller(
-    "repositoryAdditionController", ["$scope", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, systemStatusService, $window, $location) {
+    "repositoryAdditionController", 
+    ["$scope", "repositoriesService", "systemStatusService", "$window", "$location", 
+    function($scope, repositoriesService, systemStatusService, $window, $location) {
+        var extractorFields = [
+            'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
+            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
+            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
+            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
         $scope.defaultPage = 1;
         $scope.defaultRows = 20;
         $scope.oRepository = {
@@ -16,37 +23,14 @@ angular.module("repository").controller(
                 rows: $scope.defaultRows,
                 page: $scope.defaultPage
             },
-            extractors: {
-                authors: {
-                    field: "authors",
-                    regex: ".*"
-                },
-                title: {
-                    field: "title",
-                    regex: ".*"
-                },
-                journal_name: {
-                    field: "journal_name",
-                    regex: ".*"
-                },
-                conference_name: {
-                    field: "conference_name",
-                    regex: ".*"
-                },
-                book_title: {
-                    field: "book_title",
-                    regex: ".*"
-                },
-                doi: {
-                    field: "doi",
-                    regex: ".*"
-                },
-                year: {
-                    field: "year",
-                    regex: ".*"
-                }
-            }
+            extractors: {}
         };
+        extractorFields.forEach(function(extractorField){
+            $scope.oRepository.extractors[extractorField] = {
+                field: extractorField,
+                regex: ".*"
+            }; 
+        });
         
         $scope.createRepository = function() {
             repositoriesService.createRepository({

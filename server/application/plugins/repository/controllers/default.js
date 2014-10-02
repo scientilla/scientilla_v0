@@ -5,8 +5,15 @@
  */
 
 var model = require("../models/default.js")();
+var _ = require("lodash");
 
 module.exports = function () {
+    var extractorFields = [
+            'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
+            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
+            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
+            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
+        
     var getEmptyConfig = function(){
         var defaultRows = 20; 
         var defaultPage = 1; 
@@ -16,38 +23,30 @@ module.exports = function () {
             page: defaultPage
         };
     };
+    
     var getEmptyExtractors = function(){
-        return {
-            authors: {
-                field: "authors",
+        var extractors = {};
+        extractorFields.forEach(function(extractorField){
+            extractors[extractorField] = {
+                field: extractorField,
                 regex: ".*"
-            },
-            title: {
-                field: "title",
-                regex: ".*"
-            },
-            journal_name: {
-                field: "journal_name",
-                regex: ".*"
-            },
-            conference_name: {
-                field: "conference_name",
-                regex: ".*"
-            },
-            book_title: {
-                field: "book_title",
-                regex: ".*"
-            },
-            doi: {
-                field: "doi",
-                regex: ".*"
-            },
-            year: {
-                field: "year",
-                regex: ".*"
-            }
-        };
+            }; 
+        });
+        return extractors;
     };
+    var getCleanExtractors = function(extractors) {
+        extractorFields.forEach(function(extractorField){
+            if (!_.isUndefined(extractors[extractorField])) {
+                return;
+            }
+            extractors[extractorField] = {
+                field: extractorField,
+                regex: ".*"
+            }; 
+        });
+        return extractors;
+    };
+    
     var trimObject = function(obj) {
         if (typeof obj !== "object") {
             return obj;
@@ -88,9 +87,11 @@ module.exports = function () {
         getRepository: function(req, res) {
             req.repositoriesCollection.findOne({ _id: req.params.id }, function(err, repository) {
                 if (err || req.underscore.isNull(repository)) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
+                repository.extractors = getCleanExtractors(repository.extractors);
                 
                 res.setHeader("Content-Type", "application/json");
                 res.json(repository);
