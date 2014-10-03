@@ -8,6 +8,7 @@ var crypto = require("crypto");
 
 var model = require("../models/default.js")();
 var userManager = require("../../user/models/default.js")();
+var _ = require("lodash");
 
 module.exports = function () {
     var getUserHash = function(user) {
@@ -93,6 +94,7 @@ module.exports = function () {
             user.password = encryptedPassword;
             user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";
             user.hash = getUserHash(user);
+            user.hashes = [user.hash];
             req.usersCollection.insert(user, {w:1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
@@ -103,69 +105,94 @@ module.exports = function () {
             });
         },
         updateUser: function(req, res) { 
-            var user = {};
-            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
-            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights : "";
-            user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
-            user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
-            user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
-            user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
-            user.business_name = !req.underscore.isUndefined(req.body.business_name) ? req.body.business_name.trim() : "";
-            user.birth_date = !req.underscore.isUndefined(req.body.birth_date) ? req.body.birth_date.trim() : "";
-            user.birth_city = !req.underscore.isUndefined(req.body.birth_city) ? req.body.birth_city.trim() : "";
-            user.birth_state = !req.underscore.isUndefined(req.body.birth_state) ? req.body.birth_state.trim() : "";
-            user.birth_country = !req.underscore.isUndefined(req.body.birth_country) ? req.body.birth_country.trim() : "";
-            user.sex = !req.underscore.isUndefined(req.body.sex) ? req.body.sex.trim() : "";
-            user.email = !req.underscore.isUndefined(req.body.email) ? req.body.email.trim() : "";
-            user.username = !req.underscore.isUndefined(req.body.username) ? req.body.username.trim() : "";
-            var passwordToEncrypt = !req.underscore.isUndefined(req.body.password) ? req.body.password.trim() : "";
-            if (passwordToEncrypt != "") {
-                var encryptionSalt = req.bcryptNodejs.genSaltSync();
-                var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
-                user.password = encryptedPassword;
-            }
-            user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";          
-            user.hash = getUserHash(user);
-            req.usersCollection.update({ _id: req.params.id }, { $set: user }, {w: 1}, function(err, user) {
+            req.usersCollection.findOne({ _id: req.params.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
-                    res.status(404).end();
+                    console.log(err);
+                    res.status(500).end();
                     return;
                 }
-                
-                res.end();
+                user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
+                user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights : "";
+                user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
+                user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
+                user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
+                user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
+                user.business_name = !req.underscore.isUndefined(req.body.business_name) ? req.body.business_name.trim() : "";
+                user.birth_date = !req.underscore.isUndefined(req.body.birth_date) ? req.body.birth_date.trim() : "";
+                user.birth_city = !req.underscore.isUndefined(req.body.birth_city) ? req.body.birth_city.trim() : "";
+                user.birth_state = !req.underscore.isUndefined(req.body.birth_state) ? req.body.birth_state.trim() : "";
+                user.birth_country = !req.underscore.isUndefined(req.body.birth_country) ? req.body.birth_country.trim() : "";
+                user.sex = !req.underscore.isUndefined(req.body.sex) ? req.body.sex.trim() : "";
+                user.email = !req.underscore.isUndefined(req.body.email) ? req.body.email.trim() : "";
+                user.username = !req.underscore.isUndefined(req.body.username) ? req.body.username.trim() : "";
+                var passwordToEncrypt = !req.underscore.isUndefined(req.body.password) ? req.body.password.trim() : "";
+                if (passwordToEncrypt != "") {
+                    var encryptionSalt = req.bcryptNodejs.genSaltSync();
+                    var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
+                    user.password = encryptedPassword;
+                }
+                user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";          
+                user.hash = getUserHash(user);
+                if (_.isUndefined(user.hashes)) {
+                    user.hashes = [];
+                }
+                if (!_.contains(user.hashes, user.hash)) {
+                    user.hashes.push(user.hash);
+                }
+                req.usersCollection.update({ _id: req.params.id }, { $set: user }, {w: 1}, function(err, user) {
+                    if (err || req.underscore.isNull(user)) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+                    res.end();
+                });
             });
         },
         updateLoggedUser: function(req, res) { 
-            var user = {};
-            user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
-            user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights : "";
-            user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
-            user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
-            user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
-            user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
-            user.business_name = !req.underscore.isUndefined(req.body.business_name) ? req.body.business_name.trim() : "";
-            user.birth_date = !req.underscore.isUndefined(req.body.birth_date) ? req.body.birth_date.trim() : "";
-            user.birth_city = !req.underscore.isUndefined(req.body.birth_city) ? req.body.birth_city.trim() : "";
-            user.birth_state = !req.underscore.isUndefined(req.body.birth_state) ? req.body.birth_state.trim() : "";
-            user.birth_country = !req.underscore.isUndefined(req.body.birth_country) ? req.body.birth_country.trim() : "";
-            user.sex = !req.underscore.isUndefined(req.body.sex) ? req.body.sex.trim() : "";
-            user.email = !req.underscore.isUndefined(req.body.email) ? req.body.email.trim() : "";
-            user.username = !req.underscore.isUndefined(req.body.username) ? req.body.username.trim() : "";
-            var passwordToEncrypt = !req.underscore.isUndefined(req.body.password) ? req.body.password.trim() : "";
-            if (passwordToEncrypt != "") {
-                var encryptionSalt = req.bcryptNodejs.genSaltSync();
-                var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
-                user.password = encryptedPassword;
-            }
-            user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";         
-            user.hash = getUserHash(user); 
-            req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, user) {
+            req.usersCollection.findOne({ _id: req.user.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
-                    res.status(404).end();
+                    console.log(err);
+                    res.status(500).end();
                     return;
                 }
-                
-                res.end();
+                user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
+                user.rights = !req.underscore.isUndefined(req.body.rights) ? req.body.rights : "";
+                user.scientilla_nominative = !req.underscore.isUndefined(req.body.scientilla_nominative) ? req.body.scientilla_nominative.trim() : "";
+                user.first_name = !req.underscore.isUndefined(req.body.first_name) ? req.body.first_name.trim() : "";
+                user.middle_name = !req.underscore.isUndefined(req.body.middle_name) ? req.body.middle_name.trim() : "";
+                user.last_name = !req.underscore.isUndefined(req.body.last_name) ? req.body.last_name.trim() : "";
+                user.business_name = !req.underscore.isUndefined(req.body.business_name) ? req.body.business_name.trim() : "";
+                user.birth_date = !req.underscore.isUndefined(req.body.birth_date) ? req.body.birth_date.trim() : "";
+                user.birth_city = !req.underscore.isUndefined(req.body.birth_city) ? req.body.birth_city.trim() : "";
+                user.birth_state = !req.underscore.isUndefined(req.body.birth_state) ? req.body.birth_state.trim() : "";
+                user.birth_country = !req.underscore.isUndefined(req.body.birth_country) ? req.body.birth_country.trim() : "";
+                user.sex = !req.underscore.isUndefined(req.body.sex) ? req.body.sex.trim() : "";
+                user.email = !req.underscore.isUndefined(req.body.email) ? req.body.email.trim() : "";
+                user.username = !req.underscore.isUndefined(req.body.username) ? req.body.username.trim() : "";
+                var passwordToEncrypt = !req.underscore.isUndefined(req.body.password) ? req.body.password.trim() : "";
+                if (passwordToEncrypt != "") {
+                    var encryptionSalt = req.bcryptNodejs.genSaltSync();
+                    var encryptedPassword = req.bcryptNodejs.hashSync(passwordToEncrypt);
+                    user.password = encryptedPassword;
+                }
+                user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";         
+                user.hash = getUserHash(user);
+                if (_.isUndefined(user.hashes)) {
+                    user.hashes = [];
+                }
+                if (!_.contains(user.hashes, user.hash)) {
+                    user.hashes.push(user.hash);
+                }
+                req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, user) {
+                    if (err || req.underscore.isNull(user)) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+
+                    res.end();
+                });
             });
         },        
         loginUser: function(req, res){
@@ -221,7 +248,8 @@ module.exports = function () {
                                 business_name: user.business_name,
                                 email: user.email,
                                 hash: user.hash,
-                                id: user._id
+                                id: user._id,
+                                hashes: user.hashes
                             };
 
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
@@ -275,7 +303,8 @@ module.exports = function () {
                                 business_name: user.business_name,
                                 email: user.email,
                                 hash: hash,
-                                id: user._id
+                                id: user._id,
+                                hashes: user.hashes
                             };
 
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
