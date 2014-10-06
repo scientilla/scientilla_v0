@@ -154,9 +154,11 @@ module.exports = function () {
                 .toArray(function(err, references) {
                     if (err) {
                         res.status(404).end();
+                        return;
                     }
                     if (references.length > 0) {
                         res.status(409).end();
+                        return;
                     }
                     req.referencesCollection.insert(reference, { w: 1 }, function(err, reference) {
                         if (err || req.underscore.isNull(reference)) {
