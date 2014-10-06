@@ -149,7 +149,7 @@ module.exports = function () {
             req.referencesCollection
                 .find({ 
                     original_hash: reference.original_hash,
-                    user_hash: req.user.hash
+                    user_hash: { $in: req.user.hashes }
                 })
                 .toArray(function(err, references) {
                     if (err) {
@@ -163,7 +163,6 @@ module.exports = function () {
                             res.status(404).end();
                             return;
                         }
-
                         res.end();
                     });
                 }
@@ -367,7 +366,7 @@ module.exports = function () {
                     req.referencesCollection
                         .find({ 
                             original_hash: reference.original_hash,
-                            user_hash: req.user.hash
+                            user_hash: { $in: req.user.hashes }
                         })
                         .toArray(function(err, references) {
                             if (err) {
