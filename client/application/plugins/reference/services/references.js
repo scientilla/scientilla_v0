@@ -41,6 +41,7 @@ angular.module("reference").factory(
         
         referencesProvider.createReferenceAsync = function(reference, token, callback) {
             var referenceData = cleanReferenceData(reference);
+            referenceData.source = {type: 'N'};
             referencesProvider
                 .createReference(referenceData, token)
                 .success(function(data, status, headers, config) {
@@ -62,7 +63,7 @@ angular.module("reference").factory(
                     type: "P"
                 }
             };
-            this.cloneReference(cloningData, token)
+            this.createReference(cloningData, token)
                 .success(function(data, status, headers, config) {
                     if (_.isFunction(callback)) {
                         callback({data: cloningData, status: status});

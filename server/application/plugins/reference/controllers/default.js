@@ -108,6 +108,36 @@ module.exports = function () {
             });                
         },        
         createReference: function(req, res) {
+            switch (req.body.source.type) {
+                case "I":
+                    // Cloning a reference from the installation 
+                case "ID":
+                    // Cloning a reference from an installation dataset
+                case "PD":
+                    // Cloning a reference from a peer dataset
+                    
+                    /*not implemented yet */
+                    res.status(404).end();
+                    return;
+                case "P":
+                    // Cloning a reference from a peer
+                    
+                    this.cloneReferenceFromPeer(req, res);
+                    return;
+                case "R":
+                    // Cloning a reference from a repository
+                case "N":
+                    // Creating a new reference
+                    
+                    this.createNewReference(req, res);
+                    break;
+                default:
+                    /* error!!! */
+                    res.status(500).end();
+                    return;
+            };
+        },        
+        createNewReference: function(req, res) {
             var reference = {};
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : reference.title = "";            
             !req.underscore.isUndefined(req.body.authors) ? reference.authors = req.body.authors.trim() : reference.authors = "";
@@ -225,6 +255,7 @@ module.exports = function () {
                 res.end();
             });
         },
+        /* to be deleted soon */
         cloneReference: function(req, res) {
             var reference = {};
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : null;      
