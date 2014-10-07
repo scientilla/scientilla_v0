@@ -49,6 +49,7 @@
                             <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
                             <th ng-if="userRights == 1" class="fixed-th-1x"></th>
                             <th class="fixed-th-1x"></th>
+                            <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x">
                                 <a href="#/add-reference/" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
                             </th>
@@ -91,6 +92,9 @@
                             </td>                            
                             <td>
                                 <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature"><i class="fa fa-edit secondary-feature"></i></a>                            
+                            </td>
+                            <td>
+                                <a href="#/copy-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature"><i class="fa fa-files-o secondary-feature"></i></a>                            
                             </td>
                             <td>
                                 <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature"><i class="fa fa-trash-o secondary-feature"></i></a>
