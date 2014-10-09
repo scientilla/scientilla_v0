@@ -28,13 +28,6 @@ module.exports = function () {
         });
         return cleanedReferences;
     };
-    var alertSeedAboutChanges = function(seedsConfiguration) {
-        networkManager.getRandomSeed(seedsConfiguration, function(err, seed) {
-            if (err) {
-                //
-            }
-        });
-    }
     return {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
@@ -249,7 +242,6 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                alertSeedAboutChanges(req.seedsConfiguration);
                 res.end();
             });
         },
@@ -259,7 +251,6 @@ module.exports = function () {
                     res.status(500).end();
                     return;
                 }
-                alertSeedAboutChanges();
                 res.end();
             });
         },
@@ -424,7 +415,6 @@ module.exports = function () {
                                     res.status(404).end();
                                     return;
                                 }
-                                alertSeedAboutChanges(req.seedsConfiguration);
                                 res.end();
                                 return;
                             });
