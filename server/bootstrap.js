@@ -124,6 +124,14 @@ async.series([
     },
     function(seriesCallback) {
         database.open(function(err, database) {
+            database.collection("guest-references.db", function(err, collection) {
+                guestReferencesCollection = collection;
+                seriesCallback();
+            });
+        });
+    },    
+    function(seriesCallback) {
+        database.open(function(err, database) {
             database.collection("users.db", function(err, collection) {
                 usersCollection = collection;
                 seriesCallback();
@@ -189,6 +197,7 @@ application.use("*", function(req, res, next) {
     req.peersCollection = peersCollection;
     req.repositoriesCollection = repositoriesCollection;
     req.referencesCollection = referencesCollection;
+    req.guestReferencesCollection = guestReferencesCollection;
     req.usersCollection = usersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
     next();    
