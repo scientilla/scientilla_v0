@@ -129,6 +129,14 @@ async.series([
                 seriesCallback();
             });
         });
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("collected-references.db", function(err, collection) {
+                collectedReferencesCollection = collection;
+                seriesCallback();
+            });
+        });
     },    
     function(seriesCallback) {
         database.open(function(err, database) {
@@ -198,6 +206,7 @@ application.use("*", function(req, res, next) {
     req.repositoriesCollection = repositoriesCollection;
     req.referencesCollection = referencesCollection;
     req.guestReferencesCollection = guestReferencesCollection;
+    req.collectedReferencesCollection = collectedReferencesCollection;
     req.usersCollection = usersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
     next();    
