@@ -65,7 +65,7 @@ module.exports = function () {
         
         discoverReferences: function(peersCollection, collectedReferencesCollection) {
             console.log("discover references");
-            peersCollection.find({}).sort({ hits: -1 }).limit(1).toArray(function(err, peers) {
+            peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, peers) {
                 if (err) {
                     return; 
                 }
