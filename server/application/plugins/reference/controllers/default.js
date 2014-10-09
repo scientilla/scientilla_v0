@@ -230,7 +230,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.note) ? reference.note = req.body.note.trim() : null;
             !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : null;
             !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : null;
-            reference.clone_hash = reference.original_hash = referenceManager.getReferenceHash(reference);
+            reference.clone_hash = referenceManager.getReferenceHash(reference);
             reference.author_hashes = "";
             reference.organization_hashes = "";
             reference.user_hash = req.user.hash; 
