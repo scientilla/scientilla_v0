@@ -6,8 +6,8 @@
 
 angular.module("reference").controller(
     "referenceCopyController", 
-    ["$scope", "$routeParams", "referencesService", "systemStatusService", "$window", "$location",  "tagsService",
-    function($scope, $routeParams, referencesService, systemStatusService, $window, $location, tagsService) {
+    ["$scope", "$routeParams", "referencesService", "systemStatusService", "$window", "$location",  "tagsService", "notificationService",
+    function($scope, $routeParams, referencesService, systemStatusService, $window, $location, tagsService, notificationService) {
         $scope.oReference = {
             title: "",
             authors: "",
@@ -103,14 +103,17 @@ angular.module("reference").controller(
             referencesService.createReferenceAsync(
                 $scope.oReference, 
                 $window.sessionStorage.token,
-                function(reference, status) {
-                    switch (status) {
+                function(result) {
+                    switch (result.status) {
                         case 200:
+                            notificationService.info('Reference created.');
                             $location.path("browse-references");
                         break;
-                    case 404:
-                    case 409:
-                        systemStatusService.react(status);
+                        case 404:
+                            notificationService.error('An error happened.');
+                        break;
+                        case 409:
+                            notificationService.error('Reference already present.');
                         break;
                     }
             });
