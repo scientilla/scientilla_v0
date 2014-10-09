@@ -179,11 +179,19 @@ async.series([
         recurrenceRule.minute = 0;
         nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
         seriesCallback();
+    },
+    function(seriesCallback) {
+        var jobToSchedule = function jobToSchedule() {
+            peerReferencesController.discoverReferences(peersCollection, collectedReferencesCollection);
+            
+            return jobToSchedule;
+        }();
+        var recurrenceRule = new nodeSchedule.RecurrenceRule();
+        recurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+        nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+        seriesCallback();
     }
 ]);
-
-// Configures scheduling
-
 
 // Executes middlewares
 application.use("*", function(req, res, next) {
