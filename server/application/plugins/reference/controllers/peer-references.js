@@ -67,12 +67,12 @@ module.exports = function () {
             console.log("discover references");
             peersCollection.find({}).sort({ hits: -1 }).limit(1).toArray(function(err, peers) {
                 if (err) {
-                    // 
+                    return; 
                 }
                 console.log("peer: " + peers[0].hits + " - " + peers[0].url);
                 peersCollection.update({ _id: peers[0]._id }, { $set: { hits: (peers[0].hits + 1) } }, { w: 1}, function(err, peer) {
                     if (err) {
-                        // 
+                        return;
                     }
                 });
             });
