@@ -110,6 +110,7 @@ angular.module("reference").controller(
                             $location.path("browse-references");
                         break;
                         case 404:
+                        case 500:
                             notificationService.error('An error happened.');
                         break;
                         case 409:
