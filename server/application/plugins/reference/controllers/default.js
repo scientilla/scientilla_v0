@@ -4,6 +4,7 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var networkManager = require("../../network/models/default.js")();
 var referenceManager = require("../models/default.js")();
 var _ = require("lodash");
 
@@ -27,6 +28,13 @@ module.exports = function () {
         });
         return cleanedReferences;
     };
+    var alertSeedAboutChanges = function(seedsConfiguration) {
+        networkManager.getRandomSeed(seedsConfiguration, function(err, seed) {
+            if (err) {
+                //
+            }
+        });
+    }
     return {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
@@ -163,7 +171,7 @@ module.exports = function () {
                             res.status(404).end();
                             return;
                         }
-
+                        alertSeedAboutChanges(req.seedsConfiguration);
                         res.end();
                     });
                 }
@@ -210,7 +218,7 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                
+                alertSeedAboutChanges(req.seedsConfiguration);
                 res.end();
             });
         },
@@ -220,7 +228,7 @@ module.exports = function () {
                     res.status(500).end();
                     return;
                 }
-                
+                alertSeedAboutChanges();
                 res.end();
             });
         },
@@ -325,7 +333,6 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                
                 res.end();
             });
         }, 
@@ -385,6 +392,7 @@ module.exports = function () {
                                     res.status(404).end();
                                     return;
                                 }
+                                alertSeedAboutChanges(req.seedsConfiguration);
                                 res.end();
                                 return;
                             });
