@@ -89,9 +89,9 @@ module.exports = function () {
     return {
         createReference: createReference,
         getReferenceHash: referenceHash,
-        getVerifiedReferences: function(referencesCollection, userHash, references, repository, callback) {
+        getVerifiedReferences: function(referencesCollection, userHashes, references, repository, callback) {
             referencesCollection
-                .find({user_hash: userHash})
+                .find({user_hash: { $in: userHashes }})
                 .toArray(function(err, existingReferences) {
                     if (err) {
                         callback(err, null);

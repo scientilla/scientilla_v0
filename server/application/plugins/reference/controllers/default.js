@@ -116,6 +116,36 @@ module.exports = function () {
             });                
         },        
         createReference: function(req, res) {
+            switch (req.body.source.type) {
+                case "I":
+                    // Cloning a reference from the installation 
+                case "ID":
+                    // Cloning a reference from an installation dataset
+                case "PD":
+                    // Cloning a reference from a peer dataset
+                    
+                    /*not implemented yet */
+                    res.status(404).end();
+                    return;
+                case "P":
+                    // Cloning a reference from a peer
+                    
+                    this.cloneReferenceFromPeer(req, res);
+                    return;
+                case "R":
+                    // Cloning a reference from a repository
+                case "N":
+                    // Creating a new reference
+                    
+                    this.createNewReference(req, res);
+                    break;
+                default:
+                    /* error!!! */
+                    res.status(500).end();
+                    return;
+            };
+        },        
+        createNewReference: function(req, res) {
             var reference = {};
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : reference.title = "";            
             !req.underscore.isUndefined(req.body.authors) ? reference.authors = req.body.authors.trim() : reference.authors = "";
@@ -157,21 +187,22 @@ module.exports = function () {
             req.referencesCollection
                 .find({ 
                     original_hash: reference.original_hash,
-                    user_hash: req.user.hash
+                    user_hash: { $in: req.user.hashes }
                 })
                 .toArray(function(err, references) {
                     if (err) {
                         res.status(404).end();
+                        return;
                     }
                     if (references.length > 0) {
                         res.status(409).end();
+                        return;
                     }
                     req.referencesCollection.insert(reference, { w: 1 }, function(err, reference) {
                         if (err || req.underscore.isNull(reference)) {
                             res.status(404).end();
                             return;
                         }
-                        alertSeedAboutChanges(req.seedsConfiguration);
                         res.end();
                     });
                 }
@@ -207,7 +238,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.note) ? reference.note = req.body.note.trim() : null;
             !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : null;
             !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : null;
-            reference.clone_hash = reference.original_hash = referenceManager.getReferenceHash(reference);
+            reference.clone_hash = referenceManager.getReferenceHash(reference);
             reference.author_hashes = "";
             reference.organization_hashes = "";
             reference.user_hash = req.user.hash; 
@@ -232,6 +263,7 @@ module.exports = function () {
                 res.end();
             });
         },
+        /* to be deleted soon */
         cloneReference: function(req, res) {
             var reference = {};
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : null;      
@@ -374,7 +406,7 @@ module.exports = function () {
                     req.referencesCollection
                         .find({ 
                             original_hash: reference.original_hash,
-                            user_hash: req.user.hash
+                            user_hash: { $in: req.user.hashes }
                         })
                         .toArray(function(err, references) {
                             if (err) {

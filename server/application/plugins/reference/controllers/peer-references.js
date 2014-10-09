@@ -27,7 +27,7 @@ module.exports = function () {
                     }
                     referenceManager.getVerifiedReferences(
                         req.referencesCollection,
-                        req.user.hash,
+                        req.user.hashes,
                         peerReferences, 
                         null,
                         function (err, verifiedReferences) {

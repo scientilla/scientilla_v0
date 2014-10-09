@@ -11,6 +11,34 @@ var userManager = require("../../user/models/default.js")();
 var _ = require("lodash");
 
 module.exports = function () {
+    var getDefaultUser = function() {
+        var user = {};
+        user.type = 0;
+        user.rights = 0;
+        user.scientilla_nominative = "";
+        user.first_name = "";
+        user.middle_name = "";
+        user.last_name = "";
+        user.business_name = "";
+        user.birth_date = "";
+        user.birth_city = "";
+        user.birth_state = "";
+        user.birth_country = "";
+        user.sex = "";
+        user.email = "";
+        user.username = "";
+        user.hashes = [];
+        return user;
+    };
+    
+    var getFullUser = function(user){
+        var fullUser = _.defaults(user, getDefaultUser());
+        if (_.isEmpty(fullUser.hashes)) {
+            fullUser.hashes = [fullUser.hash];
+        }
+        return fullUser;
+    };
+    
     var getUserHash = function(user) {
         switch (user.type) {
             case 0:
@@ -226,6 +254,7 @@ module.exports = function () {
                     user.password = encryptedPassword;
                     user.status = "U";
                     user.hash = getUserHash(user);
+                    user.hashes = [user.hash];
                     req.usersCollection.insert(user, { w: 1 }, function(err, users) {
                         if (err || req.underscore.isNull(users)) {
                             var errorMsg = "Failed to Create the Default User";
@@ -269,13 +298,14 @@ module.exports = function () {
                         function(callback) {
                             req.usersCollection.findOne({ username: req.body.username }, function(err, user) {
                                 if (err || req.underscore.isNull(user)) {
-                                    callback(new Error());
+                                    callback(new Error('user not found'));
                                     return;
                                 }
                                 if (!req.bcryptNodejs.compareSync(req.body.password, user.password)) {
-                                    callback(new Error());
+                                    callback(new Error('wrong password'));
                                     return;                            
                                 }
+                                user = getFullUser(user);
                                 callback(null, user);
                             });
                         },
@@ -285,6 +315,7 @@ module.exports = function () {
                                     callback(err);
                                     return;
                                 }
+                                owner = getFullUser(owner);
                                 callback(null, user, owner);
                             });
 
@@ -296,6 +327,7 @@ module.exports = function () {
                                 return;
                             }
                             var hash = user.rights === 1 ? owner.hash : user.hash;
+                            var hashes = user.rights === 1 ? owner.hashes : user.hashes;
                             var userDataForToken = {
                                 first_name: user.first_name,
                                 middle_name: user.middle_name,
@@ -304,7 +336,7 @@ module.exports = function () {
                                 email: user.email,
                                 hash: hash,
                                 id: user._id,
-                                hashes: user.hashes
+                                hashes: hashes
                             };
 
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });

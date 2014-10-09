@@ -38,7 +38,7 @@ module.exports = function () {
                     }
                     referenceManager.getVerifiedReferences(
                         req.referencesCollection,
-                        req.user.hash,
+                        req.user.hashes,
                         repositoryReferences, 
                         repository,
                         function (err, verifiedReferences) {

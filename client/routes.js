@@ -72,6 +72,9 @@ angular.module("scientilla").config([
         }).when("/edit-reference/:id/", {
             templateUrl: "application/plugins/reference/partials/editing.html",
             controller: "referenceEditingController"
+        }).when("/copy-reference/:id/", {
+            templateUrl: "application/plugins/reference/partials/addition.html",
+            controller: "referenceCopyController"
         }).when("/delete-reference/:id/", {
             templateUrl: "application/plugins/reference/partials/deletion.html",
             controller: "referenceDeletionController"
