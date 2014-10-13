@@ -181,14 +181,16 @@ async.series([
         seriesCallback();
     },
     function(seriesCallback) {
-        var jobToSchedule = function jobToSchedule() {
-            peerReferencesController.discoverReferences(peersCollection, collectedReferencesCollection);
-            
-            return jobToSchedule;
-        }();
-        var recurrenceRule = new nodeSchedule.RecurrenceRule();
-        recurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
-        nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+        if (installationConfiguration.seed) { 
+            var jobToSchedule = function jobToSchedule() {
+                peerReferencesController.discoverReferences(peersCollection, collectedReferencesCollection);
+
+                return jobToSchedule;
+            }();
+            var recurrenceRule = new nodeSchedule.RecurrenceRule();
+            recurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+            nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+        }
         seriesCallback();
     }
 ]);
