@@ -35,7 +35,7 @@ module.exports = function () {
             var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({
                 last_modification_datetime: {
-                    $gte: datetime
+                    $gt: datetime
                 },                
                 "$or": [
                     {
@@ -68,7 +68,7 @@ module.exports = function () {
             req.referencesCollection.find({ 
                 sharing_status: true,
                 last_modification_datetime: {
-                    $gte: datetime
+                    $gt: datetime
                 },
                 "$or": [
                     {
