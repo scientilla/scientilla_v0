@@ -4,9 +4,10 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var request = require("request");
+var _ = require("underscore");
 var referenceManager = require("../../reference/models/default.js")();
 var model = require("../models/peer-references.js")();
-var _ = require("underscore");
 
 module.exports = function () {
     return {        
@@ -65,17 +66,36 @@ module.exports = function () {
         
         discoverReferences: function(peersCollection, collectedReferencesCollection) {
             peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, peers) {
-                if (err) {
+                if (err || _.isNull(peers)) {
                     return; 
                 }
-                // Find the datetime of the last modified reference (from local collected references)
-                // Ask to the peer the public references passing the datetime as filter (to get only those that have a higher modification datetime)
-                // Checking references by reference if they are present locally and, if yes and with an outdated modification datetime, substitute the local data, or, if not present, create new local data (matching by original_hash and user_hash)
-                // When a peer is created it should be set with hits equal to the smaller value of the list.
-                peersCollection.update({ _id: peers[0]._id }, { $set: { hits: (peers[0].hits + 1) } }, { w: 1}, function(err, peer) {
-                    if (err) {
-                        return;
+                collectedReferencesCollection.find({ peer_url: peers[0].url }).sort({ last_modification_datetime: 1 }).limit(1).toArray(function(err, collectedReferences) {
+                    if (err || _.isNull(collectedReferences)) {
+                        return; 
                     }
+                    var datetime = collectedReferences.length == 0 ? "" : collectedReferences[0].last_modification_datetime;
+                    request({ 
+                        url: peers[0].url + "/api/public-references?datetime=" + datetime, 
+                        strictSSL: false,
+                        json: true 
+                    }, function (err, res, peerReferences) {
+                        if (err || _.isNull(peerReferences)) {
+                            return;
+                        }
+                        for (key in peerReferences) {
+                            peerReferences[key].peer_url = peers[0].url;
+                            collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: peerReferences[key].original_hash, user_hash: peerReferences[key].user_hash }, { $set: peerReferences[key] }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
+                                if (err || _.isNull(storedCollectedReference)) {
+                                    return; 
+                                }
+                            });
+                        }
+                        peersCollection.update({ _id: peers[0]._id }, { $set: { hits: (peers[0].hits + 1) } }, { w: 1}, function(err, peer) {
+                            if (err) {
+                                return;
+                            }
+                        });                        
+                    });                    
                 });
             });
         }
