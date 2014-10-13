@@ -67,12 +67,12 @@ module.exports = function () {
         createPeer: function(req, res) {
             req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
                 if (err || req.underscore.isNull(existingpeer)) {
-                    peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
+                    req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
                         var defaultPeerHits;
                         if (err || req.underscore.isNull(existingPeers)) {
                             defaultPeerHits = 0;
                         } else {
-                            defaultPeerHits = peers[0].hits;
+                            defaultPeerHits = existingPeers[0].hits;
                         }
                         var newPeer = {};
                         !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
@@ -86,14 +86,14 @@ module.exports = function () {
                         newPeer.last_modification_datetime = req.moment().format();            
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
-                                res.status(500).end();
+                                res.status(409).end();
                                 return;
                             }
                             res.end();
                         });
                     });
                 } else {
-                    res.status(500).end();
+                    res.status(409).end();
                     return;
                 }
             });
@@ -101,12 +101,12 @@ module.exports = function () {
         createPublicPeer: function(req, res) {
             req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
                 if (err || req.underscore.isNull(existingpeer)) {
-                    peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
+                    req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
                         var defaultPeerHits;
                         if (err || req.underscore.isNull(existingPeers)) {
                             defaultPeerHits = 0;
                         } else {
-                            defaultPeerHits = peers[0].hits;
+                            defaultPeerHits = existingPeers[0].hits;
                         }                    
                         var newPeer = {};
                         !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
@@ -120,14 +120,14 @@ module.exports = function () {
                         newPeer.last_modification_datetime = req.moment().format();            
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
-                                res.status(500).end();
+                                res.status(409).end();
                                 return;
                             }
                             res.end();
                         });
                     });
                 } else {
-                    res.status(500).end();
+                    res.status(409).end();
                     return;
                 }
             });
