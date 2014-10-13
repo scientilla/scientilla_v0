@@ -69,13 +69,13 @@ module.exports = function () {
                 if (err || _.isNull(peers)) {
                     return; 
                 }
-                collectedReferencesCollection.find({ peer_url: peers[0].url }).sort({ last_modification_datetime: 1 }).limit(1).toArray(function(err, collectedReferences) {
+                collectedReferencesCollection.find({ peer_url: peers[0].url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
                     if (err || _.isNull(collectedReferences)) {
                         return; 
                     }
                     var datetime = collectedReferences.length == 0 ? "" : collectedReferences[0].last_modification_datetime;
                     request({ 
-                        url: peers[0].url + "/api/public-references?datetime=" + datetime, 
+                        url: peers[0].url + "/api/public-references?datetime=" + encodeURIComponent(datetime), 
                         strictSSL: false,
                         json: true 
                     }, function (err, res, peerReferences) {
