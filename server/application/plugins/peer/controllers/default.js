@@ -82,8 +82,8 @@ module.exports = function () {
                         newPeer.hits = defaultPeerHits;
                         newPeer.creator_id = req.user.id;
                         newPeer.creation_datetime = req.moment().format();
-                        newPeer.last_modifier_id = "";
-                        newPeer.last_modification_datetime = "";            
+                        newPeer.last_modifier_id = req.user.id;
+                        newPeer.last_modification_datetime = req.moment().format();            
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
                                 res.status(500).end();
@@ -117,7 +117,7 @@ module.exports = function () {
                         newPeer.creator_id = "";
                         newPeer.creation_datetime = req.moment().format();
                         newPeer.last_modifier_id = "";
-                        newPeer.last_modification_datetime = "";            
+                        newPeer.last_modification_datetime = req.moment().format();            
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
                                 res.status(500).end();

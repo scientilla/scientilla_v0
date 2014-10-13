@@ -64,12 +64,14 @@ module.exports = function () {
         },
         
         discoverReferences: function(peersCollection, collectedReferencesCollection) {
-            console.log("discover references");
             peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, peers) {
                 if (err) {
                     return; 
                 }
-                console.log("peer: " + peers[0].hits + " - " + peers[0].url);
+                // Find the datetime of the last modified reference (from local collected references)
+                // Ask to the peer the public references passing the datetime as filter (to get only those that have a higher modification datetime)
+                // Checking references by reference if they are present locally and, if yes and with an outdated modification datetime, substitute the local data, or, if not present, create new local data (matching by original_hash and user_hash)
+                // When a peer is created it should be set with hits equal to the smaller value of the list.
                 peersCollection.update({ _id: peers[0]._id }, { $set: { hits: (peers[0].hits + 1) } }, { w: 1}, function(err, peer) {
                     if (err) {
                         return;
