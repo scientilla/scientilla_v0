@@ -31,8 +31,12 @@ module.exports = function () {
     return {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
             var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({
+                last_modification_datetime: {
+                    $gte: datetime
+                },                
                 "$or": [
                     {
                         title: { 
@@ -59,9 +63,13 @@ module.exports = function () {
         },
         getPublicReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
             var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({ 
                 sharing_status: true,
+                last_modification_datetime: {
+                    $gte: datetime
+                },
                 "$or": [
                     {
                         title: { 
