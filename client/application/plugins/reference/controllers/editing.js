@@ -74,10 +74,10 @@ angular.module("reference").controller(
         };
         
         $scope.extractOrganizations = function() {
-            if ($scope.oReference.aOrganizations !== "") { 
-                $scope.oReference.aOrganizations = $scope.oReference.organizations.split(", "); 
-            } else {
+            if (_.isUndefined($scope.oReference.organizations) || $scope.oReference.organizations.trim() === "") { 
                 $scope.oReference.aOrganizations = [];
+            } else {
+                $scope.oReference.aOrganizations = $scope.oReference.organizations.split(/,\s?/); 
             }
         };
         
@@ -125,7 +125,8 @@ angular.module("reference").controller(
                 month: $scope.oReference.month,
                 print_status: $scope.oReference.print_status,
                 note: $scope.oReference.note,              
-                id: $scope.oReference._id
+                id: $scope.oReference._id,
+                author_hash: $scope.oReference.author_hash
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {

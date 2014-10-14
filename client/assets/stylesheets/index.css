@@ -380,3 +380,7 @@ html, body {
 .tagList.tagInsertion > li {
     display:table;
 }
+
+.signList .complement {
+    display: inline-block;
+}

@@ -8,7 +8,23 @@ var _ = require("lodash");
 var crypto = require("crypto");
 
 module.exports = function () {
+    var createNewReference = function(reference) {
+        var newReferenceFields = [
+            'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
+            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
+            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
+            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
+        return buildReference(reference, newReferenceFields);
+    };
     var createReference = function(reference, repository) {
+        var referenceFields = [
+            '_id', 'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
+            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
+            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
+            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
+        return buildReference(reference, referenceFields, repository);
+    }
+    var buildReference = function(reference, referenceFields, repository) {
         var getCleanProperty = function(reference, field) {
             var cleanItem = function(item) {
                 if (typeof item === "string") {
@@ -38,12 +54,6 @@ module.exports = function () {
         var localReference =    (_.isNull(repository) || _.isUndefined(repository)) 
                                 ? reference 
                                 : extract(reference, repository.extractors);
-        
-        var referenceFields = [
-            '_id', 'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
-            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
-            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
-            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
          
         
         var cleanedReference = {};
@@ -53,6 +63,46 @@ module.exports = function () {
         
         return cleanedReference;
     };
+    
+    var extract = function(listStr) {
+       if (listStr !== "") { 
+            return listStr.replace(" and ", ", ").split(", "); 
+        } else {
+            return [];
+        } 
+    };
+    
+    var extractAuthors = function(reference) {
+        return extract(reference.authors);
+    };
+    
+    
+    var extractOrganizations = function(reference) {
+        return extract(reference.organizations);
+    };
+    
+    var getAuthorHash = function(reference, userHash) {
+        var author_hash = reference.author_hash;
+        if (_.isUndefined(author_hash) || _.isNull(author_hash) || _.isString(author_hash)) {
+            return author_hash;
+        }
+        var authors = extractAuthors(reference);
+        var author_index = author_hash.author_index;
+        if (!_.isUndefined(author_index) && !_.isEmpty(author_index)) {
+            var author_string = authors[author_index];
+            author_hash.author_string = author_string;
+            
+        }
+        var organizations = extractOrganizations(reference);
+        var organization_index = author_hash.organization_index;
+        if (!_.isUndefined(organization_index) && !_.isEmpty(organization_index)) {
+            var organization_string = organizations[organization_index];
+            author_hash.organization_string = organization_string;
+        }
+        author_hash.user_hash = userHash;
+        return author_hash;
+    };
+
     var referenceHash = function(reference) {
         var hashBase = (
             reference.title + ", " +
@@ -87,6 +137,8 @@ module.exports = function () {
             .digest("hex"); 
     };
     return {
+        getAuthorHash: getAuthorHash,
+        createNewReference: createNewReference,
         createReference: createReference,
         getReferenceHash: referenceHash,
         getVerifiedReferences: function(referencesCollection, userHashes, references, repository, callback) {

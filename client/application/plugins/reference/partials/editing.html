@@ -53,12 +53,21 @@
                             <input id="authors" name="authors" ng-model="oReference.authors" ng-required="true" ng-pattern="/^([^,]+\.)+(, [^,]+\.)*( and [^,]+\.)?$/" ng-change="extractAuthors()" type="text" placeholder="Eg: Molinari E., Palmaro E., De Luca A." class="form-control">                            
                         </div>
                     </div>
-                    <div class="form-group" ng-show="form.authors.$valid">
-                        <div class="col-xs-12 nowrap">
+                    <div class="form-group signList" ng-show="form.authors.$valid">
+                        <div class="col-xs-12 nowrap" ng-show="oReference.aAuthors.length>0">
                             <h4>Who are you?</h4>
                             <ul>
                                 <li ng-repeat="author in oReference.aAuthors">
-                                    <input id="confirmed_author" name="confirmed_author" type="radio" value="{{$index}}"> <b>{{author}}</b>
+                                    <input name="confirmed_author" type="radio" value="{{$index}}" ng-model="$parent.oReference.author_hash.author_index"> 
+                                    <b>{{author}}</b>
+                                    <div class="complement" ng-show="$parent.oReference.author_hash.author_index == $index"> in collaboration with 
+                                        <select ng-model="$parent.oReference.author_hash.organization_index" ng-options="idx as organization for (idx,organization) in oReference.aOrganizations"> 
+                                            <option ng-model="$parent.oReference.author_hash.organization_index" value="">No organization</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li>
+                                    <input name="confirmed_author" type="radio" value="" ng-model="oReference.author_hash"> <b>No one</b>
                                 </li>
                             </ul>
                         </div>
@@ -68,7 +77,7 @@
                             <label for="organizations" class="label label-default">Organizations</label>
                             <label for="organizations" class="label label-danger" ng-show="form.organizations.$error.required">Required</label>
                             <label for="organizations" class="label label-danger" ng-show="!form.organizations.$valid">Not correctly typed</label>                          
-                            <input id="organizations" name="organizations" ng-model="oReference.organizations" ng-required="true" ng-pattern="/^([^,]+)+(, [^,]+)*$/" ng-change="extractOrganizations()" type="text" placeholder="Eg.: Istituto Italiano di Tecnologia, Università di Genova" class="form-control">                            
+                            <input id="organizations" name="organizations" ng-model="oReference.organizations" ng-change="extractOrganizations()" type="text" placeholder="Eg.: Istituto Italiano di Tecnologia, Università di Genova" class="form-control">                            
                         </div>
                     </div>
                     <div class="form-group" ng-show="form.organizations.$valid">

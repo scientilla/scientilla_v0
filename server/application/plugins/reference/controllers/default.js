@@ -138,35 +138,7 @@ module.exports = function () {
             };
         },        
         createNewReference: function(req, res) {
-            var reference = {};
-            !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : reference.title = "";            
-            !req.underscore.isUndefined(req.body.authors) ? reference.authors = req.body.authors.trim() : reference.authors = "";
-            !req.underscore.isUndefined(req.body.organizations) ? reference.organizations = req.body.organizations.trim() : reference.organizations = "";
-            !req.underscore.isUndefined(req.body.tags) ? reference.tags = req.body.tags : reference.tags = [];            
-            !req.underscore.isUndefined(req.body.year) ? reference.year = req.body.year.trim() : reference.year = "";
-            !req.underscore.isUndefined(req.body.doi) ? reference.doi = req.body.doi.trim() : reference.doi = "";    
-            !req.underscore.isUndefined(req.body.journal_name) ? reference.journal_name = req.body.journal_name.trim() : reference.journal_name = "";
-            !req.underscore.isUndefined(req.body.journal_acronym) ? reference.journal_acronym = req.body.journal_acronym.trim() : reference.journal_acronym = "";
-            !req.underscore.isUndefined(req.body.journal_pissn) ? reference.journal_pissn = req.body.journal_pissn.trim() : reference.journal_pissn = "";
-            !req.underscore.isUndefined(req.body.journal_eissn) ? reference.journal_eissn = req.body.journal_eissn.trim() : reference.journal_eissn = "";
-            !req.underscore.isUndefined(req.body.journal_issnl) ? reference.journal_issnl = req.body.journal_issnl.trim() : reference.journal_issnl = "";
-            !req.underscore.isUndefined(req.body.journal_volume) ? reference.journal_volume = req.body.journal_volume.trim() : reference.journal_volume = "";
-            !req.underscore.isUndefined(req.body.journal_year) ? reference.journal_year = req.body.journal_year.trim() : reference.journal_year = "";
-            !req.underscore.isUndefined(req.body.conference_name) ? reference.conference_name = req.body.conference_name.trim() : reference.conference_name = "";
-            !req.underscore.isUndefined(req.body.conference_acronym) ? reference.conference_acronym = req.body.conference_acronym.trim() : reference.conference_acronym = "";
-            !req.underscore.isUndefined(req.body.conference_place) ? reference.conference_place = req.body.conference_place.trim() : reference.conference_place = "";
-            !req.underscore.isUndefined(req.body.conference_year) ? reference.conference_year = req.body.conference_year.trim() : reference.conference_year = "";
-            !req.underscore.isUndefined(req.body.book_title) ? reference.book_title = req.body.book_title.trim() : reference.book_title = "";
-            !req.underscore.isUndefined(req.body.book_isbn) ? reference.book_isbn = req.body.book_isbn.trim() : reference.book_isbn = "";
-            !req.underscore.isUndefined(req.body.book_pages) ? reference.book_pages = req.body.book_pages.trim() : reference.book_pages = "";
-            !req.underscore.isUndefined(req.body.book_editor) ? reference.book_editor = req.body.book_editor.trim() : reference.book_editor = "";
-            !req.underscore.isUndefined(req.body.book_year) ? reference.book_year = req.body.book_year.trim() : reference.book_year = "";
-            !req.underscore.isUndefined(req.body.abstract) ? reference.abstract = req.body.abstract.trim() : reference.abstract = "";
-            !req.underscore.isUndefined(req.body.month) ? reference.month = req.body.month.trim() : reference.month = "";
-            !req.underscore.isUndefined(req.body.print_status) ? reference.print_status = req.body.print_status.trim() : reference.print_status = "";
-            !req.underscore.isUndefined(req.body.note) ? reference.note = req.body.note.trim() : reference.note = "";       
-            !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : reference.approving_status = "";
-            !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : reference.sharing_status = "";
+            var reference = referenceManager.createNewReference(req.body);
             reference.original_hash = referenceManager.getReferenceHash(reference);
             reference.clone_hash = reference.original_hash;
             reference.author_hashes = "";
@@ -183,15 +155,18 @@ module.exports = function () {
                 })
                 .toArray(function(err, references) {
                     if (err) {
+                        console.log(err);
                         res.status(404).end();
                         return;
                     }
                     if (references.length > 0) {
+                        console.log('Publication duplicated');
                         res.status(409).end();
                         return;
                     }
                     req.referencesCollection.insert(reference, { w: 1 }, function(err, reference) {
                         if (err || req.underscore.isNull(reference)) {
+                            console.log(err);
                             res.status(404).end();
                             return;
                         }
@@ -204,6 +179,7 @@ module.exports = function () {
             var reference = {};
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : null;      
             !req.underscore.isUndefined(req.body.authors) ? reference.authors = req.body.authors.trim() : null;
+            !req.underscore.isUndefined(req.body.author_hash) ? reference.author_hash = req.body.author_hash : null;
             !req.underscore.isUndefined(req.body.organizations) ? reference.organizations = req.body.organizations.trim() : null;
             !req.underscore.isUndefined(req.body.tags) ? reference.tags = req.body.tags : []; 
             !req.underscore.isUndefined(req.body.year) ? reference.year = req.body.year.trim() : null;
@@ -231,7 +207,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.approving_status) ? reference.approving_status = req.body.approving_status : null;
             !req.underscore.isUndefined(req.body.sharing_status) ? reference.sharing_status = req.body.sharing_status : null;
             reference.clone_hash = referenceManager.getReferenceHash(reference);
-            reference.author_hashes = "";
+            reference.author_hash = referenceManager.getAuthorHash(reference, req.user.hash);
             reference.organization_hashes = "";
             reference.user_hash = req.user.hash; 
             reference.last_modifier_id = req.user.id;
