@@ -10,16 +10,17 @@ var request = require("request");
 
 
 module.exports = function () {
-    var getRandomSeed =  function(seedConfiguration, callback) {
-        peerManager.getSeedPeers(seedConfiguration, function(err, seeds){
-            if (err) {
-                callback(err, null);
-            }
-            var seed = _.sample(seeds);
-            callback(null, seed);
-        });
-    };
     return {
+        getRandomSeed: function(seedConfiguration, callback) {
+            peerManager.getSeedPeers(seedConfiguration, function(err, seeds){
+                if (err) {
+                    callback(err, null);
+                }
+                var seed = _.sample(seeds);
+                callback(null, seed);
+            });
+        },
+       
         getTags: function(seedConfiguration, keywords, callback) {
             getRandomSeed(seedConfiguration, function(err, seed){
                 if (err) {

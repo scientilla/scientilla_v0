@@ -4,6 +4,7 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var networkManager = require("../../network/models/default.js")();
 var referenceManager = require("../models/default.js")();
 var _ = require("lodash");
 
@@ -30,8 +31,12 @@ module.exports = function () {
     return {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
             var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({
+                last_modification_datetime: {
+                    $gt: datetime
+                },                
                 "$or": [
                     {
                         title: { 
@@ -58,9 +63,13 @@ module.exports = function () {
         },
         getPublicReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
             var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             req.referencesCollection.find({ 
                 sharing_status: true,
+                last_modification_datetime: {
+                    $gt: datetime
+                },
                 "$or": [
                     {
                         title: { 
@@ -217,7 +226,6 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                
                 res.end();
             });
         },
@@ -227,7 +235,6 @@ module.exports = function () {
                     res.status(500).end();
                     return;
                 }
-                
                 res.end();
             });
         },
@@ -333,7 +340,6 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                
                 res.end();
             });
         }, 

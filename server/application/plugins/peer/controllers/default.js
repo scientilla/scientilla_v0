@@ -65,46 +65,69 @@ module.exports = function () {
             });            
         },        
         createPeer: function(req, res) {
-            var peer = {};
-            !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : peer.name = "";
-            !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : peer.url = "";
-            !req.underscore.isUndefined(req.body.sharing_status) ? peer.sharing_status = req.body.sharing_status : peer.sharing_status = ""; 
-            !req.underscore.isUndefined(req.body.aggregating_status) ? peer.aggregating_status = req.body.aggregating_status : peer.aggregating_status = "";
-            peer.creator_id = req.user.id;
-            peer.creation_datetime = req.moment().format();
-            peer.last_modifier_id = "";
-            peer.last_modification_datetime = "";            
-            req.peersCollection.insert(peer, {w:1}, function(err, peer) {
-                if (err || req.underscore.isNull(peer)) {
-                    res.status(404).end();
+            req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
+                if (err || req.underscore.isNull(existingpeer)) {
+                    req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
+                        var defaultPeerHits;
+                        if (err || req.underscore.isNull(existingPeers)) {
+                            defaultPeerHits = 0;
+                        } else {
+                            defaultPeerHits = existingPeers[0].hits;
+                        }
+                        var newPeer = {};
+                        !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
+                        !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
+                        !req.underscore.isUndefined(req.body.sharing_status) ? newPeer.sharing_status = req.body.sharing_status : newPeer.sharing_status = ""; 
+                        !req.underscore.isUndefined(req.body.aggregating_status) ? newPeer.aggregating_status = req.body.aggregating_status : newPeer.aggregating_status = "";
+                        newPeer.hits = defaultPeerHits;
+                        newPeer.creator_id = req.user.id;
+                        newPeer.creation_datetime = req.moment().format();
+                        newPeer.last_modifier_id = req.user.id;
+                        newPeer.last_modification_datetime = req.moment().format();            
+                        req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
+                            if (err || req.underscore.isNull(storedPeer)) {
+                                res.status(409).end();
+                                return;
+                            }
+                            res.end();
+                        });
+                    });
+                } else {
+                    res.status(409).end();
                     return;
                 }
-                
-                res.end();
-            });            
+            });
         },
         createPublicPeer: function(req, res) {
-            req.peersCollection.findOne({ url: req.body.url }, function(err, peer) {
-                if (err || req.underscore.isNull(peer)) {
-                    var peer = {};
-                    !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : peer.name = "";
-                    !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : peer.url = "";
-                    peer.sharing_status = true;
-                    peer.aggregating_status = false;
-                    peer.creator_id = "";
-                    peer.creation_datetime = req.moment().format();
-                    peer.last_modifier_id = "";
-                    peer.last_modification_datetime = "";            
-                    req.peersCollection.insert(peer, {w:1}, function(err, peer) {
-                        if (err || req.underscore.isNull(peer)) {
-                            res.status(500).end();
-                            return;
-                        }
-
-                        res.end();
-                    });                    
+            req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
+                if (err || req.underscore.isNull(existingpeer)) {
+                    req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
+                        var defaultPeerHits;
+                        if (err || req.underscore.isNull(existingPeers)) {
+                            defaultPeerHits = 0;
+                        } else {
+                            defaultPeerHits = existingPeers[0].hits;
+                        }                    
+                        var newPeer = {};
+                        !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
+                        !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
+                        newPeer.sharing_status = true;
+                        newPeer.aggregating_status = false;
+                        newPeer.hits = defaultPeerHits;
+                        newPeer.creator_id = "";
+                        newPeer.creation_datetime = req.moment().format();
+                        newPeer.last_modifier_id = "";
+                        newPeer.last_modification_datetime = req.moment().format();            
+                        req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
+                            if (err || req.underscore.isNull(storedPeer)) {
+                                res.status(409).end();
+                                return;
+                            }
+                            res.end();
+                        });
+                    });
                 } else {
-                    res.status(500).end();
+                    res.status(409).end();
                     return;
                 }
             });
@@ -154,7 +177,8 @@ module.exports = function () {
 										discoveredPeer.name = peer.name;
 										discoveredPeer.url = peer.url;
 										discoveredPeer.sharing_status = true; 
-                                        discoveredPeer.aggregating_status = false; 
+                                        discoveredPeer.aggregating_status = false;
+                                        discoveredPeer.hits = 0;
 										discoveredPeer.creator_id = "";
 										discoveredPeer.creation_datetime = peer.creation_datetime;
 										discoveredPeer.last_modifier_id = "";

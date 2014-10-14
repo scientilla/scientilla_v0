@@ -124,6 +124,22 @@ async.series([
     },
     function(seriesCallback) {
         database.open(function(err, database) {
+            database.collection("guest-references.db", function(err, collection) {
+                guestReferencesCollection = collection;
+                seriesCallback();
+            });
+        });
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("collected-references.db", function(err, collection) {
+                collectedReferencesCollection = collection;
+                seriesCallback();
+            });
+        });
+    },    
+    function(seriesCallback) {
+        database.open(function(err, database) {
             database.collection("users.db", function(err, collection) {
                 usersCollection = collection;
                 seriesCallback();
@@ -163,11 +179,21 @@ async.series([
         recurrenceRule.minute = 0;
         nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
         seriesCallback();
+    },
+    function(seriesCallback) {
+        if (installationConfiguration.seed) { 
+            var jobToSchedule = function jobToSchedule() {
+                peerReferencesController.discoverReferences(peersCollection, collectedReferencesCollection);
+
+                return jobToSchedule;
+            }();
+            var recurrenceRule = new nodeSchedule.RecurrenceRule();
+            recurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+            nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+        }
+        seriesCallback();
     }
 ]);
-
-// Configures scheduling
-
 
 // Executes middlewares
 application.use("*", function(req, res, next) {
@@ -189,6 +215,8 @@ application.use("*", function(req, res, next) {
     req.peersCollection = peersCollection;
     req.repositoriesCollection = repositoriesCollection;
     req.referencesCollection = referencesCollection;
+    req.guestReferencesCollection = guestReferencesCollection;
+    req.collectedReferencesCollection = collectedReferencesCollection;
     req.usersCollection = usersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
     next();    
