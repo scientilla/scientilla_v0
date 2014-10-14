@@ -370,7 +370,7 @@ module.exports = function () {
                         res.status(400).end();
                         return;
                     }
-                    var reference = referenceManager.createReference(referenceData);
+                    var reference = referenceManager.createNewReference(referenceData);
                     reference.original_hash = referenceManager.getReferenceHash(reference);
                     reference.clone_hash = reference.original_hash;
                     reference.user_hash = req.user.hash; 
