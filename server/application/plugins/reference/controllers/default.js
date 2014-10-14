@@ -155,8 +155,8 @@ module.exports = function () {
             reference.user_hash = req.user.hash;
             reference.creator_id = req.user.id;
             reference.creation_datetime = req.moment().format();
-            reference.last_modifier_id = "";
-            reference.last_modification_datetime = "";  
+            reference.last_modifier_id = req.user.id;
+            reference.last_modification_datetime = req.moment().format();   
             req.referencesCollection
                 .find({ 
                     original_hash: reference.original_hash,
