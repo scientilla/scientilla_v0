@@ -81,26 +81,26 @@ module.exports = function () {
         return extract(reference.organizations);
     };
     
-    var getAuthorHash = function(reference, userHash) {
-        var author_hash = reference.author_hash;
-        if (_.isUndefined(author_hash) || _.isNull(author_hash) || _.isString(author_hash)) {
-            return author_hash;
+    var getAuthorSignatures = function(reference, userHash) {
+        var author_signatures = reference.author_signatures;
+        if (_.isUndefined(author_signatures) || _.isNull(author_signatures) || _.isString(author_signatures)) {
+            return author_signatures;
         }
         var authors = extractAuthors(reference);
-        var author_index = author_hash.author_index;
+        var author_index = author_signatures.author_index;
         if (!_.isUndefined(author_index) && !_.isEmpty(author_index)) {
             var author_string = authors[author_index];
-            author_hash.author_string = author_string;
+            author_signatures.author_string = author_string;
             
         }
         var organizations = extractOrganizations(reference);
-        var organization_index = author_hash.organization_index;
+        var organization_index = author_signatures.organization_index;
         if (!_.isUndefined(organization_index) && !_.isEmpty(organization_index)) {
             var organization_string = organizations[organization_index];
-            author_hash.organization_string = organization_string;
+            author_signatures.organization_string = organization_string;
         }
-        author_hash.user_hash = userHash;
-        return author_hash;
+        author_signatures.author_hash = userHash;
+        return author_signatures;
     };
 
     var referenceHash = function(reference) {
@@ -137,7 +137,7 @@ module.exports = function () {
             .digest("hex"); 
     };
     return {
-        getAuthorHash: getAuthorHash,
+        getAuthorSignatures: getAuthorSignatures,
         createNewReference: createNewReference,
         createReference: createReference,
         getReferenceHash: referenceHash,
