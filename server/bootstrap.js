@@ -24,7 +24,8 @@ var tingodb = require("tingodb");
 var underscore = require("underscore");
 var application = express();
 
-var installationConfiguration = require("./configuration/installation.json");
+var configurationManager = require(path.resolve(__dirname + "/application/plugins/system/controllers/configuration.js"));
+var installationConfiguration = configurationManager.get();
 var seedsConfiguration = require("./configuration/seeds.json");
 var isSeed = installationConfiguration.seed;
 var requirePrefix = (isSeed) ? 'seed.' : '';
@@ -169,8 +170,8 @@ async.series([
     },
     function(seriesCallback) {
         var jobToSchedule = function jobToSchedule() {
-            peersController.discoverPeers(installationConfiguration, seedsConfiguration, peersCollection);
-            repositoriesController.discoverRepositories(installationConfiguration, seedsConfiguration, peersCollection);
+            peersController.discoverPeers(seedsConfiguration, peersCollection);
+            repositoriesController.discoverRepositories(seedsConfiguration, peersCollection);
             
             return jobToSchedule;
         }();
@@ -181,7 +182,7 @@ async.series([
         seriesCallback();
     },
     function(seriesCallback) {
-        if (installationConfiguration.seed) { 
+        if (configurationManager.get().seed) { 
             var jobToSchedule = function jobToSchedule() {
                 peerReferencesController.discoverReferences(peersCollection, collectedReferencesCollection);
 
@@ -206,6 +207,7 @@ application.use("*", function(req, res, next) {
     req.moment = moment;
     req.request = request;
     req.underscore = underscore;
+    req.configurationManager = configurationManager;
     req.installationConfiguration = installationConfiguration;
     req.seedsConfiguration = seedsConfiguration;
     req.adCollection = adCollection;

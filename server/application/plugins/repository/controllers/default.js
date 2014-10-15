@@ -4,9 +4,14 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
-var model = require("../models/default.js")();
+// Resolves dependencies
 var _ = require("lodash");
+var path = require("path");
 
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+var model = require("../models/default.js")();
+
+// Defines actions
 module.exports = function () {
     var extractorFields = [
             'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
@@ -138,7 +143,8 @@ module.exports = function () {
                 res.end();
             });            
         },
-        discoverRepositories: function(installationConfiguration, seedsConfiguration, peersCollection) {
+        discoverRepositories: function(seedsConfiguration, peersCollection) {
+            var installationConfiguration = configurationManager.get();
             for (key in seedsConfiguration) {
                 
             }

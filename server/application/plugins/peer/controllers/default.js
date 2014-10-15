@@ -6,9 +6,11 @@
 
 // Resolves dependencies
 var async = require("async");
+var path = require("path");
 var request = require("request");
 var underscore = require("underscore");
 
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 var peerManager = require("../models/default.js")();
 
 // Defines actions
@@ -159,7 +161,8 @@ module.exports = function () {
                 res.end();
             });            
         },        
-        discoverPeers: function(installationConfiguration, seedsConfiguration, peersCollection) {
+        discoverPeers: function(seedsConfiguration, peersCollection) {
+            var installationConfiguration = configurationManager.get();
             for (var seedKey in seedsConfiguration) {
                 request({
                     method: "GET",
