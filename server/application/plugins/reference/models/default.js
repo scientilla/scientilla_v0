@@ -99,7 +99,7 @@ module.exports = function () {
             var organization_string = organizations[organization_index];
             author_signatures.organization_string = organization_string;
         }
-        author_signatures.user_hash = userHash;
+        author_signatures.author_hash = userHash;
         return author_signatures;
     };
 
