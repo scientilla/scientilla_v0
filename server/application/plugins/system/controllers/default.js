@@ -19,14 +19,18 @@ module.exports = function () {
                 } 
                 if (
                     _.isNull(user.type) ||
-                    (user.type === 0 && _.isEmpty(user.first_name) 
-                     && _.isEmpty(user.middle_name) && _.isEmpty(user.last_name)) ||
+                    (user.type === 0 && 
+                        _.isEmpty(user.first_name) && 
+                        _.isEmpty(user.middle_name) && 
+                        _.isEmpty(user.last_name)) ||
                     (user.type === 0 && _.isEmpty(user.birth_date)) ||
                     (user.type === 0 && _.isEmpty(user.birth_city)) ||
                     (user.type === 0 && _.isEmpty(user.birth_country)) ||
                     (user.type === 0 && _.isEmpty(user.sex)) || 
-                    (user.type === 1 && _.isEmpty(user.first_name) 
-                     && _.isEmpty(user.middle_name) && _.isEmpty(user.last_name)) ||
+                    (user.type === 1 &&
+                        _.isEmpty(user.first_name) && 
+                        _.isEmpty(user.middle_name) && 
+                        _.isEmpty(user.last_name)) ||
                     (user.type === 1 && _.isEmpty(user.birth_date)) ||
                     (user.type === 1 && _.isEmpty(user.birth_city)) ||
                     (user.type === 1 && _.isEmpty(user.birth_country)) ||
