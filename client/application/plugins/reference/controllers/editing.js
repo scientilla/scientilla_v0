@@ -63,6 +63,7 @@ angular.module("reference").controller(
                 callback(data);
             }
         };
+        $scope.userType = $window.sessionStorage.userType;
         $scope.tag = "";
         
         $scope.extractAuthors = function() {
