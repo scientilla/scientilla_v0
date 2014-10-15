@@ -80,15 +80,16 @@ module.exports = function () {
                         json: true 
                     }, function (err, res, peerReferences) {
                         if (err || _.isNull(peerReferences)) {
-                            return;
-                        }
-                        for (key in peerReferences) {
-                            peerReferences[key].peer_url = peers[0].url;
-                            collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: peerReferences[key].original_hash, user_hash: peerReferences[key].user_hash }, { $set: peerReferences[key] }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
-                                if (err || _.isNull(storedCollectedReference)) {
-                                    return; 
-                                }
-                            });
+                            // return;
+                        } else {
+                            for (key in peerReferences) {
+                                peerReferences[key].peer_url = peers[0].url;
+                                collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: peerReferences[key].original_hash, user_hash: peerReferences[key].user_hash }, { $set: peerReferences[key] }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
+                                    if (err || _.isNull(storedCollectedReference)) {
+                                        // return; 
+                                    }
+                                });
+                            }
                         }
                         peersCollection.update({ _id: peers[0]._id }, { $set: { hits: (peers[0].hits + 1) } }, { w: 1}, function(err, peer) {
                             if (err) {
