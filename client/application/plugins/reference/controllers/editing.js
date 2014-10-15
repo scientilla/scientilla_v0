@@ -127,7 +127,7 @@ angular.module("reference").controller(
                 print_status: $scope.oReference.print_status,
                 note: $scope.oReference.note,              
                 id: $scope.oReference._id,
-                author_hash: $scope.oReference.author_hash
+                author_signatures: $scope.oReference.author_signatures
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
