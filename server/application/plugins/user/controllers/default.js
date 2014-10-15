@@ -4,12 +4,16 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+// Resolves dependencies
+var _ = require("lodash");
 var crypto = require("crypto");
+var path = require("path");
 
 var model = require("../models/default.js")();
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 var userManager = require("../../user/models/default.js")();
-var _ = require("lodash");
 
+// Defines actions
 module.exports = function () {
     var getDefaultUser = function() {
         var user = {};
@@ -224,6 +228,7 @@ module.exports = function () {
             });
         },        
         loginUser: function(req, res){
+            var installationConfiguration = configurationManager.get();
             req.usersCollection.find({}).toArray(function(err, users) {
                 if (err || req.underscore.isNull(users)) {
                     var errorMsg = "Error while checking for users";
@@ -263,8 +268,8 @@ module.exports = function () {
                             return;
                         }
                         var user = users[0];
-                        req.installationConfiguration.owner_user_id = user._id;
-                        req.fs.writeFile("./configuration/installation.json", JSON.stringify(req.installationConfiguration, null, 4), function(err) {
+                        installationConfiguration.owner_user_id = user._id;
+                        req.fs.writeFile("./configuration/installation.json", JSON.stringify(installationConfiguration, null, 4), function(err) {
                             if (err) {
                                 console.log(err);
                                 res.status(500).end();
@@ -310,7 +315,7 @@ module.exports = function () {
                             });
                         },
                         function(user, callback) {
-                            userManager.getUser(req.usersCollection, req.installationConfiguration.owner_user_id, function(err, owner) {
+                            userManager.getUser(req.usersCollection, installationConfiguration.owner_user_id, function(err, owner) {
                                 if (err) {
                                     callback(err);
                                     return;

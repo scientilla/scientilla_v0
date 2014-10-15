@@ -4,13 +4,18 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+// Resolves dependencies
+var path = require("path");
+
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 var model = require("../models/default.js")();
 
+// Defines actions
 module.exports = function () {
     return {
         getSettings: function(req, res) {
             res.setHeader("Content-Type", "application/json");
-            res.json(req.installationConfiguration);           
+            res.json(configurationManager.get());           
         },
         
         updateSettings: function(req, res) {
@@ -21,15 +26,11 @@ module.exports = function () {
             settings.name = !req.underscore.isUndefined(req.body.name) ? ('' + req.body.name).trim() : ''; 
             settings.url = !req.underscore.isUndefined(req.body.url) ? ('' + req.body.url).trim() : '';
             settings.owner_user_id = !req.underscore.isUndefined(req.body.owner_user_id) ? ('' + req.body.owner_user_id).trim() : '';
-            settings.seed = !req.underscore.isUndefined(req.body.seed) ? ('' + req.body.seed).trim() : false;            
-            req.fs.writeFile("./configuration/installation.json", JSON.stringify(settings, null, 4), function(err) {
-                if (err) {
-                    res.status(500).end();
-                    return;
-                }
-                
-                res.end();
-            });          
+            settings.seed = !req.underscore.isUndefined(req.body.seed) ? ('' + req.body.seed).trim() : false;
+            configurationManager.set(settings);
+            configurationManager.save();
+            configurationManager.reload();
+            res.end();
         }        
     };
 };
