@@ -64,8 +64,11 @@
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi">
-                                    {{reference.doi}}
+                                    {{reference.doi}}<br />
                                 </strong>
+                                <span ng-if="reference.peer_url" class="pull-right">
+                                    <small>{{reference.peer_url}}</small><br />
+                                </span>
                             </td>
                             <td class="text-center">
                                 <strong>{{reference.year}}</strong>
@@ -129,8 +132,11 @@
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi">
-                                    {{reference.doi}}
+                                    {{reference.doi}}<br />
                                 </strong>
+                                <span ng-if="reference.peer_url">
+                                    <small>{{reference.peer_url}}</small><br />
+                                </span>                                
                                 <h4><i class="fa fa-calendar"></i> Year:</h4>
                                 <strong>{{reference.year}}</strong>
                                 <h4><i class="fa fa-tags"></i> Tags:</h4>
