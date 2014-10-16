@@ -47,12 +47,6 @@
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
-                            <th ng-if="userRights == 1" class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x">
-                                <a href="#/add-reference/" class="btn btn-default btn-block" title="Add new"><i class="fa fa-plus"></i></a>
-                            </th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
@@ -87,18 +81,11 @@
                                     </ul>
                                 </div>
                             </td>
+                            <!--
                             <td ng-if="userRights == 1">
                                 <a ng-click="switchReferenceSharingStatus(reference._id)" class="{{referenceIdsSharingMap[reference._id] ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off'}}"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
-                            </td>                            
-                            <td>
-                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Edit"><i class="fa fa-edit secondary-feature"></i></a>                            
                             </td>
-                            <td>
-                                <a href="#/copy-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Duplicate"><i class="fa fa-files-o secondary-feature"></i></a>                            
-                            </td>
-                            <td>
-                                <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Delete"><i class="fa fa-trash-o secondary-feature"></i></a>
-                            </td>
+                            -->
                         </tr>
                     </tbody>
                     <tbody ng-show="empty">
@@ -149,13 +136,7 @@
                                 <h4><i class="fa fa-tags"></i> Tags:</h4>
                                 {{reference.tags}}<br />
                             </div>
-                            <div class="panel-footer">
-                                <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>                                
-                                <!-- <button type="button" class="btn btn-default btn-block"><i class="glyphicon glyphicon-cloud-upload"></i> Push</button> -->                               
-                                <button ng-if="userRights == 1" ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
-                                <button ng-if="userRights == 1" ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
-                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
-                                <!-- <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                            <div class="panel-footer">                               
                                 <div class="clearfix"></div>
                             </div>                                    
                         </div>

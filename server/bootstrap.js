@@ -36,6 +36,7 @@ var activatedDatasetsController = require("./application/plugins/dataset/control
 var peersController = require("./application/plugins/peer/controllers/default.js")();
 var activatedPeersController = require("./application/plugins/peer/controllers/activated-peers.js")();
 var referencesController = require("./application/plugins/reference/controllers/default.js")();
+var collectedReferencesController = require("./application/plugins/reference/controllers/collected-references.js")();
 var datasetReferencesController = require("./application/plugins/reference/controllers/dataset-references.js")();
 var peerReferencesController = require("./application/plugins/reference/controllers/peer-references.js")();
 var peerDatasetReferencesController = require("./application/plugins/reference/controllers/peer-dataset-references.js")();
@@ -473,6 +474,13 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
     console.log("Request to Read all Received References");
     systemController.checkUserCoherence(req, res);
     referencesController.getReceivedReferences(req, res);
+});
+
+// COLLECTED REFERENCES
+application.get("/api/collected-references", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read all Collected References");
+    systemController.checkUserCoherence(req, res);
+    collectedReferencesController.getReferences(req, res);
 });
 
 // CLONED REFERENCES
