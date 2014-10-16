@@ -19,19 +19,17 @@
     <body ng-app="scientilla" ng-controller="systemLayoutController">
         <div id="sidebar-container">
             <div id="sidebar" class="container-fluid">
-                <ul class="sidebar-nav nav nav-stacked nav-pills">
+                <ul class="sidebar-nav nav nav-stacked nav-pills first-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a ng-click="toggleConfigurationMenu()" href="#/edit-user/" class="tree-toggle nav-header"><i class="fa fa-mortar-board"></i> <strong>{{userScientillaNominative}}</strong></a>                       
-                    </li>                    
-                    <li class="sidebar-divider">
-
                     </li>
+                </ul>
+                <ul ng-if="bCollectedPublicationsMenuVisualizationStatus" class="sidebar-nav nav nav-stacked nav-pills second-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a activate ng-click="toggleCollectedReferencesMenu()" href="#/browse-collected-references/" class="tree-toggle nav-header"><b><i class="fa fa-download"></i> Collected Publications</b></a>
                     </li>
-                    <li class="sidebar-divider">
-
-                    </li>                    
+                </ul>
+                <ul class="sidebar-nav nav nav-stacked nav-pills third-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a activate ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><b><i class="glyphicon glyphicon-book"></i> Your Publications</b></a>
                     </li>

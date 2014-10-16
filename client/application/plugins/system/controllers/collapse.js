@@ -5,7 +5,7 @@
  */
 
 angular.module("system").controller(
-    "systemCollapseController", ["$scope", function($scope) {  
+    "systemCollapseController", ["$scope", function($scope) {
         /* TO-DO: substitute the jQuery code with a directive. */
         /* jQuery code start */
         $scope.toggleReferencesMenu = function() {
@@ -61,6 +61,6 @@ angular.module("system").controller(
             $("#configurationMenu").slideUp();
             // $("#logoutMenu").slideDown();
         }        
-        /* jQuery code end */        
+        /* jQuery code end */       
     }]
 );

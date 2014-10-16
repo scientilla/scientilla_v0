@@ -351,7 +351,8 @@ module.exports = function () {
                                 token: token,
                                 user_type: user.type,
                                 user_rights: user.rights,
-                                user_scientilla_nominative: user.scientilla_nominative
+                                user_scientilla_nominative: user.scientilla_nominative,
+                                peer_mode: installationConfiguration.seed,
                             });
                         }
                     );					
