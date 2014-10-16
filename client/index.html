@@ -31,7 +31,7 @@
                     </li>
                     <li class="sidebar-divider">
 
-                    </li>
+                    </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a ng-click="toggleNetworkMenu()" href="#/browse-network/"><i class="fa fa-sitemap"></i> Your Network</a>
                         <ul id="networkMenu" class="nav nav-stacked nav-pills tree">
@@ -65,7 +65,13 @@
                     </li>                    
                     <li class="sidebar-divider">
 
-                    </li>                                                            
+                    </li>
+                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
+                        <a activate ng-click="toggleCollectedReferencesMenu()" href="#/browse-collected-references/" class="tree-toggle nav-header"><i class="fa fa-database"></i> Collected Publications</a>
+                    </li>
+                    <li class="sidebar-divider">
+
+                    </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a ng-click="toggleConfigurationMenu()" href="#/browse-settings/" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Configuration</a>
                         <ul id="configurationMenu" class="nav nav-stacked nav-pills tree">
@@ -153,7 +159,8 @@
         <script src="application/plugins/reference/controllers/dataset-browsing.js" type="text/javascript"></script>
         <script src="application/plugins/reference/controllers/peer-browsing.js" type="text/javascript"></script>
         <script src="application/plugins/reference/controllers/repository-browsing.js" type="text/javascript"></script>
-        <script src="application/plugins/reference/controllers/received-browsing.js" type="text/javascript"></script>        
+        <script src="application/plugins/reference/controllers/received-browsing.js" type="text/javascript"></script>
+        <script src="application/plugins/reference/controllers/collected-browsing.js" type="text/javascript"></script>        
         <script src="application/plugins/reference/controllers/addition.js" type="text/javascript"></script>
         <script src="application/plugins/reference/controllers/editing.js" type="text/javascript"></script>
         <script src="application/plugins/reference/controllers/deletion.js" type="text/javascript"></script>

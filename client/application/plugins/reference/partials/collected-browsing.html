@@ -1,0 +1,188 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="navbar-brand" id="tools-link">YOUR PUBLICATIONS</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <!--
+                        <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </button>
+                        -->
+                        <div class="input-group">                                        
+                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
+                            <span class="input-group-btn">
+                                <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                            </span>                            
+                        </div>
+                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 1}}</a>
+                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-right"></i> Next</a>                        
+                    </form>                              
+                </div>
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">       
+        <div class="row">
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
+                            <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
+                            <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
+                            <th ng-if="userRights == 1" class="fixed-th-1x"></th>
+                            <th class="fixed-th-1x"></th>
+                            <th class="fixed-th-1x"></th>
+                            <th class="fixed-th-1x">
+                                <a href="#/add-reference/" class="btn btn-default btn-block" title="Add new"><i class="fa fa-plus"></i></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr ng-repeat="reference in aReferences">
+                            <td>
+                                {{reference.authors}}<br />
+                                <i>{{reference.title}}</i><br />
+                                <span ng-if="reference.journal_name">
+                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                </span>
+                                <span ng-if="reference.conference_name">
+                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                </span>
+                                <span ng-if="reference.book_title">
+                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                </span>
+                                <strong ng-if="reference.doi">
+                                    {{reference.doi}}
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>{{reference.year}}</strong>
+                            </td>        
+                            <td>
+                                <div class="col-xs-12">
+                                    <ul  class="tagList">
+                                        <li ng-repeat="tag in reference.tags">
+                                            <div class="tag">
+                                                <i class="fa fa-tag"></i><b>{{tag}}</b>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td ng-if="userRights == 1">
+                                <a ng-click="switchReferenceSharingStatus(reference._id)" class="{{referenceIdsSharingMap[reference._id] ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off'}}"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
+                            </td>                            
+                            <td>
+                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Edit"><i class="fa fa-edit secondary-feature"></i></a>                            
+                            </td>
+                            <td>
+                                <a href="#/copy-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Duplicate"><i class="fa fa-files-o secondary-feature"></i></a>                            
+                            </td>
+                            <td>
+                                <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Delete"><i class="fa fa-trash-o secondary-feature"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="{{userRights == 1 ? 8 : 6}}">
+                                <div class="col-lg-12 empty-message">
+                                    No references available in this installation.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="{{userRights == 1 ? 8 : 6}}">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving references.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+            <div class="col-sm-12 visible-xs visible-sm">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <a href="#/add-reference/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                    </div>                           
+                    <div class="col-xs-12 col-sm-12" ng-repeat="reference in aReferences">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h4><i class="fa fa-file-text"></i> Bibliographic Data:</h4>
+                                {{reference.authors}}<br />
+                                <i>{{reference.title}}</i><br />
+                                <span ng-if="reference.journal_name">
+                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                </span>
+                                <span ng-if="reference.conference_name">
+                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                </span>
+                                <span ng-if="reference.book_title">
+                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                </span>
+                                <strong ng-if="reference.doi">
+                                    {{reference.doi}}
+                                </strong>
+                                <h4><i class="fa fa-calendar"></i> Year:</h4>
+                                <strong>{{reference.year}}</strong>
+                                <h4><i class="fa fa-tags"></i> Tags:</h4>
+                                {{reference.tags}}<br />
+                            </div>
+                            <div class="panel-footer">
+                                <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>                                
+                                <!-- <button type="button" class="btn btn-default btn-block"><i class="glyphicon glyphicon-cloud-upload"></i> Push</button> -->                               
+                                <button ng-if="userRights == 1" ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
+                                <button ng-if="userRights == 1" ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
+                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
+                                <!-- <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                                <div class="clearfix"></div>
+                            </div>                                    
+                        </div>
+                    </div>                                
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>
+    </div>
+</div>
+ <div class="modal fade" id="searches-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                <i class="fa fa-search"></i> Search is made among Publication titles and authors.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
