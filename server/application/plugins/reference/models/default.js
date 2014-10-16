@@ -76,11 +76,6 @@ module.exports = function () {
         return extract(reference.authors);
     };
     
-    
-    var extractOrganizations = function(reference) {
-        return extract(reference.organizations);
-    };
-    
     var getAuthorSignatures = function(reference, userHash) {
         var author_signatures = reference.author_signatures;
         if (_.isUndefined(author_signatures) || _.isNull(author_signatures) || _.isString(author_signatures)) {
@@ -92,12 +87,6 @@ module.exports = function () {
             var author_string = authors[author_index];
             author_signatures.author_string = author_string;
             
-        }
-        var organizations = extractOrganizations(reference);
-        var organization_index = author_signatures.organization_index;
-        if (!_.isUndefined(organization_index) && !_.isEmpty(organization_index)) {
-            var organization_string = organizations[organization_index];
-            author_signatures.organization_string = organization_string;
         }
         author_signatures.author_hash = userHash;
         return author_signatures;

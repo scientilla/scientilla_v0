@@ -384,3 +384,9 @@ html, body {
 .signList .complement {
     display: inline-block;
 }
+
+
+.organizationSelector, .select2-container.organizationSelector {
+    width: 350px;
+    display: block;
+}

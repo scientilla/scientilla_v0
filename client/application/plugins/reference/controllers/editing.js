@@ -38,6 +38,17 @@ angular.module("reference").controller(
             print_status: "",
             note: ""
         };
+        $scope.organizationSelectOptions = {
+            placeholder: "Search for an affiliation",
+            minimumInputLength: 1,
+            separator: ",",
+            simple_tags: true, 
+            multiple: true,
+            createSearchChoice: function(t){
+                return {id: t, text:t};
+            },
+            tags: []
+        };
         $scope.select2Options = {
             placeholder: "Search for a tag",
             minimumInputLength: 1,

@@ -60,10 +60,10 @@
                                 <li ng-repeat="author in oReference.aAuthors">
                                     <input name="confirmed_author" type="radio" value="{{$index}}" ng-model="$parent.oReference.author_signatures.author_index"> 
                                     <b>{{author}}</b>
-                                    <div class="complement" ng-show="$parent.oReference.author_signatures.author_index == $index"> in collaboration with 
-                                        <select ng-model="$parent.oReference.author_signatures.organization_index" ng-options="idx as organization for (idx,organization) in oReference.aOrganizations"> 
-                                            <option ng-model="$parent.oReference.author_signatures.organization_index" value="">No organization</option>
-                                        </select>
+                                    <span class="complement" ng-show="$parent.oReference.author_signatures.author_index == $index"> in collaboration with 
+                                    </span>
+                                    <div ng-show="$parent.oReference.author_signatures.author_index == $index">
+                                        <input type="hidden" ui-select2="organizationSelectOptions" ng-model="$parent.oReference.author_signatures.organizations" data-placeholder="Organization name" class="organizationSelector" />
                                     </div>
                                 </li>
                                 <li>
