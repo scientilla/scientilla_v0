@@ -25,6 +25,12 @@
                     </li>                    
                     <li class="sidebar-divider">
 
+                    </li>
+                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
+                        <a activate ng-click="toggleCollectedReferencesMenu()" href="#/browse-collected-references/" class="tree-toggle nav-header"><b><i class="fa fa-download"></i> Collected Publications</b></a>
+                    </li>
+                    <li class="sidebar-divider">
+
                     </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a activate ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><b><i class="glyphicon glyphicon-book"></i> Your Publications</b></a>
@@ -36,7 +42,7 @@
                         <a ng-click="toggleNetworkMenu()" href="#/browse-network/"><i class="fa fa-sitemap"></i> Your Network</a>
                         <ul id="networkMenu" class="nav nav-stacked nav-pills tree">
                             <li>
-                                <a activate ng-click="toggleReferencesMenu()" href="#/browse-network/" class="tree-toggle nav-header"><i class="glyphicon glyphicon-book"></i> Publications</a>
+                                <a class="disabled-link"><i class="glyphicon glyphicon-book"></i> Publications</a>
                             </li>
                             <li>
                                 <a class="disabled-link"><i class="fa fa-mortar-board"></i> Researchers</a>
@@ -63,12 +69,6 @@
                             </li>                                                        
                         </ul>                        
                     </li>                    
-                    <li class="sidebar-divider">
-
-                    </li>
-                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a activate ng-click="toggleCollectedReferencesMenu()" href="#/browse-collected-references/" class="tree-toggle nav-header"><i class="fa fa-database"></i> Collected Publications</a>
-                    </li>
                     <li class="sidebar-divider">
 
                     </li>                    
