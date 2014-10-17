@@ -29,8 +29,10 @@ module.exports = function () {
                 }
             ]
         }).sort(
-            { 
-                creation_datetime: -1 
+            {
+                original_hash: 1,
+                clone_hash: 1,
+                creation_datetime: -1
             }
         ).skip(
             currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
