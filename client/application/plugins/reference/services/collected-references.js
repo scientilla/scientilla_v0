@@ -8,11 +8,17 @@ angular.module("reference").factory(
     "collectedReferencesService", function($http) {       
         var referencesProvider = {};
         
-        referencesProvider.getReferences = function(keywords, token) {
+        referencesProvider.getReferences = function(keywords, currentPageNumber, numberOfItemsPerPage, token) {
             var params = {};
             if (keywords) {
                 params.keywords = keywords;
             }
+            if (currentPageNumber) {
+                params.current_page_number = currentPageNumber;
+            }
+            if (numberOfItemsPerPage) {
+                params.number_of_items_per_page = numberOfItemsPerPage;
+            }            
             return $http({
 				method: "GET",
 				url: "/api/collected-references",
