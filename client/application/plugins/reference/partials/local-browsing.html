@@ -11,7 +11,7 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">YOUR PUBLICATIONS</span>
+                    <span class="navbar-brand" id="tools-link">YOUR <strong>{{totalNumberOfItems}}</strong> PUBLICATIONS</span>
                 </div>
                 <div class="collapse navbar-collapse">
                     <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
@@ -19,18 +19,18 @@
                         <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
                             <i class="fa fa-question-circle"></i>
                         </button>
-                        -->
+                        -->                       
                         <div class="input-group">                                        
                             <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
                                 <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
-                        </div>
-                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 1}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-right"></i> Next</a>                        
+                        </div>                        
+                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-if="currentPageNumber <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
+                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
+                        <a ng-if="(currentPageNumber + 2) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>
                     </form>                              
                 </div>
             </div>
