@@ -22,7 +22,7 @@ html, body {
     left: -270px;
     bottom: 0px;
     width: 270px;
-    background-color: #F6F6F6;
+    background-color: #EEEEEE;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -81,9 +81,9 @@ html, body {
 .nav-pills > li > a {
     background-color: #FFFFFF;
     color: #AAAAAA;
-    border-width: 0px 0px 1px 0px;
+    border-width: 1px 0px 1px 0px;
     border-style: solid;
-    border-color: #EEEEEE;
+    border-color: #CCCCCC;
     border-radius: 0px;
     cursor: pointer;
 }
@@ -96,22 +96,13 @@ html, body {
     font-size: 120%;
 }
 
-#sidebar > ul > li:first-child > a {
-    background-color: #FFFFFF;
-    height: 55px !important;
-    line-height: 32px;
-}
-
 #sidebar > ul > li > a i {
     width: 20px;
 }
 
-#sidebar > ul > li:first-child > a strong {
-    text-align: center;
-}
-
 #sidebar > ul > li > ul > li > a {
     font-size: 110%;
+    border-width: 0px;
 }
 
 #sidebar > ul > li > ul > li > a i {
@@ -124,6 +115,21 @@ html, body {
     border-width: 0px 0px 1px 0px;
     border-style: solid;
     border-color: #EEEEEE;    
+}
+
+.first-submenus-group > li:first-child > a {
+    background-color: #FFFFFF;
+    height: 55px !important;
+    line-height: 32px;
+    border-top: 0px;
+}
+
+.second-submenus-group {
+    margin-top: 6px;
+}
+
+.third-submenus-group {
+    margin-top: 6px;
 }
 
 .sidebar-submenu > ul.tree {

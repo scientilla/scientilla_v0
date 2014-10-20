@@ -28,38 +28,56 @@ module.exports = function () {
         });
         return cleanedReferences;
     };
+    var retrieveReferences = function(referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
+        var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
+        return referencesCollection.find({                
+            "$or": [
+                {
+                    title: { 
+                        $regex: regexQuery,
+                        $options: 'i'
+                    }
+                },
+                {
+                    authors: { 
+                        $regex: regexQuery,
+                        $options: 'i'
+                    }
+                }
+            ]
+        }).sort(
+            { 
+                creation_datetime: -1 
+            }
+        ).skip(
+            currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
+        ).limit(
+            numberOfItemsPerPage
+        );
+    };
     return {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
-            var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
-            var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-            req.referencesCollection.find({
-                last_modification_datetime: {
-                    $gt: datetime
-                },                
-                "$or": [
-                    {
-                        title: { 
-                            $regex: regexQuery,
-                            $options: 'i'
-                        }
-                    },
-                    {
-                        authors: { 
-                            $regex: regexQuery,
-                            $options: 'i'
-                        }
-                    }
-                ]
-            }).sort({ creation_datetime: -1 }).toArray(function(err, references) {
-                if (err || req.underscore.isNull(references)) {
+            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
+            var retrievedCollection = retrieveReferences(req.referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
+            var result = {};
+            retrievedCollection.count(function(err, referencesCount) {
+                if (err || req.underscore.isNull(referencesCount)) {
                     res.status(404).end();
                     return;
                 }
-                references = cleanReferencesTags(references);
-                res.setHeader("Content-Type", "application/json");
-                res.json(references);
-            });            
+                result.total_number_of_items = referencesCount;
+                retrievedCollection.toArray(function(err, references) {
+                    if (err || req.underscore.isNull(references)) {
+                        res.status(404).end();
+                        return;
+                    }
+                    result.items = cleanReferencesTags(references);
+                    res.setHeader("Content-Type", "application/json");
+                    res.json(result);                
+                });                
+            });
         },
         getPublicReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;

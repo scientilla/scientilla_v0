@@ -66,6 +66,9 @@ angular.module("scientilla").config([
         }).when("/browse-received-references/", {
             templateUrl: "application/plugins/reference/partials/received-browsing.html",
             controller: "receivedReferencesBrowsingController"
+        }).when("/browse-collected-references/", {
+            templateUrl: "application/plugins/reference/partials/collected-browsing.html",
+            controller: "collectedReferencesBrowsingController"            
         }).when("/add-reference/", {
             templateUrl: "application/plugins/reference/partials/addition.html",
             controller: "referenceAdditionController"

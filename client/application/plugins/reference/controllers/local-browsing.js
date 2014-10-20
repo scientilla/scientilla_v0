@@ -14,8 +14,9 @@ angular.module("reference").controller(
         $scope.aReferences = [];
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
-        $scope.numberOfItemsPerPage = 25;
-        $scope.totalNumberOfItems = 10000;
+        $scope.lastPageNumber = 0;
+        $scope.numberOfItemsPerPage = 20;
+        $scope.totalNumberOfItems = 0;
         
         $scope.generateReferenceIdsApprovingMap = function(aReferences) {
             var referenceIdsApprovingMap = {};
@@ -93,8 +94,15 @@ angular.module("reference").controller(
             $scope.error = false;
             async.series([
                 function(callback) {
-                    referencesService.getReferences($scope.keywords, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                        $scope.aReferences = data;
+                    referencesService.getReferences(
+                        $scope.keywords,
+                        $scope.currentPageNumber,
+                        $scope.numberOfItemsPerPage,
+                        $window.sessionStorage.token
+                    ).success(function(data, status, headers, config) {
+                        $scope.totalNumberOfItems = data.total_number_of_items;
+                        $scope.aReferences = data.items;
+                        $scope.lastPageNumber = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
                         if ($scope.aReferences.length === 0) {
                             $scope.empty = true;
                         }                    
@@ -128,12 +136,14 @@ angular.module("reference").controller(
             if ($scope.currentPageNumber > 1) {
                 $scope.currentPageNumber--;
             }
+            $scope.retrieveReferences();
         };
         
         $scope.retrieveCustomItemsPage = function(customPageNumber) {            
             if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber = customPageNumber;
             }
+            $scope.retrieveReferences();
         };         
         
         $scope.retrieveNextItemsPage = function() {
@@ -143,6 +153,7 @@ angular.module("reference").controller(
             if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber++; 
             }
+            $scope.retrieveReferences();
         };
     }]
 );

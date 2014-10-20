@@ -11,7 +11,7 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">YOUR <strong>{{totalNumberOfItems}}</strong> PUBLICATIONS</span>
+                    <span class="navbar-brand" id="tools-link"><strong>{{totalNumberOfItems}}</strong> COLLECTED PUBLICATIONS</span>
                 </div>
                 <div class="collapse navbar-collapse">
                     <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
@@ -19,18 +19,18 @@
                         <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
                             <i class="fa fa-question-circle"></i>
                         </button>
-                        -->                       
+                        -->
                         <div class="input-group">                                        
                             <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
                                 <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
-                        </div>                        
+                        </div>
                         <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-if="currentPageNumber <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
-                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
-                        <a ng-if="(currentPageNumber + 2) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>
+                        <a ng-if="currentPageNumber <= lastPageNumber"  ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
+                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber"  ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
+                        <a ng-if="(currentPageNumber + 2) <= lastPageNumber"  ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                        
                     </form>                              
                 </div>
             </div>
@@ -47,12 +47,6 @@
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
-                            <th ng-if="userRights == 1" class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x">
-                                <a href="#/add-reference/" class="btn btn-default btn-block" title="Add new"><i class="fa fa-plus"></i></a>
-                            </th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
@@ -70,8 +64,11 @@
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi">
-                                    {{reference.doi}}
+                                    {{reference.doi}}<br />
                                 </strong>
+                                <span ng-if="reference.peer_url" class="pull-right">
+                                    <small>{{reference.peer_url}}</small><br />
+                                </span>
                             </td>
                             <td class="text-center">
                                 <strong>{{reference.year}}</strong>
@@ -87,18 +84,11 @@
                                     </ul>
                                 </div>
                             </td>
+                            <!--
                             <td ng-if="userRights == 1">
                                 <a ng-click="switchReferenceSharingStatus(reference._id)" class="{{referenceIdsSharingMap[reference._id] ? 'btn btn-default btn-block secondary-feature turned-on' : 'btn btn-default btn-block secondary-feature turned-off'}}"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
-                            </td>                            
-                            <td>
-                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Edit"><i class="fa fa-edit secondary-feature"></i></a>                            
                             </td>
-                            <td>
-                                <a href="#/copy-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Duplicate"><i class="fa fa-files-o secondary-feature"></i></a>                            
-                            </td>
-                            <td>
-                                <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Delete"><i class="fa fa-trash-o secondary-feature"></i></a>
-                            </td>
+                            -->
                         </tr>
                     </tbody>
                     <tbody ng-show="empty">
@@ -142,20 +132,17 @@
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi">
-                                    {{reference.doi}}
+                                    {{reference.doi}}<br />
                                 </strong>
+                                <span ng-if="reference.peer_url">
+                                    <small>{{reference.peer_url}}</small><br />
+                                </span>                                
                                 <h4><i class="fa fa-calendar"></i> Year:</h4>
                                 <strong>{{reference.year}}</strong>
                                 <h4><i class="fa fa-tags"></i> Tags:</h4>
                                 {{reference.tags}}<br />
                             </div>
-                            <div class="panel-footer">
-                                <a href="#/clone-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>                                
-                                <!-- <button type="button" class="btn btn-default btn-block"><i class="glyphicon glyphicon-cloud-upload"></i> Push</button> -->                               
-                                <button ng-if="userRights == 1" ng-click="switchReferenceApprovingStatus(reference._id)" type="button" class="{{referenceIdsApprovingMap[reference._id] ? 'btn btn-default btn-block turned-on' : 'btn btn-default btn-block turned-off' }}"><i class="{{!referenceIdsApprovingMap[reference._id] && changingApprovedReferenceId == '' ? 'fa fa-circle-o turned-off' : '' }}{{reference._id == changingApprovedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsApprovingMap[reference._id] ? 'fa fa-circle turned-on' : '' }}"></i> {{referenceIdsApprovingMap[reference._id] ? 'Approved' : 'Approve' }}</button>
-                                <button ng-if="userRights == 1" ng-click="switchReferenceSharingStatus(reference._id)" type="button" class="btn btn-default btn-block"><i class="{{!referenceIdsSharingMap[reference._id] && changingSharedReferenceId == '' ? 'fa fa-lock' : '' }}{{reference._id == changingSharedReferenceId ? 'fa fa-spinner fa-spin' : '' }}{{referenceIdsSharingMap[reference._id] ? 'fa fa-unlock' : '' }}"></i> {{referenceIdsSharingMap[reference._id] ? "Public" : "Private" }}</button>
-                                <a href="#/edit-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
-                                <!-- <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                            <div class="panel-footer">                               
                                 <div class="clearfix"></div>
                             </div>                                    
                         </div>

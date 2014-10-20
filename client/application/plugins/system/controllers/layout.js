@@ -8,6 +8,7 @@ angular.module("system").controller(
     "systemLayoutController", ["$scope", "$window", "$location", function($scope, $window, $location) {
         $scope.bSidebarVisualizationStatus = false;
         $scope.userScientillaNominative = "SCIENTILLA";
+        $scope.bCollectedPublicationsMenuVisualizationStatus = false;
         
         $scope.toggleSidebar = function() {
             $scope.bSidebarVisualizationStatus = !$scope.bSidebarVisualizationStatus;
@@ -27,12 +28,13 @@ angular.module("system").controller(
 
         }
         
-        $scope.updateScientillaNominative = function updateScientillaNominative() {
+        $scope.updateControllerStatus = function updateControllerStatus() {
             $scope.userScientillaNominative = $window.sessionStorage.userScientillaNominative;
+            $scope.bCollectedPublicationsMenuVisualizationStatus = $window.sessionStorage.peerMode;
             
-            return updateScientillaNominative;
+            return updateControllerStatus;
         }();
         
-        $scope.$on("scientillaNominativeUpdateEvent", $scope.updateScientillaNominative);        
+        $scope.$on("successful-login", $scope.updateControllerStatus);        
     }]
 );
