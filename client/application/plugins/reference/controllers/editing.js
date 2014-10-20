@@ -74,14 +74,39 @@ angular.module("reference").controller(
                 callback(data);
             }
         };
+        
+        $scope.selectedAuthors = [];
+        
+        var updateSelectedAuthors = function() {
+            if (_.isUndefined($scope.oReference.organization_signature)) {
+                return;
+            }
+            $scope.selectedAuthors = _.reduce($scope.oReference.organization_signature.authors, function(res, a) {
+                res[a.author_index] = true;
+                return res;
+            }, []);
+        };
+        
+        $scope.updateAuthors = function(index, selected) {
+            if (_.isUndefined($scope.oReference.organization_signature)) {
+                $scope.oReference.organization_signature = {};
+            }
+            $scope.oReference.organization_signature.authors = _.reduce($scope.selectedAuthors, function(res, a, i){
+                if (a) {
+                    res.push({author_index: i});
+                } 
+                return res;
+            }, []);
+        };
+        
         $scope.userType = $window.sessionStorage.userType;
         $scope.tag = "";
         
         $scope.extractAuthors = function() {
-            if ($scope.oReference.aAuthors !== "") { 
-                $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(", "); 
-            } else {
+            if (_.isUndefined($scope.oReference.authors) || $scope.oReference.authors.trim() === "") { 
                 $scope.oReference.aAuthors = [];
+            } else {
+                $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(/,\s?/); 
             }
         };
         
@@ -103,6 +128,7 @@ angular.module("reference").controller(
                 }
                 $scope.extractAuthors();
                 $scope.extractOrganizations();
+                updateSelectedAuthors();
                 
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
@@ -138,7 +164,8 @@ angular.module("reference").controller(
                 print_status: $scope.oReference.print_status,
                 note: $scope.oReference.note,              
                 id: $scope.oReference._id,
-                author_signatures: $scope.oReference.author_signatures
+                author_signatures: $scope.oReference.author_signatures,
+                organization_signature: $scope.oReference.organization_signature
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {

@@ -53,8 +53,8 @@
                             <input id="authors" name="authors" ng-model="oReference.authors" ng-required="true" ng-pattern="/^([^,]+\.)+(, [^,]+\.)*( and [^,]+\.)?$/" ng-change="extractAuthors()" type="text" placeholder="Eg: Molinari E., Palmaro E., De Luca A." class="form-control">                            
                         </div>
                     </div>
-                    <div class="form-group signList" ng-show="form.authors.$valid && userType === '1'">
-                        <div class="col-xs-12 nowrap" ng-show="oReference.aAuthors.length>0">
+                    <div class="form-group signList" ng-show="form.authors.$valid">
+                        <div class="col-xs-12 nowrap" ng-show="oReference.aAuthors.length>0 && userType === '1'">
                             <h4>Who are you?</h4>
                             <ul>
                                 <li ng-repeat="author in oReference.aAuthors">
@@ -71,8 +71,17 @@
                                 </li>
                             </ul>
                         </div>
+                        <div class="col-xs-12 nowrap" ng-show="oReference.aAuthors.length>0 && userType !== '1'">
+                            <h4>Who are your collaborators?</h4>
+                            <div>
+                                <label ng-repeat="author in oReference.aAuthors" class="authors">
+                                    <input type="checkbox" value="{{$index}}" ng-model="$parent.selectedAuthors[$index]" ng-change="updateAuthors()" />
+                                    {{author}}
+                                </label>
+                            </div>
+                        </div>
                     </div>                    
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <div class="col-xs-12 nowrap">
                             <label for="organizations" class="label label-default">Organizations</label>
                             <label for="organizations" class="label label-danger" ng-show="form.organizations.$error.required">Required</label>
@@ -89,7 +98,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>                    
+                    </div>                    -->
                     <div class="form-group">
                         <div class="col-xs-12 nowrap"><label for="tag" class="label label-default">Tags</label>
                             <input ui-select2="select2Options" id="tag" ng-model="tag" data-placeholder="Tag keywords" class="tagSelector" /> 

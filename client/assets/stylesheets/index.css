@@ -390,3 +390,7 @@ html, body {
     width: 350px;
     display: block;
 }
+
+.authors {
+    display: block;
+}

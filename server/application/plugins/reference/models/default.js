@@ -23,7 +23,8 @@ module.exports = function () {
             'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
             'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
         return buildReference(reference, referenceFields, repository);
-    }
+    };
+    
     var buildReference = function(reference, referenceFields, repository) {
         var getCleanProperty = function(reference, field) {
             var cleanItem = function(item) {
@@ -91,6 +92,36 @@ module.exports = function () {
         author_signatures.author_hash = userHash;
         return author_signatures;
     };
+    
+    var getOrganizationSignature = function(reference, userHash) {
+        var organization_signature = reference.organization_signature;
+        if (_.isUndefined(organization_signature) || _.isNull(organization_signature) || _.isString(organization_signature)) {
+            return organization_signature;
+        }
+        var authors = extractAuthors(reference);
+        if (_.isArray(organization_signature.authors)) {
+            organization_signature.authors = _.reduce(
+                organization_signature.authors,
+                function(res, author){
+                    if (!author) {
+                        return res;
+                    }
+                    var author_index = author.author_index;
+                    if (_.isUndefined(author_index)) {
+                        return res;
+                    }
+                    var newAuthor = author;
+                    var author_index = author.author_index;
+                    var author_string = authors[author_index];
+                    newAuthor.author_string = author_string;
+                    res.push(newAuthor);
+                    return res;
+                }, 
+                []);
+        }
+        organization_signature.organization_hash = userHash;
+        return organization_signature;
+    };
 
     var referenceHash = function(reference) {
         var hashBase = (
@@ -126,6 +157,7 @@ module.exports = function () {
             .digest("hex"); 
     };
     return {
+        getOrganizationSignature: getOrganizationSignature,
         getAuthorSignatures: getAuthorSignatures,
         createNewReference: createNewReference,
         createReference: createReference,
