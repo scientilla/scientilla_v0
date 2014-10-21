@@ -35,6 +35,24 @@ module.exports = function () {
         return user;
     };
     
+    var getUserAliases = function(user) {
+        var firstLetter = function(string) {return string.charAt(0).toUpperCase();};
+        var capitalize = function (str){
+            return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        };
+        var first_name = capitalize(user.first_name);
+        var last_name = capitalize(user.last_name);
+        var initial_first_name = firstLetter(first_name);
+        
+        var aliases = [];
+        aliases.push(first_name + " " + last_name);
+        aliases.push(last_name + " " + first_name);
+        aliases.push(last_name + " " + initial_first_name + ".");
+        aliases.push(initial_first_name + ". " + last_name + "");
+        aliases = _.uniq(_.union(aliases, user.aliases));
+        return aliases;
+    };
+    
     var getFullUser = function(user){
         var fullUser = _.defaults(user, getDefaultUser());
         if (_.isEmpty(fullUser.hashes)) {
@@ -127,6 +145,7 @@ module.exports = function () {
             user.status = !req.underscore.isUndefined(req.body.status) ? req.body.status.trim() : "";
             user.hash = getUserHash(user);
             user.hashes = [user.hash];
+            user.aliases = getUserAliases(user);
             req.usersCollection.insert(user, {w:1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
@@ -171,6 +190,7 @@ module.exports = function () {
                 if (!_.contains(user.hashes, user.hash)) {
                     user.hashes.push(user.hash);
                 }
+                user.aliases = getUserAliases(user);
                 req.usersCollection.update({ _id: req.params.id }, { $set: user }, {w: 1}, function(err, user) {
                     if (err || req.underscore.isNull(user)) {
                         console.log(err);
@@ -216,6 +236,7 @@ module.exports = function () {
                 if (!_.contains(user.hashes, user.hash)) {
                     user.hashes.push(user.hash);
                 }
+                user.aliases = getUserAliases(user);
                 req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, user) {
                     if (err || req.underscore.isNull(user)) {
                         console.log(err);
@@ -260,6 +281,7 @@ module.exports = function () {
                     user.status = "U";
                     user.hash = getUserHash(user);
                     user.hashes = [user.hash];
+                    user.aliases = getUserAliases(user);
                     req.usersCollection.insert(user, { w: 1 }, function(err, users) {
                         if (err || req.underscore.isNull(users)) {
                             var errorMsg = "Failed to Create the Default User";
