@@ -6,6 +6,7 @@
 
 var networkManager = require("../../network/models/default.js")();
 var referenceManager = require("../models/default.js")();
+var userManager = require("../../user/models/default.js")();
 var _ = require("lodash");
 
 module.exports = function () {
@@ -240,12 +241,20 @@ module.exports = function () {
             reference.user_hash = req.user.hash; 
             reference.last_modifier_id = req.user.id;
             reference.last_modification_datetime = req.moment().format();            
-            req.referencesCollection.update({ _id: req.params.id }, { $set: reference }, { w: 1 }, function(err, reference) {
-                if (err || req.underscore.isNull(reference)) {
+            req.referencesCollection.update({ _id: req.params.id }, { $set: reference }, { w: 1 }, function(err, count) {
+                if (err || count === 0) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
-                res.end();
+                userManager.addReferenceAliases(req.usersCollection, req.user, reference, function(err, user) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).end();
+                        return;
+                    }
+                    res.end();
+                });
             });
         },
         deleteReference: function(req, res) {          

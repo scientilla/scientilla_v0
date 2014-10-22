@@ -305,7 +305,8 @@ module.exports = function () {
                                 email: user.email,
                                 hash: user.hash,
                                 id: user._id,
-                                hashes: user.hashes
+                                hashes: user.hashes,
+                                aliases: user.aliases
                             };
 
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
@@ -363,7 +364,8 @@ module.exports = function () {
                                 email: user.email,
                                 hash: hash,
                                 id: user._id,
-                                hashes: hashes
+                                hashes: hashes,
+                                aliases: user.aliases
                             };
 
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
