@@ -148,7 +148,17 @@
                                 </div>
                             </div>                            
                         </div>
-                    </div>                    
+                    </div>                         
+                    <div class="form-group" ng-show="oUser.aliases">
+                        <div class="col-xs-12">
+                            <h3>Aliases</h3>
+                            <ul>
+                                <li ng-repeat="alias in oUser.aliases">
+                                    {{alias}}
+                                </li>
+                            </ul>                         
+                        </div>
+                    </div>              
                     <div class="form-group">
                         <div class="col-xs-12">
                             <button ng-click="updateLoggedUser()" type="button" class="btn btn-default form-control">Update</button>
