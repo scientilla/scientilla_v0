@@ -1,9 +1,9 @@
 {
-    "port": 443,
+    "port": "60000",
     "ssl_key_path": "/../certs/certificate.key",
     "ssl_cert_path": "/../certs/certificate.cert",
-    "name": "Your Installation Name",
-    "url": "https://your.domain.com[:port]",
-    "owner_user_id": 1,
-    "seed": false    
+    "name": "SCIENTILLA",
+    "url": "https://127.0.0.1:60000",
+    "owner_user_id": 2,
+    "seed": "false"    
 }
