@@ -17,6 +17,7 @@
         "request": "latest",
         "bcrypt-nodejs": "latest",
         "node-schedule": "latest",
+        "node-windows": "latest",
         "lodash": "latest"
     }
 }
