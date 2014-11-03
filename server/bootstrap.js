@@ -78,6 +78,18 @@ var datasetReferencesCollections = [];
 
 async.series([
     function(seriesCallback) {
+        if (!fs.existsSync(path.resolve(__dirname + "/../files/"))) {
+            fs.mkdirSync(path.resolve(__dirname + "/../files/"));
+        }
+        seriesCallback();
+    },
+    function(seriesCallback) {
+        if (!fs.existsSync(path.resolve(__dirname + "/../files/datasets/"))) {
+            fs.mkdirSync(path.resolve(__dirname + "/../files/datasets/"));
+        }
+        seriesCallback();
+    },    
+    function(seriesCallback) {
         database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
         seriesCallback();
     },
