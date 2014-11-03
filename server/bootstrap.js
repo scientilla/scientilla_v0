@@ -71,6 +71,8 @@ var datasetsCollection;
 var peersCollection;
 var repositoriesCollection;
 var referencesCollection;
+var guestReferencesCollection;
+var collectedReferencesCollection;
 var usersCollection;
 var datasetReferencesCollections = [];
 
