@@ -11,37 +11,26 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">SCIENTILLA NETWORK</span>
+                    <span class="navbar-brand" id="tools-link">YOUR NETWORK: <strong>{{totalNumberOfItems}}</strong> PUBLICATIONS</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">
-                        <div class="btn-group">
-                            <label ng-change="saveSourcesListingMode()" class="btn btn-default" ng-model="sourcesListingMode" btn-radio="'L'"><i class="fa fa-list"></i> List</label>
-                            <label ng-change="saveSourcesListingMode()" class="btn btn-default disabled" ng-model="sourcesListingMode" btn-radio="'G'"><i class="fa fa-globe"></i> Graph</label>
-                        </div>
-                        <!--
-                        <button data-toggle="modal" data-target="#sources-button-help" class="btn btn-default help-button">
-                            <i class="fa fa-question-circle"></i>
-                        </button>  
-                        -->
-                    </form>                    
-                    <form ng-submit="searchSeedPeersReferences()" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                    <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
                         <!--
                         <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
                             <i class="fa fa-question-circle"></i>
-                        </button> 
-                        -->
-                        <div class="input-group">
-                            <input ng-model="keywords" type="text" placeholder="Type something to..." class="form-control" readonly>
-                            <div class="input-group-btn">
-                                <a class="btn btn-default disabled"><i class="fa fa-search"></i> Search</a>                                                               
-                            </div>
-                        </div>
-                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 1}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-right"></i> Next</a>                        
+                        </button>
+                        -->                       
+                        <div class="input-group">                                        
+                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
+                            <span class="input-group-btn">
+                                <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                            </span>                            
+                        </div>                        
+                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-if="currentPageNumber <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
+                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
+                        <a ng-if="(currentPageNumber + 2) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>
                     </form>                              
                 </div>
             </div>
@@ -49,21 +38,96 @@
     </div>			
 </div>
 <div id="content-container">
-    <div id="content" class="container-fluid">        
-        <div class="row">            
+    <div id="content" class="container-fluid">       
+        <div class="row">
             <div class="col-lg-12 visible-md visible-lg">
                 <table class="table table-bordered table-hover">
-                    <tbody>
+                    <thead>
                         <tr>
-                            <td colspan="10">
+                            <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
+                            <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
+                            <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
+                            <th class="fixed-th-1x"></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr ng-repeat="reference in aReferences">
+                            <td>
+                                {{reference.authors}}<br />
+                                <i>{{reference.title}}</i><br />
+                                <span ng-if="reference.journal_name">
+                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
+                                </span>
+                                <span ng-if="reference.conference_name">
+                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
+                                </span>
+                                <span ng-if="reference.book_title">
+                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
+                                </span>
+                                <strong ng-if="reference.doi">
+                                    {{reference.doi}}
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>{{reference.year}}</strong>
+                            </td>        
+                            <td>
+                                <div class="col-xs-12">
+                                    <ul  class="tagList">
+                                        <li ng-repeat="tag in reference.tags">
+                                            <div class="tag">
+                                                <i class="fa fa-tag"></i><b>{{tag}}</b>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>                            
+                            <td>
+                                <a href="#/copy-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Duplicate"><i class="fa fa-files-o secondary-feature"></i></a>                            
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="4">
                                 <div class="col-lg-12 empty-message">
-                                    No references available in your network.
+                                    No references available in this installation.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="4">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving references.
                                 </div>
                             </td>
                         </tr>
                     </tbody>                    
                 </table>
             </div>
-        </div>        
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>
+    </div>
+</div>
+ <div class="modal fade" id="searches-button-help" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-info-circle"></i> Help Information &amp; Suggestions</h4>
+            </div>
+            <div class="modal-body">
+                <i class="fa fa-search"></i> Search is made among Publication titles and authors.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -49,6 +49,7 @@ var activatedPeersController = require("./application/plugins/peer/controllers/a
 var referencesController = require("./application/plugins/reference/controllers/default.js")();
 var collectedReferencesController = require("./application/plugins/reference/controllers/collected-references.js")();
 var datasetReferencesController = require("./application/plugins/reference/controllers/dataset-references.js")();
+var networkReferencesController = require("./application/plugins/reference/controllers/network-references.js")();
 var peerReferencesController = require("./application/plugins/reference/controllers/peer-references.js")();
 var peerDatasetReferencesController = require("./application/plugins/reference/controllers/peer-dataset-references.js")();
 var repositoryReferencesController = require("./application/plugins/reference/controllers/repository-references.js")();
@@ -506,6 +507,12 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
 application.get("/api/world-network-references", function(req, res) {
     console.log("Request to Read all World Network References");
     worldNetworkReferencesController.getReferences(req, res);
+});
+
+// NETWORK REFERENCES
+application.get("/api/network-references", function(req, res) {
+    console.log("Request to Read all Network References");
+    networkReferencesController.getReferences(req, res);
 });
 
 // COLLECTED REFERENCES
