@@ -502,6 +502,12 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
     referencesController.getReceivedReferences(req, res);
 });
 
+// WORLD NETWORK REFERENCES
+application.get("/api/world-network-references", function(req, res) {
+    console.log("Request to Read all World Network References");
+    worldNetworkReferencesController.getReferences(req, res);
+});
+
 // COLLECTED REFERENCES
 application.get("/api/collected-references", function(req, res) {
     console.log("Request to Read all Collected References");

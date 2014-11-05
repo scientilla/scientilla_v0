@@ -44,7 +44,6 @@ module.exports = function () {
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
             var result = {};            
             if (req.installationConfiguration.seed) {
-                console.log("seed");
                 var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
@@ -58,12 +57,12 @@ module.exports = function () {
                             return;
                         }
                         // result.items = cleanReferencesTags(references);
+                        result.items = references;
                         res.setHeader("Content-Type", "application/json");
                         res.json(result);               
                     });                
                 });                
             } else {
-                console.log("peer");
                 networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
                     if (err) {
                         //
