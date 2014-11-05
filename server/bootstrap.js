@@ -18,11 +18,22 @@ var https = require("https");
 var jsonWebToken = require("jsonwebtoken");
 var moment = require("moment");
 var nodeSchedule = require("node-schedule");
+var nodeWindows = require('node-windows');
 var path = require("path");
 var request = require("request");
 var tingodb = require("tingodb");
 var underscore = require("underscore");
+
 var application = express();
+// var service = new nodeWindows.Service({
+//     name: "SCIENTILLA",
+//     description: "SCIENTIfic coLLaborative Archive",
+//     script: path.resolve(__dirname + "/bootstrap.js")
+// });
+// service.on("install", function(){
+//     service.start();
+// });
+// service.install();
 
 var configurationManager = require(path.resolve(__dirname + "/application/plugins/system/controllers/configuration.js"));
 var installationConfiguration = configurationManager.get();
@@ -42,6 +53,7 @@ var peerReferencesController = require("./application/plugins/reference/controll
 var peerDatasetReferencesController = require("./application/plugins/reference/controllers/peer-dataset-references.js")();
 var repositoryReferencesController = require("./application/plugins/reference/controllers/repository-references.js")();
 var seedPeerReferencesController = require("./application/plugins/reference/controllers/seed-peer-references.js")();
+var worldNetworkReferencesController = require("./application/plugins/reference/controllers/world-network-references.js")();
 var repositoriesController = require("./application/plugins/repository/controllers/default.js")();
 var activatedRepositoriesController = require("./application/plugins/repository/controllers/activated-repositories.js")();
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
@@ -61,10 +73,24 @@ var datasetsCollection;
 var peersCollection;
 var repositoriesCollection;
 var referencesCollection;
+var guestReferencesCollection;
+var collectedReferencesCollection;
 var usersCollection;
 var datasetReferencesCollections = [];
 
 async.series([
+    function(seriesCallback) {
+        if (!fs.existsSync(path.resolve(__dirname + "/../files/"))) {
+            fs.mkdirSync(path.resolve(__dirname + "/../files/"));
+        }
+        seriesCallback();
+    },
+    function(seriesCallback) {
+        if (!fs.existsSync(path.resolve(__dirname + "/../files/datasets/"))) {
+            fs.mkdirSync(path.resolve(__dirname + "/../files/datasets/"));
+        }
+        seriesCallback();
+    },    
     function(seriesCallback) {
         database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
         seriesCallback();
@@ -477,10 +503,15 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
     referencesController.getReceivedReferences(req, res);
 });
 
+// WORLD NETWORK REFERENCES
+application.get("/api/world-network-references", function(req, res) {
+    console.log("Request to Read all World Network References");
+    worldNetworkReferencesController.getReferences(req, res);
+});
+
 // COLLECTED REFERENCES
-application.get("/api/collected-references", expressJwt({secret: 'scientilla'}), function(req, res) {
+application.get("/api/collected-references", function(req, res) {
     console.log("Request to Read all Collected References");
-    systemController.checkUserCoherence(req, res);
     collectedReferencesController.getReferences(req, res);
 });
 

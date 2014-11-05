@@ -24,17 +24,13 @@ angular.module("system").controller(
             /* jQuery code end */
         };
         
-        $scope.toggleMenu = function() {
-
-        }
-        
         $scope.updateControllerStatus = function updateControllerStatus() {
             $scope.userScientillaNominative = $window.sessionStorage.userScientillaNominative;
             $scope.bCollectedPublicationsMenuVisualizationStatus = $window.sessionStorage.peerMode;
             
             return updateControllerStatus;
         }();
-        
-        $scope.$on("successful-login", $scope.updateControllerStatus);        
+
+        $scope.$on("successful-login", $scope.updateControllerStatus);
     }]
 );

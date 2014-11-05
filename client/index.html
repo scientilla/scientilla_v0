@@ -24,11 +24,13 @@
                         <a ng-click="toggleConfigurationMenu()" href="#/edit-user/" class="tree-toggle nav-header"><i class="fa fa-mortar-board"></i> <strong>{{userScientillaNominative}}</strong></a>                       
                     </li>
                 </ul>
-                <ul ng-if="bCollectedPublicationsMenuVisualizationStatus" class="sidebar-nav nav nav-stacked nav-pills second-submenus-group">
+                <!--
+                <ul ng-if="bCollectedPublicationsMenuVisualizationStatus === 'true'" class="sidebar-nav nav nav-stacked nav-pills second-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a activate ng-click="toggleCollectedReferencesMenu()" href="#/browse-collected-references/" class="tree-toggle nav-header"><b><i class="fa fa-download"></i> Collected Publications</b></a>
                     </li>
                 </ul>
+                -->
                 <ul class="sidebar-nav nav nav-stacked nav-pills third-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a activate ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><b><i class="glyphicon glyphicon-book"></i> Your Publications</b></a>
@@ -57,7 +59,7 @@
                         <a ng-click="toggleWorldNetworkMenu()" href="#/browse-world-network/" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> World Network</a>
                         <ul id="worldNetworkMenu" class="nav nav-stacked nav-pills tree">
                             <li>
-                                <a class="disabled-link"><i class="glyphicon glyphicon-book"></i> Publications</a>
+                                <a activate href="#/browse-world-network/"><i class="glyphicon glyphicon-book"></i> Publications</a>
                             </li>
                             <li>
                                 <a class="disabled-link"><i class="fa fa-mortar-board"></i> Researchers</a>
@@ -139,6 +141,7 @@
         <script src="application/plugins/reference/services/repository-references.js" type="text/javascript"></script>
         <script src="application/plugins/reference/services/seed-peer-references.js" type="text/javascript"></script>
         <script src="application/plugins/reference/services/collected-references.js" type="text/javascript"></script>
+        <script src="application/plugins/reference/services/world-network-references.js" type="text/javascript"></script>
         <script src="application/plugins/repository/services/repositories.js" type="text/javascript"></script>
         <script src="application/plugins/repository/services/activated-repositories.js" type="text/javascript"></script>
         <script src="application/plugins/repository/services/peer-repositories.js" type="text/javascript"></script>
