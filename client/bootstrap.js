@@ -13,6 +13,7 @@ angular.module('tags', []);
 angular.module('setting', []);
 angular.module('system', []);
 angular.module('user', []);
+angular.module('discovery', []);
 
 angular.module("scientilla", [
     "ngRoute",
@@ -28,5 +29,6 @@ angular.module("scientilla", [
     "tags",
     "setting",
     "system",
-    "user"
+    "user",
+    "discovery"
 ]);

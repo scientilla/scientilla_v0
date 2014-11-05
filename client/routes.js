@@ -144,6 +144,11 @@ angular.module("scientilla").config([
             templateUrl: "application/plugins/user/partials/deletion.html",
             controller: "userDeletionController" 
             
+        // DISCOVERY
+        }).when("/discovery/", {
+            templateUrl: "application/plugins/discovery/partials/main.html",
+            controller: "mainController"
+            
         }); /*.otherwise({
             redirectTo: "/references/" 
         });*/

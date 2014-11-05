@@ -47,6 +47,7 @@ var activatedRepositoriesController = require("./application/plugins/repository/
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
 var systemController = require("./application/plugins/system/controllers/default.js")();
 var usersController = require("./application/plugins/user/controllers/default.js")();
+var discoveryController = require("./application/plugins/discovery/controllers/discovery.js")();
 var tagsController = require("./application/plugins/tag/controllers/" + requirePrefix + "default.js")();
 
 // Initializes databases
@@ -604,6 +605,12 @@ application.post("/api/logged-users", function(req, res) {
 application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Update the Logged User");
     usersController.updateLoggedUser(req, res);
+});
+
+// DISCOVERY
+application.get("/api/discovery/references", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to read Discoveyr References");
+    discoveryController.getReferences(req, res);
 });
 
 // Bootstraps application

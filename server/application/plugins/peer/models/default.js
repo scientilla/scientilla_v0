@@ -4,6 +4,8 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var _ = require("lodash");
+
 module.exports = function () {
     return {
         getSeedPeers: function(seedsConfiguration, callback) {
@@ -14,6 +16,9 @@ module.exports = function () {
                 };
             }
             callback(null, seedPeers);
-        }
+        },
+        getPublicPeers: function(peersCollection, callback) {
+            peersCollection.find({ sharing_status: true }).toArray(callback);            
+        }   
     };
 };
