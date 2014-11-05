@@ -53,6 +53,7 @@ var peerReferencesController = require("./application/plugins/reference/controll
 var peerDatasetReferencesController = require("./application/plugins/reference/controllers/peer-dataset-references.js")();
 var repositoryReferencesController = require("./application/plugins/reference/controllers/repository-references.js")();
 var seedPeerReferencesController = require("./application/plugins/reference/controllers/seed-peer-references.js")();
+var worldNetworkReferencesController = require("./application/plugins/reference/controllers/world-network-references.js")();
 var repositoriesController = require("./application/plugins/repository/controllers/default.js")();
 var activatedRepositoriesController = require("./application/plugins/repository/controllers/activated-repositories.js")();
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
