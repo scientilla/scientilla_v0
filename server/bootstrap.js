@@ -502,9 +502,8 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
 });
 
 // COLLECTED REFERENCES
-application.get("/api/collected-references", expressJwt({secret: 'scientilla'}), function(req, res) {
+application.get("/api/collected-references", function(req, res) {
     console.log("Request to Read all Collected References");
-    systemController.checkUserCoherence(req, res);
     collectedReferencesController.getReferences(req, res);
 });
 
