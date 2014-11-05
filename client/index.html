@@ -24,7 +24,7 @@
                         <a ng-click="toggleConfigurationMenu()" href="#/edit-user/" class="tree-toggle nav-header"><i class="fa fa-mortar-board"></i> <strong>{{userScientillaNominative}}</strong></a>                       
                     </li>
                 </ul>
-                <ul ng-if="bCollectedPublicationsMenuVisualizationStatus" class="sidebar-nav nav nav-stacked nav-pills second-submenus-group">
+                <ul ng-if="bCollectedPublicationsMenuVisualizationStatus === 'true'" class="sidebar-nav nav nav-stacked nav-pills second-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a activate ng-click="toggleCollectedReferencesMenu()" href="#/browse-collected-references/" class="tree-toggle nav-header"><b><i class="fa fa-download"></i> Collected Publications</b></a>
                     </li>
