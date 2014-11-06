@@ -6,22 +6,37 @@
 
 angular.module("system").controller(
     "systemLayoutController", ["$scope", "$window", "$location", function($scope, $window, $location) {
-        $scope.bSidebarVisualizationStatus = false;
+        $scope.bSidebarVisualizationStatus = $window.sessionStorage.hasOwnProperty("sidebarVisualizationStatus") ? $window.sessionStorage.sidebarVisualizationStatus : "closed";
+        $window.sessionStorage.sidebarVisualizationStatus = $scope.bSidebarVisualizationStatus;
         $scope.userScientillaNominative = "SCIENTILLA";
         $scope.bCollectedPublicationsMenuVisualizationStatus = false;
         
-        $scope.toggleSidebar = function() {
-            $scope.bSidebarVisualizationStatus = !$scope.bSidebarVisualizationStatus;
+        $scope.updateSidebarStatus = function updateSidebarStatus() {          
             /* TO-DO: substitute the jQuery code with a directive. */
             /* jQuery code start */
-            if (!$scope.bSidebarVisualizationStatus) {
-                $("#sidebar-container").stop(true).animate({"left": "-270px"});
-                $("#toolbar-and-content-container").stop(true).animate({"left": "0px", "border-width": "0px 0px 0px 1px"});
-            } else {
+            if ($scope.bSidebarVisualizationStatus === "opened") {
+                console.log("open");
                 $("#toolbar-and-content-container").stop(true).animate({"left": "270px", "border-width": "0px 0px 0px 1px"});
                 $("#sidebar-container").stop(true).animate({"left": "0px"});                
+            } else {
+                console.log("closed");
+                $("#sidebar-container").stop(true).animate({"left": "-270px"});
+                $("#toolbar-and-content-container").stop(true).animate({"left": "0px", "border-width": "0px 0px 0px 1px"});
             }
             /* jQuery code end */
+            
+            return updateSidebarStatus;
+        }();        
+        
+        $scope.toggleSidebar = function() {
+            if ($scope.bSidebarVisualizationStatus === "opened") {
+                $scope.bSidebarVisualizationStatus = "closed";
+            } else {
+                $scope.bSidebarVisualizationStatus = "opened";
+            }
+            $window.sessionStorage.sidebarVisualizationStatus = $scope.bSidebarVisualizationStatus;
+            
+            $scope.updateSidebarStatus();
         };
         
         $scope.updateControllerStatus = function updateControllerStatus() {
@@ -32,5 +47,7 @@ angular.module("system").controller(
         }();
 
         $scope.$on("successful-login", $scope.updateControllerStatus);
+        
+        $scope.$on("successful-login", $scope.toggleSidebar);
     }]
 );
