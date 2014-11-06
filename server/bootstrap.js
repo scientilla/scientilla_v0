@@ -200,9 +200,10 @@ async.series([
         seriesCallback();
     },
     function(seriesCallback) {
-        if (configurationManager.get().seed) { 
+        if (configurationManager.get().seed) {
+            console.log("Collecting references...");
             var jobToSchedule = function jobToSchedule() {
-                peerReferencesController.discoverReferences(peersCollection, collectedReferencesCollection);
+                peerReferencesController.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection);
 
                 return jobToSchedule;
             }();
