@@ -16,8 +16,8 @@ angular.module("discovery").controller(
         $scope.oRepositories = null;
         $scope.hasPaginationData = false;
         $scope.allSelected = false;
-        $scope.aliases = $window.sessionStorage;
         $scope.config = {
+            keywords: "",
             page: 1,
             rows: 20
         };
@@ -151,7 +151,7 @@ angular.module("discovery").controller(
                         rows: $scope.config.rows
                     };
                     discoveryService.getReferences(
-                        $scope.aliases,
+                        $scope.config,
                         $window.sessionStorage.token,
                         function(results) {
                             if (results.data.length < $scope.config.rows) {

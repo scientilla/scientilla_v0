@@ -8,11 +8,11 @@ angular.module("discovery").factory(
     "discoveryService", function($http) {
         var discoveryProvider = {};
         
-        discoveryProvider.getReferences = function(aliases, token, success, error){
+        discoveryProvider.getReferences = function(config, token, success, error){
             $http({
 				method: "GET",
 				url: "/api/discovery/references",
-                params: {aliases: aliases},
+                params: config,
                 cache: false,
                 timeout: 30000,
                 headers: {

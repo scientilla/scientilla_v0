@@ -11,13 +11,21 @@ var async = require("async");
 var peerManager = require("../../peer/models/default.js")();
 
 module.exports = function () {
-        var getReferencesFromAliases = function(collectedReferencesCollection, aliases, cb) {
-            var regexQuery = aliases.join("|");
-            collectedReferencesCollection.find({                
-                authors: { 
-                    $regex: regexQuery,
-                    $options: 'i'
-                }
+        var getReferencesFromAliases = function(collectedReferencesCollection, aliases, config, cb) {
+            var aliasesQuery = aliases.join("|");
+            var keywords = config.keywords || "";
+            var keywordsQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
+            collectedReferencesCollection.find({
+                $and: [
+                    {authors: { 
+                        $regex: aliasesQuery,
+                        $options: 'i'
+                    }},
+                    {title: {
+                        $regex: keywordsQuery,
+                        $options: 'i'
+                    }}
+                ]
             }).sort({ 
                     creation_datetime: -1
                 }
@@ -46,7 +54,7 @@ module.exports = function () {
 
                 async.waterfall([
                     function(cb) {
-                        getReferencesFromAliases(req.collectedReferencesCollection, req.user.aliases, cb);
+                        getReferencesFromAliases(req.collectedReferencesCollection, req.user.aliases, req.query, cb);
                     },
                     function(aliasesReferences, cb) {
                         getClonableReferences(req.referencesCollection, aliasesReferences, cb);
