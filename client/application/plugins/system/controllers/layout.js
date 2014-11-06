@@ -15,11 +15,9 @@ angular.module("system").controller(
             /* TO-DO: substitute the jQuery code with a directive. */
             /* jQuery code start */
             if ($scope.bSidebarVisualizationStatus === "opened") {
-                console.log("open");
                 $("#toolbar-and-content-container").stop(true).animate({"left": "270px", "border-width": "0px 0px 0px 1px"});
                 $("#sidebar-container").stop(true).animate({"left": "0px"});                
             } else {
-                console.log("closed");
                 $("#sidebar-container").stop(true).animate({"left": "-270px"});
                 $("#toolbar-and-content-container").stop(true).animate({"left": "0px", "border-width": "0px 0px 0px 1px"});
             }
