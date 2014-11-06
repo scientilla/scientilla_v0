@@ -400,3 +400,8 @@ html, body {
 .authors {
     display: block;
 }
+
+.notClonable {
+    background-color: #f3f3f3;
+    color: #999999;
+}

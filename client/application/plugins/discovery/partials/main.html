@@ -53,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
-                        <tr ng-repeat="reference in aReferences">
+                        <tr ng-repeat="reference in aReferences" ng-class="{notClonable: !reference.clonable}">
                             <td>
                                 {{reference.authors}}<br />
                                 <i>{{reference.title}}</i><br />

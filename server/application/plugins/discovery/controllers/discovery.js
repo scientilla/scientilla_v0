@@ -23,22 +23,21 @@ module.exports = function () {
                 }
             ).toArray(cb);
         };
-        var partitionReferences = function(referencesCollection, aliasesReferences, cb) {
+        var getClonableReferences = function(referencesCollection, aliasesReferences, cb) {
             referencesCollection.find().toArray(function(err, signedReferences){
-                console.log(_.map(signedReferences, 'original_hash'));
                 if (err) {
                     cb(err, null);
                 }
-                var partitionedReferences = _.reduce(aliasesReferences, function(acc, ref) {
+                var clonableReferences = _.reduce(aliasesReferences, function(acc, ref) {
                     if (_.some(signedReferences, {original_hash: ref.original_hash})) {
-                        acc.signed.push(ref);
+                        ref.clonable = false;
                     } else {
                         ref.clonable = true;
-                        acc.unsigned.push(ref);
                     }
+                    acc.push(ref);
                     return acc;
-                }, {signed: [], unsigned: []});
-                cb(err, partitionedReferences.unsigned, partitionedReferences.signed);
+                }, []);
+                cb(err, clonableReferences);
             });
         };
     return {
@@ -50,17 +49,17 @@ module.exports = function () {
                         getReferencesFromAliases(req.collectedReferencesCollection, req.user.aliases, cb);
                     },
                     function(aliasesReferences, cb) {
-                        partitionReferences(req.referencesCollection, aliasesReferences, cb);
+                        getClonableReferences(req.referencesCollection, aliasesReferences, cb);
                     }
                 ], 
-                function(err, unsignedReferences, signedReferences) {
+                function(err, references) {
                     if (err) {
                         console.log(err);
                         res.status(500).end();
                         return;
                     }
                     res.setHeader("Content-Type", "application/json");
-                    res.json(unsignedReferences);
+                    res.json(references);
                     return;
                 });
             } else {

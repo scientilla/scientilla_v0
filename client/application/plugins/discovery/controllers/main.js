@@ -172,31 +172,6 @@ angular.module("discovery").controller(
                             systemStatusService.react(status, callback);
                         });
                 },
-//                function(callback) {
-//                    if (!_.isNull($scope.lastPage)) {
-//                        callback();
-//                        return;
-//                    }
-//                    var page = $scope.currentPage * $scope.config.rows + 1;
-//                    var config = {
-//                        keywords: $scope.config.keywords,
-//                        page: page,
-//                        rows: 1
-//                    };
-//                    repositoryReferencesService.getReferences(
-//                        $scope.repositoryId,
-//                        $window.sessionStorage.token,
-//                        config
-//                    ).success(function(data, status, headers, config) {
-//                        if (data.length === 0) {
-//                            $scope.lastPage = $scope.currentPage;
-//                        }
-//                        callback();
-//                    }).error(function(data, status, headers, config) {
-//                        $scope.error = true;
-//                        systemStatusService.react(status, callback);
-//                    });
-//                },
                 function(callback) {
                     $scope.ready = true;
                     callback();
