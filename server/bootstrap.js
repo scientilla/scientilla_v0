@@ -18,22 +18,12 @@ var https = require("https");
 var jsonWebToken = require("jsonwebtoken");
 var moment = require("moment");
 var nodeSchedule = require("node-schedule");
-var nodeWindows = require('node-windows');
 var path = require("path");
 var request = require("request");
 var tingodb = require("tingodb");
 var underscore = require("underscore");
 
 var application = express();
-// var service = new nodeWindows.Service({
-//     name: "SCIENTILLA",
-//     description: "SCIENTIfic coLLaborative Archive",
-//     script: path.resolve(__dirname + "/bootstrap.js")
-// });
-// service.on("install", function(){
-//     service.start();
-// });
-// service.install();
 
 var configurationManager = require(path.resolve(__dirname + "/application/plugins/system/controllers/configuration.js"));
 var installationConfiguration = configurationManager.get();
@@ -49,6 +39,7 @@ var activatedPeersController = require("./application/plugins/peer/controllers/a
 var referencesController = require("./application/plugins/reference/controllers/default.js")();
 var collectedReferencesController = require("./application/plugins/reference/controllers/collected-references.js")();
 var datasetReferencesController = require("./application/plugins/reference/controllers/dataset-references.js")();
+var networkReferencesController = require("./application/plugins/reference/controllers/network-references.js")();
 var peerReferencesController = require("./application/plugins/reference/controllers/peer-references.js")();
 var peerDatasetReferencesController = require("./application/plugins/reference/controllers/peer-dataset-references.js")();
 var repositoryReferencesController = require("./application/plugins/reference/controllers/repository-references.js")();
@@ -198,6 +189,7 @@ async.series([
     },
     function(seriesCallback) {
         var jobToSchedule = function jobToSchedule() {
+            console.log("Collecting peers and repositories...");
             peersController.discoverPeers(seedsConfiguration, peersCollection);
             repositoriesController.discoverRepositories(seedsConfiguration, peersCollection);
             
@@ -210,9 +202,10 @@ async.series([
         seriesCallback();
     },
     function(seriesCallback) {
-        if (configurationManager.get().seed) { 
+        if (configurationManager.get().seed) {
             var jobToSchedule = function jobToSchedule() {
-                peerReferencesController.discoverReferences(peersCollection, collectedReferencesCollection);
+                console.log("Collecting references...");
+                peerReferencesController.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection);
 
                 return jobToSchedule;
             }();
@@ -507,6 +500,12 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
 application.get("/api/world-network-references", function(req, res) {
     console.log("Request to Read all World Network References");
     worldNetworkReferencesController.getReferences(req, res);
+});
+
+// NETWORK REFERENCES
+application.get("/api/network-references", function(req, res) {
+    console.log("Request to Read all Network References");
+    networkReferencesController.getReferences(req, res);
 });
 
 // COLLECTED REFERENCES
