@@ -18,22 +18,12 @@ var https = require("https");
 var jsonWebToken = require("jsonwebtoken");
 var moment = require("moment");
 var nodeSchedule = require("node-schedule");
-var nodeWindows = require('node-windows');
 var path = require("path");
 var request = require("request");
 var tingodb = require("tingodb");
 var underscore = require("underscore");
 
 var application = express();
-// var service = new nodeWindows.Service({
-//     name: "SCIENTILLA",
-//     description: "SCIENTIfic coLLaborative Archive",
-//     script: path.resolve(__dirname + "/bootstrap.js")
-// });
-// service.on("install", function(){
-//     service.start();
-// });
-// service.install();
 
 var configurationManager = require(path.resolve(__dirname + "/application/plugins/system/controllers/configuration.js"));
 var installationConfiguration = configurationManager.get();
