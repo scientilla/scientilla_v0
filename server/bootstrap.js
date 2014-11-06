@@ -188,6 +188,7 @@ async.series([
     },
     function(seriesCallback) {
         var jobToSchedule = function jobToSchedule() {
+            console.log("Collecting peers and repositories...");
             peersController.discoverPeers(seedsConfiguration, peersCollection);
             repositoriesController.discoverRepositories(seedsConfiguration, peersCollection);
             
@@ -201,8 +202,8 @@ async.series([
     },
     function(seriesCallback) {
         if (configurationManager.get().seed) {
-            console.log("Collecting references...");
             var jobToSchedule = function jobToSchedule() {
+                console.log("Collecting references...");
                 peerReferencesController.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection);
 
                 return jobToSchedule;
