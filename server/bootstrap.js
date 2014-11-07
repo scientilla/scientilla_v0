@@ -50,6 +50,7 @@ var activatedRepositoriesController = require("./application/plugins/repository/
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
 var systemController = require("./application/plugins/system/controllers/default.js")();
 var usersController = require("./application/plugins/user/controllers/default.js")();
+var peerUsersController = require("./application/plugins/user/controllers/peer-users.js")();
 var discoveryController = require("./application/plugins/discovery/controllers/discovery.js")();
 var tagsController = require("./application/plugins/tag/controllers/" + requirePrefix + "default.js")();
 
@@ -212,8 +213,9 @@ async.series([
     function(seriesCallback) {
         if (configurationManager.get().seed) {
             var jobToSchedule = function jobToSchedule() {
-                console.log("Collecting references...");
+                console.log("Collecting references and users...");
                 peerReferencesController.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection);
+                peerUsersController.discoverUsers(peersCollection, usersCollection, collectedUsersCollection);
 
                 return jobToSchedule;
             }();
@@ -610,6 +612,11 @@ application.get("/api/users", expressJwt({secret: 'scientilla'}), function(req, 
     console.log("Request to Read all Users");
     systemController.checkUserCoherence(req, res);
     usersController.getUsers(req, res);
+});
+
+application.get("/api/public-users", cors(), function(req, res) {
+    console.log("Request to Read all Public Users");   
+    usersController.getPublicUsers(req, res);
 });
 
 application.get("/api/users/:id", expressJwt({secret: 'scientilla'}), function(req, res) {

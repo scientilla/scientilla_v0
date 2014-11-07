@@ -126,11 +126,13 @@ module.exports = function () {
                                         });
                                     }
                                 }
+                                /*
                                 peersCollection.update({ _id: peers[0]._id }, { $set: { hits: (peers[0].hits + 1) } }, { w: 1}, function(err, peer) {
                                     if (err) {
                                         return;
                                     }
                                 });
+                                */
                                 callback();
                             });
                         });
