@@ -10,6 +10,7 @@ var _ = require("lodash");
 var async = require("async");
 var peerManager = require("../../peer/models/default.js")();
 var configurationManager = require("../../system/controllers/configuration.js");
+var networkModel = require("../../network/models/default.js")();
 
 module.exports = function () {
         var getReferencesFromAliases = function(collectedReferencesCollection, aliases, config, cb) {
@@ -81,9 +82,24 @@ module.exports = function () {
                     return;
                 });
             } else {
-                console.log('no seed');
-                res.status(500).end();
-                return;
+                networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
+                    var url = seed.url + "/api/public-references";
+                    req.request({ 
+                        url: url, 
+                        qs: req.query,
+                        strictSSL: false,
+                        json: true
+                    }, function(err, response, body) {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).end();
+                                return;
+                            }
+                            res.setHeader("Content-Type", "application/json");
+                            res.json(body);
+                            return;
+                        });
+                    });
             }
         }
     };
