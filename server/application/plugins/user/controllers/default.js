@@ -100,6 +100,37 @@ module.exports = function () {
                 res.json(users);
             });
         },
+        getPublicUsers: function(req, res) {
+            var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
+            req.usersCollection.find({ 
+                last_modification_datetime: {
+                    $gt: datetime
+                }                
+            }, {
+                _id: 0,
+                type: 1,
+                scientilla_nominative: 1,
+                first_name: 1,
+                middle_name: 1,
+                last_name: 1,
+                business_name: 1,
+                birth_date: 1,
+                birth_city: 1,
+                birth_state: 1,
+                birth_country: 1,
+                sex: 1,
+                hash: 1,
+                hashes: 1,
+                aliases: 1
+            }).sort({ creation_datetime: -1 }).toArray(function(err, publicUsers) {
+                if (err || req.underscore.isNull(publicUsers)) {
+                    res.status(404).end();
+                    return;
+                }
+                res.setHeader("Content-Type", "application/json");
+                res.json(publicUsers);
+            });            
+        },
         getUser: function(req, res) {
             req.usersCollection.findOne({ _id: req.params.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
@@ -146,6 +177,10 @@ module.exports = function () {
             user.hash = getUserHash(user);
             user.hashes = [user.hash];
             user.aliases = getUserAliases(user);
+            user.creator_id = req.user.id;
+            user.creation_datetime = req.moment().format();
+            user.last_modifier_id = req.user.id;
+            user.last_modification_datetime = req.moment().format();            
             req.usersCollection.insert(user, {w:1}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
@@ -191,6 +226,8 @@ module.exports = function () {
                     user.hashes.push(user.hash);
                 }
                 user.aliases = getUserAliases(user);
+                user.last_modifier_id = req.user.id;
+                user.last_modification_datetime = req.moment().format();                
                 req.usersCollection.update({ _id: req.params.id }, { $set: user }, {w: 1}, function(err, user) {
                     if (err || req.underscore.isNull(user)) {
                         console.log(err);
@@ -237,6 +274,8 @@ module.exports = function () {
                     user.hashes.push(user.hash);
                 }
                 user.aliases = getUserAliases(user);
+                user.last_modifier_id = req.user.id;
+                user.last_modification_datetime = req.moment().format();                
                 req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, user) {
                     if (err || req.underscore.isNull(user)) {
                         console.log(err);
