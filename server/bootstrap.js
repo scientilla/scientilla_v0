@@ -67,6 +67,7 @@ var referencesCollection;
 var guestReferencesCollection;
 var collectedReferencesCollection;
 var usersCollection;
+var collectedUsersCollection;
 var datasetReferencesCollections = [];
 
 async.series([
@@ -167,6 +168,14 @@ async.series([
         });
     },
     function(seriesCallback) {
+        database.open(function(err, database) {
+            database.collection("collected_users.db", function(err, collection) {
+                collectedUsersCollection = collection;
+                seriesCallback();
+            });
+        });
+    },    
+    function(seriesCallback) {
         database = new databaseEngine.Db(path.resolve(__dirname + "/../files/datasets/") + path.sep, {});
         seriesCallback();
     },
@@ -240,6 +249,7 @@ application.use("*", function(req, res, next) {
     req.guestReferencesCollection = guestReferencesCollection;
     req.collectedReferencesCollection = collectedReferencesCollection;
     req.usersCollection = usersCollection;
+    req.collectedUsersCollection = collectedUsersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
     next();    
 });
