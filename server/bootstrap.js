@@ -196,8 +196,7 @@ async.series([
             return jobToSchedule;
         }();
         var recurrenceRule = new nodeSchedule.RecurrenceRule();
-        recurrenceRule.hour = [2, new nodeSchedule.Range(0, 23)];
-        recurrenceRule.minute = 0;
+        recurrenceRule.minute = [20, new nodeSchedule.Range(0, 59)];
         nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
         seriesCallback();
     },
