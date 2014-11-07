@@ -110,6 +110,7 @@ module.exports = function () {
             }, {
                 _id: 0,
                 type: 1,
+                rights: 0,
                 scientilla_nominative: 1,
                 first_name: 1,
                 middle_name: 1,
@@ -120,9 +121,17 @@ module.exports = function () {
                 birth_state: 1,
                 birth_country: 1,
                 sex: 1,
+                email: 0,
+                username: 0,
+                password: 0,
+                status: 0,
                 hash: 1,
                 hashes: 1,
-                aliases: 1
+                aliases: 1,
+                creator_id: 0,
+                creation_datetime: 1,
+                last_modifier_id: 0,
+                last_modification_datetime: 1
             }).sort({ creation_datetime: -1 }).toArray(function(err, publicUsers) {
                 if (err || req.underscore.isNull(publicUsers)) {
                     res.status(404).end();
