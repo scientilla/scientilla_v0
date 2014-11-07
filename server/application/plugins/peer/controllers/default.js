@@ -101,38 +101,40 @@ module.exports = function () {
             });
         },
         createPublicPeer: function(req, res) {
-            req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
-                if (err || req.underscore.isNull(existingpeer)) {
-                    req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
-                        var defaultPeerHits;
-                        if (err || req.underscore.isNull(existingPeers)) {
-                            defaultPeerHits = 0;
-                        } else {
-                            defaultPeerHits = existingPeers[0].hits;
-                        }                    
-                        var newPeer = {};
-                        !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
-                        !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
-                        newPeer.sharing_status = true;
-                        newPeer.aggregating_status = false;
-                        newPeer.hits = defaultPeerHits;
-                        newPeer.creator_id = "";
-                        newPeer.creation_datetime = req.moment().format();
-                        newPeer.last_modifier_id = "";
-                        newPeer.last_modification_datetime = req.moment().format();            
-                        req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
-                            if (err || req.underscore.isNull(storedPeer)) {
-                                res.status(409).end();
-                                return;
-                            }
-                            res.end();
+            if (req.body.url != configurationManager.get().url && !req.body.url.match("/.*127\.0\.0\.1.*/i") && !req.body.url.match("/.*localhost.*/i")) {
+                req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
+                    if (err || req.underscore.isNull(existingpeer)) {
+                        req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
+                            var defaultPeerHits;
+                            if (err || req.underscore.isNull(existingPeers)) {
+                                defaultPeerHits = 0;
+                            } else {
+                                defaultPeerHits = existingPeers[0].hits;
+                            }                    
+                            var newPeer = {};
+                            !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
+                            !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
+                            newPeer.sharing_status = true;
+                            newPeer.aggregating_status = false;
+                            newPeer.hits = defaultPeerHits;
+                            newPeer.creator_id = "";
+                            newPeer.creation_datetime = req.moment().format();
+                            newPeer.last_modifier_id = "";
+                            newPeer.last_modification_datetime = req.moment().format();            
+                            req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
+                                if (err || req.underscore.isNull(storedPeer)) {
+                                    res.status(409).end();
+                                    return;
+                                }
+                                res.end();
+                            });
                         });
-                    });
-                } else {
-                    res.status(409).end();
-                    return;
-                }
-            });
+                    } else {
+                        res.status(409).end();
+                        return;
+                    }
+                });
+            }
         },        
         updatePeer: function(req, res) { 
             var peer = {};
@@ -162,7 +164,6 @@ module.exports = function () {
             });            
         },        
         discoverPeers: function(seedsConfiguration, peersCollection) {
-            var installationConfiguration = configurationManager.get();
             for (var seedKey in seedsConfiguration) {
                 request({
                     method: "GET",
@@ -194,13 +195,13 @@ module.exports = function () {
 							}
 						);
                     }
-                    if (seedsConfiguration[seedKey] != installationConfiguration.url) {
+                    if (seedsConfiguration[seedKey] != configurationManager.get().url) {
                         request({
                             method: "POST",
                             url: seedsConfiguration[seedKey] + "/api/public-peers", 
                             json: { 
-                                name: installationConfiguration.name, 
-                                url: installationConfiguration.url 
+                                name: configurationManager.get().name, 
+                                url: configurationManager.get().url 
                             },
                             strictSSL: false 
                         }, function (err, res, body) {
