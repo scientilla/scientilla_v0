@@ -26,7 +26,7 @@ module.exports = function () {
             settings.name = !req.underscore.isUndefined(req.body.name) ? ('' + req.body.name).trim() : ''; 
             settings.url = !req.underscore.isUndefined(req.body.url) ? ('' + req.body.url).trim() : '';
             settings.owner_user_id = !req.underscore.isUndefined(req.body.owner_user_id) ? ('' + req.body.owner_user_id).trim() : '';
-            settings.seed = !req.underscore.isUndefined(req.body.seed) ? ('' + req.body.seed).trim() : false;
+            settings.seed = !req.underscore.isUndefined(req.body.seed) ? req.body.seed : false;
             configurationManager.set(settings);
             configurationManager.save();
             configurationManager.reload();

@@ -9,12 +9,17 @@
 var _ = require("lodash");
 var async = require("async");
 var peerManager = require("../../peer/models/default.js")();
+var configurationManager = require("../../system/controllers/configuration.js");
 
 module.exports = function () {
         var getReferencesFromAliases = function(collectedReferencesCollection, aliases, config, cb) {
             var aliasesQuery = aliases.join("|");
             var keywords = config.keywords || "";
+            var page = config.page || 1;
+            var rows = config.rows || 20;
+            var skip = (page - 1) * rows;
             var keywordsQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
+            
             collectedReferencesCollection.find({
                 $and: [
                     {authors: { 
@@ -29,6 +34,10 @@ module.exports = function () {
             }).sort({ 
                     creation_datetime: -1
                 }
+            ).skip(
+                skip
+            ).limit(
+                rows
             ).toArray(cb);
         };
         var getClonableReferences = function(referencesCollection, aliasesReferences, cb) {
@@ -50,7 +59,8 @@ module.exports = function () {
         };
     return {
         getReferences: function(req, res) {
-            if (req.installationConfiguration.seed) {
+            var configuration = configurationManager.get();
+            if (configuration.seed) {
 
                 async.waterfall([
                     function(cb) {

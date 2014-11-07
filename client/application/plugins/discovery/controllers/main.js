@@ -151,7 +151,7 @@ angular.module("discovery").controller(
                         rows: $scope.config.rows
                     };
                     discoveryService.getReferences(
-                        $scope.config,
+                        config,
                         $window.sessionStorage.token,
                         function(results) {
                             if (results.data.length < $scope.config.rows) {
