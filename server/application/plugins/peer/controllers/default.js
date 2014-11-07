@@ -69,19 +69,26 @@ module.exports = function () {
         createPeer: function(req, res) {
             req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
                 if (err || req.underscore.isNull(existingpeer)) {
-                    req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
-                        var defaultPeerHits;
+                    req.peersCollection.find({}).sort({ 
+                        references_discovering_hits: 1,
+                        users_discovering_hits: 1
+                    }).limit(1).toArray(function(err, existingPeers) {
+                        var defaultPeerReferencesDiscoveringHits;
+                        var defaultPeerUsersDiscoveringHits;
                         if (err || req.underscore.isNull(existingPeers)) {
-                            defaultPeerHits = 0;
+                            defaultPeerReferencesDiscoveringHits = 0;
+                            defaultPeerUsersDiscoveringHits = 0;
                         } else {
-                            defaultPeerHits = existingPeers[0].hits;
+                            defaultPeerReferencesDiscoveringHits = existingPeers[0].references_discovering_hits;
+                            defaultPeerUsersDiscoveringHits = existingPeers[0].users_discovering_hits;
                         }
                         var newPeer = {};
                         !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
                         !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
                         !req.underscore.isUndefined(req.body.sharing_status) ? newPeer.sharing_status = req.body.sharing_status : newPeer.sharing_status = ""; 
                         !req.underscore.isUndefined(req.body.aggregating_status) ? newPeer.aggregating_status = req.body.aggregating_status : newPeer.aggregating_status = "";
-                        newPeer.hits = defaultPeerHits;
+                        newPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
+                        newPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
                         newPeer.creator_id = req.user.id;
                         newPeer.creation_datetime = req.moment().format();
                         newPeer.last_modifier_id = req.user.id;
@@ -104,19 +111,26 @@ module.exports = function () {
             if (req.body.url != configurationManager.get().url && !req.body.url.match("/.*127\.0\.0\.1.*/i") && !req.body.url.match("/.*localhost.*/i")) {
                 req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
                     if (err || req.underscore.isNull(existingpeer)) {
-                        req.peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, existingPeers) {
-                            var defaultPeerHits;
+                        req.peersCollection.find({}).sort({ 
+                            references_discovering_hits: 1,
+                            users_discovering_hits: 1 
+                        }).limit(1).toArray(function(err, existingPeers) {
+                            var defaultPeerReferencesDiscoveringHits;
+                            var defaultPeerUsersDiscoveringHits;
                             if (err || req.underscore.isNull(existingPeers)) {
-                                defaultPeerHits = 0;
+                                defaultPeerReferencesDiscoveringHits = 0;
+                                defaultPeerUsersDiscoveringHits = 0;
                             } else {
-                                defaultPeerHits = existingPeers[0].hits;
+                                defaultPeerReferencesDiscoveringHits = existingPeers[0].references_discovering_hits;
+                                defaultPeerUsersDiscoveringHits = existingPeers[0].users_discovering_hits;
                             }                    
                             var newPeer = {};
                             !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
                             !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
                             newPeer.sharing_status = true;
                             newPeer.aggregating_status = false;
-                            newPeer.hits = defaultPeerHits;
+                            newPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
+                            newPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
                             newPeer.creator_id = "";
                             newPeer.creation_datetime = req.moment().format();
                             newPeer.last_modifier_id = "";
@@ -182,7 +196,8 @@ module.exports = function () {
 										discoveredPeer.url = peer.url;
 										discoveredPeer.sharing_status = true; 
                                         discoveredPeer.aggregating_status = false;
-                                        discoveredPeer.hits = 0;
+                                        discoveredPeer.references_discovering_hits = 0;
+                                        discoveredPeer.users_discovering_hits = 0;
 										discoveredPeer.creator_id = "";
 										discoveredPeer.creation_datetime = peer.creation_datetime;
 										discoveredPeer.last_modifier_id = "";

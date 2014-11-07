@@ -102,7 +102,8 @@ module.exports = function () {
         },
         getPublicUsers: function(req, res) {
             var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
-            req.usersCollection.find({ 
+            req.usersCollection.find({
+                status: "U",
                 last_modification_datetime: {
                     $gt: datetime
                 }                

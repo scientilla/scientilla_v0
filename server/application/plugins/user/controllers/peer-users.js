@@ -22,7 +22,7 @@ module.exports = function () {
                         }
                         var datetime = collectedUsers.length === 0 ? "" : collectedUsers[0].last_modification_datetime;
                         usersCollection.find({ 
-                            sharing_status: true,
+                            status: "U",
                             last_modification_datetime: {
                                 $gt: datetime
                             }                
@@ -44,7 +44,7 @@ module.exports = function () {
                     });
                 },
                 function(callback) {
-                    peersCollection.find({}).sort({ hits: 1 }).limit(1).toArray(function(err, peers) {
+                    peersCollection.find({}).sort({ users_discovering_hits: 1 }).limit(1).toArray(function(err, peers) {
                         if (err || _.isNull(peers)) {
                             return; 
                         }
@@ -70,7 +70,7 @@ module.exports = function () {
                                         });
                                     }
                                 }
-                                peersCollection.update({ _id: peers[0]._id }, { $set: { hits: (peers[0].hits + 1) } }, { w: 1 }, function(err, peer) {
+                                peersCollection.update({ _id: peers[0]._id }, { $set: { users_discovering_hits: (peers[0].users_discovering_hits + 1) } }, { w: 1 }, function(err, peer) {
                                     if (err) {
                                         return;
                                     }
