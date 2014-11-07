@@ -9,6 +9,7 @@
 var _ = require("lodash");
 var async = require("async");
 var peerManager = require("../../peer/models/default.js")();
+var configurationManager = require("../../system/controllers/configuration.js");
 
 module.exports = function () {
         var getReferencesFromAliases = function(collectedReferencesCollection, aliases, config, cb) {
@@ -58,7 +59,8 @@ module.exports = function () {
         };
     return {
         getReferences: function(req, res) {
-            if (req.installationConfiguration.seed) {
+            var configuration = configurationManager.get();
+            if (configuration.seed) {
 
                 async.waterfall([
                     function(cb) {
