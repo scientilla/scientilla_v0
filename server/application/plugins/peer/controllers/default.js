@@ -189,24 +189,28 @@ module.exports = function () {
 						async.eachSeries(
 							peers,
 							function(peer, eachSeriesCallback) {
-								peersCollection.findOne({ url: peer.url }, function(err, knownPeer) {
-									if (err || underscore.isNull(knownPeer)) {
-										var discoveredPeer = {};
-										discoveredPeer.name = peer.name;
-										discoveredPeer.url = peer.url;
-										discoveredPeer.sharing_status = true; 
-                                        discoveredPeer.aggregating_status = false;
-                                        discoveredPeer.references_discovering_hits = 0;
-                                        discoveredPeer.users_discovering_hits = 0;
-										discoveredPeer.creator_id = "";
-										discoveredPeer.creation_datetime = peer.creation_datetime;
-										discoveredPeer.last_modifier_id = "";
-										discoveredPeer.last_modification_datetime = "";            
-										peersCollection.insert(discoveredPeer, {w:1}, function(err, createdPeer) {
-											eachSeriesCallback();
-										}); 
-									}
-								});
+                                if (peer.url != configurationManager.get().url) {
+                                    peersCollection.findOne({ url: peer.url }, function(err, knownPeer) {
+                                        if (err || underscore.isNull(knownPeer)) {
+                                            var discoveredPeer = {};
+                                            discoveredPeer.name = peer.name;
+                                            discoveredPeer.url = peer.url;
+                                            discoveredPeer.sharing_status = true; 
+                                            discoveredPeer.aggregating_status = false;
+                                            discoveredPeer.references_discovering_hits = 0;
+                                            discoveredPeer.users_discovering_hits = 0;
+                                            discoveredPeer.creator_id = "";
+                                            discoveredPeer.creation_datetime = peer.creation_datetime;
+                                            discoveredPeer.last_modifier_id = "";
+                                            discoveredPeer.last_modification_datetime = "";            
+                                            peersCollection.insert(discoveredPeer, {w:1}, function(err, createdPeer) {
+                                                eachSeriesCallback();
+                                            }); 
+                                        } else {
+                                            eachSeriesCallback();
+                                        }
+                                    });
+                                }
 							}
 						);
                     }
