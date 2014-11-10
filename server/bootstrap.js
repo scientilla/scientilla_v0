@@ -198,30 +198,30 @@ async.series([
         );        
     },
     function(seriesCallback) {
-        var jobToSchedule = function jobToSchedule() {
+        var peersAndRepositoriesCollectionJob = function peersAndRepositoriesCollectionJob() {
             console.log("Collecting peers and repositories...");
             peersController.discoverPeers(seedsConfiguration, peersCollection);
             repositoriesController.discoverRepositories(seedsConfiguration, peersCollection);
             
-            return jobToSchedule;
+            return peersAndRepositoriesCollectionJob;
         }();
-        var recurrenceRule = new nodeSchedule.RecurrenceRule();
-        recurrenceRule.minute = [20, new nodeSchedule.Range(0, 59)];
-        nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+        var peersAndRepositoriesCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
+        peersAndRepositoriesCollectionRecurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+        nodeSchedule.scheduleJob(peersAndRepositoriesCollectionRecurrenceRule, peersAndRepositoriesCollectionJob);
         seriesCallback();
     },
     function(seriesCallback) {
         if (configurationManager.get().seed) {
-            var jobToSchedule = function jobToSchedule() {
+            var referencesAndUsersCollectionJob = function referencesAndUsersCollectionJob() {
                 console.log("Collecting references and users...");
                 peerReferencesController.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection);
                 peerUsersController.discoverUsers(peersCollection, usersCollection, collectedUsersCollection);
 
-                return jobToSchedule;
+                return referencesAndUsersCollectionJob;
             }();
-            var recurrenceRule = new nodeSchedule.RecurrenceRule();
-            recurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
-            nodeSchedule.scheduleJob(recurrenceRule, jobToSchedule);
+            var referencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            referencesAndUsersCollectionRecurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+            nodeSchedule.scheduleJob(referencesAndUsersCollectionRecurrenceRule, referencesAndUsersCollectionJob);
         }
         seriesCallback();
     }
