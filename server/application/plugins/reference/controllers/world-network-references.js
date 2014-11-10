@@ -69,7 +69,7 @@ module.exports = function () {
                         //
                     }
                     req.request({ 
-                        url: seed.url + "/api/world-network-references?keywords=" + keywords, 
+                        url: seed.url + "/api/collected-references?keywords=" + keywords, 
                         strictSSL: false,
                         json: true 
                     }, function (error, response, references) {
