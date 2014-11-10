@@ -7,6 +7,7 @@
 var request = require("request");
 var _ = require("underscore");
 
+var referenceManager = require("../../reference/models/default.js")();
 var networkModel = require("../../network/models/default.js")();
 
 module.exports = function () {
@@ -67,30 +68,18 @@ module.exports = function () {
                     if (err) {
                         //
                     }
-                });
-                req.request({ 
-                    url: seed.url + "/api/collected-references?keywords=" + req.query.keywords, 
-                    strictSSL: false,
-                    json: true 
-                }, function (error, response, references) {
-                    if (error) {
-                        res.status(404).end();
-                        return;
-                    }
-                    referenceManager.getVerifiedReferences(
-                        req.referencesCollection,
-                        req.user.hashes,
-                        peerReferences, 
-                        null,
-                        function (err, verifiedReferences) {
-                            if (err) {
-                                res.status(404).end();
-                                return;
-                            }
-                            res.setHeader("Content-Type", "application/json");
-                            res.status(200).send(verifiedReferences).end();
+                    req.request({ 
+                        url: seed.url + "/api/world-network-references?keywords=" + keywords, 
+                        strictSSL: false,
+                        json: true 
+                    }, function (error, response, references) {
+                        if (error) {
+                            res.status(404).end();
+                            return;
                         }
-                    );
+                        res.setHeader("Content-Type", "application/json");
+                        res.status(200).send(references).end();
+                    });                    
                 });                
             }
         }
