@@ -210,6 +210,8 @@ module.exports = function () {
                                             eachSeriesCallback();
                                         }
                                     });
+                                } else {
+                                    eachSeriesCallback();
                                 }
 							}
 						);
