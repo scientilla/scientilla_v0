@@ -11,6 +11,8 @@ var _ = require("underscore");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 
+var userManager = require("../../user/models/default.js")();
+
 module.exports = function () {
     var updateUsersDiscoveringHits = function(peersCollection, currentPeer, callback) {
         peersCollection.update({ _id: currentPeer._id }, { $set: { users_discovering_hits: (currentPeer.users_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
@@ -42,8 +44,9 @@ module.exports = function () {
                                         async.eachSeries(
                                             publicUsers,
                                             function(publicUser, eachSeriesCallback) {
-                                                publicUser.peer_url = configurationManager.get().url;
-                                                collectedUsersCollection.update({ peer_url: configurationManager.get().url, hash: publicUser.hash }, { $set: publicUser }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
+                                                var cleanedPublicUser = userManager.createNewUser(publicUser);
+                                                cleanedPublicUser.peer_url = configurationManager.get().url;
+                                                collectedUsersCollection.update({ peer_url: configurationManager.get().url, hash: cleanedPublicUser.hash }, { $set: cleanedPublicUser }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
                                                     if (err || _.isNull(storedCollectedUser)) {
                                                         // return; 
                                                     }
@@ -87,8 +90,9 @@ module.exports = function () {
                                                 async.eachSeries(
                                                     peerUsers,
                                                     function(peerUser, eachSeriesCallback) {
-                                                        peerUser.peer_url = peers[0].url;
-                                                        collectedUsersCollection.update({ peer_url: peers[0].url, hash: peerUser.hash }, { $set: peerUser }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
+                                                        var cleanedPeerUser = userManager.createNewUser(peerUser);
+                                                        cleanedPeerUser.peer_url = peers[0].url;
+                                                        collectedUsersCollection.update({ peer_url: peers[0].url, hash: cleanedPeerUser.hash }, { $set: cleanedPeerUser }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
                                                             if (err || _.isNull(storedCollectedUser)) {
                                                                 // return; 
                                                             }
