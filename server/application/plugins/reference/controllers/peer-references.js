@@ -79,9 +79,10 @@ module.exports = function () {
                 function(firstSeriesCallback) {
                     collectedReferencesCollection.find({ peer_url: configurationManager.get().url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
                         if (err || _.isNull(collectedReferences)) {
+                            firstSeriesCallback();
                             return; 
                         }
-                        var datetime = collectedReferences.length === 0 ? "" : collectedReferences[0].last_modification_datetime;
+                        var datetime = (_.isNull(collectedReferences.length) || _.isUndefined(collectedReferences.length) || collectedReferences.length == 0) ? "" : collectedReferences[0].last_modification_datetime;
                         referencesCollection.find({ 
                             sharing_status: true,
                             last_modification_datetime: {
@@ -90,6 +91,7 @@ module.exports = function () {
                         }).sort({ creation_datetime: -1 }).toArray(function(err, publicReferences) {
                             if (err || _.isNull(publicReferences)) {
                                 firstSeriesCallback();
+                                return;
                             } else {
                                 async.series([
                                     function(secondSeriesCallback) {
@@ -113,7 +115,7 @@ module.exports = function () {
                                     }
                                 ]);
                             }
-                        });                        
+                        });
                     });
                 },
                 function(firstSeriesCallback) {
@@ -122,44 +124,46 @@ module.exports = function () {
                             firstSeriesCallback();
                             return;
                         }
-                        collectedReferencesCollection.find({ peer_url: peers[0].url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
-                            if (err || _.isNull(collectedReferences)) {
-                                firstSeriesCallback();
-                                return;
-                            }
-                            var datetime = collectedReferences.length === 0 ? "" : collectedReferences[0].last_modification_datetime;
-                            request({ 
-                                url: peers[0].url + "/api/public-references?datetime=" + encodeURIComponent(datetime), 
-                                strictSSL: false,
-                                json: true 
-                            }, function (err, res, peerReferences) {
-                                if (err || _.isNull(peerReferences)) {
-                                    updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
-                                } else {
-                                    async.series([
-                                        function(secondSeriesCallback) {                                    
-                                            async.eachSeries(
-                                                peerReferences,
-                                                function(peerReference, eachSeriesCallback) {
-                                                    var cleanedPeerReference = referenceManager.createNewReference(peerReference);
-                                                    cleanedPeerReference.peer_url = peers[0].url;
-                                                    collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: cleanedPeerReference.original_hash, user_hash: cleanedPeerReference.user_hash }, { $set: cleanedPeerReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
-                                                        if (err || _.isNull(storedCollectedReference)) {
-                                                            // 
-                                                        }
-                                                        eachSeriesCallback();
-                                                    });
-                                                }
-                                            );
-                                            secondSeriesCallback();
-                                        },
-                                        function(secondSeriesCallback) {
-                                            updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
-                                        }
-                                    ]);                                    
+                        if (peers.length > 0) {
+                            collectedReferencesCollection.find({ peer_url: peers[0].url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
+                                if (err || _.isNull(collectedReferences)) {
+                                    firstSeriesCallback();
+                                    return;
                                 }
+                                var datetime = (_.isNull(collectedReferences.length) || _.isUndefined(collectedReferences.length) || collectedReferences.length == 0) ? "" : collectedReferences[0].last_modification_datetime;
+                                request({ 
+                                    url: peers[0].url + "/api/public-references?datetime=" + encodeURIComponent(datetime), 
+                                    strictSSL: false,
+                                    json: true 
+                                }, function (err, res, peerReferences) {
+                                    if (err || _.isNull(peerReferences)) {
+                                        updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                    } else {
+                                        async.series([
+                                            function(secondSeriesCallback) {                                    
+                                                async.eachSeries(
+                                                    peerReferences,
+                                                    function(peerReference, eachSeriesCallback) {
+                                                        var cleanedPeerReference = referenceManager.createNewReference(peerReference);
+                                                        cleanedPeerReference.peer_url = peers[0].url;
+                                                        collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: cleanedPeerReference.original_hash, user_hash: cleanedPeerReference.user_hash }, { $set: cleanedPeerReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
+                                                            if (err || _.isNull(storedCollectedReference)) {
+                                                                // 
+                                                            }
+                                                            eachSeriesCallback();
+                                                        });
+                                                    }
+                                                );
+                                                secondSeriesCallback();
+                                            },
+                                            function(secondSeriesCallback) {
+                                                updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                            }
+                                        ]);                                    
+                                    }
+                                });
                             });
-                        });
+                        }
                     });                                    
                 }
             ]); 

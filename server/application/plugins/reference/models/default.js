@@ -41,7 +41,9 @@ module.exports = function () {
             "original_hash",
             "clone_hash",
             "organization_hashes",
-            "user_hash"
+            "user_hash",
+            "creation_datetime",
+            "last_modification_datetime"
         ];
         
         return buildReference(reference, newReferenceFields);
@@ -80,7 +82,9 @@ module.exports = function () {
             "original_hash",
             "clone_hash",
             "organization_hashes",
-            "user_hash"
+            "user_hash",
+            "creation_datetime",
+            "last_modification_datetime"            
         ];
         
         return buildReference(reference, referenceFields, repository);
