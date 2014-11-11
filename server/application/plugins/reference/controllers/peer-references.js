@@ -15,7 +15,12 @@ var referenceManager = require("../../reference/models/default.js")();
 var model = require("../models/peer-references.js")();
 
 module.exports = function () {
-    return {        
+    var updateReferencesDiscoveringHits = function(peersCollection, currentPeer, callback) {
+        peersCollection.update({ _id: currentPeer._id }, { $set: { references_discovering_hits: (currentPeer.references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
+            callback();
+        });
+    };
+    return {
         getPeerPublicReferences: function(req, res) {
             req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {
                 if (err || _.isNull(peer)) {
@@ -114,11 +119,13 @@ module.exports = function () {
                 function(firstSeriesCallback) {
                     peersCollection.find({}).sort({ references_discovering_hits: 1 }).limit(1).toArray(function(err, peers) {
                         if (err || _.isNull(peers)) {
-                            return; 
+                            firstSeriesCallback();
+                            return;
                         }
                         collectedReferencesCollection.find({ peer_url: peers[0].url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
                             if (err || _.isNull(collectedReferences)) {
-                                return; 
+                                firstSeriesCallback();
+                                return;
                             }
                             var datetime = collectedReferences.length === 0 ? "" : collectedReferences[0].last_modification_datetime;
                             request({ 
@@ -127,7 +134,7 @@ module.exports = function () {
                                 json: true 
                             }, function (err, res, peerReferences) {
                                 if (err || _.isNull(peerReferences)) {
-                                    firstSeriesCallback();
+                                    updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
                                 } else {
                                     async.series([
                                         function(secondSeriesCallback) {                                    
@@ -147,12 +154,7 @@ module.exports = function () {
                                             secondSeriesCallback();
                                         },
                                         function(secondSeriesCallback) {
-                                            peersCollection.update({ _id: peers[0]._id }, { $set: { references_discovering_hits: (peers[0].references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
-                                                if (err) {
-                                                    // 
-                                                }
-                                                firstSeriesCallback();
-                                            });
+                                            updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
                                         }
                                     ]);                                    
                                 }
