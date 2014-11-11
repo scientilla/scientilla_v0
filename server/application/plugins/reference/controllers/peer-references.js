@@ -86,14 +86,18 @@ module.exports = function () {
                             if (err || _.isNull(publicReferences)) {
                                 // return;
                             } else {
-                                for (key in publicReferences) {
-                                    publicReferences[key].peer_url = configurationManager.get().url;
-                                    collectedReferencesCollection.update({ peer_url: configurationManager.get().url, original_hash: publicReferences[key].original_hash, user_hash: publicReferences[key].user_hash }, { $set: publicReferences[key] }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
-                                        if (err || _.isNull(storedCollectedReference)) {
-                                            // return; 
-                                        }
-                                    });
-                                }
+                                async.eachSeries(
+                                    publicReferences,
+                                    function(publicReference, eachSeriesCallback) {
+                                        publicReference.peer_url = configurationManager.get().url;
+                                        collectedReferencesCollection.update({ peer_url: configurationManager.get().url, original_hash: publicReference.original_hash, user_hash: publicReference.user_hash }, { $set: publicReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
+                                            if (err || _.isNull(storedCollectedReference)) {
+                                                // return; 
+                                            }
+                                            eachSeriesCallback();
+                                        });
+                                    }
+                                );
                             }
                             callback();
                         });                        
@@ -108,7 +112,7 @@ module.exports = function () {
                             if (err || _.isNull(collectedReferences)) {
                                 return; 
                             }
-                            var datetime = collectedReferences.length === 0 ? "" : collectedReferences[0].last_modification_datetime;                            
+                            var datetime = collectedReferences.length === 0 ? "" : collectedReferences[0].last_modification_datetime;
                             request({ 
                                 url: peers[0].url + "/api/public-references?datetime=" + encodeURIComponent(datetime), 
                                 strictSSL: false,
@@ -117,14 +121,18 @@ module.exports = function () {
                                 if (err || _.isNull(peerReferences)) {
                                     // return;
                                 } else {
-                                    for (key in peerReferences) {
-                                        peerReferences[key].peer_url = peers[0].url;
-                                        collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: peerReferences[key].original_hash, user_hash: peerReferences[key].user_hash }, { $set: peerReferences[key] }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
-                                            if (err || _.isNull(storedCollectedReference)) {
-                                                // return; 
-                                            }
-                                        });
-                                    }
+                                    async.eachSeries(
+                                        peerReferences,
+                                        function(peerReference, eachSeriesCallback) {
+                                            peerReference.peer_url = peers[0].url;
+                                            collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: peerReference.original_hash, user_hash: peerReference.user_hash }, { $set: peerReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
+                                                if (err || _.isNull(storedCollectedReference)) {
+                                                    // return; 
+                                                }
+                                                eachSeriesCallback();
+                                            });
+                                        }
+                                    );
                                 }
                                 peersCollection.update({ _id: peers[0]._id }, { $set: { references_discovering_hits: (peers[0].references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
                                     if (err) {

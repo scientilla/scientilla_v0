@@ -30,14 +30,18 @@ module.exports = function () {
                             if (err || _.isNull(publicUsers)) {
                                 // return;
                             } else {
-                                for (key in publicUsers) {
-                                    publicUsers[key].peer_url = configurationManager.get().url;
-                                    collectedUsersCollection.update({ peer_url: configurationManager.get().url, hash: publicUsers[key].hash }, { $set: publicUsers[key] }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
-                                        if (err || _.isNull(storedCollectedUser)) {
-                                            // return; 
-                                        }
-                                    });
-                                }
+                                async.eachSeries(
+                                    publicUsers,
+                                    function(publicUser, eachSeriesCallback) {
+                                        publicUser.peer_url = configurationManager.get().url;
+                                        collectedUsersCollection.update({ peer_url: configurationManager.get().url, hash: publicUser.hash }, { $set: publicUser }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
+                                            if (err || _.isNull(storedCollectedUser)) {
+                                                // return; 
+                                            }
+                                            eachSeriesCallback();
+                                        });
+                                    }
+                                );
                             }
                             callback();
                         });                        
@@ -61,14 +65,20 @@ module.exports = function () {
                                 if (err || _.isNull(peerUsers)) {
                                     // return;
                                 } else {
-                                    for (key in peerUsers) {
-                                        peerUsers[key].peer_url = peers[0].url;
-                                        collectedUsersCollection.update({ peer_url: peers[0].url, hash: peerUsers[key].hash }, { $set: peerUsers[key] }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
-                                            if (err || _.isNull(storedCollectedUser)) {
-                                                // return; 
-                                            }
-                                        });
-                                    }
+                                    /*
+                                    async.eachSeries(
+                                        peerUsers,
+                                        function(peerUser, eachSeriesCallback) {
+                                            peerUser.peer_url = peers[0].url;
+                                            collectedUsersCollection.update({ peer_url: peers[0].url, hash: peerUser.hash }, { $set: peerUser }, { upsert: true, w: 1 }, function(err, storedCollectedUser) {
+                                                if (err || _.isNull(storedCollectedUser)) {
+                                                    // return; 
+                                                }
+                                                eachSeriesCallback();
+                                            });
+                                        }
+                                    );
+                                    */
                                 }
                                 peersCollection.update({ _id: peers[0]._id }, { $set: { users_discovering_hits: (peers[0].users_discovering_hits + 1) } }, { w: 1 }, function(err, peer) {
                                     if (err) {

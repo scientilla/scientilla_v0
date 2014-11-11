@@ -220,7 +220,7 @@ async.series([
                 return referencesAndUsersCollectionJob;
             }();
             var referencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            referencesAndUsersCollectionRecurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+            referencesAndUsersCollectionRecurrenceRule.minute = [1, new nodeSchedule.Range(0, 59)];
             nodeSchedule.scheduleJob(referencesAndUsersCollectionRecurrenceRule, referencesAndUsersCollectionJob);
         }
         seriesCallback();
