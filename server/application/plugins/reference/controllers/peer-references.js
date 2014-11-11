@@ -71,7 +71,7 @@ module.exports = function () {
         
         discoverReferences: function(peersCollection, referencesCollection, collectedReferencesCollection) {
             async.series([
-                function(callback) {
+                function(firstSeriesCallback) {
                     collectedReferencesCollection.find({ peer_url: configurationManager.get().url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
                         if (err || _.isNull(collectedReferences)) {
                             return; 
@@ -84,26 +84,34 @@ module.exports = function () {
                             }                
                         }).sort({ creation_datetime: -1 }).toArray(function(err, publicReferences) {
                             if (err || _.isNull(publicReferences)) {
-                                // return;
+                                firstSeriesCallback();
                             } else {
-                                async.eachSeries(
-                                    publicReferences,
-                                    function(publicReference, eachSeriesCallback) {
-                                        publicReference.peer_url = configurationManager.get().url;
-                                        collectedReferencesCollection.update({ peer_url: configurationManager.get().url, original_hash: publicReference.original_hash, user_hash: publicReference.user_hash }, { $set: publicReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
-                                            if (err || _.isNull(storedCollectedReference)) {
-                                                // return; 
+                                async.series([
+                                    function(secondSeriesCallback) {
+                                        async.eachSeries(
+                                            publicReferences,
+                                            function(publicReference, eachSeriesCallback) {
+                                                var cleanedPublicReference = referenceManager.createNewReference(publicReference);
+                                                cleanedPublicReference.peer_url = configurationManager.get().url;
+                                                collectedReferencesCollection.update({ peer_url: configurationManager.get().url, original_hash: cleanedPublicReference.original_hash, user_hash: cleanedPublicReference.user_hash }, { $set: cleanedPublicReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
+                                                    if (err || _.isNull(storedCollectedReference)) {
+                                                        // return; 
+                                                    }
+                                                    eachSeriesCallback();
+                                                });
                                             }
-                                            eachSeriesCallback();
-                                        });
+                                        );
+                                        secondSeriesCallback();
+                                    },
+                                    function(secondSeriesCallback) {
+                                        firstSeriesCallback();
                                     }
-                                );
+                                ]);
                             }
-                            callback();
                         });                        
                     });
                 },
-                function(callback) {
+                function(firstSeriesCallback) {
                     peersCollection.find({}).sort({ references_discovering_hits: 1 }).limit(1).toArray(function(err, peers) {
                         if (err || _.isNull(peers)) {
                             return; 
@@ -119,27 +127,35 @@ module.exports = function () {
                                 json: true 
                             }, function (err, res, peerReferences) {
                                 if (err || _.isNull(peerReferences)) {
-                                    // return;
+                                    firstSeriesCallback();
                                 } else {
-                                    async.eachSeries(
-                                        peerReferences,
-                                        function(peerReference, eachSeriesCallback) {
-                                            peerReference.peer_url = peers[0].url;
-                                            collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: peerReference.original_hash, user_hash: peerReference.user_hash }, { $set: peerReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
-                                                if (err || _.isNull(storedCollectedReference)) {
-                                                    // return; 
+                                    async.series([
+                                        function(secondSeriesCallback) {                                    
+                                            async.eachSeries(
+                                                peerReferences,
+                                                function(peerReference, eachSeriesCallback) {
+                                                    var cleanedPeerReference = referenceManager.createNewReference(peerReference);
+                                                    cleanedPeerReference.peer_url = peers[0].url;
+                                                    collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: cleanedPeerReference.original_hash, user_hash: cleanedPeerReference.user_hash }, { $set: cleanedPeerReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
+                                                        if (err || _.isNull(storedCollectedReference)) {
+                                                            // 
+                                                        }
+                                                        eachSeriesCallback();
+                                                    });
                                                 }
-                                                eachSeriesCallback();
+                                            );
+                                            secondSeriesCallback();
+                                        },
+                                        function(secondSeriesCallback) {
+                                            peersCollection.update({ _id: peers[0]._id }, { $set: { references_discovering_hits: (peers[0].references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
+                                                if (err) {
+                                                    // 
+                                                }
+                                                firstSeriesCallback();
                                             });
                                         }
-                                    );
+                                    ]);                                    
                                 }
-                                peersCollection.update({ _id: peers[0]._id }, { $set: { references_discovering_hits: (peers[0].references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
-                                    if (err) {
-                                        return;
-                                    }
-                                });
-                                callback();
                             });
                         });
                     });                                    
