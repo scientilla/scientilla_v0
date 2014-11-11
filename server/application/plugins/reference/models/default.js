@@ -10,18 +10,79 @@ var crypto = require("crypto");
 module.exports = function () {
     var createNewReference = function(reference) {
         var newReferenceFields = [
-            'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
-            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
-            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
-            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
+            "title",
+            "authors",
+            "organizations",
+            "tags",
+            "year",
+            "doi",
+            "journal_name",
+            "journal_acronym",
+            "journal_pissn",
+            "journal_eissn",
+            "journal_issnl",
+            "journal_volume",
+            "journal_year",
+            "conference_name",
+            "conference_acronym",
+            "conference_place",
+            "conference_year",
+            "book_title",
+            "book_isbn",
+            "book_pages",
+            "book_editor",
+            "book_year",
+            "abstract",
+            "month",
+            "print_status",
+            "note",
+            "approving_status",
+            "sharing_status",
+            "original_hash",
+            "clone_hash",
+            "organization_hashes",
+            "user_hash"
+        ];
+        
         return buildReference(reference, newReferenceFields);
     };
     var createReference = function(reference, repository) {
         var referenceFields = [
-            '_id', 'title', 'authors', 'organizations', 'tags', 'year', 'doi', 'journal_name', 'journal_acronym', 
-            'journal_pissn', 'journal_eissn', 'journal_issnl', 'journal_volume', 'journal_year', 'conference_name', 
-            'conference_acronym', 'conference_place', 'conference_year', 'book_title', 'book_isbn', 'book_pages', 
-            'book_editor', 'book_year', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];
+            "_id",
+            "title",
+            "authors",
+            "organizations",
+            "tags",
+            "year",
+            "doi",
+            "journal_name",
+            "journal_acronym",
+            "journal_pissn",
+            "journal_eissn",
+            "journal_issnl",
+            "journal_volume",
+            "journal_year",
+            "conference_name",
+            "conference_acronym",
+            "conference_place",
+            "conference_year",
+            "book_title",
+            "book_isbn",
+            "book_pages",
+            "book_editor",
+            "book_year",
+            "abstract",
+            "month",
+            "print_status",
+            "note",
+            "approving_status",
+            "sharing_status",
+            "original_hash",
+            "clone_hash",
+            "organization_hashes",
+            "user_hash"
+        ];
+        
         return buildReference(reference, referenceFields, repository);
     };
     
