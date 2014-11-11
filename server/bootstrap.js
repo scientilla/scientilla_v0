@@ -70,6 +70,7 @@ var collectedReferencesCollection;
 var usersCollection;
 var collectedUsersCollection;
 var datasetReferencesCollections = [];
+var rankedCollection;
 
 async.series([
     function(seriesCallback) {
@@ -162,6 +163,14 @@ async.series([
     },    
     function(seriesCallback) {
         database.open(function(err, database) {
+            database.collection("ranked-references.db", function(err, collection) {
+                rankedCollection = collection;
+                seriesCallback();
+            });
+        });
+    },
+    function(seriesCallback) {
+        database.open(function(err, database) {
             database.collection("users.db", function(err, collection) {
                 usersCollection = collection;
                 seriesCallback();
@@ -224,7 +233,17 @@ async.series([
             nodeSchedule.scheduleJob(referencesAndUsersCollectionRecurrenceRule, referencesAndUsersCollectionJob);
         }
         seriesCallback();
-    }
+    },
+    function(seriesCallback) {
+        if (configurationManager.get().seed) {
+            var jobToSchedule = function() {
+                console.log("Ranking references...");
+                collectedReferencesController.rankReferences(collectedReferencesCollection);
+            };
+            nodeSchedule.scheduleJob({hour: 1, minute: 0}, jobToSchedule);
+            seriesCallback();
+        }
+	}
 ]);
 
 // Executes middlewares
