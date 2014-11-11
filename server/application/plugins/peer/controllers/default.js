@@ -192,20 +192,34 @@ module.exports = function () {
                                 if (peer.url != configurationManager.get().url) {
                                     peersCollection.findOne({ url: peer.url }, function(err, knownPeer) {
                                         if (err || underscore.isNull(knownPeer)) {
-                                            var discoveredPeer = {};
-                                            discoveredPeer.name = peer.name;
-                                            discoveredPeer.url = peer.url;
-                                            discoveredPeer.sharing_status = true; 
-                                            discoveredPeer.aggregating_status = false;
-                                            discoveredPeer.references_discovering_hits = 0;
-                                            discoveredPeer.users_discovering_hits = 0;
-                                            discoveredPeer.creator_id = "";
-                                            discoveredPeer.creation_datetime = peer.creation_datetime;
-                                            discoveredPeer.last_modifier_id = "";
-                                            discoveredPeer.last_modification_datetime = "";            
-                                            peersCollection.insert(discoveredPeer, {w:1}, function(err, createdPeer) {
-                                                eachSeriesCallback();
-                                            }); 
+                                            peersCollection.find({}).sort({ 
+                                                references_discovering_hits: 1,
+                                                users_discovering_hits: 1 
+                                            }).limit(1).toArray(function(err, existingPeers) {
+                                                var defaultPeerReferencesDiscoveringHits;
+                                                var defaultPeerUsersDiscoveringHits;
+                                                if (err || req.underscore.isNull(existingPeers)) {
+                                                    defaultPeerReferencesDiscoveringHits = 0;
+                                                    defaultPeerUsersDiscoveringHits = 0;
+                                                } else {
+                                                    defaultPeerReferencesDiscoveringHits = existingPeers[0].references_discovering_hits;
+                                                    defaultPeerUsersDiscoveringHits = existingPeers[0].users_discovering_hits;
+                                                }                                            
+                                                var discoveredPeer = {};
+                                                discoveredPeer.name = peer.name;
+                                                discoveredPeer.url = peer.url;
+                                                discoveredPeer.sharing_status = true; 
+                                                discoveredPeer.aggregating_status = false;
+                                                discoveredPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
+                                                discoveredPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
+                                                discoveredPeer.creator_id = "";
+                                                discoveredPeer.creation_datetime = peer.creation_datetime;
+                                                discoveredPeer.last_modifier_id = "";
+                                                discoveredPeer.last_modification_datetime = "";            
+                                                peersCollection.insert(discoveredPeer, {w:1}, function(err, createdPeer) {
+                                                    eachSeriesCallback();
+                                                });
+                                            });
                                         } else {
                                             eachSeriesCallback();
                                         }
