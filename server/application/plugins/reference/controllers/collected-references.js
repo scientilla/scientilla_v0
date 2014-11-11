@@ -11,6 +11,7 @@ var model = require("../models/collected-references.js")();
 
 // Defines actions
 module.exports = function () {
+    
     var retrieveReferences = function(collectedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
         return collectedReferencesCollection.find({                
@@ -41,6 +42,36 @@ module.exports = function () {
         );
     };    
     return {        
+        rankReferences: function(collectedReferencesCollection) {
+            var x = collectedReferencesCollection.mapReduce(
+                function() { emit(this.original_hash, this); },
+                function(original_hash, references) {
+                    return references;
+                },
+                {
+                    query: {original_hash: { $exists: true }},
+                    out: { replace: 'ranked-references' },
+                    finalize: function(original_hash, references) {
+                        if (!_.isArray(references)) {
+                            references = [references];
+                        }
+                        var groupedReferences = _.groupBy(references, 'clone_hash');
+                        var bestReference = _.max(groupedReferences, 'length');
+                        var others = _.map(groupedReferences, function(references, clone_hash) {
+                            return {
+                                clone_hash: clone_hash,
+                                count: references.length
+                            };
+                        });
+                        var result = {
+                            top: bestReference,
+                            others: others
+                        };
+                        return result;
+                    }
+                }
+            );
+        },
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
