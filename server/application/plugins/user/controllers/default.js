@@ -290,7 +290,6 @@ module.exports = function () {
                     res.status(500).end();
                     return;
                 }
-                console.log(users.length);
                 if (users.length === 0) {
                     console.log("Needed to Create the Default User");
                     var user = {};
