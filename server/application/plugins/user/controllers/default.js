@@ -109,29 +109,13 @@ module.exports = function () {
                 }                
             }, {
                 _id: 0,
-                type: 1,
                 rights: 0,
-                scientilla_nominative: 1,
-                first_name: 1,
-                middle_name: 1,
-                last_name: 1,
-                business_name: 1,
-                birth_date: 1,
-                birth_city: 1,
-                birth_state: 1,
-                birth_country: 1,
-                sex: 1,
                 email: 0,
                 username: 0,
                 password: 0,
                 status: 0,
-                hash: 1,
-                hashes: 1,
-                aliases: 1,
                 creator_id: 0,
-                creation_datetime: 1,
-                last_modifier_id: 0,
-                last_modification_datetime: 1
+                last_modifier_id: 0
             }).sort({ creation_datetime: -1 }).toArray(function(err, publicUsers) {
                 if (err || req.underscore.isNull(publicUsers)) {
                     res.status(404).end();
@@ -305,7 +289,8 @@ module.exports = function () {
                     console.log(errorMsg);
                     res.status(500).end();
                     return;
-                }		
+                }
+                console.log(users.length);
                 if (users.length === 0) {
                     console.log("Needed to Create the Default User");
                     var user = {};
@@ -331,6 +316,8 @@ module.exports = function () {
                     user.hash = getUserHash(user);
                     user.hashes = [user.hash];
                     user.aliases = getUserAliases(user);
+                    user.creation_datetime = req.moment().format();
+                    user.last_modification_datetime = req.moment().format();
                     req.usersCollection.insert(user, { w: 1 }, function(err, users) {
                         if (err || req.underscore.isNull(users)) {
                             var errorMsg = "Failed to Create the Default User";
@@ -341,6 +328,7 @@ module.exports = function () {
                         var user = users[0];
                         installationConfiguration.owner_user_id = user._id;
                         req.fs.writeFile("./configuration/installation.json", JSON.stringify(installationConfiguration, null, 4), function(err) {
+                            
                             if (err) {
                                 console.log(err);
                                 res.status(500).end();
