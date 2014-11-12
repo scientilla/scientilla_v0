@@ -68,7 +68,7 @@
                                     {{reference.doi}}<br />
                                 </strong>
                                 <small>
-                                    <br />From: <i class="fa fa-comments-o"></i> <a href="#/browse-peer-references/{{reference.peer_id}}/">{{reference.peer_url}}</a>
+                                    <br />From: <i class="fa fa-comments-o"></i> <a href="{{ reference.peer_id > 0 ? '#/browse-peer-references/' + reference.peer_id + '/' : '#/browse-references/'}}">{{reference.peer_url}}</a>
                                 </small>                                
                             </td>
                             <td class="text-center">
