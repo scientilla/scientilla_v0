@@ -10,9 +10,8 @@ var _ = require("underscore");
 var networkModel = require("../../network/models/default.js")();
 
 module.exports = function () {
-    var retrieveReferences = function(referencesCollection, networkPeers, keywords, currentPageNumber, numberOfItemsPerPage) {
+    var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        var peers = _.pluck(networkPeers, "url");
         peers.push("");
         return referencesCollection.find({ 
             "$and": [
@@ -39,7 +38,9 @@ module.exports = function () {
                 }
             ]
         }).sort(
-            { 
+            {
+                original_hash: 1,
+                clone_hash: 1,                
                 creation_datetime: -1 
             }
         ).skip(
@@ -58,7 +59,7 @@ module.exports = function () {
                 req.peersCollection.find({
                     aggregating_status: true
                 }).toArray(function(err, networkPeers) {
-                    var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, networkPeers, keywords, currentPageNumber, numberOfItemsPerPage);
+                    var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, _.pluck(networkPeers, "url"), keywords, currentPageNumber, numberOfItemsPerPage);
                     retrievedCollection.count(function(err, referencesCount) {
                         if (err || req.underscore.isNull(referencesCount)) {
                             res.status(404).end();
@@ -78,34 +79,26 @@ module.exports = function () {
                     });
                 });
             } else {
-                networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
-                    if (err) {
-                        //
-                    }
-                });
-                req.request({ 
-                    url: seed.url + "/api/collected-references?keywords=" + req.query.keywords, 
-                    strictSSL: false,
-                    json: true 
-                }, function (error, response, references) {
-                    if (error) {
-                        res.status(404).end();
-                        return;
-                    }
-                    referenceManager.getVerifiedReferences(
-                        req.referencesCollection,
-                        req.user.hashes,
-                        peerReferences, 
-                        null,
-                        function (err, verifiedReferences) {
-                            if (err) {
+                req.peersCollection.find({
+                    aggregating_status: true
+                }).toArray(function(err, networkPeers) {
+                    networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
+                        if (err) {
+                            //
+                        }
+                        req.request({
+                            url: seed.url + "/api/collected-references?keywords=" + encodeURIComponent(keywords) + "&network_peers=" + encodeURIComponent(_.pluck(networkPeers, "url").join(",")), 
+                            strictSSL: false,
+                            json: true 
+                        }, function (error, response, references) {
+                            if (error) {
                                 res.status(404).end();
                                 return;
                             }
                             res.setHeader("Content-Type", "application/json");
-                            res.status(200).send(verifiedReferences).end();
-                        }
-                    );
+                            res.status(200).send(references).end();
+                        });                    
+                    }); 
                 });                
             }
         }

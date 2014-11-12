@@ -7,7 +7,51 @@
 var _ = require("lodash");
 
 module.exports = function () {
+    var createNewUser = function(user) {
+        var newUserFields = [
+            "type",
+            "scientilla_nominative",
+            "first_name",
+            "middle_name",
+            "last_name",
+            "business_name",
+            "birth_date",
+            "birth_city",
+            "birth_state",
+            "birth_country",
+            "sex",
+            "hash",
+            "hashes",
+            "aliases",
+            "creation_datetime",
+            "last_modification_datetime"
+        ];
+        
+        return buildUser(user, newUserFields);
+    };
+    
+    var buildUser = function(user, userFields) {
+        var getCleanProperty = function(user, field) {
+            var cleanItem = function(item) {
+                if (typeof item === "string") {
+                    return item.trim();
+                }
+                return item;
+            };
+            return (_.isUndefined(user[field]) || _.isNull(user[field])) ? "" : cleanItem(user[field]);
+        };
+           
+        var cleanedUser = {};
+        
+        userFields.forEach(function(field) {
+            cleanedUser[field] = getCleanProperty(user, field);
+        });
+        
+        return cleanedUser;
+    };    
+    
     return {
+        createNewUser: createNewUser,
         addReferenceAliases : function(usersCollection, user, reference, callback) {
             this.getUser(usersCollection, user.id, function(err, user) {
                 if (err) {

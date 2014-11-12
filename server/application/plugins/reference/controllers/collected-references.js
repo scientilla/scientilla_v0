@@ -11,22 +11,31 @@ var model = require("../models/collected-references.js")();
 
 // Defines actions
 module.exports = function () {
-    
-    var retrieveReferences = function(collectedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
+    var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {            
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        return collectedReferencesCollection.find({                
-            "$or": [
+        peers.push("");
+        return referencesCollection.find({                
+            "$and": [
                 {
-                    title: { 
-                        $regex: regexQuery,
-                        $options: 'i'
+                    peer_url: {
+                        $in: peers
                     }
                 },
                 {
-                    authors: { 
-                        $regex: regexQuery,
-                        $options: 'i'
-                    }
+                    "$or": [
+                        {
+                            title: { 
+                                $regex: regexQuery,
+                                $options: 'i'
+                            }
+                        },
+                        {
+                            authors: { 
+                                $regex: regexQuery,
+                                $options: 'i'
+                            }
+                        }
+                    ]
                 }
             ]
         }).sort(
@@ -40,7 +49,8 @@ module.exports = function () {
         ).limit(
             numberOfItemsPerPage
         );
-    };    
+    };
+    
     return {        
         rankReferences: function(collectedReferencesCollection) {
             var x = collectedReferencesCollection.mapReduce(
@@ -73,7 +83,8 @@ module.exports = function () {
             );
         },
         getReferences: function(req, res) {
-            var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var keywords = _.isUndefined(req.query.keywords) ? "" : req.query.keywords;
+            var networkPeers = _.isUndefined(req.query.network_peers) ? [] : req.query.network_peers.split(",");
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
             var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);

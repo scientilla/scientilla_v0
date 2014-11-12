@@ -48,6 +48,7 @@ module.exports = function () {
         
         return buildReference(reference, newReferenceFields);
     };
+    
     var createReference = function(reference, repository) {
         var referenceFields = [
             "_id",
@@ -100,6 +101,7 @@ module.exports = function () {
             };
             return (_.isUndefined(reference[field]) || _.isNull(reference[field])) ? "" : cleanItem(reference[field]);
         };
+        
         var extract = function(reference, extractors) {
             var extractedReference = {};
             for(var key in extractors) {
@@ -117,12 +119,10 @@ module.exports = function () {
             return extractedReference;
         };
         
-        var localReference =    (_.isNull(repository) || _.isUndefined(repository)) 
-                                ? reference 
-                                : extract(reference, repository.extractors);
-         
-        
+        var localReference = (_.isNull(repository) || _.isUndefined(repository)) ? reference : extract(reference, repository.extractors);
+           
         var cleanedReference = {};
+        
         referenceFields.forEach(function(field) {
             cleanedReference[field] = getCleanProperty(localReference, field);
         });

@@ -30,6 +30,8 @@ module.exports = function () {
             ]
         }).sort(
             { 
+                original_hash: 1,
+                clone_hash: 1,                
                 creation_datetime: -1 
             }
         ).skip(
