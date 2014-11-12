@@ -552,6 +552,11 @@ application.get("/api/collected-references", function(req, res) {
     collectedReferencesController.getReferences(req, res);
 });
 
+application.get("/api/collected-references/:id", function(req, res) {
+    console.log("Request to Read a Collected Reference");
+    collectedReferencesController.getReference(req, res);
+});
+
 // CLONED REFERENCES
 application.post("/api/cloned-references", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Clone a Reference");
