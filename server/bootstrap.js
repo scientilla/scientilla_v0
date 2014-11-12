@@ -514,6 +514,12 @@ application.put("/api/references/:id", expressJwt({secret: 'scientilla'}), funct
     referencesController.updateReference(req, res);
 });
 
+application.patch("/api/references/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Partially Update a Reference");
+    systemController.checkUserCoherence(req, res);
+    referencesController.patchReference(req, res);
+});
+
 application.delete("/api/references/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Delete a Reference");
     systemController.checkUserCoherence(req, res);

@@ -176,7 +176,7 @@ angular.module("reference").factory(
         
         referencesProvider.setReferenceAsApproved = function(id, token) {
             return $http({
-				method: "PUT",
+				method: "PATCH",
 				url: "/api/references/" + id,
                 data: { approving_status: true },
                 cache: false,
@@ -189,7 +189,7 @@ angular.module("reference").factory(
         
         referencesProvider.setReferenceAsNotApproved = function(id, token) {
             return $http({
-				method: "PUT",
+				method: "PATCH",
 				url: "/api/references/" + id,
                 data: { approving_status: false },
                 cache: false,
@@ -202,7 +202,7 @@ angular.module("reference").factory(
         
         referencesProvider.setReferenceAsShared = function(id, token) {
             return $http({
-				method: "PUT",
+				method: "PATCH",
 				url: "/api/references/" + id,
                 data: { sharing_status: true },
                 cache: false,
@@ -215,7 +215,7 @@ angular.module("reference").factory(
         
         referencesProvider.setReferenceAsNotShared = function(id, token) {
             return $http({
-				method: "PUT",
+				method: "PATCH",
 				url: "/api/references/" + id,
                 data: { sharing_status: false },
                 cache: false,
