@@ -13,7 +13,6 @@ var model = require("../models/collected-references.js")();
 module.exports = function () {
     var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {            
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        peers.push("");
         return referencesCollection.find({                
             "$and": [
                 {
@@ -87,7 +86,7 @@ module.exports = function () {
             var networkPeers = _.isUndefined(req.query.network_peers) ? [] : req.query.network_peers.split(",");
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
-            var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
+            var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, networkPeers, keywords, currentPageNumber, numberOfItemsPerPage);
             var result = {};
             retrievedCollection.count(function(err, referencesCount) {
                 if (err || req.underscore.isNull(referencesCount)) {
