@@ -202,6 +202,19 @@ module.exports = function () {
                 }
             );
         },
+        patchReference: function(req, res) {
+            var refUpdate = req.body;
+            refUpdate.last_modifier_id = req.user.id;
+            refUpdate.last_modification_datetime = req.moment().format();    
+            req.referencesCollection.update({ _id: req.params.id }, { $set: refUpdate }, { w: 1 }, function(err, count) {
+                if (err || count === 0) {
+                    console.log(err);
+                    res.status(404).end();
+                    return;
+                }
+                res.end();
+            });
+        },
         updateReference: function(req, res) {
             var reference = {};
             !req.underscore.isUndefined(req.body.title) ? reference.title = req.body.title.trim() : null;      
