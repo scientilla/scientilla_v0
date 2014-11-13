@@ -30,6 +30,18 @@ angular.module("peer").factory(
                     Authorization: 'Bearer ' + token
                 }
 			});
+        };
+        
+        peersProvider.getAggregatedPeers = function(token) {
+            return $http({
+				method: "GET",
+				url: "/api/aggregated-peers",
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
         };        
         
         peersProvider.getPeer = function(id, token) {

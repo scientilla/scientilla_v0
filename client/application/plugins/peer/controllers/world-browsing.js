@@ -5,7 +5,7 @@
  */
 
 angular.module("peer").controller(
-    "localPeersBrowsingController", ["$scope", "peersService", "activatedPeersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, activatedPeersService, seedPeerReferencesService, systemStatusService, $window, $location) {
+    "worldPeersBrowsingController", ["$scope", "peersService", "activatedPeersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, activatedPeersService, seedPeerReferencesService, systemStatusService, $window, $location) {
         $scope.sourcesListingMode = $window.sessionStorage.sourcesListingMode ? $window.sessionStorage.sourcesListingMode : "L"; // L = List, G = Graph
         $scope.resultsListingMode = "OFF"; // OFF = Disabled, MPR = Main Peers Results
         $scope.changingActivatedPeerId = "";
@@ -114,7 +114,7 @@ angular.module("peer").controller(
             $scope.error = false;
             async.series([
                 function(callback) {
-                    peersService.getAggregatedPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
                         $scope.aPeers = data;
                         $scope.iPeers = $scope.aPeers.length;                  
                         callback();
