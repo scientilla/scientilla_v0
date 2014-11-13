@@ -39,7 +39,10 @@ angular.module("scientilla").config([
         // PEERS
         }).when("/browse-peers/", {
             templateUrl: "application/plugins/peer/partials/local-browsing.html",
-            controller: "localPeersBrowsingController"          
+            controller: "localPeersBrowsingController"
+        }).when("/browse-world-peers/", {
+            templateUrl: "application/plugins/peer/partials/world-browsing.html",
+            controller: "worldPeersBrowsingController"            
         }).when("/add-peer/", {
             templateUrl: "application/plugins/peer/partials/addition.html",
             controller: "peerAdditionController"

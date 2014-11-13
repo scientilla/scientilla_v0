@@ -33,7 +33,15 @@
                 -->
                 <ul class="sidebar-nav nav nav-stacked nav-pills third-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a activate ng-click="toggleReferencesMenu()" href="#/browse-references/" class="tree-toggle nav-header"><b><i class="glyphicon glyphicon-book"></i> Your Publications</b></a>
+                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/"><b><i class="glyphicon glyphicon-book"></i> Your Work!</b></a>
+                        <ul id="referencesMenu" class="nav nav-stacked nav-pills tree">
+                            <li>
+                                <a activate href="#/browse-references/"><i class="glyphicon glyphicon-book"></i> Publications</a>
+                            </li>
+                            <li>
+                                <a activate href="#/discovery/"><i class="fa fa-binoculars"></i> Discoveries to be verified</a>
+                            </li>                            
+                        </ul>
                     </li>
                     <li class="sidebar-divider">
 
@@ -49,7 +57,13 @@
                             </li>                            
                             <li>
                                 <a class="disabled-link"><i class="fa fa-institution"></i> Organizations</a>
-                            </li>                                                        
+                            </li>
+                            <li>
+                                <a activate href="#/browse-repositories/"><i class="fa fa-exchange"></i> Web Repositories</a>
+                            </li>                            
+                            <li>
+                                <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Scientilla Installations</a>
+                            </li>                             
                         </ul>                        
                     </li>                    
                     <li class="sidebar-divider">
@@ -66,12 +80,18 @@
                             </li>                            
                             <li>
                                 <a class="disabled-link"><i class="fa fa-institution"></i> Organizations</a>
+                            </li>
+                            <li>
+                                <a class="disabled-link"><i class="fa fa-exchange"></i> Web Repositories</a>
+                            </li>                            
+                            <li>
+                                <a activate href="#/browse-world-peers/"><i class="fa fa-cloud"></i> Scientilla Installations</a>
                             </li>                                                        
                         </ul>                        
-                    </li>                    
+                    </li>
                     <li class="sidebar-divider">
 
-                    </li>                    
+                    </li>                                                            
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a ng-click="toggleConfigurationMenu()" href="#/browse-settings/" class="tree-toggle nav-header"><i class="fa fa-gears"></i> Configuration</a>
                         <ul id="configurationMenu" class="nav nav-stacked nav-pills tree">
@@ -83,23 +103,12 @@
                             </li>                            
                             <li>
                                 <a activate href="#/browse-users/"><i class="fa fa-users"></i> Users</a>
-                            </li>
-                            <li>
-                                <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Peers</a>
-                            </li>                            
-                            <li>
-                                <a activate href="#/browse-repositories/"><i class="fa fa-exchange"></i> Repositories</a>
                             </li>                            
                         </ul>                        
                     </li>
                     <li class="sidebar-divider">
                         
-                    <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a href="#/discovery/" class="tree-toggle nav-header"><i class="fa fa-binoculars"></i> Discovery</a>
-                    </li>
-                    <li class="sidebar-divider">
-
-                    </li>                    
+                    </li>                       
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
                         <a activate ng-click="toggleLogoutMenu()" href="#/logout/" id="logout-link"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
                     </li>                    
@@ -160,6 +169,7 @@
         <script src="application/plugins/network/controllers/browsing.js" type="text/javascript"></script>
         <script src="application/plugins/network/controllers/world-browsing.js" type="text/javascript"></script>
         <script src="application/plugins/peer/controllers/local-browsing.js" type="text/javascript"></script>
+        <script src="application/plugins/peer/controllers/world-browsing.js" type="text/javascript"></script>
         <script src="application/plugins/peer/controllers/addition.js" type="text/javascript"></script>
         <script src="application/plugins/peer/controllers/editing.js" type="text/javascript"></script>
         <script src="application/plugins/peer/controllers/deletion.js" type="text/javascript"></script>
