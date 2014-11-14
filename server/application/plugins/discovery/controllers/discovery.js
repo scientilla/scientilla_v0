@@ -42,7 +42,14 @@ module.exports = function () {
                 rows
             ).toArray(function(err, references) {
                 cb(null, _.map(references, function(r) {
-                    return r.value.top;
+                    var reference = r.value.top;
+                    var counts = _.map(r.value.others, 'count');
+                    var countsSum = _.reduce(counts, function(sum, num) {
+                        return sum + num;
+                    });
+                    var reliability = parseInt(_.max(counts) / countsSum * 100);
+                    reference.reliability = reliability;
+                    return reference;
                 }));
             });
         };

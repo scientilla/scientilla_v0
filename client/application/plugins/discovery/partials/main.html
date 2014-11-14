@@ -43,6 +43,7 @@
                     <thead>
                         <tr>
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
+                            <th class="fixed-th-2x text-center"></i> Reliability</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-1x">
                                 <a ng-click="cloneSelectedReferences()" class="btn btn-default btn-block secondary-feature"><i class="fa fa-code-fork secondary-feature"></i></a>
@@ -69,6 +70,9 @@
                                 <strong ng-if="reference.doi">
                                     {{reference.doi}}
                                 </strong>
+                            </td>
+                            <td class="text-center">
+                                {{reference.reliability}}%
                             </td>
                             <td class="text-center">
                                 <strong>{{reference.year}}</strong>
