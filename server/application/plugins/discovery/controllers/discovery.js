@@ -13,7 +13,7 @@ var configurationManager = require("../../system/controllers/configuration.js");
 var networkModel = require("../../network/models/default.js")();
 
 module.exports = function () {
-        var getReferencesFromAliases = function(collectedReferencesCollection, aliases, config, cb) {
+        var getReferencesFromAliases = function(rankedReferencesCollection, aliases, config, cb) {
             var aliasesQuery = aliases.join("|");
             var keywords = config.keywords || "";
             var page = config.page || 1;
@@ -21,25 +21,30 @@ module.exports = function () {
             var skip = (page - 1) * rows;
             var keywordsQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             
-            collectedReferencesCollection.find({
+            rankedReferencesCollection.find({
                 $and: [
-                    {authors: { 
+                    {"value.top.authors": { 
                         $regex: aliasesQuery,
                         $options: 'i'
                     }},
-                    {title: {
+                    {"value.top.title": {
                         $regex: keywordsQuery,
                         $options: 'i'
                     }}
                 ]
-            }).sort({ 
-                    creation_datetime: -1
+            })
+                    .sort({ 
+                    "value.top.creation_datetime": -1
                 }
             ).skip(
                 skip
             ).limit(
                 rows
-            ).toArray(cb);
+            ).toArray(function(err, references) {
+                cb(null, _.map(references, function(r) {
+                    return r.value.top;
+                }));
+            });
         };
         var getClonableReferences = function(referencesCollection, aliasesReferences, cb) {
             referencesCollection.find().toArray(function(err, signedReferences){
@@ -65,7 +70,7 @@ module.exports = function () {
 
                 async.waterfall([
                     function(cb) {
-                        getReferencesFromAliases(req.collectedReferencesCollection, req.user.aliases, req.query, cb);
+                        getReferencesFromAliases(req.rankedReferencesCollection, req.user.aliases, req.query, cb);
                     },
                     function(aliasesReferences, cb) {
                         getClonableReferences(req.referencesCollection, aliasesReferences, cb);
