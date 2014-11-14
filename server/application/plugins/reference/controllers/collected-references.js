@@ -65,7 +65,7 @@ module.exports = function () {
                             references = [references];
                         }
                         var groupedReferences = _.groupBy(references, 'clone_hash');
-                        var bestReference = _.max(groupedReferences, 'length');
+                        var bestReference = _.first(_.max(_.values(groupedReferences), 'length'));
                         var others = _.map(groupedReferences, function(references, clone_hash) {
                             return {
                                 clone_hash: clone_hash,
