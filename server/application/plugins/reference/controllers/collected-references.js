@@ -59,7 +59,7 @@ module.exports = function () {
                 },
                 {
                     query: {original_hash: { $exists: true }},
-                    out: { replace: 'ranked-references' },
+                    out: { replace: 'ranked-references.db' },
                     finalize: function(original_hash, references) {
                         if (!_.isArray(references)) {
                             references = [references];
