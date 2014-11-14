@@ -412,8 +412,11 @@ module.exports = function () {
                         return;
                     }
                     var reference = referenceManager.createNewReference(referenceData);
-                    reference.original_hash = referenceManager.getReferenceHash(reference);
-                    reference.clone_hash = reference.original_hash;
+                    if (reference.clone_hash !== referenceManager.getReferenceHash(reference)) {
+                        console.log("Hashes don't match, reference clone_hash is " + reference.clone_hash + " and the calculated clone_hash is " + referenceManager.getReferenceHash(reference));
+                        res.status(404).end();
+                        return;
+                    }
                     reference.user_hash = req.user.hash; 
                     reference.last_modifier_id = req.user.id;
                     reference.last_modification_datetime = req.moment().format(); 
