@@ -467,6 +467,13 @@ application.get("/api/seed-peers", expressJwt({secret: 'scientilla'}), function(
     peersController.getSeedPeers(req, res);
 });
 
+// SEED PEERS
+application.get("/api/aggregated-peers", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read all Aggregated Peers");
+    systemController.checkUserCoherence(req, res);
+    peersController.getAggregatedPeers(req, res);
+});
+
 // SEED PEER REFERENCES
 application.get("/api/seed-peers/:seedPeerIndex/public-references", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all Seed Peer Public References"); 
@@ -551,6 +558,11 @@ application.get("/api/network-references", expressJwt({secret: 'scientilla'}), f
 application.get("/api/collected-references", function(req, res) {
     console.log("Request to Read all Collected References");
     collectedReferencesController.getReferences(req, res);
+});
+
+application.get("/api/collected-references/:id", function(req, res) {
+    console.log("Request to Read a Collected Reference");
+    collectedReferencesController.getReference(req, res);
 });
 
 // CLONED REFERENCES

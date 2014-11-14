@@ -9,7 +9,7 @@ angular.module("system").controller(
         /* TO-DO: substitute the jQuery code with a directive. */
         /* jQuery code start */
         $scope.toggleReferencesMenu = function() {
-            // $("#referencesMenu").slideDown();
+            $("#referencesMenu").slideDown();
             // $("#collectedReferencesMenu").slideUp();
             $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideUp();
@@ -18,7 +18,7 @@ angular.module("system").controller(
         }
         
         $scope.toggleCollectedReferencesMenu = function() {
-            // $("#referencesMenu").slideUp();
+            $("#referencesMenu").slideUp();
             // $("#collectedReferencesMenu").slideDown();
             $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideUp();
@@ -27,7 +27,7 @@ angular.module("system").controller(
         }        
         
         $scope.toggleNetworkMenu = function() {
-            // $("#referencesMenu").slideUp();
+            $("#referencesMenu").slideUp();
             // $("#collectedReferencesMenu").slideUp();
             $("#networkMenu").slideDown();
             $("#worldNetworkMenu").slideUp();
@@ -36,7 +36,7 @@ angular.module("system").controller(
         }        
         
         $scope.toggleWorldNetworkMenu = function() {
-            // $("#referencesMenu").slideUp();
+            $("#referencesMenu").slideUp();
             // $("#collectedReferencesMenu").slideUp();
             $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideDown();
@@ -45,7 +45,7 @@ angular.module("system").controller(
         }
         
         $scope.toggleConfigurationMenu = function() {
-            // $("#referencesMenu").slideUp();
+            $("#referencesMenu").slideUp();
             // $("#collectedReferencesMenu").slideUp();
             $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideUp();
@@ -54,7 +54,7 @@ angular.module("system").controller(
         }
         
         $scope.toggleLogoutMenu = function() {
-            // $("#referencesMenu").slideUp();
+            $("#referencesMenu").slideUp();
             // $("#collectedReferencesMenu").slideUp();
             $("#networkMenu").slideUp();
             $("#worldNetworkMenu").slideUp();

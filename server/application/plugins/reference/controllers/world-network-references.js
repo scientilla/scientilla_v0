@@ -4,6 +4,7 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var async = require("async");
 var request = require("request");
 var _ = require("underscore");
 
@@ -39,7 +40,27 @@ module.exports = function () {
         ).limit(
             numberOfItemsPerPage
         );
-    };    
+    };
+    
+    var resolveReferencePeers = function(references, peersCollection, finalizationCallback) {
+        async.mapSeries(
+            references,
+            function(reference, iterationCallback) {
+                peersCollection.find({ url: reference.peer_url }).toArray(function(error, peers) {
+                    if (error || _.isNull(peers) || _.isUndefined(peers) || peers.length === 0) {
+                        iterationCallback(error, reference);
+                        return;
+                    }
+                    reference.peer_id = peers[0]._id;
+                    iterationCallback(null, reference);
+                });
+            },
+            function(error, resolvedReferences) {
+                finalizationCallback(resolvedReferences);
+            }
+        );
+    };
+    
     return {        
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
@@ -59,10 +80,11 @@ module.exports = function () {
                             res.status(404).end();
                             return;
                         }
-                        // result.items = cleanReferencesTags(references);
-                        result.items = references;
-                        res.setHeader("Content-Type", "application/json");
-                        res.json(result);               
+                        resolveReferencePeers(references, req.peersCollection, function(resolvedReferences) {
+                            result.items = resolvedReferences;
+                            res.setHeader("Content-Type", "application/json");
+                            res.json(result);                             
+                        });              
                     });                
                 });                
             } else {
@@ -74,13 +96,16 @@ module.exports = function () {
                         url: seed.url + "/api/collected-references?keywords=" + keywords, 
                         strictSSL: false,
                         json: true 
-                    }, function (error, response, references) {
+                    }, function (error, response, result) {
                         if (error) {
                             res.status(404).end();
                             return;
                         }
-                        res.setHeader("Content-Type", "application/json");
-                        res.status(200).send(references).end();
+                        resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
+                            result.items = resolvedReferences;
+                            res.setHeader("Content-Type", "application/json");
+                            res.status(200).send(result).end();
+                        });
                     });                    
                 });                
             }

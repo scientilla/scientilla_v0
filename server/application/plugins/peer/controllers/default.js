@@ -43,6 +43,17 @@ module.exports = function () {
                 res.setHeader("Content-Type", "application/json");
                 res.json(seedPeers);            
             });
+        },
+        getAggregatedPeers: function(req, res) {
+            req.peersCollection.find({ aggregating_status: true }).toArray(function(err, peers) {
+                if (err || req.underscore.isNull(peers)) {
+                    res.status(404).end();
+                    return;
+                }
+                
+                res.setHeader("Content-Type", "application/json");
+                res.json(peers);
+            });
         },        
         getPeer: function(req, res) {
             req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {

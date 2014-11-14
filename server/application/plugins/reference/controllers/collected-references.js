@@ -104,6 +104,16 @@ module.exports = function () {
                     res.json(result);                
                 });                
             });            
-        }
+        },
+        getReference: function(req, res) {
+            req.collectedReferencesCollection.findOne({ _id: req.params.id }, function(err, reference) {
+                if (err || req.underscore.isNull(reference)) {
+                    res.status(404).end();
+                    return;
+                }
+                res.setHeader("Content-Type", "application/json");
+                res.json(reference);
+            });                
+        }        
     };
 };
