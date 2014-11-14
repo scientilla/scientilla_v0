@@ -70,7 +70,7 @@ var collectedReferencesCollection;
 var usersCollection;
 var collectedUsersCollection;
 var datasetReferencesCollections = [];
-var rankedCollection;
+var rankedReferencesCollection;
 
 async.series([
     function(seriesCallback) {
@@ -164,7 +164,7 @@ async.series([
     function(seriesCallback) {
         database.open(function(err, database) {
             database.collection("ranked-references.db", function(err, collection) {
-                rankedCollection = collection;
+                rankedReferencesCollection = collection;
                 seriesCallback();
             });
         });
@@ -272,6 +272,7 @@ application.use("*", function(req, res, next) {
     req.usersCollection = usersCollection;
     req.collectedUsersCollection = collectedUsersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
+    req.rankedReferencesCollection = rankedReferencesCollection;
     next();    
 });
 
