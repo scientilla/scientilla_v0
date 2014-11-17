@@ -43,12 +43,13 @@ module.exports = function () {
             ).toArray(function(err, references) {
                 cb(null, _.map(references, function(r) {
                     var reference = r.value.top;
-                    var counts = _.map(r.value.others, 'count');
+                    var counts = _.map(r.value.others, function(o) {return o.references.length;});
                     var countsSum = _.reduce(counts, function(sum, num) {
                         return sum + num;
                     });
                     var reliability = parseInt(_.max(counts) / countsSum * 100);
                     reference.reliability = reliability;
+                    reference.others = r.value.others;
                     return reference;
                 }));
             });
