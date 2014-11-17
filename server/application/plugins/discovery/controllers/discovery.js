@@ -11,6 +11,7 @@ var async = require("async");
 var peerManager = require("../../peer/models/default.js")();
 var configurationManager = require("../../system/controllers/configuration.js");
 var networkModel = require("../../network/models/default.js")();
+var collectedReferencesManager = require("../../reference/models/collected-references.js")();
 
 module.exports = function () {
         var getReferencesFromAliases = function(rankedReferencesCollection, aliases, config, cb) {
@@ -41,17 +42,8 @@ module.exports = function () {
             ).limit(
                 rows
             ).toArray(function(err, references) {
-                cb(null, _.map(references, function(r) {
-                    var reference = r.value.top;
-                    var counts = _.map(r.value.others, function(o) {return o.references.length;});
-                    var countsSum = _.reduce(counts, function(sum, num) {
-                        return sum + num;
-                    });
-                    var reliability = parseInt(_.max(counts) / countsSum * 100);
-                    reference.reliability = reliability;
-                    reference.others = r.value.others;
-                    return reference;
-                }));
+                var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
+                cb(null, normalizedReferences);
             });
         };
         var getClonableReferences = function(referencesCollection, aliasesReferences, cb) {
