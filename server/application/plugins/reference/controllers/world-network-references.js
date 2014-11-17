@@ -10,20 +10,21 @@ var _ = require("underscore");
 
 var referenceManager = require("../../reference/models/default.js")();
 var networkModel = require("../../network/models/default.js")();
+var collectedReferencesManager = require("../../reference/models/collected-references.js")();
 
 module.exports = function () {
-    var retrieveReferences = function(referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
+    var retrieveReferences = function(rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        return referencesCollection.find({                
+        return rankedReferencesCollection.find({                
             "$or": [
                 {
-                    title: { 
+                    "value.top.title": { 
                         $regex: regexQuery,
                         $options: 'i'
                     }
                 },
                 {
-                    authors: { 
+                    "value.top.authors": { 
                         $regex: regexQuery,
                         $options: 'i'
                     }
@@ -68,7 +69,7 @@ module.exports = function () {
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
             var result = {};            
             if (req.installationConfiguration.seed) {
-                var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
+                var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
                         res.status(404).end();
@@ -80,7 +81,8 @@ module.exports = function () {
                             res.status(404).end();
                             return;
                         }
-                        resolveReferencePeers(references, req.peersCollection, function(resolvedReferences) {
+                        var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
+                        resolveReferencePeers(normalizedReferences, req.peersCollection, function(resolvedReferences) {
                             result.items = resolvedReferences;
                             res.setHeader("Content-Type", "application/json");
                             res.json(result);                             
