@@ -52,7 +52,7 @@ module.exports = function () {
     
     return {        
         rankReferences: function(collectedReferencesCollection) {
-            var x = collectedReferencesCollection.mapReduce(
+            collectedReferencesCollection.mapReduce(
                 function() { emit(this.original_hash, this); },
                 function(original_hash, references) {
                     return references;
@@ -67,9 +67,14 @@ module.exports = function () {
                         var groupedReferences = _.groupBy(references, 'clone_hash');
                         var bestReference = _.first(_.max(_.values(groupedReferences), 'length'));
                         var others = _.map(groupedReferences, function(references, clone_hash) {
+                            var referencesData = _.map(
+                                    references, 
+                                    function(r) { 
+                                        return _.pick(r, ['peer_url', 'original_hash', 'user_hash'])
+                                    });
                             return {
                                 clone_hash: clone_hash,
-                                count: references.length
+                                references: referencesData
                             };
                         });
                         var result = {
