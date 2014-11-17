@@ -51,7 +51,7 @@ module.exports = function () {
     };
     
     return {        
-        rankReferences: function(collectedReferencesCollection) {
+        rankReferences: function(collectedReferencesCollection, cb) {
             collectedReferencesCollection.mapReduce(
                 function() { emit(this.original_hash, this); },
                 function(original_hash, references) {
@@ -85,6 +85,9 @@ module.exports = function () {
                     }
                 }
             );
+            if (_.isFunction(cb)) {
+                cb();
+            }
         },
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? "" : req.query.keywords;
