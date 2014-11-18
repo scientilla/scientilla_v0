@@ -14,9 +14,11 @@ module.exports = function () {
             var countsSum = _.reduce(counts, function(sum, num) {
                 return sum + num;
             });
-            var reliability = parseInt(_.max(counts) / countsSum * 100);
+            var confirmedBy = _.max(counts);
+            var reliability = parseInt(confirmedBy / countsSum * 100);
             reference.reliability = reliability;
             reference.others = r.value.others;
+            reference.confirmedBy = confirmedBy;
             return reference;
         });
     };
