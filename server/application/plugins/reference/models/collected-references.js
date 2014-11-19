@@ -10,15 +10,14 @@ module.exports = function () {
     var normalizeRankedReferences = function(references) {
         return _.map(references, function(r) {
             var reference = r.value.top;
-            var counts = _.map(r.value.others, function(o) {return o.references.length;});
-            var countsSum = _.reduce(counts, function(sum, num) {
-                return sum + num;
-            });
-            var confirmedBy = _.max(counts);
-            var reliability = parseInt(confirmedBy / countsSum * 100);
+            var all = r.value.all;
+            var confirmedBy = _.where(all, function(r) {return r.clone_hash === reference.clone_hash;}).length;
+            var reliability = parseInt(confirmedBy / all.length * 100);
+            var versions = _.uniq(_.pluck(all, 'clone_hash')).length;
             reference.reliability = reliability;
             reference.others = r.value.others;
             reference.confirmedBy = confirmedBy;
+            reference.versions = versions;
             return reference;
         });
     };
