@@ -67,9 +67,22 @@
                                 <strong ng-if="reference.doi">
                                     {{reference.doi}}<br />
                                 </strong>
-<!--                                <small>
-                                    <br />From: <i class="fa fa-comments-o"></i> <a href="{{ reference.peer_id > 0 ? '#/browse-peer-references/' + reference.peer_id + '/' : '#/browse-references/'}}">{{reference.peer_url}}</a>
-                                </small>                                -->
+                                <small>
+                                    <br />Confirmed by
+                                    <span ng-pluralize count="reference.confirmedBy" 
+                                        when="{'0': 'Nobody',
+                                               '1': 'one user',
+                                               'other': '{} users'}">
+                                    </span>
+                                    <span ng-show="reference.versions > 1">- 
+                                        <span ng-pluralize 
+                                            count="reference.versions" offset="1"
+                                            when="{'1': 'No other version exists',
+                                                   '2': 'Another version exists',
+                                                   'other': '{} other versions exist'}"></span>
+                                    </span>
+                                    <br><button class="btn btn-default btn-xs">Details</button>
+                                </small>                                
                             </td>
                             <td class="text-center">
                                 <strong>{{reference.year}}</strong>

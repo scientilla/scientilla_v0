@@ -65,21 +65,15 @@ module.exports = function () {
                             references = [references];
                         }
                         var groupedReferences = _.groupBy(references, 'clone_hash');
-                        var bestReference = _.first(_.max(_.values(groupedReferences), 'length'));
-                        var others = _.map(groupedReferences, function(references, clone_hash) {
-                            var referencesData = _.map(
-                                    references, 
-                                    function(r) { 
-                                        return _.pick(r, ['peer_url', 'original_hash', 'user_hash'])
-                                    });
-                            return {
-                                clone_hash: clone_hash,
-                                references: referencesData
-                            };
-                        });
+                        var top = _.first(_.max(_.values(groupedReferences), 'length'));
+                        var all = _.map(
+                            references, 
+                            function(r) { 
+                                return _.pick(r, ['peer_url', 'original_hash', 'user_hash', 'clone_hash']);
+                            });
                         var result = {
-                            top: bestReference,
-                            others: others
+                            top: top,
+                            all: all
                         };
                         return result;
                     }
