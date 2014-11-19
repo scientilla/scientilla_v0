@@ -5,9 +5,7 @@
  */
 
 angular.module("repository").controller(
-    "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, activatedRepositoriesService, systemStatusService, $window, $location) {
-        $scope.sourcesListingMode = $window.sessionStorage.sourcesListingMode ? $window.sessionStorage.sourcesListingMode : "L"; // L = List, G = Graph
-        $scope.resultsListingMode = "OFF"; // OFF = Disabled, RR = Repositories Results            
+    "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, activatedRepositoriesService, systemStatusService, $window, $location) {           
         $scope.changingActivatedRepositoryId = "";
         $scope.changingSharedRepositoryId = "";
         $scope.keywords = "";
@@ -135,12 +133,6 @@ angular.module("repository").controller(
                     callback();
                 }
             ]);
-        };
-        
-        $scope.searchRepositoriesReferences = function() {
-            $scope.resultsListingMode = "RR";
-            $scope.saveSourcesListingMode();
-            $scope.retrieveRepositoriesReferences();
         };        
         
         $scope.retrievePreviousItemsPage = function() {
