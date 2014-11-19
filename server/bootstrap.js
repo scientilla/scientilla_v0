@@ -236,7 +236,7 @@ async.series([
     },
     function(seriesCallback) {
         if (configurationManager.get().seed) {
-            var jobToSchedule = function() {
+            var rankReferencesJob = (function rankReferencesJob() {
                 console.log("Ranking references...");
                 collectedReferencesController.rankReferences(collectedReferencesCollection, function() {
                     var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
@@ -246,8 +246,8 @@ async.series([
                         });
                     });
                 });
-            };
-            nodeSchedule.scheduleJob({hour: 1, minute: 0}, jobToSchedule);
+            }());
+            nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
             seriesCallback();
         }
 	}
