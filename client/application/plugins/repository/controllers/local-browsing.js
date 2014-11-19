@@ -6,9 +6,6 @@
 
 angular.module("repository").controller(
     "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, activatedRepositoriesService, systemStatusService, $window, $location) {
-        $scope.sourcesListingMode = $window.sessionStorage.sourcesListingMode ? $window.sessionStorage.sourcesListingMode : "L"; // L = List, G = Graph
-        $scope.resultsListingMode = "OFF"; // OFF = Disabled, RR = Repositories Results            
-        $scope.changingActivatedRepositoryId = "";
         $scope.changingSharedRepositoryId = "";
         $scope.keywords = "";
         $scope.aRepositories = [];
@@ -24,20 +21,6 @@ angular.module("repository").controller(
                 repositoryIdsSharingMap[aRepositories[lpKey]._id] = aRepositories[lpKey].sharing_status;
             }
             return repositoryIdsSharingMap;
-        }        
-        
-        $scope.setRepositoryAsActivated = function(id) {
-            $scope.changingActivatedRepositoryId = id;
-            activatedRepositoriesService.setRepositoryAsActivated(
-                id,
-                $window.sessionStorage.token
-            ).success(function(data, status, headers, config) {
-                $scope.activatedRepositoryId = id;
-                $scope.changingActivatedRepositoryId = ""; 
-            }).error(function(data, status, headers, config) {
-                $scope.changingActivatedRepositoryId = "";
-                systemStatusService.react(status);
-            });
         }
         
         $scope.switchRepositorySharingStatus = function(id) {
@@ -106,42 +89,7 @@ angular.module("repository").controller(
             ]);
             
             return retrieveRepositories;
-        }();
-        
-        $scope.retrieveRepositoriesReferences = function() {
-            $scope.empty = false;
-            $scope.ready = false;
-            $scope.error = false;
-            async.series([
-                function(callback) {
-                    repositoryReferencesService.getReferences(
-                        $scope.repositoryId,
-                        $window.sessionStorage.token,
-                        $scope.keywords
-                    ).success(function(data, status, headers, config) {
-                        repositoryReferencesService.aReferences = data;                   
-                        $scope.aReferences = data;
-                        if ($scope.aReferences.length === 0) {
-                            $scope.empty = true;
-                        }                    
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        $scope.error = true;
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    $scope.ready = true;
-                    callback();
-                }
-            ]);
-        };
-        
-        $scope.searchRepositoriesReferences = function() {
-            $scope.resultsListingMode = "RR";
-            $scope.saveSourcesListingMode();
-            $scope.retrieveRepositoriesReferences();
-        };        
+        }();        
         
         $scope.retrievePreviousItemsPage = function() {
             if ($scope.startPageNumber > 1) {

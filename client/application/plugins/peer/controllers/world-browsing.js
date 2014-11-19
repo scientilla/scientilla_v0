@@ -6,8 +6,6 @@
 
 angular.module("peer").controller(
     "worldPeersBrowsingController", ["$scope", "peersService", "activatedPeersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, activatedPeersService, seedPeerReferencesService, systemStatusService, $window, $location) {
-        $scope.sourcesListingMode = $window.sessionStorage.sourcesListingMode ? $window.sessionStorage.sourcesListingMode : "L"; // L = List, G = Graph
-        $scope.resultsListingMode = "OFF"; // OFF = Disabled, MPR = Main Peers Results
         $scope.changingActivatedPeerId = "";
         $scope.changingSharedPeerId = "";
         $scope.changingAggregatedPeerId = "";
@@ -18,11 +16,7 @@ angular.module("peer").controller(
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
         $scope.numberOfItemsPerPage = 25;
-        $scope.totalNumberOfItems = 10000;        
-        
-        $scope.saveSourcesListingMode = function() {
-            $window.sessionStorage.sourcesListingMode = $scope.sourcesListingMode;
-        }        
+        $scope.totalNumberOfItems = 10000;                
             
         $scope.generatePeerIdsSharingMap = function(aPeers) {
             var peerIdsSharingMap = {};
@@ -197,12 +191,6 @@ angular.module("peer").controller(
                     }
                 ]);
             }
-        };
-        
-        $scope.searchSeedPeersReferences = function() {
-            $scope.resultsListingMode = "MPR";
-            $scope.saveSourcesListingMode();
-            $scope.retrieveSeedPeersReferences();
         };        
         
         $scope.retrievePreviousItemsPage = function() {

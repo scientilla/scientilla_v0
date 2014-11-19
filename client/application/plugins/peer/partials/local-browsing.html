@@ -11,14 +11,10 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">PEERS</span>
+                    <span class="navbar-brand" id="tools-link">YOUR NETWORK INSTALLATIONS</span>
                 </div>                
                 <div class="collapse navbar-collapse">
                     <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">
-                        <div class="btn-group">
-                            <label ng-change="saveSourcesListingMode()" class="btn btn-default" ng-model="sourcesListingMode" btn-radio="'L'"><i class="fa fa-list"></i> List</label>
-                            <label ng-change="saveSourcesListingMode()" class="btn btn-default disabled" ng-model="sourcesListingMode" btn-radio="'G'"><i class="fa fa-globe"></i> Graph</label>
-                        </div>
                         <!--
                         <button data-toggle="modal" data-target="#sources-button-help" class="btn btn-default help-button">
                             <i class="fa fa-question-circle"></i>
@@ -64,7 +60,7 @@
         </nav>
     </div>			
 </div>
-<div ng-if="resultsListingMode == 'OFF'" id="content-container">
+<div id="content-container">
     <div id="content" class="container-fluid">        
         <div class="row">            
             <div class="col-lg-12 visible-md visible-lg">
@@ -73,38 +69,37 @@
                         <tr>
                             <th class="fixed-th-1x"></th>                            
                             <th><i class="fa fa-cloud"></i> Peer Name</th>
-                            <th class="fixed-th-2x text-center"><i class="fa fa-line-chart"></i> Size</th>
+                            <!-- <th class="fixed-th-2x text-center"><i class="fa fa-line-chart"></i> Size</th> -->
                             <th><i class="fa fa-link"></i> URL</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-refresh"></i> Hits</th>
-                            <th class="fixed-th-1x text-center"><i class="fa fa-sitemap"></i></th>
                             <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x"></th>                            
                             <th class="fixed-th-1x">
                                 <a href="#/add-peer/" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
                             </th>
+                            <th class="fixed-th-1x text-center"><i class="fa fa-sitemap"></i></th>                            
                         </tr>
                     </thead>
                     <tbody ng-show="ready && iPeers > 0">
                         <tr ng-repeat="peer in aPeers" class="fixed-tr-1x">
                             <td>
-                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="glyphicon glyphicon-book primary-feature"></i></a>
+                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-folder-open-o primary-feature"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-peer/{{peer._id}}/">
                                     <strong>{{peer.name}}</strong>
                                 </a>
                             </td>
+                            <!--
                             <td class="text-center">
                                 <span>10000</span>
-                            </td>                            
+                            </td>
+                            -->
                             <td>
                                 <span>{{peer.url}}</span>
                             </td>
                             <td class="text-center">
                                 <span>R{{peer.references_discovering_hits}} - U{{peer.users_discovering_hits}}</span>
-                            </td>
-                            <td>
-                                <a ng-click="switchPeerAggregatingStatus(peer._id)" class="{{peerIdsAggregatingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-square-o secondary-feature turned-off' : '' }}{{peer._id == changingAggregatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-sitemap secondary-feature turned-on' : '' }}"></i></a>
                             </td>                            
                             <td>
                                 <a ng-click="switchPeerSharingStatus(peer._id)" class="{{peerIdsSharingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
@@ -119,12 +114,15 @@
                             </td>                            
                             <td>
                                 <a href="#/delete-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature fixed-button-1x"><i class="fa fa-trash-o secondary-feature"></i></a>
+                            </td>
+                            <td>
+                                <a ng-click="switchPeerAggregatingStatus(peer._id)" class="{{peerIdsAggregatingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-square-o secondary-feature turned-off' : '' }}{{peer._id == changingAggregatedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsAggregatingMap[peer._id] && changingAggregatedPeerId == '' ? 'fa fa-sitemap secondary-feature turned-on' : '' }}"></i></a>
                             </td>                            
                         </tr>
                     </tbody>
                     <tbody ng-show="iPeers === 0">
                         <tr>
-                            <td colspan="10">
+                            <td colspan="8">
                                 <div class="col-lg-12 empty-message">
                                     No peers available in this installation.
                                 </div>
@@ -133,7 +131,7 @@
                     </tbody>
                     <tbody ng-show="error">
                         <tr>
-                            <td colspan="10">
+                            <td colspan="8">
                                 <div class="col-lg-12 error-message">
                                     Error in retrieving peers.
                                 </div>
@@ -174,106 +172,5 @@
                 <i class="fa fa-refresh fa-spin fa-5x"></i>
             </div>
         </div>        
-    </div>
-</div>
-<div ng-if="resultsListingMode == 'MPR'" id="content-container">
-    <div id="content" class="container-fluid">
-        <div class="row">          
-            <div class="col-lg-12 visible-md visible-lg">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
-                            <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
-                            <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
-                            <th class="fixed-th-3x"></th>
-                        </tr>
-                    </thead>
-                    <tbody ng-show="ready && !empty">
-                        <tr ng-repeat="reference in aReferences">
-                            <td>
-                                {{reference.authors}}<br />
-                                <i>{{reference.title}}</i><br />
-                                <span ng-if="reference.journal_name">
-                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
-                                </span>
-                                <span ng-if="reference.conference_name">
-                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
-                                </span>
-                                <span ng-if="reference.book_title">
-                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
-                                </span>
-                                <strong ng-if="reference.doi">
-                                    {{reference.doi}}
-                                </strong>
-                            </td>
-                            <td class="text-center">
-                                <strong>{{reference.year}}</strong>
-                            </td>        
-                            <td>{{reference.tags}}</td>
-                            <td>
-                                <a href="#/clone-peer-reference/{{peerId}}/{{reference._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-code-fork"></i> Clone</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody ng-show="empty">
-                        <tr>
-                            <td colspan="4">
-                                <div class="col-lg-12 empty-message">
-                                    No references available on the peer.
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody ng-show="error">
-                        <tr>
-                            <td colspan="5">
-                                <div class="col-lg-12 error-message">
-                                    Error in retrieving references from the peer.
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>                    
-                </table>
-            </div>
-            <div class="col-sm-12 visible-xs visible-sm">
-                <div class="row">                           
-                    <div class="col-xs-12 col-sm-12" ng-repeat="reference in aReferences">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4><i class="fa fa-file-text"></i> Bibliographic Data:</h4>
-                                {{reference.authors}}<br />
-                                <i>{{reference.title}}</i><br />
-                                <span ng-if="reference.journal_name">
-                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
-                                </span>
-                                <span ng-if="reference.conference_name">
-                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
-                                </span>
-                                <span ng-if="reference.book_title">
-                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
-                                </span>
-                                <strong ng-if="reference.doi">
-                                    {{reference.doi}}
-                                </strong>
-                                <h4><i class="fa fa-calendar"></i> Year:</h4>
-                                <strong>{{reference.year}}</strong>
-                                <h4><i class="fa fa-tags"></i> Tags:</h4>
-                                {{reference.tags}}<br />
-                            </div>
-                            <div class="panel-footer">
-                                <a href="#/clone-peer-reference/{{peerId}}/{{reference._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-code-fork"></i> Clone</a>
-                                <div class="clearfix"></div>
-                            </div>                                    
-                        </div>
-                    </div>                                
-                </div>
-            </div>
-        </div>
-        <div ng-show="!ready" class="row">
-            <div class="col-lg-12 waiting-screen">
-                <i class="fa fa-refresh fa-spin fa-5x"></i>
-            </div>
-        </div>
     </div>
 </div>
