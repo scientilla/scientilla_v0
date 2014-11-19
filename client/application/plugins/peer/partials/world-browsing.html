@@ -11,7 +11,7 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">PEERS</span>
+                    <span class="navbar-brand" id="tools-link">WORLD NETWORK INSTALLATIONS</span>
                 </div>                
                 <div class="collapse navbar-collapse">
                     <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">
@@ -69,7 +69,7 @@
                         <tr>
                             <th class="fixed-th-1x"></th>                            
                             <th><i class="fa fa-cloud"></i> Peer Name</th>
-                            <th class="fixed-th-2x text-center"><i class="fa fa-line-chart"></i> Size</th>
+                            <!-- <th class="fixed-th-2x text-center"><i class="fa fa-line-chart"></i> Size</th> -->
                             <th><i class="fa fa-link"></i> URL</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-refresh"></i> Hits</th>
                             <th class="fixed-th-1x text-center"><i class="fa fa-sitemap"></i></th>
@@ -78,16 +78,18 @@
                     <tbody ng-show="ready && iPeers > 0">
                         <tr ng-repeat="peer in aPeers" class="fixed-tr-1x">
                             <td>
-                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="glyphicon glyphicon-book primary-feature"></i></a>
+                                <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-folder-open-o primary-feature"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-peer/{{peer._id}}/">
                                     <strong>{{peer.name}}</strong>
                                 </a>
                             </td>
+                            <!--
                             <td class="text-center">
                                 <span>10000</span>
                             </td>
+                            -->
                             <td>
                                 <span>{{peer.url}}</span>
                             </td>
@@ -101,7 +103,7 @@
                     </tbody>
                     <tbody ng-show="iPeers === 0">
                         <tr>
-                            <td colspan="10">
+                            <td colspan="5">
                                 <div class="col-lg-12 empty-message">
                                     No peers available in this installation.
                                 </div>
@@ -110,7 +112,7 @@
                     </tbody>
                     <tbody ng-show="error">
                         <tr>
-                            <td colspan="10">
+                            <td colspan="5">
                                 <div class="col-lg-12 error-message">
                                     Error in retrieving peers.
                                 </div>
