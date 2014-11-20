@@ -314,7 +314,7 @@ module.exports = function () {
                     user.status = "U";
                     user.hash = getUserHash(user);
                     user.hashes = [user.hash];
-                    user.aliases = getUserAliases(user);
+                    user.aliases = [];
                     user.creation_datetime = req.moment().format();
                     user.last_modification_datetime = req.moment().format();
                     req.usersCollection.insert(user, { w: 1 }, function(err, users) {
