@@ -21,6 +21,7 @@ angular.module("system").controller(
                 $window.sessionStorage.userRights = data.user_rights;
                 $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
                 $window.sessionStorage.peerMode = data.peer_mode;
+                $window.sessionStorage.aliases = JSON.stringify(data.aliases);
                 $scope.$emit("successful-login");
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
@@ -29,6 +30,7 @@ angular.module("system").controller(
                 delete $window.sessionStorage.userRights;
                 delete $window.sessionStorage.userScientillaNominative;
                 delete $window.sessionStorage.peerMode;
+                delete $window.sessionStorage.aliases;
                 systemStatusService.react(status);
             });
         };
