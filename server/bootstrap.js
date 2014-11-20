@@ -706,7 +706,7 @@ application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), functio
 });
 
 // DISCOVERY
-application.get("/api/discovery/references", expressJwt({secret: 'scientilla'}), function(req, res) {
+application.get("/api/discovery/references", function(req, res) {
     console.log("Request to read Discovery References");
     discoveryController.getReferences(req, res);
 });
