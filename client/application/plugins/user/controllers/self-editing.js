@@ -62,6 +62,7 @@ angular.module("user").controller(
                 password_repetition: $scope.oUser.password_repetition,
                 status: $scope.oUser.status
             }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+                usersService.updateUserInfo(data);
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

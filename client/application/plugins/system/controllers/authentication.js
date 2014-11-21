@@ -16,21 +16,11 @@ angular.module("system").controller(
                 username: $scope.oUser.username,
                 password: $scope.oUser.password
             }).success(function(data, status, headers, config) {
-                $window.sessionStorage.token = data.token;
-                $window.sessionStorage.userType = data.user_type;
-                $window.sessionStorage.userRights = data.user_rights;
-                $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
-                $window.sessionStorage.peerMode = data.peer_mode;
-                $window.sessionStorage.aliases = JSON.stringify(data.aliases);
+                usersService.updateUserInfo(data);
                 $scope.$emit("successful-login");
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
-                delete $window.sessionStorage.token;
-                delete $window.sessionStorage.userType;
-                delete $window.sessionStorage.userRights;
-                delete $window.sessionStorage.userScientillaNominative;
-                delete $window.sessionStorage.peerMode;
-                delete $window.sessionStorage.aliases;
+                usersService.deleteUserInfo();
                 systemStatusService.react(status);
             });
         };
