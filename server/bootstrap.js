@@ -59,14 +59,8 @@ var isWindows = /^win/.test(process.platform);
 var isMac = /^dar/.test(process.platform);
 var isLinux = /^lin/.test(process.platform);
 
-// Resolves paths accordingly to user operative system
-var dataPath = path.resolve(__dirname + "/../");
-if (isWindows) {
-    dataPath = path.resolve(process.env.APPDATA + "/SCIENTILLA/");
-    if (!fs.existsSync(dataPath)) {
-        fs.mkdirSync(dataPath);
-    }
-}
+// Inizializes paths
+var dataPath;
 
 // Initializes databases
 var databaseEngine = tingodb({});
@@ -87,6 +81,17 @@ var datasetReferencesCollections = [];
 var rankedReferencesCollection;
 
 async.series([
+    function(seriesCallback) {
+        if (isWindows) {
+            dataPath = path.resolve(process.env.APPDATA + "/SCIENTILLA/");
+            if (!fs.existsSync(dataPath)) {
+                fs.mkdirSync(dataPath);
+            }
+        } else {
+            dataPath = path.resolve(__dirname + "/../");
+        }
+        seriesCallback();
+    },    
     function(seriesCallback) {
         if (!fs.existsSync(path.resolve(dataPath + "/files/"))) {
             fs.mkdirSync(path.resolve(dataPath + "/files/"));
