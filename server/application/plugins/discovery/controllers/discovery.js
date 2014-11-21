@@ -12,9 +12,13 @@ var peerManager = require("../../peer/models/default.js")();
 var configurationManager = require("../../system/controllers/configuration.js");
 var networkModel = require("../../network/models/default.js")();
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
+var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
         var getReferencesFromAliases = function(rankedReferencesCollection, aliases, config, cb) {
+            if (!aliases) {
+                cb(new Error("no aliases"), null);
+            }
             var aliasesQuery = aliases.join("|");
             var keywords = config.keywords || "";
             var page = config.page || 1;
@@ -42,55 +46,33 @@ module.exports = function () {
             ).limit(
                 rows
             ).toArray(function(err, references) {
-                var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
-                cb(null, normalizedReferences);
-            });
-        };
-        var getClonableReferences = function(referencesCollection, aliasesReferences, cb) {
-            referencesCollection.find().toArray(function(err, signedReferences){
                 if (err) {
                     cb(err, null);
                 }
-                var clonableReferences = _.reduce(aliasesReferences, function(acc, ref) {
-                    if (_.some(signedReferences, {original_hash: ref.original_hash})) {
-                        ref.clonable = false;
-                    } else {
-                        ref.clonable = true;
-                    }
-                    acc.push(ref);
-                    return acc;
-                }, []);
-                cb(err, clonableReferences);
+                var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
+                cb(null, normalizedReferences);
             });
         };
     return {
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
             if (configuration.seed) {
-                var aliases = req.query.aliases;
-                if (!aliases) {
-                    res.status(400).end();
-                    return;
-                }
+                var aliases = req.query.aliases;                
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
-                async.waterfall([
-                    function(cb) {
-                        getReferencesFromAliases(req.rankedReferencesCollection, aliases, config, cb);
-                    },
-                    function(aliasesReferences, cb) {
-                        getClonableReferences(req.referencesCollection, aliasesReferences, cb);
-                    }
-                ], 
-                function(err, references) {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).end();
+                getReferencesFromAliases(
+                    req.rankedReferencesCollection, 
+                    aliases, 
+                    config, 
+                    function(err, references) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).end();
+                            return;
+                        }
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(references);
                         return;
-                    }
-                    res.setHeader("Content-Type", "application/json");
-                    res.json(references);
-                    return;
-                });
+                    });
             } else {
                 networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
                     var url = seed.url + "/api/discovery/references";
@@ -111,6 +93,59 @@ module.exports = function () {
                         });
                     });
             }
+        },
+        getFilteredReferences: function(req, res) {
+            var configuration = configurationManager.get();
+            var peer;
+            async.waterfall([
+                function(cb) {
+                    if (configuration.seed) {
+                        peer = configuration.url;
+                        cb(null, peer);
+                    } else {
+                        networkModel.getRandomSeed(
+                            req.seedsConfiguration, 
+                            function(err, seed) {
+                                if (err) {
+                                    cb(err, null);
+                                } else {
+                                    cb(null, seed.url);
+                                }
+                            });
+                    }
+                },
+                function(peer_url, cb) {
+                    var url = peer_url + "/api/discovery/references";
+                    req.request({ 
+                        url: url, 
+                        qs: req.query,
+                        strictSSL: false,
+                        json: true
+                    }, function(err, response, body) {
+                            if (err) {
+                                cb(err, null);
+                            }
+                            cb(null, body);
+                        });
+                    }
+            ],
+            function(err, aliasesReferences) {
+                referencesManager.getVerifiedReferences(
+                    req.referencesCollection,
+                    req.user.hashes,
+                    aliasesReferences, 
+                    null,
+                    function(err, references) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).end();
+                            return;
+                        }
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(references);
+                        return;
+                    });
+            });
         }
     };
 };

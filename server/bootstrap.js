@@ -707,8 +707,13 @@ application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), functio
 
 // DISCOVERY
 application.get("/api/discovery/references", function(req, res) {
-    console.log("Request to read Discovery References");
+    console.log("Request to read All Discovery References");
     discoveryController.getReferences(req, res);
+});
+
+application.get("/api/discovery/filtered-references", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to read Discovery References");
+    discoveryController.getFilteredReferences(req, res);
 });
 
 // Bootstraps application

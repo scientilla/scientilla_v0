@@ -11,7 +11,7 @@ angular.module("discovery").factory(
         discoveryProvider.getReferences = function(config, token, success, error){
             $http({
 				method: "GET",
-				url: "/api/discovery/references",
+				url: "/api/discovery/filtered-references",
                 params: config,
                 cache: false,
                 timeout: 30000,
