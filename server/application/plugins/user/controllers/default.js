@@ -270,14 +270,20 @@ module.exports = function () {
                 user.aliases = getUserAliases(user);
                 user.last_modifier_id = req.user.id;
                 user.last_modification_datetime = req.moment().format();                
-                req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, user) {
-                    if (err || req.underscore.isNull(user)) {
+                req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, userNum) {
+                    if (err || userNum===0) {
                         console.log(err);
                         res.status(404).end();
                         return;
                     }
-
-                    res.end();
+                    res.setHeader("Content-Type", "application/json");
+                    res.json({
+                        user_type: user.type,
+                        user_rights: user.rights,
+                        user_scientilla_nominative: user.scientilla_nominative,
+                        aliases: user.aliases
+                    }).end();
+                    return;
                 });
             });
         },        

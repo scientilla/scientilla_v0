@@ -5,8 +5,33 @@
  */
 
 angular.module("user").factory(
-    "usersService", function($http) {
+    "usersService", function($http, $window) {
         var usersProvider = {};
+        
+        usersProvider.updateUserInfo = function(data) {
+            if (_.isEmpty(data)) {
+                return;
+            }
+            if (data.token) {
+                $window.sessionStorage.token = data.token;
+            }
+            $window.sessionStorage.userType = data.user_type;
+            $window.sessionStorage.userRights = data.user_rights;
+            $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
+            if (data.peer_mode) {
+                $window.sessionStorage.peerMode = data.peer_mode;
+            }
+            $window.sessionStorage.aliases = JSON.stringify(data.aliases);
+        };
+        
+        usersProvider.deleteUserInfo = function() {
+            delete $window.sessionStorage.token;
+            delete $window.sessionStorage.userType;
+            delete $window.sessionStorage.userRights;
+            delete $window.sessionStorage.userScientillaNominative;
+            delete $window.sessionStorage.peerMode;
+            delete $window.sessionStorage.aliases;
+        };
         
         usersProvider.getUsers = function(token) {
             return $http({
