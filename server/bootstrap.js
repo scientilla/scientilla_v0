@@ -62,7 +62,7 @@ var isLinux = /^lin/.test(process.platform);
 // Resolves paths accordingly to user operative system
 var dataPath = path.resolve(__dirname + "/../");
 if (isWindows) {
-    dataPath = path.resolve(process.env.APPDATA + "/Scientilla/");
+    dataPath = path.resolve(process.env.APPDATA + "/SCIENTILLA/");
     if (!fs.existsSync(dataPath)) {
         fs.mkdirSync(dataPath);
     }
