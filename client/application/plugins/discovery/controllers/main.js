@@ -16,6 +16,7 @@ angular.module("discovery").controller(
         $scope.oRepositories = null;
         $scope.hasPaginationData = false;
         $scope.allSelected = false;
+        $scope.aliases = JSON.parse($window.sessionStorage.aliases);
         $scope.config = {
             keywords: "",
             page: 1,
@@ -133,10 +134,10 @@ angular.module("discovery").controller(
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
-            if (_.isNull($scope.oRepositories)) {
-                $scope.error = true;
-                return;
-            }
+//            if (_.isNull($scope.oRepositories)) {
+//                $scope.error = true;
+//                return;
+//            }
             if (pageIncr === 0) {
                 $scope.currentPage = $scope.config.page;
                 $scope.firstPage = $scope.config.page;
@@ -148,7 +149,8 @@ angular.module("discovery").controller(
                     var config = {
                         keywords: $scope.config.keywords,
                         page: $scope.currentPage,
-                        rows: $scope.config.rows
+                        rows: $scope.config.rows,
+                        aliases: $scope.aliases
                     };
                     discoveryService.getReferences(
                         config,
@@ -209,29 +211,31 @@ angular.module("discovery").controller(
                 }
             );
             
-            repositoriesService.getRepositories(
-                $window.sessionStorage.token
-            ).success(function(data, status, headers, config){
-                $scope.oRepositories = data;
-                $scope.currentPage = $scope.config.page;
-                $scope.firstPage = $scope.config.page;
-                $scope.hasPaginationData = $scope.oRepositories 
-                                            && $scope.config 
-                                            && !_.isNull($scope.config.page)
-                                            && !_.isUndefined($scope.config.page)
-                                            && !_.isNull($scope.config.rows)
-                                            && !_.isUndefined($scope.config.rows)
-                                            && _.contains($scope.oRepositories[0].url, '{{page}}')
-                                            && _.contains($scope.oRepositories[0].url, '{{rows}}');
-                if (!$scope.hasPaginationData) {
-                    $scope.error = true;
-                } else {
-                    $scope.retrieveReferences();
-                }
-            }).error(function(data, status, headers, config) {
-                $scope.error = true;
-                systemStatusService.react(status);
-            });
+            $scope.retrieveReferences();
+            
+//            repositoriesService.getRepositories(
+//                $window.sessionStorage.token
+//            ).success(function(data, status, headers, config){
+//                $scope.oRepositories = data;
+//                $scope.currentPage = $scope.config.page;
+//                $scope.firstPage = $scope.config.page;
+//                $scope.hasPaginationData = $scope.oRepositories 
+//                                            && $scope.config 
+//                                            && !_.isNull($scope.config.page)
+//                                            && !_.isUndefined($scope.config.page)
+//                                            && !_.isNull($scope.config.rows)
+//                                            && !_.isUndefined($scope.config.rows)
+//                                            && _.contains($scope.oRepositories[0].url, '{{page}}')
+//                                            && _.contains($scope.oRepositories[0].url, '{{rows}}');
+//                if (!$scope.hasPaginationData) {
+//                    $scope.error = true;
+//                } else {
+//                    $scope.retrieveReferences();
+//                }
+//            }).error(function(data, status, headers, config) {
+//                $scope.error = true;
+//                systemStatusService.react(status);
+//            });
         };
     }]
 );

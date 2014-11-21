@@ -553,6 +553,11 @@ application.get("/api/world-network-references", expressJwt({secret: 'scientilla
     systemController.checkUserCoherence(req, res);
     worldNetworkReferencesController.getReferences(req, res);
 });
+application.get("/api/world-network-references/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Read details for a World Network Reference");
+    systemController.checkUserCoherence(req, res);
+    worldNetworkReferencesController.getRankedReference(req, res);
+});
 
 // NETWORK REFERENCES
 application.get("/api/network-references", expressJwt({secret: 'scientilla'}), function(req, res) {
@@ -701,7 +706,7 @@ application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), functio
 });
 
 // DISCOVERY
-application.get("/api/discovery/references", expressJwt({secret: 'scientilla'}), function(req, res) {
+application.get("/api/discovery/references", function(req, res) {
     console.log("Request to read Discovery References");
     discoveryController.getReferences(req, res);
 });

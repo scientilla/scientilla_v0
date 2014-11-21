@@ -11,27 +11,7 @@
                     <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
                         <span class="fa fa-bars"></span>
                     </a>
-                    <span class="navbar-brand" id="tools-link">WORLD NETWORK: <strong>{{totalNumberOfItems}}</strong> PUBLICATIONS</span>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
-                        <!--
-                        <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
-                            <i class="fa fa-question-circle"></i>
-                        </button>
-                        -->                       
-                        <div class="input-group">                                        
-                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
-                            <span class="input-group-btn">
-                                <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
-                            </span>                            
-                        </div>                        
-                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-if="currentPageNumber <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
-                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
-                        <a ng-if="(currentPageNumber + 2) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>
-                    </form>                              
+                    <span class="navbar-brand" id="tools-link">WORLD NETWORK DETAIL</span>
                 </div>
             </div>
         </nav>
@@ -68,20 +48,7 @@
                                     {{reference.doi}}<br />
                                 </strong>
                                 <small>
-                                    <br />Confirmed by
-                                    <span ng-pluralize count="reference.confirmedBy" 
-                                        when="{'0': 'Nobody',
-                                               '1': 'one user',
-                                               'other': '{} users'}">
-                                    </span>
-                                    <span ng-show="reference.versions > 1">- 
-                                        <span ng-pluralize 
-                                            count="reference.versions" offset="1"
-                                            when="{'1': 'No other version exists',
-                                                   '2': 'Another version exists',
-                                                   'other': '{} other versions exist'}"></span>
-                                    </span>
-                                    <br><a class="btn btn-default btn-xs" ng-href="#/browse-world-network/{{reference.original_hash}}/">Details</a>
+                                    {{reference.peer_url}}
                                 </small>                                
                             </td>
                             <td class="text-center">

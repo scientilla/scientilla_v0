@@ -314,7 +314,7 @@ module.exports = function () {
                     user.status = "U";
                     user.hash = getUserHash(user);
                     user.hashes = [user.hash];
-                    user.aliases = getUserAliases(user);
+                    user.aliases = [];
                     user.creation_datetime = req.moment().format();
                     user.last_modification_datetime = req.moment().format();
                     req.usersCollection.insert(user, { w: 1 }, function(err, users) {
@@ -352,7 +352,8 @@ module.exports = function () {
                                 token: token,
                                 user_type: user.type,
                                 user_rights: user.rights,
-                                user_scientilla_nominative: user.scientilla_nominative
+                                user_scientilla_nominative: user.scientilla_nominative,
+                                aliases: user.aliases
                             });
                             return;
                         }); 
@@ -413,6 +414,7 @@ module.exports = function () {
                                 user_rights: user.rights,
                                 user_scientilla_nominative: user.scientilla_nominative,
                                 peer_mode: installationConfiguration.seed,
+                                aliases: user.aliases
                             });
                         }
                     );					

@@ -67,10 +67,11 @@ module.exports = function () {
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
             if (configuration.seed) {
-
+                var aliases = req.query.aliases;
+                var config = _.pick(req.query, ['keywords', 'page', 'rows']);
                 async.waterfall([
                     function(cb) {
-                        getReferencesFromAliases(req.rankedReferencesCollection, req.user.aliases, req.query, cb);
+                        getReferencesFromAliases(req.rankedReferencesCollection, aliases, config, cb);
                     },
                     function(aliasesReferences, cb) {
                         getClonableReferences(req.referencesCollection, aliasesReferences, cb);
@@ -88,7 +89,7 @@ module.exports = function () {
                 });
             } else {
                 networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
-                    var url = seed.url + "/api/public-references";
+                    var url = seed.url + "/api/discovery/references";
                     req.request({ 
                         url: url, 
                         qs: req.query,

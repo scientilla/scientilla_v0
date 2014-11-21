@@ -35,6 +35,9 @@ angular.module("scientilla").config([
         }).when("/browse-world-network/", {
             templateUrl: "application/plugins/network/partials/world-browsing.html",
             controller: "worldNetworkBrowsingController"            
+        }).when("/browse-world-network/:id/", {
+            templateUrl: "application/plugins/network/partials/world-detail.html",
+            controller: "worldDetailController"            
             
         // PEERS
         }).when("/browse-peers/", {

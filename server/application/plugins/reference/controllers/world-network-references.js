@@ -6,13 +6,30 @@
 
 var async = require("async");
 var request = require("request");
-var _ = require("underscore");
+var _ = require("lodash");
 
 var referenceManager = require("../../reference/models/default.js")();
 var networkModel = require("../../network/models/default.js")();
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
 
 module.exports = function () {
+    var objsArray2MongoSearchQuery = function(objsArray) {
+        var searchCriteria = _.map(
+            objsArray, 
+            function(r){
+                var propCriteria = _.mapValues(
+                    r, 
+                    function(val, key) {
+                        var propCriterion = {};
+                        propCriterion[key] = val;
+                        return propCriterion;
+                    });
+                var searchCriterion =  {$and: propCriteria};
+                return searchCriterion;
+            });
+        var searchQuery = {$or: searchCriteria};
+        return searchQuery;
+    };
     var retrieveReferences = function(rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
         return rankedReferencesCollection.find({                
@@ -110,6 +127,31 @@ module.exports = function () {
                         });
                     });                    
                 });                
+            }
+        },
+        getRankedReference: function(req, res) {
+            var id = req.params.id;
+            if (req.installationConfiguration.seed) {
+                req.rankedReferencesCollection.findOne({_id: id}, function(err, rankedReference) {
+                    if (err || req.underscore.isNull(rankedReference)) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+                    var searchQuery = objsArray2MongoSearchQuery(rankedReference.value.all);
+                    req.collectedReferencesCollection.find(searchQuery)
+                        .toArray(function(err, references) {
+                            if (err || req.underscore.isNull(references)) {
+                                res.status(404).end();
+                                return;
+                            }
+                            res.setHeader("Content-Type", "application/json");
+                            res.status(200).send(references).end();
+                        });            
+                });                
+            } else {
+                res.status(404).end();
+                return;
             }
         }
     };
