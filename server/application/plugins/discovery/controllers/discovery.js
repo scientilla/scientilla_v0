@@ -68,6 +68,10 @@ module.exports = function () {
             var configuration = configurationManager.get();
             if (configuration.seed) {
                 var aliases = req.query.aliases;
+                if (!aliases) {
+                    res.status(400).end();
+                    return;
+                }
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
                 async.waterfall([
                     function(cb) {
