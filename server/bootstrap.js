@@ -54,6 +54,20 @@ var peerUsersController = require("./application/plugins/user/controllers/peer-u
 var discoveryController = require("./application/plugins/discovery/controllers/discovery.js")();
 var tagsController = require("./application/plugins/tag/controllers/" + requirePrefix + "default.js")();
 
+// Detects user operative system
+var isWindows = /^win/.test(process.platform);
+var isMac = /^dar/.test(process.platform);
+var isLinux = /^lin/.test(process.platform);
+
+// Resolves paths accordingly to user operative system
+var dataPath = path.resolve(__dirname + "/../");
+if (isWindows) {
+    dataPath = path.resolve(process.env.APPDATA + "/Scientilla/");
+    if (!fs.existsSync(dataPath)) {
+        fs.mkdirSync(dataPath);
+    }
+}
+
 // Initializes databases
 var databaseEngine = tingodb({});
 var database;
@@ -74,19 +88,19 @@ var rankedReferencesCollection;
 
 async.series([
     function(seriesCallback) {
-        if (!fs.existsSync(path.resolve(__dirname + "/../files/"))) {
-            fs.mkdirSync(path.resolve(__dirname + "/../files/"));
+        if (!fs.existsSync(path.resolve(dataPath + "/files/"))) {
+            fs.mkdirSync(path.resolve(dataPath + "/files/"));
         }
         seriesCallback();
     },
     function(seriesCallback) {
-        if (!fs.existsSync(path.resolve(__dirname + "/../files/datasets/"))) {
-            fs.mkdirSync(path.resolve(__dirname + "/../files/datasets/"));
+        if (!fs.existsSync(path.resolve(dataPath + "/files/datasets/"))) {
+            fs.mkdirSync(path.resolve(dataPath + "/files/datasets/"));
         }
         seriesCallback();
     },    
     function(seriesCallback) {
-        database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
+        database = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
         seriesCallback();
     },
     function(seriesCallback) {
@@ -186,11 +200,11 @@ async.series([
         });
     },    
     function(seriesCallback) {
-        database = new databaseEngine.Db(path.resolve(__dirname + "/../files/datasets/") + path.sep, {});
+        database = new databaseEngine.Db(path.resolve(dataPath + "/files/datasets/") + path.sep, {});
         seriesCallback();
     },
     function(seriesCallback) {
-        var datasetFileNames = fs.readdirSync(path.resolve(__dirname + "/../files/datasets/") + path.sep);
+        var datasetFileNames = fs.readdirSync(path.resolve(dataPath + "/files/datasets/") + path.sep);
         async.eachSeries(
             datasetFileNames,
             function(datasetFileName, eachSeriesCallback) {
@@ -239,7 +253,7 @@ async.series([
             var rankReferencesJob = (function rankReferencesJob() {
                 console.log("Ranking references...");
                 collectedReferencesController.rankReferences(collectedReferencesCollection, function() {
-                    var database = new databaseEngine.Db(path.resolve(__dirname + "/../files/") + path.sep, {});
+                    var database = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
                     database.open(function(err, database) {
                     database.collection("ranked-references.db", function(err, collection) {
                             rankedReferencesCollection = collection;
