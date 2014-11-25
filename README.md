@@ -53,6 +53,16 @@ SCIENTILLA is in Alpha phase. While we are writing documentation to help people 
 
 
 
+## Using SCIENTILLA
+
+Scientilla is a web application that works also from your desktop and that is compatible with Windows, Mac and Linux. You can download the installation package and run it from your hardware and networking facilities or request a demo on [http://www.scientilla.net](http://www.scientilla.net) so that you can check what the software does.
+
+
+##Extending SCIENTILLA##
+
+The development of Scientilla continues constantly and collaborations are really wanted and accepted.
+
+
 ## Sponsor
 
 **Istituto Italiano di Tecnologia**
