@@ -1,5 +1,5 @@
 {
-    "port": "60000",
+    "port": 60000,
     "ssl_key_path": "/../certs/certificate.key",
     "ssl_cert_path": "/../certs/certificate.cert",
     "name": "SCIENTILLA",
