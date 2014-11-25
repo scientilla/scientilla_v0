@@ -82,7 +82,7 @@ var rankedReferencesCollection;
 
 async.series([
     function(seriesCallback) {
-        if (isWindows) {
+        if (configurationManager.get().files_routing && isWindows) {
             dataPath = path.resolve(process.env.APPDATA + "/Scientilla/");
             if (!fs.existsSync(dataPath)) {
                 fs.mkdirSync(dataPath);
