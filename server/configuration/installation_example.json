@@ -5,5 +5,5 @@
     "name": "SCIENTILLA",
     "url": "https://127.0.0.1:60000",
     "owner_user_id": 2,
-    "seed": "false"    
+    "seed": false    
 }
