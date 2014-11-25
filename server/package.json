@@ -5,18 +5,18 @@
     "private": true,
     "main": "index.js",
     "dependencies": {
-        "async": "latest",
-        "underscore": "latest",
-        "express": "latest",
-        "body-parser": "latest",
-        "cors": "latest",
-        "jsonwebtoken": "latest",
-        "express-jwt": "latest",
-        "tingodb": "latest",
-        "moment": "latest",
-        "request": "latest",
-        "bcrypt-nodejs": "latest",
-        "node-schedule": "latest",
-        "lodash": "latest"
+        "async": "0.9.0",
+        "underscore": "1.7.0",
+        "express": "4.10.1",
+        "body-parser": "1.9.2",
+        "cors": "2.5.0",
+        "jsonwebtoken": "1.1.2",
+        "express-jwt": "0.4.0",
+        "tingodb": "0.3.0",
+        "moment": "2.8.3",
+        "request": "2.47.0",
+        "bcrypt-nodejs": "0.0.3",
+        "node-schedule": "0.1.13",
+        "lodash": "2.4.1"
     }
 }
