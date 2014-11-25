@@ -5,7 +5,7 @@
  */
 
 angular.module("system").controller(
-    "systemAuthenticationController", ["$scope", "usersService", "systemStatusService", "$window", "$location", function($scope, usersService, systemStatusService, $window, $location) {
+    "systemAuthenticationController", ["$scope", "usersService", "settingsService", "systemStatusService", "$window", "$location", function($scope, usersService, settingsService, systemStatusService, $window, $location) {
         $scope.oUser = {
             username: "", 
             password: ""
@@ -16,11 +16,13 @@ angular.module("system").controller(
                 username: $scope.oUser.username,
                 password: $scope.oUser.password
             }).success(function(data, status, headers, config) {
-                usersService.updateUserInfo(data);
+                usersService.updateExchangedInformation(data);
+                settingsService.updateExchangedInformation(data);
                 $scope.$emit("successful-login");
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
-                usersService.deleteUserInfo();
+                usersService.deleteExchangedInformation();
+                settingsService.deleteExchangedInformation();
                 systemStatusService.react(status);
             });
         };

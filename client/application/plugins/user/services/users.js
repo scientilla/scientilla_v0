@@ -8,30 +8,34 @@ angular.module("user").factory(
     "usersService", function($http, $window) {
         var usersProvider = {};
         
-        usersProvider.updateUserInfo = function(data) {
+        usersProvider.updateExchangedInformation = function(data) {
             if (_.isEmpty(data)) {
                 return;
             }
             if (data.token) {
                 $window.sessionStorage.token = data.token;
             }
-            $window.sessionStorage.userType = data.user_type;
-            $window.sessionStorage.userRights = data.user_rights;
-            $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
-            if (data.peer_mode) {
-                $window.sessionStorage.peerMode = data.peer_mode;
+            if (data.user_type) {
+                $window.sessionStorage.userType = data.user_type;
             }
-            $window.sessionStorage.aliases = JSON.stringify(data.aliases);
-        };
+            if (data.user_rights) {
+                $window.sessionStorage.userRights = data.user_rights;
+            }
+            if (data.user_scientilla_nominative) {
+                $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
+            }
+            if (data.user_scientilla_nominative) {
+                $window.sessionStorage.aliases = JSON.stringify(data.aliases);
+            }
+        };       
         
-        usersProvider.deleteUserInfo = function() {
+        usersProvider.deleteExchangedInformation = function() {
             delete $window.sessionStorage.token;
             delete $window.sessionStorage.userType;
             delete $window.sessionStorage.userRights;
             delete $window.sessionStorage.userScientillaNominative;
-            delete $window.sessionStorage.peerMode;
             delete $window.sessionStorage.aliases;
-        };
+        };        
         
         usersProvider.getUsers = function(token) {
             return $http({
