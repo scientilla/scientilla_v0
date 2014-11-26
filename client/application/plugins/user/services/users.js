@@ -8,7 +8,7 @@ angular.module("user").factory(
     "usersService", function($http, $window) {
         var usersProvider = {};
         
-        usersProvider.updateExchangedInformation = function(data) {
+        usersProvider.updateExchangedInformation = function(data, callback) {
             if (_.isEmpty(data)) {
                 return;
             }
@@ -24,9 +24,10 @@ angular.module("user").factory(
             if (data.user_scientilla_nominative) {
                 $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
             }
-            if (data.user_scientilla_nominative) {
+            if (data.aliases) {
                 $window.sessionStorage.aliases = JSON.stringify(data.aliases);
             }
+            callback();
         };       
         
         usersProvider.deleteExchangedInformation = function() {

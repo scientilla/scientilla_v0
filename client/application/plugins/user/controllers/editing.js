@@ -66,7 +66,19 @@ angular.module("user").controller(
                     status: $scope.oUser.status,
                     id: $scope.oUser._id
                 }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                    $location.path("browse-users");
+                    usersService.getLoggedUser($window.sessionStorage.token).success(function(data, status, headers, config) {
+                        usersService.updateExchangedInformation({
+                            user_type: data.type,
+                            user_rights: data.rights,
+                            user_scientilla_nominative: data.scientilla_nominative,
+                            aliases: JSON.stringify(data.aliases)
+                        }, function() {
+                            $scope.$emit("successful-login");
+                            $location.path("browse-users");
+                        });
+                    }).error(function(data, status, headers, config) {
+                        systemStatusService.react(status);
+                    });
                 }).error(function(data, status, headers, config) {
                     systemStatusService.react(status);
                 });
