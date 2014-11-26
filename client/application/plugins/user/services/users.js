@@ -30,12 +30,13 @@ angular.module("user").factory(
             callback();
         };       
         
-        usersProvider.deleteExchangedInformation = function() {
+        usersProvider.deleteExchangedInformation = function(callback) {
             delete $window.sessionStorage.userToken;
             delete $window.sessionStorage.userType;
             delete $window.sessionStorage.userRights;
             delete $window.sessionStorage.userScientillaNominative;
             delete $window.sessionStorage.userAliases;
+            callback();
         };        
         
         usersProvider.getUsers = function(token) {

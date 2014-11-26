@@ -30,13 +30,14 @@ angular.module("system").controller(
             });
         };
         
-        $scope.logout = function() {            
-            delete $window.sessionStorage.userToken;
-            delete $window.sessionStorage.userType;
-            delete $window.sessionStorage.userRights;
-            delete $window.sessionStorage.userScientillaNominative;
-            delete $window.sessionStorage.peerMode;
-            $window.location.href = "/";
+        $scope.logout = function() {
+            usersService.deleteExchangedInformation(function() {
+                settingsService.deleteExchangedInformation(function() {
+                    $scope.$emit("successful-logout");
+                    // $window.location.href = "/";
+                    $location.path("login");
+                });
+            });
         };
     }]
 );
