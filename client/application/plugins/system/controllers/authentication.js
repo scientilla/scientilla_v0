@@ -24,9 +24,11 @@ angular.module("system").controller(
                     });
                 });
             }).error(function(data, status, headers, config) {
-                usersService.deleteExchangedInformation();
-                settingsService.deleteExchangedInformation();
-                systemStatusService.react(status);
+                usersService.deleteExchangedInformation(function() {
+                    settingsService.deleteExchangedInformation(function() {
+                        systemStatusService.react(status);
+                    });
+                });
             });
         };
         
