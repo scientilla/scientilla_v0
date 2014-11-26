@@ -39,7 +39,7 @@ angular.module("reference").controller(
             if (!$scope.referenceIdsApprovingMap[id]) {
                 referencesService.setReferenceAsApproved(
                     id, 
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.referenceIdsApprovingMap[id] = true;
                     $scope.changingApprovedReferenceId = ""; 
@@ -50,7 +50,7 @@ angular.module("reference").controller(
             } else {
                 referencesService.setReferenceAsNotApproved(
                     id, 
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.referenceIdsApprovingMap[id] = false;
                     $scope.changingApprovedReferenceId = ""; 
@@ -66,7 +66,7 @@ angular.module("reference").controller(
             if (!$scope.referenceIdsSharingMap[id]) {
                 referencesService.setReferenceAsShared(
                     id, 
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.referenceIdsSharingMap[id] = true;
                     $scope.changingSharedReferenceId = ""; 
@@ -77,7 +77,7 @@ angular.module("reference").controller(
             } else {
                 referencesService.setReferenceAsNotShared(
                     id, 
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.referenceIdsSharingMap[id] = false;
                     $scope.changingSharedReferenceId = ""; 
@@ -98,7 +98,7 @@ angular.module("reference").controller(
                         $scope.keywords,
                         $scope.currentPageNumber,
                         $scope.numberOfItemsPerPage,
-                        $window.sessionStorage.token
+                        $window.sessionStorage.userToken
                     ).success(function(data, status, headers, config) {
                         $scope.totalNumberOfItems = data.total_number_of_items;
                         $scope.aReferences = data.items;

@@ -31,7 +31,7 @@ angular.module("dataset").controller(
             activatedDatasetsService.setDatasetAsActivated(
                 id, 
                 "",
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 $scope.activatedDatasetId = id;
                 $scope.activatedDatasetPeerId = "";
@@ -47,7 +47,7 @@ angular.module("dataset").controller(
             if (!$scope.datasetIdsSharingMap[id]) {
                 datasetsService.setDatasetAsShared(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.datasetIdsSharingMap[id] = true;
                     $scope.changingSharedDatasetId = ""; 
@@ -58,7 +58,7 @@ angular.module("dataset").controller(
             } else {
                 datasetsService.setDatasetAsNotShared(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.datasetIdsSharingMap[id] = false;
                     $scope.changingSharedDatasetId = ""; 
@@ -75,7 +75,7 @@ angular.module("dataset").controller(
             $scope.error = false;
             async.series([
                 function(callback) {
-                    datasetsService.getDatasets($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    datasetsService.getDatasets($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.aDatasets = data;
                         if ($scope.aDatasets.length === 0) {
                             $scope.empty = true;
@@ -88,7 +88,7 @@ angular.module("dataset").controller(
                 },
                 function(callback) {
                     $scope.oActivatedDataset = {};
-                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.oActivatedDataset.id = data.dataset_id;
                         $scope.oActivatedDataset.peerId = data.peer_id;
                         callback();

@@ -14,7 +14,7 @@ angular.module("peer").controller(
         $scope.retrievePeer = function retrievePeer() {
             peersService.getPeer(
                 $routeParams.id, 
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 for (key in data) {
                     $scope.oPeer[key] = data[key];
@@ -31,7 +31,7 @@ angular.module("peer").controller(
                 name: $scope.oPeer.name,
                 url: $scope.oPeer.url,
                 id: $scope.oPeer._id
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-peers");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

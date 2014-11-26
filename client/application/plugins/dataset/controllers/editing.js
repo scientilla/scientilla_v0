@@ -16,7 +16,7 @@ angular.module("dataset").controller(
         $scope.retrieveDataset = function retrieveDataset() {
             datasetsService.getDataset(
                 $routeParams.id,
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 for (key in data) {
                     $scope.oDataset[key] = data[key];
@@ -35,7 +35,7 @@ angular.module("dataset").controller(
                 initiated_at: $scope.oDataset.initiated_at,
                 completed_at: $scope.oDataset.completed_at,
                 id: $scope.oDataset._id
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-datasets");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

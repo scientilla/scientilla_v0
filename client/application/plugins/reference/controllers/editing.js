@@ -57,7 +57,7 @@ angular.module("reference").controller(
                 var data = {results: []};
                 var keywords = query.term.trim().split(" ");
                 tagsService
-                    .getTags(keywords, $window.sessionStorage.token)
+                    .getTags(keywords, $window.sessionStorage.userToken)
                     .success(function(results){
                         var newCategory = keywords.join(".");
                         if (!_.isEmpty(newCategory) && !_.contains(results, newCategory)) {
@@ -121,7 +121,7 @@ angular.module("reference").controller(
         $scope.retrieveReference = function() {
             referencesService.getReference(
                 $routeParams.id, 
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 for (var key in data) {
                     $scope.oReference[key] = data[key];
@@ -166,7 +166,7 @@ angular.module("reference").controller(
                 id: $scope.oReference._id,
                 author_signatures: $scope.oReference.author_signatures,
                 organization_signature: $scope.oReference.organization_signature
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

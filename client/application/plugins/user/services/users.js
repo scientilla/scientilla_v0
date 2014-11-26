@@ -8,30 +8,36 @@ angular.module("user").factory(
     "usersService", function($http, $window) {
         var usersProvider = {};
         
-        usersProvider.updateUserInfo = function(data) {
+        usersProvider.updateExchangedInformation = function(data, callback) {
             if (_.isEmpty(data)) {
                 return;
             }
-            if (data.token) {
-                $window.sessionStorage.token = data.token;
+            if (data.user_token) {
+                $window.sessionStorage.userToken = data.user_token;
             }
-            $window.sessionStorage.userType = data.user_type;
-            $window.sessionStorage.userRights = data.user_rights;
-            $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
-            if (data.peer_mode) {
-                $window.sessionStorage.peerMode = data.peer_mode;
+            if (data.user_type) {
+                $window.sessionStorage.userType = data.user_type;
             }
-            $window.sessionStorage.aliases = JSON.stringify(data.aliases);
-        };
+            if (data.user_rights) {
+                $window.sessionStorage.userRights = data.user_rights;
+            }
+            if (data.user_scientilla_nominative) {
+                $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
+            }
+            if (data.user_aliases) {
+                $window.sessionStorage.userAliases = JSON.stringify(data.user_aliases);
+            }
+            callback();
+        };       
         
-        usersProvider.deleteUserInfo = function() {
-            delete $window.sessionStorage.token;
+        usersProvider.deleteExchangedInformation = function(callback) {
+            delete $window.sessionStorage.userToken;
             delete $window.sessionStorage.userType;
             delete $window.sessionStorage.userRights;
             delete $window.sessionStorage.userScientillaNominative;
-            delete $window.sessionStorage.peerMode;
-            delete $window.sessionStorage.aliases;
-        };
+            delete $window.sessionStorage.userAliases;
+            callback();
+        };        
         
         usersProvider.getUsers = function(token) {
             return $http({

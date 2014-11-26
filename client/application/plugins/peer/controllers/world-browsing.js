@@ -38,7 +38,7 @@ angular.module("peer").controller(
             $scope.changingActivatedPeerId = id;
             activatedPeersService.setPeerAsActivated(
                 id,
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 $scope.activatedPeerId = id;
                 $scope.changingActivatedPeerId = ""; 
@@ -53,7 +53,7 @@ angular.module("peer").controller(
             if (!$scope.peerIdsSharingMap[id]) {
                 peersService.setPeerAsShared(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.peerIdsSharingMap[id] = true;
                     $scope.changingSharedPeerId = ""; 
@@ -64,7 +64,7 @@ angular.module("peer").controller(
             } else {
                 peersService.setPeerAsNotShared(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.peerIdsSharingMap[id] = false;
                     $scope.changingSharedPeerId = ""; 
@@ -80,7 +80,7 @@ angular.module("peer").controller(
             if (!$scope.peerIdsAggregatingMap[id]) {
                 peersService.setPeerAsAggregated(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.peerIdsAggregatingMap[id] = true;
                     $scope.changingAggregatedPeerId = ""; 
@@ -91,7 +91,7 @@ angular.module("peer").controller(
             } else {
                 peersService.setPeerAsNotAggregated(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.peerIdsAggregatingMap[id] = false;
                     $scope.changingAggregatedPeerId = ""; 
@@ -108,7 +108,7 @@ angular.module("peer").controller(
             $scope.error = false;
             async.series([
                 function(callback) {
-                    peersService.getPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    peersService.getPeers($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.aPeers = data;
                         $scope.iPeers = $scope.aPeers.length;                  
                         callback();
@@ -119,7 +119,7 @@ angular.module("peer").controller(
                 },                
                 function(callback) {
                     $scope.oActivatedPeer = {};
-                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    activatedPeersService.getActivatedPeer($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.oActivatedPeer = data;
                         callback();
                     }).error(function(data, status, headers, config) {
@@ -150,7 +150,7 @@ angular.module("peer").controller(
         $scope.retrieveSeedPeers = function retrieveSeedPeers() {        
             async.series([
                 function(callback) {
-                    peersService.getSeedPeers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    peersService.getSeedPeers($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.aSeedPeers = data; 
                         callback();
                     }).error(function(data, status, headers, config) {
@@ -173,7 +173,7 @@ angular.module("peer").controller(
                         seedPeerReferencesService.getReferences(
                             seedPeerIndex,
                             $scope.keywords,
-                            $window.sessionStorage.token
+                            $window.sessionStorage.userToken
                         ).success(function(data, status, headers, config) {
                             $scope.aReferences = data;
                             if ($scope.aReferences.length === 0) {

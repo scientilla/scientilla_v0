@@ -20,7 +20,7 @@ angular.module("reference").controller(
         $scope.cloneReference = function(reference) {
             referencesService.createReferenceAsync(
                 reference, 
-                $window.sessionStorage.token, 
+                $window.sessionStorage.userToken, 
                 function(result) {
                     switch(result.status) {
                         case 200: 
@@ -52,7 +52,7 @@ angular.module("reference").controller(
                    return function(callback) {
                        referencesService.createReferenceAsync(
                            reference, 
-                           $window.sessionStorage.token,
+                           $window.sessionStorage.userToken,
                             function(result) {
                                callback(null, result);
                             }
@@ -147,7 +147,7 @@ angular.module("reference").controller(
                     };
                     repositoryReferencesService.getReferences(
                         $scope.repositoryId,
-                        $window.sessionStorage.token,
+                        $window.sessionStorage.userToken,
                         config
                     ).success(function(data, status, headers, config) {
                         if (data.length < $scope.oRepository.config.rows) {
@@ -181,7 +181,7 @@ angular.module("reference").controller(
                     };
                     repositoryReferencesService.getReferences(
                         $scope.repositoryId,
-                        $window.sessionStorage.token,
+                        $window.sessionStorage.userToken,
                         config
                     ).success(function(data, status, headers, config) {
                         if (data.length === 0) {
@@ -232,7 +232,7 @@ angular.module("reference").controller(
             
             repositoriesService.getRepository(
                 $scope.repositoryId,
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config){
                 $scope.oRepository = data;
                 $scope.currentPage = $scope.oRepository.config.page;

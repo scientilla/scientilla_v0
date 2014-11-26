@@ -15,7 +15,7 @@ angular.module("peer").controller(
             peersService.createPeer({
                 name: $scope.oPeer.name,
                 url: $scope.oPeer.url
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-peers");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

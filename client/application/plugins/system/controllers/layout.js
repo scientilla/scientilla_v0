@@ -24,7 +24,21 @@ angular.module("system").controller(
             /* jQuery code end */
             
             return updateSidebarStatus;
-        }();        
+        }();
+        
+        $scope.openSidebar = function() {
+            $scope.bSidebarVisualizationStatus = "opened";
+            $window.sessionStorage.sidebarVisualizationStatus = $scope.bSidebarVisualizationStatus;
+            
+            $scope.updateSidebarStatus();
+        };
+        
+        $scope.closeSidebar = function() {
+            $scope.bSidebarVisualizationStatus = "closed";
+            $window.sessionStorage.sidebarVisualizationStatus = $scope.bSidebarVisualizationStatus;
+            
+            $scope.updateSidebarStatus();
+        };        
         
         $scope.toggleSidebar = function() {
             if ($scope.bSidebarVisualizationStatus === "opened") {
@@ -44,8 +58,10 @@ angular.module("system").controller(
             return updateControllerStatus;
         }();
 
-        $scope.$on("successful-login", $scope.updateControllerStatus);
+        $scope.$on("successful-login", $scope.openSidebar);
         
-        $scope.$on("successful-login", $scope.toggleSidebar);
+        $scope.$on("successful-logout", $scope.closeSidebar);
+        
+        $scope.$on("exchanged-information-modification", $scope.updateControllerStatus);
     }]
 );

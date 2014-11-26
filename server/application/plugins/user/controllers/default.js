@@ -100,6 +100,7 @@ module.exports = function () {
                 res.json(users);
             });
         },
+        
         getPublicUsers: function(req, res) {
             var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
             req.usersCollection.find({
@@ -125,6 +126,7 @@ module.exports = function () {
                 res.json(publicUsers);
             });            
         },
+        
         getUser: function(req, res) {
             req.usersCollection.findOne({ _id: req.params.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
@@ -136,6 +138,7 @@ module.exports = function () {
                 res.json(user);
             });                
         },
+        
         getLoggedUser: function(req, res) {
             req.usersCollection.findOne({ _id: req.user.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
@@ -146,7 +149,8 @@ module.exports = function () {
                 res.setHeader("Content-Type", "application/json");
                 res.json(user);
             });                
-        },        
+        },
+        
         createUser: function(req, res) {
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
@@ -184,6 +188,7 @@ module.exports = function () {
                 res.end();
             });
         },
+        
         updateUser: function(req, res) { 
             req.usersCollection.findOne({ _id: req.params.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
@@ -232,6 +237,7 @@ module.exports = function () {
                 });
             });
         },
+        
         updateLoggedUser: function(req, res) { 
             req.usersCollection.findOne({ _id: req.user.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
@@ -281,12 +287,13 @@ module.exports = function () {
                         user_type: user.type,
                         user_rights: user.rights,
                         user_scientilla_nominative: user.scientilla_nominative,
-                        aliases: user.aliases
+                        user_aliases: user.aliases
                     }).end();
                     return;
                 });
             });
-        },        
+        }, 
+        
         loginUser: function(req, res){
             var installationConfiguration = configurationManager.get();
             req.usersCollection.find({}).toArray(function(err, users) {
@@ -415,12 +422,12 @@ module.exports = function () {
 
                             res.setHeader("Content-Type", "application/json");
                             res.json({
-                                token: token,
+                                user_token: token,
                                 user_type: user.type,
                                 user_rights: user.rights,
                                 user_scientilla_nominative: user.scientilla_nominative,
-                                peer_mode: installationConfiguration.seed,
-                                aliases: user.aliases
+                                user_aliases: user.aliases,
+                                peer_mode: installationConfiguration.seed
                             });
                         }
                     );					

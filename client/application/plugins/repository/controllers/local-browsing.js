@@ -28,7 +28,7 @@ angular.module("repository").controller(
             if (!$scope.repositoryIdsSharingMap[id]) {
                 repositoriesService.setRepositoryAsShared(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.repositoryIdsSharingMap[id] = true;
                     $scope.changingSharedRepositoryId = ""; 
@@ -39,7 +39,7 @@ angular.module("repository").controller(
             } else {
                 repositoriesService.setRepositoryAsNotShared(
                     id,
-                    $window.sessionStorage.token
+                    $window.sessionStorage.userToken
                 ).success(function(data, status, headers, config) {
                     $scope.repositoryIdsSharingMap[id] = false;
                     $scope.changingSharedRepositoryId = ""; 
@@ -56,7 +56,7 @@ angular.module("repository").controller(
             $scope.error = false;
             async.series([
                 function(callback) {
-                    repositoriesService.getRepositories($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    repositoriesService.getRepositories($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.aRepositories = data;
                         $scope.iRepositories = $scope.aRepositories.length;
                         callback();
@@ -67,7 +67,7 @@ angular.module("repository").controller(
                 },
                 function(callback) {
                     $scope.oActivatedRepository = {};
-                    activatedRepositoriesService.getActivatedRepository($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    activatedRepositoriesService.getActivatedRepository($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.oActivatedRepository = data;
                         callback();
                     }).error(function(data, status, headers, config) {

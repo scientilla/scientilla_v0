@@ -24,7 +24,7 @@ angular.module("network").controller(
                         $scope.keywords,
                         $scope.currentPageNumber,
                         $scope.numberOfItemsPerPage,
-                        $window.sessionStorage.token
+                        $window.sessionStorage.userToken
                     ).success(function(data, status, headers, config) {
                         $scope.totalNumberOfItems = data.total_number_of_items;
                         $scope.aReferences = data.items;

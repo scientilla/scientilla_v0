@@ -16,7 +16,7 @@ angular.module("discovery").controller(
         $scope.oRepositories = null;
         $scope.hasPaginationData = false;
         $scope.allSelected = false;
-        $scope.aliases = JSON.parse($window.sessionStorage.aliases);
+        $scope.aliases = JSON.parse($window.sessionStorage.userAliases);
         $scope.config = {
             keywords: "",
             page: 1,
@@ -26,7 +26,7 @@ angular.module("discovery").controller(
         $scope.cloneReference = function(reference) {
             referencesService.createReferenceAsync(
                 reference, 
-                $window.sessionStorage.token, 
+                $window.sessionStorage.userToken, 
                 function(result) {
                     switch(result.status) {
                         case 200: 
@@ -58,7 +58,7 @@ angular.module("discovery").controller(
                    return function(callback) {
                        referencesService.createReferenceAsync(
                            reference, 
-                           $window.sessionStorage.token,
+                           $window.sessionStorage.userToken,
                             function(result) {
                                callback(null, result);
                             }
@@ -154,7 +154,7 @@ angular.module("discovery").controller(
                     };
                     discoveryService.getReferences(
                         config,
-                        $window.sessionStorage.token,
+                        $window.sessionStorage.userToken,
                         function(results) {
                             if (results.data.length < $scope.config.rows) {
                                 $scope.lastPage = $scope.currentPage;
@@ -214,7 +214,7 @@ angular.module("discovery").controller(
             $scope.retrieveReferences();
             
 //            repositoriesService.getRepositories(
-//                $window.sessionStorage.token
+//                $window.sessionStorage.userToken
 //            ).success(function(data, status, headers, config){
 //                $scope.oRepositories = data;
 //                $scope.currentPage = $scope.config.page;

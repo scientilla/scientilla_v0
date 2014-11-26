@@ -12,7 +12,7 @@ angular.module("reference").controller(
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
-            referencesService.getReceivedReferences($window.sessionStorage.token).success(function(data, status, headers, config) {
+            referencesService.getReceivedReferences($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $scope.aReceivedReferences = data;
                 if ($scope.aReferences.length === 0) {
                     $scope.empty = true;

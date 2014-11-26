@@ -42,7 +42,7 @@ angular.module("repository").controller(
                     page: $scope.oRepository.config.page
                 },
                 extractors: $scope.oRepository.extractors
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-repositories");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

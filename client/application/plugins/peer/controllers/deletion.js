@@ -9,7 +9,7 @@ angular.module("peer").controller(
         $scope.deletePeer = function() {
             peersService.deletePeer({              
                 id: $routeParams.id
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-peers");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

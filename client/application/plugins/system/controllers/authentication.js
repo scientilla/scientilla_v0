@@ -5,7 +5,7 @@
  */
 
 angular.module("system").controller(
-    "systemAuthenticationController", ["$scope", "usersService", "systemStatusService", "$window", "$location", function($scope, usersService, systemStatusService, $window, $location) {
+    "systemAuthenticationController", ["$scope", "usersService", "settingsService", "systemStatusService", "$window", "$location", function($scope, usersService, settingsService, systemStatusService, $window, $location) {
         $scope.oUser = {
             username: "", 
             password: ""
@@ -16,22 +16,30 @@ angular.module("system").controller(
                 username: $scope.oUser.username,
                 password: $scope.oUser.password
             }).success(function(data, status, headers, config) {
-                usersService.updateUserInfo(data);
-                $scope.$emit("successful-login");
-                $location.path("browse-references");
+                usersService.updateExchangedInformation(data, function() {
+                    settingsService.updateExchangedInformation(data, function() {
+                        $scope.$emit("successful-login");                        
+                        $scope.$emit("exchanged-information-modification");
+                        $location.path("browse-references");
+                    });
+                });
             }).error(function(data, status, headers, config) {
-                usersService.deleteUserInfo();
-                systemStatusService.react(status);
+                usersService.deleteExchangedInformation(function() {
+                    settingsService.deleteExchangedInformation(function() {
+                        systemStatusService.react(status);
+                    });
+                });
             });
         };
         
-        $scope.logout = function() {            
-            delete $window.sessionStorage.token;
-            delete $window.sessionStorage.userType;
-            delete $window.sessionStorage.userRights;
-            delete $window.sessionStorage.userScientillaNominative;
-            delete $window.sessionStorage.peerMode;
-            $window.location.href = "/";
+        $scope.logout = function() {
+            usersService.deleteExchangedInformation(function() {
+                settingsService.deleteExchangedInformation(function() {
+                    $scope.$emit("successful-logout");
+                    // $window.location.href = "/";
+                    $location.path("login");
+                });
+            });
         };
     }]
 );

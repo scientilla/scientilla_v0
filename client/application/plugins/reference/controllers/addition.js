@@ -46,7 +46,7 @@ angular.module("reference").controller(
                 var data = {results: []};
                 var keywords = query.term.trim().split(" ");
                 tagsService
-                    .getTags(keywords, $window.sessionStorage.token)
+                    .getTags(keywords, $window.sessionStorage.userToken)
                     .success(function(results){
                         var newCategory = keywords.join(".");
                         if (!_.isEmpty(newCategory) && !_.contains(results, newCategory)) {
@@ -84,7 +84,7 @@ angular.module("reference").controller(
         $scope.createReference = function() {
             referencesService.createReferenceAsync(
                 $scope.oReference, 
-                $window.sessionStorage.token,
+                $window.sessionStorage.userToken,
                 function(result) {
                     switch (result.status) {
                         case 200:

@@ -15,10 +15,10 @@ angular.module("dataset").controller(
             async.series([
                 function(callback) {
                     $scope.oActivatedPeer = {};
-                    activatedPeersService.getActivatedPeer($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    activatedPeersService.getActivatedPeer($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         peersService.getPeer(
                             data.peer_id, 
-                            $window.sessionStorage.token
+                            $window.sessionStorage.userToken
                         ).success(function(data, status, headers, config) {
                             for (key in data) {
                                 $scope.oActivatedPeer[key] = data[key];

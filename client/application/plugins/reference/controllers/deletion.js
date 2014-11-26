@@ -9,7 +9,7 @@ angular.module("reference").controller(
         $scope.deleteReference = function() {
             referencesService.deleteReference({              
                 id: $routeParams.id
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

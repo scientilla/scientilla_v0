@@ -21,7 +21,7 @@ angular.module("reference").controller(
             referencesService.cloneReferenceFromPeer(
                 $scope.peerId, 
                 reference._id,
-                $window.sessionStorage.token, 
+                $window.sessionStorage.userToken, 
                 function(result) {
                     switch(result.status) {
                         case 200: 
@@ -54,7 +54,7 @@ angular.module("reference").controller(
                        referencesService.cloneReferenceFromPeer(
                             $scope.peerId, 
                             reference._id,
-                            $window.sessionStorage.token,
+                            $window.sessionStorage.userToken,
                             function(result) {
                                var data = {
                                    reference: reference,
@@ -132,7 +132,7 @@ angular.module("reference").controller(
                     peerReferencesService.getReferences(
                         $scope.peerId,
                         $scope.keywords,
-                        $window.sessionStorage.token
+                        $window.sessionStorage.userToken
                     ).success(function(data, status, headers, config) {
                         $scope.aReferences = data;
                         if ($scope.aReferences.length === 0) {

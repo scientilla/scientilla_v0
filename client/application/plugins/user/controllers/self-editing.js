@@ -28,7 +28,7 @@ angular.module("user").controller(
         
         $scope.retrieveUser = function retrieveUser() {
             usersService.getLoggedUser( 
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 for (key in data) {
                     if (key !== "password" && key !== "password_repetition") {
@@ -61,9 +61,11 @@ angular.module("user").controller(
                 password: $scope.oUser.password,
                 password_repetition: $scope.oUser.password_repetition,
                 status: $scope.oUser.status
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
-                usersService.updateUserInfo(data);
-                $location.path("browse-references");
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
+                usersService.updateExchangedInformation(data, function() {
+                    $scope.$emit("exchanged-information-modification");
+                    $location.path("browse-references");
+                });
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });

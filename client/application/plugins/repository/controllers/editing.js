@@ -53,7 +53,7 @@ angular.module("repository").controller(
         $scope.retrieveRepository = function retrieveRepository() {
             repositoriesService.getRepository(
                 $routeParams.id, 
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 for (var key in data) {
                     $scope.oRepository[key] = data[key];
@@ -76,7 +76,7 @@ angular.module("repository").controller(
                 },
                 extractors: $scope.oRepository.extractors,
                 id: $scope.oRepository._id
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-repositories");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
