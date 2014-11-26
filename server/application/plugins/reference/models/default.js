@@ -85,7 +85,11 @@ module.exports = function () {
             "organization_hashes",
             "user_hash",
             "creation_datetime",
-            "last_modification_datetime"            
+            "last_modification_datetime",
+            "versions",
+            "reliability",
+            "others",
+            "confirmedBy"
         ];
         
         return buildReference(reference, referenceFields, repository);
