@@ -287,7 +287,7 @@ module.exports = function () {
                         user_type: user.type,
                         user_rights: user.rights,
                         user_scientilla_nominative: user.scientilla_nominative,
-                        aliases: user.aliases
+                        user_aliases: user.aliases
                     }).end();
                     return;
                 });

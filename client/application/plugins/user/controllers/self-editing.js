@@ -62,8 +62,10 @@ angular.module("user").controller(
                 password_repetition: $scope.oUser.password_repetition,
                 status: $scope.oUser.status
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                usersService.updateUserInfo(data);
-                $location.path("browse-references");
+                usersService.updateExchangedInformation(data, function() {
+                    $scope.$emit("exchanged-information-modification");
+                    $location.path("browse-references");
+                });
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
