@@ -16,10 +16,13 @@ angular.module("system").controller(
                 username: $scope.oUser.username,
                 password: $scope.oUser.password
             }).success(function(data, status, headers, config) {
-                usersService.updateExchangedInformation(data);
-                settingsService.updateExchangedInformation(data);
-                $scope.$emit("successful-login");
-                $location.path("browse-references");
+                usersService.updateExchangedInformation(data, function() {
+                    settingsService.updateExchangedInformation(data, function() {
+                        $scope.$emit("successful-login");                        
+                        $scope.$emit("exchanged-information-modification");
+                        $location.path("browse-references");
+                    });
+                });
             }).error(function(data, status, headers, config) {
                 usersService.deleteExchangedInformation();
                 settingsService.deleteExchangedInformation();
@@ -28,7 +31,7 @@ angular.module("system").controller(
         };
         
         $scope.logout = function() {            
-            delete $window.sessionStorage.token;
+            delete $window.sessionStorage.userToken;
             delete $window.sessionStorage.userType;
             delete $window.sessionStorage.userRights;
             delete $window.sessionStorage.userScientillaNominative;

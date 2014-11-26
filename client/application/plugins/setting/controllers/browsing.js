@@ -13,7 +13,7 @@ angular.module("setting").controller(
             $scope.ready = false;
             async.series([
                 function(callback) {
-                    settingsService.getSettings($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    settingsService.getSettings($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.oSettings = data;
                         callback();
                     }).error(function(data, status, headers, config) {
@@ -21,7 +21,7 @@ angular.module("setting").controller(
                     });
                 },
                 function(callback) {
-                    usersService.getUsers($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    usersService.getUsers($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.aUsers = data;
                         callback();
                     }).error(function(data, status, headers, config) {
@@ -47,7 +47,7 @@ angular.module("setting").controller(
                 url: $scope.oSettings.url,
                 owner_user_id: $scope.oSettings.owner_user_id,
                 seed: $scope.oSettings.seed
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

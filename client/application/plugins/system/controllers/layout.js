@@ -44,8 +44,8 @@ angular.module("system").controller(
             return updateControllerStatus;
         }();
 
-        $scope.$on("successful-login", $scope.updateControllerStatus);
-        
         $scope.$on("successful-login", $scope.toggleSidebar);
+        
+        $scope.$on("exchanged-information-modification", $scope.updateControllerStatus);
     }]
 );

@@ -19,7 +19,7 @@ angular.module("dataset").controller(
                 status: $scope.oDataset.status,
                 initiated_at: $scope.oDataset.initiated_at,
                 completed_at: $scope.oDataset.completed_at
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-datasets");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

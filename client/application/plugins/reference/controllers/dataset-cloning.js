@@ -72,7 +72,7 @@ angular.module("reference").controller(
                         $scope.peerId, 
                         $scope.datasetId, 
                         $scope.referenceId,
-                        $window.sessionStorage.token
+                        $window.sessionStorage.userToken
                     ).success(function(data, status, headers, config) {
                         for (key in data) {
                             $scope.oReference[key] = data[key];
@@ -124,7 +124,7 @@ angular.module("reference").controller(
                     dataset_id: $scope.datasetId,
                     reference_id: $scope.referenceId
                 }
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-dataset-references/" + $scope.peerId + "/" + $scope.datasetId);
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

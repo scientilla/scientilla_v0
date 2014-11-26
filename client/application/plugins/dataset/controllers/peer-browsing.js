@@ -22,7 +22,7 @@ angular.module("dataset").controller(
             async.series([
                 function(callback) {
                     $scope.oActivatedDataset = {};
-                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.token).success(function(data, status, headers, config) {
+                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.oActivatedDataset.id = data.dataset_id;
                         $scope.oActivatedDataset.peerId = data.peer_id;
                         callback();
@@ -39,7 +39,7 @@ angular.module("dataset").controller(
                     peerDatasetsService.getDatasets(
                         $scope.peerId,
                         $scope.keywords,
-                        $window.sessionStorage.token
+                        $window.sessionStorage.userToken
                     ).success(function(data, status, headers, config) {
                         $scope.aDatasets = data;
                         if ($scope.aDatasets.length === 0) {
@@ -65,7 +65,7 @@ angular.module("dataset").controller(
             activatedDatasetsService.setDatasetAsActivated(
                 id, 
                 peerId,
-                $window.sessionStorage.token
+                $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
                 $scope.activatedDatasetId = id;
                 $scope.activatedDatasetPeerId = peerId;

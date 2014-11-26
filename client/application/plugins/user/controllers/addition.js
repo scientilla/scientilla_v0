@@ -45,7 +45,7 @@ angular.module("user").controller(
                 password: $scope.oUser.password,
                 password_repetition: $scope.oUser.password_repetition,
                 status: $scope.oUser.status
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-users");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

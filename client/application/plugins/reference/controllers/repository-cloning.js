@@ -129,7 +129,7 @@ angular.module("reference").controller(
                 source: {
                     type: "R"
                 }                
-            }, $window.sessionStorage.token).success(function(data, status, headers, config) {
+            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-repository-references/" + $scope.repositoryId);
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

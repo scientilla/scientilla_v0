@@ -12,8 +12,8 @@ angular.module("user").factory(
             if (_.isEmpty(data)) {
                 return;
             }
-            if (data.token) {
-                $window.sessionStorage.token = data.token;
+            if (data.user_token) {
+                $window.sessionStorage.userToken = data.user_token;
             }
             if (data.user_type) {
                 $window.sessionStorage.userType = data.user_type;
@@ -24,18 +24,18 @@ angular.module("user").factory(
             if (data.user_scientilla_nominative) {
                 $window.sessionStorage.userScientillaNominative = data.user_scientilla_nominative;
             }
-            if (data.aliases) {
-                $window.sessionStorage.aliases = JSON.stringify(data.aliases);
+            if (data.user_aliases) {
+                $window.sessionStorage.userAliases = JSON.stringify(data.user_aliases);
             }
             callback();
         };       
         
         usersProvider.deleteExchangedInformation = function() {
-            delete $window.sessionStorage.token;
+            delete $window.sessionStorage.userToken;
             delete $window.sessionStorage.userType;
             delete $window.sessionStorage.userRights;
             delete $window.sessionStorage.userScientillaNominative;
-            delete $window.sessionStorage.aliases;
+            delete $window.sessionStorage.userAliases;
         };        
         
         usersProvider.getUsers = function(token) {

@@ -8,13 +8,14 @@ angular.module("setting").factory(
     "settingsService", function($http) {
         var settingsProvider = {};
         
-        settingsProvider.updateExchangedInformation = function(data) {
+        settingsProvider.updateExchangedInformation = function(data, callback) {
             if (_.isEmpty(data)) {
                 return;
             }
             if (data.peer_mode) {
                 $window.sessionStorage.peerMode = data.peer_mode;
             }
+            callback();
         };
         
         settingsProvider.deleteExchangedInformation = function() {

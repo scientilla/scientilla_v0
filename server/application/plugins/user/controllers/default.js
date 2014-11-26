@@ -422,12 +422,12 @@ module.exports = function () {
 
                             res.setHeader("Content-Type", "application/json");
                             res.json({
-                                token: token,
+                                user_token: token,
                                 user_type: user.type,
                                 user_rights: user.rights,
                                 user_scientilla_nominative: user.scientilla_nominative,
-                                peer_mode: installationConfiguration.seed,
-                                aliases: user.aliases
+                                user_aliases: user.aliases,
+                                peer_mode: installationConfiguration.seed
                             });
                         }
                     );					

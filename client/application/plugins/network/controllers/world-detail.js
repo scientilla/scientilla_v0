@@ -19,7 +19,7 @@ angular.module("network").controller(
                     function(callback) {
                         worldNetworkReferencesService.getReference(
                             $routeParams.id,
-                            $window.sessionStorage.token
+                            $window.sessionStorage.userToken
                         ).success(function(data, status, headers, config) {
                             $scope.aReferences = data;
                             if ($scope.aReferences.length === 0) {
