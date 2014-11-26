@@ -130,7 +130,6 @@ module.exports = function () {
             }
         },
         getRankedReference: function(req, res) {
-            console.log("getRankedReference");
             var id = req.params.id;
             if (req.installationConfiguration.seed) {
                 req.rankedReferencesCollection.findOne({_id: id}, function(err, rankedReference) {
