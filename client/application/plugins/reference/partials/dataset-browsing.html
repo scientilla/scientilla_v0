@@ -14,7 +14,10 @@
                     <span class="navbar-brand" id="tools-link">DATASET PUBLICATIONS</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                      
+                    <form ng-submit="retrieveReferences()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <a data-toggle="modal" data-target="#get-started-button" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </a>                        
                         <div class="input-group">                                        
                             <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
@@ -26,11 +29,6 @@
                         <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
                         <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
                         <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                                                
-                        <!--
-                        <button id="help-button" type="button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content=" <i class='fa fa-search'></i> Search is made among Publication titles and authors." data-placement="left" data-html="true">
-                            <i class="fa fa-question-circle"></i>
-                        </button>
-                        -->
                     </form>                              
                 </div>
             </div>

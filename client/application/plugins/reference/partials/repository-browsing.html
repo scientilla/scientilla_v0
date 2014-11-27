@@ -15,7 +15,10 @@
                     <span class="navbar-brand" id="tools-link">SCIENTILLA</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                         
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <a data-toggle="modal" data-target="#get-started-button" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </a>                        
                         <div class="input-group">                                        
                             <input id="action-input" type="text" placeholder="Type something to..." class="form-control" ng-model="oRepository.config.keywords">
                             <span class="input-group-btn">
@@ -24,11 +27,6 @@
                         </div>
                         <a ng-click="retrievePrevReferences()" class="btn btn-default" ng-disabled="error || !ready || currentPage === firstPage"><i class="fa fa-angle-double-left"></i> Prev</a>
                         <a ng-click="retrieveNextReferences()" class="btn btn-default" ng-disabled="error || !ready || currentPage === lastPage"><i class="fa fa-angle-double-right"></i> Next</a>
-                        <!--
-                        <button id="help-button" type="button" class="btn btn-default" data-toggle="popover" title="<i class='fa fa-info-circle'></i> Help Information &amp; Suggestions" data-content="<i class='fa fa-mortar-board'></i> <b>Only You</b>: means that only publications confirmed by you, or supposed to be yours, are shown.<br /><br /><i class='fa fa-users'></i> <b>Only Others</b>: means that only other publications than yours are shown.<br /><br /><i class='fa fa-institution'></i> <b>Only You</b>: means that all publications are shown.<br /><br /><i class='fa fa-search'></i> Search is made among the <b>Local Publications List</b>." data-placement="left" data-html="true">
-                            <i class="fa fa-question-circle"></i>
-                        </button>
-                        -->
                     </form>
                 </div>
             </div>

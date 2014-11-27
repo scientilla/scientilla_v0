@@ -14,19 +14,10 @@
                     <span class="navbar-brand" id="tools-link">REPOSITORIES</span>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-left" role="search">
-                        <!--
-                        <button data-toggle="modal" data-target="#sources-button-help" class="btn btn-default help-button">
-                            <i class="fa fa-question-circle"></i>
-                        </button>  
-                        -->
-                    </form>
                     <form ng-submit="searchRepositoriesReferences()" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
-                        <!--
-                        <button data-toggle="modal" data-target="#searches-button-help" class="btn btn-default help-button">
+                        <a data-toggle="modal" data-target="#get-started-button" class="btn btn-default help-button">
                             <i class="fa fa-question-circle"></i>
-                        </button> 
-                        -->
+                        </a>
                         <div class="input-group">
                             <input ng-model="keywords" type="text" placeholder="Type something to..." class="form-control" readonly>
                             <div class="input-group-btn">
