@@ -5,7 +5,7 @@
  */
 
 angular.module("network").controller(
-    "networkBrowsingController", ["$scope", "networkReferencesService", "systemStatusService", "$window", "$location", function($scope, networkReferencesService, systemStatusService, $window, $location) {
+    "networkReferencesBrowsingController", ["$scope", "networkReferencesService", "systemStatusService", "$window", "$location", function($scope, networkReferencesService, systemStatusService, $window, $location) {
         $scope.keywords = "";
         $scope.aReferences = [];
         $scope.startPageNumber = 1;
