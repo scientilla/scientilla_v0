@@ -5,7 +5,7 @@
  */
 
 angular.module("user").controller(
-    "networkBrowsingController", ["$scope", "networkUsersService", "systemStatusService", "$window", "$location", function($scope, networkUsersService, systemStatusService, $window, $location) {
+    "networkUsersBrowsingController", ["$scope", "networkUsersService", "systemStatusService", "$window", "$location", function($scope, networkUsersService, systemStatusService, $window, $location) {
         $scope.keywords = "";
         $scope.aUsers = [];
         $scope.startPageNumber = 1;
