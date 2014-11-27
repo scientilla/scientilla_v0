@@ -8,6 +8,7 @@ var request = require("request");
 var _ = require("underscore");
 
 var networkModel = require("../../network/models/default.js")();
+var configurationManager = require("../../system/controllers/configuration.js");
 
 module.exports = function () {
     var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {
@@ -53,13 +54,23 @@ module.exports = function () {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;    
+            var inputNetworkPeerUrls = _.isUndefined(req.query.network_peers) ? '' : req.query.network_peers;
+            var configuration = configurationManager.get();
+            var thisUrl = configuration.url;
             var result = {};            
             if (req.installationConfiguration.seed) {
                 req.peersCollection.find({
                     aggregating_status: true
                 }).toArray(function(err, networkPeers) {
-                    var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, _.pluck(networkPeers, "url"), keywords, currentPageNumber, numberOfItemsPerPage);
+                    var networkPeerUrls;
+                    if (inputNetworkPeerUrls) {
+                        networkPeerUrls = inputNetworkPeerUrls;
+                    } else {
+                        networkPeerUrls = _.pluck(networkPeers, "url");
+                        networkPeerUrls.push(thisUrl);
+                    }
+                    var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, networkPeerUrls, keywords, currentPageNumber, numberOfItemsPerPage);
                     retrievedCollection.count(function(err, referencesCount) {
                         if (err || req.underscore.isNull(referencesCount)) {
                             res.status(404).end();
@@ -84,12 +95,18 @@ module.exports = function () {
                 }).toArray(function(err, networkPeers) {
                     networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
                         if (err) {
-                            //
+                            console.log(err);
+                            res.status(404).end();
+                            return;
                         }
+                        var url = seed.url + "/api/network-references";
+                        var networkPeerUrls = _.pluck(networkPeers, "url").push(thisUrl);
+                        var qs = {keywords: keywords, network_peers: networkPeerUrls};
                         req.request({
-                            url: seed.url + "/api/collected-references?keywords=" + encodeURIComponent(keywords) + "&network_peers=" + encodeURIComponent(_.pluck(networkPeers, "url").join(",")), 
+                            url: url, 
                             strictSSL: false,
-                            json: true 
+                            json: true,
+                            qs: qs
                         }, function (error, response, references) {
                             if (error) {
                                 res.status(404).end();
