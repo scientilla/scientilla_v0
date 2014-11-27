@@ -112,9 +112,10 @@ module.exports = function () {
                         //
                     }
                     req.request({ 
-                        url: seed.url + "/api/collected-references?keywords=" + keywords, 
+                        url: seed.url + "/api/world-network-references/", 
                         strictSSL: false,
-                        json: true 
+                        json: true,
+                        qs: req.query
                     }, function (error, response, result) {
                         if (error) {
                             res.status(404).end();
