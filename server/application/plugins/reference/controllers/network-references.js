@@ -55,7 +55,7 @@ module.exports = function () {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;    
-            var inputNetworkPeerUrls = _.isUndefined(req.query.network_peers) ? '' : req.query.network_peers;
+            var inputNetworkPeerUrls = _.isUndefined(req.query.network_peers) ? [] : req.query.network_peers;
             var configuration = configurationManager.get();
             var thisUrl = configuration.url;
             var result = {};            
@@ -64,11 +64,11 @@ module.exports = function () {
                     aggregating_status: true
                 }).toArray(function(err, networkPeers) {
                     var networkPeerUrls;
-                    if (inputNetworkPeerUrls) {
-                        networkPeerUrls = inputNetworkPeerUrls;
-                    } else {
+                    if (_.isEmpty(inputNetworkPeerUrls)) {
                         networkPeerUrls = _.pluck(networkPeers, "url");
                         networkPeerUrls.push(thisUrl);
+                    } else {
+                        networkPeerUrls = inputNetworkPeerUrls;
                     }
                     var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, networkPeerUrls, keywords, currentPageNumber, numberOfItemsPerPage);
                     retrievedCollection.count(function(err, referencesCount) {
@@ -100,7 +100,8 @@ module.exports = function () {
                             return;
                         }
                         var url = seed.url + "/api/network-references";
-                        var networkPeerUrls = _.pluck(networkPeers, "url").push(thisUrl);
+                        var networkPeerUrls = _.pluck(networkPeers, "url")
+                        networkPeerUrls.push(thisUrl);
                         var qs = {keywords: keywords, network_peers: networkPeerUrls};
                         req.request({
                             url: url, 
