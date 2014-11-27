@@ -31,10 +31,10 @@ angular.module("scientilla").config([
         // NETWORK
         }).when("/browse-network/", {
             templateUrl: "application/plugins/network/partials/browsing.html",
-            controller: "networkBrowsingController"
+            controller: "networkReferencesBrowsingController"
         }).when("/browse-world-network/", {
             templateUrl: "application/plugins/network/partials/world-browsing.html",
-            controller: "worldNetworkBrowsingController"            
+            controller: "worldNetworkReferencesBrowsingController"            
         }).when("/browse-world-network/:id/", {
             templateUrl: "application/plugins/network/partials/world-detail.html",
             controller: "worldDetailController"            
