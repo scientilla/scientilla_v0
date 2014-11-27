@@ -33,7 +33,7 @@
                 -->
                 <ul class="sidebar-nav nav nav-stacked nav-pills third-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/"><b><i class="glyphicon glyphicon-book"></i> Your Work!</b></a>
+                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/"><b><i class="fa fa-suitcase"></i> Your Work!</b></a>
                         <ul id="referencesMenu" class="nav nav-stacked nav-pills tree">
                             <li>
                                 <a activate href="#/browse-references/"><i class="glyphicon glyphicon-book"></i> Publications</a>
@@ -128,11 +128,26 @@
                         <h4 class="modal-title" id="get-started-label"><i class="fa fa-info-circle"></i> Get Started</h4>
                     </div>
                     <div class="modal-body">
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
+                        <p class="text-justify">
+                            <i class="fa fa-home"></i> <b>YOUR WORK!</b> = <small>References related to your scientific production.</small><br />
+                            <small><i class="fa fa-plus"></i> = Add a new reference.</small><br />
+                            <small><i class="glyphicon glyphicon-book"></i> <u>Publications</u> = List of your publications, here you can edit, share and sign them with your profile.</small><br />
+                            <small><u>Discoveries to be verified</u> = Your publications suggested from Scientilla and got from World Network. If you copy one of these publications, you will find it in "publications" under "your work!".</small><br />
+                            <hr />
+                            <i class="fa fa-sitemap"></i> <b>YOUR NETWORK!</b> = <small>Data from installations selected among those around the world.</small><br />
+                            <small><u>Publications</u> = List of all Publications. If you copy one of these publications, you will find it in "Publications" under "Your work!".</small><br />
+                            <small><u>Researchers</u> = List of all Researchers that come from Scientilla installations that you have chosen to include in your network.</small><br />
+                            <small><u>Organizations</u> = List of all Organizations that come from Scientilla installations that you have chosen to include in your network.</small><br />
+                            <small><u>Web Repositories</u> = List of all Web Repositories that come from Scientilla installations that you have added in your network.</small><br />
+                            <small><u>Scientilla Installations</u> = List of the included Scientilla installations.</small><br />
+                            <hr />
+                            <i class="fa fa-globe scientilla-globe"></i> <b>WORLD NETWORK!</b> = <small>Data from all installations around the world.</small><br />
+                            <small><u>Publications</u> = List of all Publications. If you copy one of these publications, you will find it in "Publications" under "Your work!".</small><br />
+                            <small><u>Researchers</u> = List of all Researchers.</small><br />
+                            <small><u>Organizations</u> = List of all Organizations.</small><br />
+                            <small><u>Web Repositories</u> = List of all Web Repositories.</small><br />
+                            <small><u>Scientilla Installations</u> = List of all Scientilla installations.</small>
+                        </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
