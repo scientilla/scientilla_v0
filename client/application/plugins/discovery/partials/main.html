@@ -41,7 +41,7 @@
                     <thead>
                         <tr>
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
-                            <th class="fixed-th-2x text-center"></i> Reliability</th>
+                            <th><i class="fixed-th-2x text-center"></i> Reliability</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-1x">
                                 <a ng-click="cloneSelectedReferences()" class="btn btn-default btn-block secondary-feature"><i class="fa fa-code-fork secondary-feature"></i></a>
@@ -66,7 +66,7 @@
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi">
-                                    {{reference.doi}}
+                                    {{reference.doi}}<br />
                                 </strong>
                                 <small>
                                     <br />Confirmed by
