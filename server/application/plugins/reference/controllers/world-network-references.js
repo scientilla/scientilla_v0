@@ -8,6 +8,8 @@ var async = require("async");
 var request = require("request");
 var _ = require("lodash");
 
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+
 var referenceManager = require("../../reference/models/default.js")();
 var networkModel = require("../../network/models/default.js")();
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
@@ -85,7 +87,7 @@ module.exports = function () {
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
             var result = {};            
-            if (req.installationConfiguration.seed) {
+            if (configurationManager.get().seed) {
                 var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
@@ -132,7 +134,7 @@ module.exports = function () {
         },
         getRankedReference: function(req, res) {
             var id = req.params.id;
-            if (req.installationConfiguration.seed) {
+            if (configurationManager.get().seed) {
                 req.rankedReferencesCollection.findOne({_id: id}, function(err, rankedReference) {
                     if (err || req.underscore.isNull(rankedReference)) {
                         console.log(err);

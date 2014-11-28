@@ -9,8 +9,9 @@ var _ = require("lodash");
 var crypto = require("crypto");
 var path = require("path");
 
-var model = require("../models/default.js")();
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+
+var model = require("../models/default.js")();
 var userManager = require("../../user/models/default.js")();
 
 // Defines actions
@@ -427,7 +428,7 @@ module.exports = function () {
                                 user_rights: user.rights,
                                 user_scientilla_nominative: user.scientilla_nominative,
                                 user_aliases: user.aliases,
-                                peer_mode: installationConfiguration.seed
+                                peer_mode: configurationManager.get().seed
                             });
                         }
                     );					

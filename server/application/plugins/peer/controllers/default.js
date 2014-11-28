@@ -11,6 +11,7 @@ var request = require("request");
 var underscore = require("underscore");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+
 var peerManager = require("../models/default.js")();
 
 // Defines actions

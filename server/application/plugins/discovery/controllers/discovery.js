@@ -8,9 +8,11 @@
 //var discoveryManager = require("../../discovery/models/discovery.js")();
 var _ = require("lodash");
 var async = require("async");
-var peerManager = require("../../peer/models/default.js")();
-var configurationManager = require("../../system/controllers/configuration.js");
+
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+
 var networkModel = require("../../network/models/default.js")();
+var peerManager = require("../../peer/models/default.js")();
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
 var referencesManager = require("../../reference/models/default.js")();
 

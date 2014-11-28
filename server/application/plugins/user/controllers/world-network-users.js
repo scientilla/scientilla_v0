@@ -8,6 +8,8 @@ var async = require("async");
 var request = require("request");
 var _ = require("lodash");
 
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+
 var networkModel = require("../../network/models/default.js")();
 
 module.exports = function () {
@@ -100,7 +102,7 @@ module.exports = function () {
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
             var result = {};            
-            if (req.installationConfiguration.seed) {
+            if (configurationManager.get().seed) {
                 var retrievedCollection = retrieveUsers(req.collectedUsersCollection, keywords, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, usersCount) {
                     if (err || req.underscore.isNull(usersCount)) {
@@ -113,7 +115,7 @@ module.exports = function () {
                             res.status(404).end();
                             return;
                         }
-                        resolveUserPeers(normalizedUsers, req.peersCollection, function(resolvedUsers) {
+                        resolveUserPeers(users, req.peersCollection, function(resolvedUsers) {
                             result.items = resolvedUsers;
                             res.setHeader("Content-Type", "application/json");
                             res.json(result);                             

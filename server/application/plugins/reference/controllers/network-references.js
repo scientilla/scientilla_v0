@@ -7,8 +7,9 @@
 var request = require("request");
 var _ = require("underscore");
 
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+
 var networkModel = require("../../network/models/default.js")();
-var configurationManager = require("../../system/controllers/configuration.js");
 
 module.exports = function () {
     var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {
@@ -59,7 +60,7 @@ module.exports = function () {
             var configuration = configurationManager.get();
             var thisUrl = configuration.url;
             var result = {};            
-            if (req.installationConfiguration.seed) {
+            if (configurationManager.get().seed) {
                 req.peersCollection.find({
                     aggregating_status: true
                 }).toArray(function(err, networkPeers) {
