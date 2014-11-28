@@ -296,7 +296,6 @@ module.exports = function () {
         }, 
         
         loginUser: function(req, res){
-            var installationConfiguration = configurationManager.get();
             req.usersCollection.find({}).toArray(function(err, users) {
                 if (err || req.underscore.isNull(users)) {
                     var errorMsg = "Error while checking for users";
@@ -339,8 +338,8 @@ module.exports = function () {
                             return;
                         }
                         var user = users[0];
-                        installationConfiguration.owner_user_id = user._id;
-                        req.fs.writeFile("./configuration/installation.json", JSON.stringify(installationConfiguration, null, 4), function(err) {
+                        configurationManager.get().owner_user_id = user._id;
+                        req.fs.writeFile("./configuration/installation.json", JSON.stringify(configurationManager.get(), null, 4), function(err) {
                             
                             if (err) {
                                 console.log(err);
@@ -389,7 +388,7 @@ module.exports = function () {
                             });
                         },
                         function(user, callback) {
-                            userManager.getUser(req.usersCollection, installationConfiguration.owner_user_id, function(err, owner) {
+                            userManager.getUser(req.usersCollection, configurationManager.get().owner_user_id, function(err, owner) {
                                 if (err) {
                                     callback(err);
                                     return;

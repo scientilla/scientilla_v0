@@ -26,9 +26,8 @@ var underscore = require("underscore");
 var application = express();
 
 var configurationManager = require(path.resolve(__dirname + "/application/plugins/system/controllers/configuration.js"));
-var installationConfiguration = configurationManager.get();
 var seedsConfiguration = require("./configuration/seeds.json");
-var isSeed = installationConfiguration.seed;
+var isSeed = configurationManager.get().seed;
 var requirePrefix = (isSeed) ? 'seed.' : '';
 
 var datasetsController = require("./application/plugins/dataset/controllers/default.js")();
@@ -285,7 +284,6 @@ application.use("*", function(req, res, next) {
     req.request = request;
     req.underscore = underscore;
     req.configurationManager = configurationManager;
-    req.installationConfiguration = installationConfiguration;
     req.seedsConfiguration = seedsConfiguration;
     req.adCollection = adCollection;
     req.apCollection = apCollection;
@@ -750,12 +748,12 @@ application.get("/api/discovery/filtered-references", expressJwt({secret: 'scien
 });
 
 // Bootstraps application
-var ssl_key = fs.readFileSync(path.resolve(__dirname + installationConfiguration.ssl_key_path));
-var ssl_cert = fs.readFileSync(path.resolve(__dirname + installationConfiguration.ssl_cert_path));
+var ssl_key = fs.readFileSync(path.resolve(__dirname + configurationManager.get().ssl_key_path));
+var ssl_cert = fs.readFileSync(path.resolve(__dirname + configurationManager.get().ssl_cert_path));
 var options = {
     key: ssl_key,
     cert: ssl_cert
 };
-https.createServer(options, application).listen(installationConfiguration.port, function() {
-    console.log("Listening on port %d", installationConfiguration.port);
+https.createServer(options, application).listen(configurationManager.get().port, function() {
+    console.log("Listening on port %d", configurationManager.get().port);
 });

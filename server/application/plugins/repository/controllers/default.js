@@ -144,7 +144,6 @@ module.exports = function () {
             });            
         },
         discoverRepositories: function(seedsConfiguration, peersCollection) {
-            var installationConfiguration = configurationManager.get();
             for (key in seedsConfiguration) {
                 
             }
