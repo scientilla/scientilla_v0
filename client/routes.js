@@ -37,7 +37,16 @@ angular.module("scientilla").config([
             controller: "worldNetworkReferencesBrowsingController"            
         }).when("/browse-world-network/:id/", {
             templateUrl: "application/plugins/network/partials/world-detail.html",
-            controller: "worldDetailController"            
+            controller: "worldDetailController"
+        }).when("/browse-network-users/", {
+            templateUrl: "application/plugins/user/partials/network-browsing.html",
+            controller: "networkUsersBrowsingController"
+        }).when("/browse-world-network-users/", {
+            templateUrl: "application/plugins/user/partials/world-network-browsing.html",
+            controller: "worldNetworkUsersBrowsingController"            
+        }).when("/browse-world-network-users/:id/", {
+            templateUrl: "application/plugins/user/partials/world-network-details.html",
+            controller: "worldNetworkUserDetailsController"            
             
         // PEERS
         }).when("/browse-peers/", {

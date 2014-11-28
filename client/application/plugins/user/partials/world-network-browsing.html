@@ -1,0 +1,128 @@
+<!--
+ ! Scientilla v0.0.1 (http://www.scientilla.net)
+ ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-left'}"></toaster-container>
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="navbar-brand" id="tools-link">WORLD NETWORK: <strong>{{totalNumberOfItems}}</strong> USERS (Alpha)</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <form ng-submit="retrieveUsers()" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <a data-toggle="modal" data-target="#get-started-button" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </a>                       
+                        <div class="input-group">                                        
+                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
+                            <span class="input-group-btn">
+                                <a ng-click="retrieveUsers()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                            </span>                            
+                        </div>                        
+                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-if="currentPageNumber <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
+                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
+                        <a ng-if="(currentPageNumber + 2) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
+                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>
+                    </form>                              
+                </div>
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">       
+        <div class="row">
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
+                            <!--
+                            <th class="fixed-th-1x">
+                                <a ng-click="cloneSelectedReferences()" class="btn btn-default btn-block secondary-feature"><i class="fa fa-code-fork secondary-feature"></i></a>
+                            </th>
+                            <th class="fixed-th-1x">
+                                <input type="checkbox" ng-model="allSelected"/>
+                            </th>
+                            -->
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr ng-repeat="user in aUsers">
+                            <td>
+                                {{user.authors}}<br />
+                                <i>{{user.title}}</i><br />
+                                <span ng-if="user.journal_name">
+                                    {{user.journal_name}}{{user.hasOwnProperty("journal_volume") && user.journal_volume !== "" ? ", " + user.journal_volume : ""}}{{user.hasOwnProperty("reference.journal_year") && user.journal_year !== "" ? " (" + user.journal_year + ")" : ""}}<br />
+                                </span>
+                                <span ng-if="user.conference_name">
+                                    {{user.conference_name}}{{user.hasOwnProperty("conference_acronym") && user.conference_acronym !== "" ? ", " + user.conference_acronym : ""}}<br />
+                                </span>
+                                <span ng-if="user.book_title">
+                                    {{user.book_title}}{{user.hasOwnProperty("book_pages") && user.book_pages !== "" ? ", " + user.book_pages : ""}}<br />
+                                </span>
+                                <strong ng-if="user.doi">
+                                    {{user.doi}}<br />
+                                </strong>
+                                <small>
+                                    <br />Confirmed by
+                                    <span ng-pluralize count="reference.confirmedBy" 
+                                        when="{'0': 'Nobody',
+                                               '1': 'one user',
+                                               'other': '{} users'}">
+                                    </span>
+                                    <span ng-show="user.versions > 1">- 
+                                        <span ng-pluralize 
+                                            count="reference.versions" offset="1"
+                                            when="{'1': 'No other version exists',
+                                                   '2': 'Another version exists',
+                                                   'other': '{} other versions exist'}"></span>
+                                    </span>
+                                    <br><a class="btn btn-default btn-xs" ng-href="#/browse-world-network/{{user.original_hash}}/">Details</a>
+                                </small>                                
+                            </td>       
+                            <!--
+                            <td>
+                                <a class="btn btn-default btn-block secondary-feature" ng-click="cloneReference(reference)" ng-disabled="!reference.clonable"><i class="fa fa-code-fork secondary-feature"></i></a>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="reference.selected" ng-disabled="!reference.clonable" />
+                            </td>
+                            -->
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="8">
+                                <div class="col-lg-12 empty-message">
+                                    No users available.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="8">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving users.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>
+    </div>
+</div>
