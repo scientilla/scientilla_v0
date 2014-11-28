@@ -12,6 +12,7 @@ var path = require("path");
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 
 var model = require("../models/default.js")();
+
 var userManager = require("../../user/models/default.js")();
 
 // Defines actions

@@ -4,9 +4,11 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
-var async = require("async");
-var request = require("request");
+// Resolves dependencies
 var _ = require("lodash");
+var async = require("async");
+var path = require("path");
+var request = require("request");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 

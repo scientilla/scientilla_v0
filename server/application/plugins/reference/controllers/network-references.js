@@ -4,8 +4,10 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
-var request = require("request");
+// Resolves dependencies
 var _ = require("underscore");
+var path = require("path");
+var request = require("request");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 

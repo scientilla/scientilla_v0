@@ -5,9 +5,10 @@
  */
 
 
-//var discoveryManager = require("../../discovery/models/discovery.js")();
+// Resolves dependencies
 var _ = require("lodash");
 var async = require("async");
+var path = require("path");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 
