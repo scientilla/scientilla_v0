@@ -69,7 +69,7 @@
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi">
-                                    {{reference.doi}}
+                                    <a ng-href="{{reference.doi}}" target="_blank">{{reference.doi}}</a><br />
                                 </strong>
                             </td>
                             <td class="text-center">
@@ -132,7 +132,7 @@
                                     {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
                                 </span>
                                 <strong ng-if="reference.doi">
-                                    {{reference.doi}}
+                                    <a ng-href="{{reference.doi}}" target="_blank">{{reference.doi}}</a><br />
                                 </strong>
                                 <h4><i class="fa fa-calendar"></i> Year:</h4>
                                 <strong>{{reference.year}}</strong>
