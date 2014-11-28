@@ -41,9 +41,9 @@ angular.module("scientilla").config([
         }).when("/browse-network-users/", {
             templateUrl: "application/plugins/user/partials/network-browsing.html",
             controller: "networkUsersBrowsingController"
-        }).when("/browse-world-network-users/", {
+        }).when("/browse-world-network-users/:userType", {
             templateUrl: "application/plugins/user/partials/world-network-browsing.html",
-            controller: "worldNetworkUsersBrowsingController"            
+            controller: "worldNetworkUsersBrowsingController"           
         }).when("/browse-world-network-users/:id/", {
             templateUrl: "application/plugins/user/partials/world-network-details.html",
             controller: "worldNetworkUserDetailsController"            

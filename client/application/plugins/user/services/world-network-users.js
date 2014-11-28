@@ -8,17 +8,27 @@ angular.module("user").factory(
     "worldNetworkUsersService", function($http) {
         var worldNetworkUsersProvider = {};
         
-        worldNetworkUsersProvider.getUsers = function(keywords, currentPageNumber, numberOfItemsPerPage, token) {
+        worldNetworkUsersProvider.getUsers = function(keywords, userType, currentPageNumber, numberOfItemsPerPage, token) {
             var params = {};
             if (keywords) {
                 params.keywords = keywords;
+            }
+            if (userType) {
+                switch (userType) {
+                    case "researchers":
+                        params.user_type = 1;
+                        break;
+                    case "organizations":
+                        params.user_type = 2;
+                        break;                    
+                }
             }
             if (currentPageNumber) {
                 params.current_page_number = currentPageNumber;
             } 
             if (numberOfItemsPerPage) {
                 params.number_of_items_per_page = numberOfItemsPerPage;
-            }            
+            }
             return $http({
 				method: "GET",
 				url: "/api/world-network-users",

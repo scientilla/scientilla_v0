@@ -6,8 +6,8 @@
 
 angular.module("user").controller(
     "worldNetworkUsersBrowsingController", 
-    ["$scope", "worldNetworkUsersService", "systemStatusService", "$window", "$location", 
-    function($scope, worldNetworkUsersService, systemStatusService, $window, $location) {
+    ["$scope", "$routeParams", "worldNetworkUsersService", "systemStatusService", "$window", "$location", 
+    function($scope, $routeParams, worldNetworkUsersService, systemStatusService, $window, $location) {
         $scope.keywords = "";
         $scope.aUsers = [];
         $scope.startPageNumber = 1;
@@ -24,6 +24,7 @@ angular.module("user").controller(
                 function(callback) {
                     worldNetworkUsersService.getUsers(
                         $scope.keywords,
+                        $routeParams.userType,
                         $scope.currentPageNumber,
                         $scope.numberOfItemsPerPage,
                         $window.sessionStorage.userToken

@@ -33,9 +33,10 @@ module.exports = function () {
         return searchQuery;
     };
     
-    var retrieveUsers = function(users, keywords, currentPageNumber, numberOfItemsPerPage) {            
+    var retrieveUsers = function(users, keywords, userType, currentPageNumber, numberOfItemsPerPage) {            
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        return users.find({                
+        return users.find({
+            type: userType,
             "$or": [
                 {
                     "scientilla_nominative": { 
@@ -68,11 +69,7 @@ module.exports = function () {
                     }
                 }
             ]
-        }).sort(
-            { 
-                type: 1
-            }
-        ).skip(
+        }).skip(
             currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
         ).limit(
             numberOfItemsPerPage
@@ -101,11 +98,12 @@ module.exports = function () {
     return {        
         getUsers: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var userType = _.isUndefined(req.query.user_type) ? '' : parseInt(req.query.user_type, 10);
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
             var result = {};            
             if (configurationManager.get().seed) {
-                var retrievedCollection = retrieveUsers(req.collectedUsersCollection, keywords, currentPageNumber, numberOfItemsPerPage);
+                var retrievedCollection = retrieveUsers(req.collectedUsersCollection, keywords, userType, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, usersCount) {
                     if (err || req.underscore.isNull(usersCount)) {
                         res.status(404).end();

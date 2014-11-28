@@ -43,7 +43,8 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
+                            <th><i class="fa fa-file-text"></i> Identificative Data</th>
+                            <th>Type</th>
                             <!--
                             <th class="fixed-th-1x">
                                 <a ng-click="cloneSelectedReferences()" class="btn btn-default btn-block secondary-feature"><i class="fa fa-code-fork secondary-feature"></i></a>
@@ -57,37 +58,17 @@
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="user in aUsers">
                             <td>
-                                {{user.authors}}<br />
-                                <i>{{user.title}}</i><br />
-                                <span ng-if="user.journal_name">
-                                    {{user.journal_name}}{{user.hasOwnProperty("journal_volume") && user.journal_volume !== "" ? ", " + user.journal_volume : ""}}{{user.hasOwnProperty("reference.journal_year") && user.journal_year !== "" ? " (" + user.journal_year + ")" : ""}}<br />
-                                </span>
-                                <span ng-if="user.conference_name">
-                                    {{user.conference_name}}{{user.hasOwnProperty("conference_acronym") && user.conference_acronym !== "" ? ", " + user.conference_acronym : ""}}<br />
-                                </span>
-                                <span ng-if="user.book_title">
-                                    {{user.book_title}}{{user.hasOwnProperty("book_pages") && user.book_pages !== "" ? ", " + user.book_pages : ""}}<br />
-                                </span>
-                                <strong ng-if="user.doi">
-                                    {{user.doi}}<br />
-                                </strong>
+                                Scientilla Nominative: <strong>{{user.scientilla_nominative}}</strong><br />
+                                {{user.type == 0 || user.type == 1 ? "Birth" : "Foundation"}} Country: <strong>{{user.birth_country}}</strong><br />
                                 <small>
-                                    <br />Confirmed by
-                                    <span ng-pluralize count="reference.confirmedBy" 
-                                        when="{'0': 'Nobody',
-                                               '1': 'one user',
-                                               'other': '{} users'}">
-                                    </span>
-                                    <span ng-show="user.versions > 1">- 
-                                        <span ng-pluralize 
-                                            count="reference.versions" offset="1"
-                                            when="{'1': 'No other version exists',
-                                                   '2': 'Another version exists',
-                                                   'other': '{} other versions exist'}"></span>
-                                    </span>
-                                    <br><a class="btn btn-default btn-xs" ng-href="#/browse-world-network/{{user.original_hash}}/">Details</a>
+                                    <br />From: <i class="fa fa-comments-o"></i> <a>{{user.peer_url}}</a>
                                 </small>                                
-                            </td>       
+                            </td>
+                            <td>
+                                <strong>
+                                    {{user.type == "" ? "! Not yet specified" : user.type == 0 ? "Operator" : user.type == 1 ? "Researcher" : "Organization"}}<br />
+                                </strong>   
+                            </td>                            
                             <!--
                             <td>
                                 <a class="btn btn-default btn-block secondary-feature" ng-click="cloneReference(reference)" ng-disabled="!reference.clonable"><i class="fa fa-code-fork secondary-feature"></i></a>
