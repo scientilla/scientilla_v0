@@ -4,6 +4,7 @@
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  -->
 <div id="toolbar-container">
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-left'}"></toaster-container>
     <div id="toolbar" class="container-fluid">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -34,7 +35,12 @@
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
-                            <th class="fixed-th-1x"></th>
+                            <th class="fixed-th-1x">
+                                <a ng-click="cloneSelectedReferences()" class="btn btn-default btn-block secondary-feature"><i class="fa fa-code-fork secondary-feature"></i></a>
+                            </th>
+                            <th class="fixed-th-1x">
+                                <input type="checkbox" ng-model="allSelected"/>
+                            </th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
@@ -71,9 +77,12 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </td>                            
+                            </td>          
                             <td>
-                                <a href="#/copy-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Duplicate"><i class="fa fa-files-o secondary-feature"></i></a>                            
+                                <a class="btn btn-default btn-block secondary-feature" ng-click="cloneReference(reference)" ng-disabled="!reference.clonable"><i class="fa fa-code-fork secondary-feature"></i></a>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="reference.selected" ng-disabled="!reference.clonable" />
                             </td>
                         </tr>
                     </tbody>
