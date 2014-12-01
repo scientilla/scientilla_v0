@@ -4,15 +4,15 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+// Resolves dependencies
+var _ = require("lodash");
 var async = require("async");
 var request = require("request");
-var _ = require("lodash");
 
 var referenceManager = require("../../reference/models/default.js")();
 var networkModel = require("../../network/models/default.js")();
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
 var configurationManager = require("../../system/controllers/configuration.js");
-var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
     var objsArray2MongoSearchQuery = function(objsArray) {
@@ -84,63 +84,58 @@ module.exports = function () {
     return {        
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
-            var peer;
-            async.waterfall([
-                function(cb) {
-                    if (configuration.seed) {
-                        peer = configuration.url;
-                        cb(null, peer);
-                    } else {
-                        networkModel.getRandomSeed(
-                            req.seedsConfiguration, 
-                            function(err, seed) {
-                                if (err) {
-                                    cb(err, null);
-                                } else {
-                                    cb(null, seed.url);
-                                }
-                            });
+            var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
+            var result = {};            
+            if (configuration.seed) {
+                var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
+                retrievedCollection.count(function(err, referencesCount) {
+                    if (err || req.underscore.isNull(referencesCount)) {
+                        res.status(404).end();
+                        return;
                     }
-                },
-                function(peer_url, cb) {
-                    var url = peer_url + "/api/ranked-references";
-                    req.request({ 
-                        url: url, 
-                        qs: req.query,
-                        strictSSL: false,
-                        json: true
-                    }, function(err, response, body) {
-                            if (err) {
-                                cb(err, null);
-                            }
-                            cb(null, body);
-                        });
-                    }
-            ],
-            function(err, referencesObj) {
-                var result = _.pick(referencesObj, ['total_number_of_items']);
-                referencesManager.getVerifiedReferences(
-                    req.referencesCollection,
-                    req.user.hashes,
-                    referencesObj.items, 
-                    null,
-                    function(err, references) {
-                        if (err) {
-                            console.log(err);
-                            res.status(500).end();
+                    result.total_number_of_items = referencesCount;
+                    retrievedCollection.toArray(function(err, references) {
+                        if (err || req.underscore.isNull(references)) {
+                            res.status(404).end();
                             return;
                         }
-                        result.items = references;
-                        res.setHeader("Content-Type", "application/json");
-                        res.json(result);
-                        return;
-                    });
-            });
+                        var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
+                        resolveReferencePeers(normalizedReferences, req.peersCollection, function(resolvedReferences) {
+                            result.items = resolvedReferences;
+                            res.setHeader("Content-Type", "application/json");
+                            res.json(result);                             
+                        });              
+                    });                
+                });                
+            } else {
+                networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
+                    if (err) {
+                        //
+                    }
+                    req.request({ 
+                        url: seed.url + "/api/world-network-references/", 
+                        strictSSL: false,
+                        json: true,
+                        qs: req.query
+                    }, function (error, response, result) {
+                        if (error) {
+                            res.status(404).end();
+                            return;
+                        }
+                        resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
+                            result.items = resolvedReferences;
+                            res.setHeader("Content-Type", "application/json");
+                            res.status(200).send(result).end();
+                        });
+                    });                    
+                });                
+            }
         },
         getRankedReference: function(req, res) {
             var id = req.params.id;
-            var configuration = configurationManager.get();
-            if (configuration.seed) {
+            if (req.installationConfiguration.seed) {
                 req.rankedReferencesCollection.findOne({_id: id}, function(err, rankedReference) {
                     if (err || req.underscore.isNull(rankedReference)) {
                         console.log(err);

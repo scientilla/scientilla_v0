@@ -44,6 +44,7 @@ var peerDatasetReferencesController = require("./application/plugins/reference/c
 var repositoryReferencesController = require("./application/plugins/reference/controllers/repository-references.js")();
 var seedPeerReferencesController = require("./application/plugins/reference/controllers/seed-peer-references.js")();
 var worldNetworkReferencesController = require("./application/plugins/reference/controllers/world-network-references.js")();
+var rankedReferencesController = require("./application/plugins/reference/controllers/ranked-references.js")();
 var repositoriesController = require("./application/plugins/repository/controllers/default.js")();
 var activatedRepositoriesController = require("./application/plugins/repository/controllers/activated-repositories.js")();
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
@@ -565,9 +566,20 @@ application.get("/api/received-references", expressJwt({secret: 'scientilla'}), 
     referencesController.getReceivedReferences(req, res);
 });
 
+//RANKED REFERENCES
+application.get("/api/ranked-references", function(req, res) {
+    console.log("Request to Read all Ranked References");
+    rankedReferencesController.getReferences(req, res);
+});
+application.get("/api/ranked-references/:id", function(req, res) {
+    console.log("Request to Read details for a Ranked Reference");
+    rankedReferencesController.getRankedReference(req, res);
+});
+
 // WORLD NETWORK REFERENCES
-application.get("/api/world-network-references", function(req, res) {
+application.get("/api/world-network-references", expressJwt({secret: 'scientilla'}),function(req, res) {
     console.log("Request to Read all World Network References");
+    systemController.checkUserCoherence(req, res);
     worldNetworkReferencesController.getReferences(req, res);
 });
 application.get("/api/world-network-references/:id", function(req, res) {
