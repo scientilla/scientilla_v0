@@ -85,7 +85,7 @@ module.exports = function () {
         },
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? "" : req.query.keywords;
-            var networkPeers = _.isUndefined(req.query.network_peers) ? [] : req.query.network_peers.split(",");
+            var networkPeers = _.isUndefined(req.query.network_peers) ? [] : req.query.network_peers;
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
             var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, networkPeers, keywords, currentPageNumber, numberOfItemsPerPage);
@@ -96,15 +96,16 @@ module.exports = function () {
                     return;
                 }
                 result.total_number_of_items = referencesCount;
-                retrievedCollection.toArray(function(err, references) {
-                    if (err || req.underscore.isNull(references)) {
-                        res.status(404).end();
-                        return;
-                    }
-                    result.items = references;
-                    res.setHeader("Content-Type", "application/json");
-                    res.json(result);                
-                });                
+                retrievedCollection
+                    .toArray(function(err, references) {
+                        if (err || req.underscore.isNull(references)) {
+                            res.status(404).end();
+                            return;
+                        }
+                        result.items = references;
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(result);                
+                    });                
             });            
         },
         getReference: function(req, res) {

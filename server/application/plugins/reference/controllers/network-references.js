@@ -5,123 +5,82 @@
  */
 
 // Resolves dependencies
-var _ = require("underscore");
+var _ = require("lodash");
 var path = require("path");
 var request = require("request");
+var async = require("async");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
-
+var referencesManager = require("../../reference/models/default.js")();
 var networkModel = require("../../network/models/default.js")();
 
 module.exports = function () {
-    var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {
-        var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        peers.push("");
-        return referencesCollection.find({ 
-            "$and": [
-                {
-                    peer_url: {
-                        $in: peers
-                    }
-                },
-                {
-                    "$or": [
-                        {
-                            title: { 
-                                $regex: regexQuery,
-                                $options: 'i'
-                            }
-                        },
-                        {
-                            authors: { 
-                                $regex: regexQuery,
-                                $options: 'i'
-                            }
-                        }
-                    ]
-                }
-            ]
-        }).sort(
-            {
-                original_hash: 1,
-                clone_hash: 1,                
-                creation_datetime: -1 
-            }
-        ).skip(
-            currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
-        ).limit(
-            numberOfItemsPerPage
-        );
-    };    
     return {        
         getReferences: function(req, res) {
-            var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
-            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;    
-            var inputNetworkPeerUrls = _.isUndefined(req.query.network_peers) ? [] : req.query.network_peers;
             var configuration = configurationManager.get();
             var thisUrl = configuration.url;
-            var result = {};            
-            if (configurationManager.get().seed) {
-                req.peersCollection.find({
-                    aggregating_status: true
-                }).toArray(function(err, networkPeers) {
-                    var networkPeerUrls;
-                    if (_.isEmpty(inputNetworkPeerUrls)) {
-                        networkPeerUrls = _.pluck(networkPeers, "url");
-                        networkPeerUrls.push(thisUrl);
+            var peer;
+            async.waterfall([
+                function(cb) {
+                    if (configuration.seed) {
+                        peer = configuration.url;
+                        cb(null, peer);
                     } else {
-                        networkPeerUrls = inputNetworkPeerUrls;
+                        networkModel.getRandomSeed(
+                            req.seedsConfiguration, 
+                            function(err, seed) {
+                                if (err) {
+                                    cb(err, null);
+                                } else {
+                                    cb(null, seed.url);
+                                }
+                            });
                     }
-                    var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, networkPeerUrls, keywords, currentPageNumber, numberOfItemsPerPage);
-                    retrievedCollection.count(function(err, referencesCount) {
-                        if (err || req.underscore.isNull(referencesCount)) {
-                            res.status(404).end();
-                            return;
-                        }
-                        result.total_number_of_items = referencesCount;
-                        retrievedCollection.toArray(function(err, references) {
-                            if (err || req.underscore.isNull(references)) {
-                                res.status(404).end();
-                                return;
-                            }
-                            // result.items = cleanReferencesTags(references);
-                            result.items = references;
-                            res.setHeader("Content-Type", "application/json");
-                            res.json(result);               
-                        });                
+                },
+                function(peer_url, cb) {
+                    req.peersCollection.find({
+                        aggregating_status: true
+                    }).toArray(function(err, networkPeers) {
+                        var networkPeerUrls = _.pluck(networkPeers, "url");
+                        networkPeerUrls.push(thisUrl);
+                        cb(err, peer_url, networkPeerUrls);
                     });
-                });
-            } else {
-                req.peersCollection.find({
-                    aggregating_status: true
-                }).toArray(function(err, networkPeers) {
-                    networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
+                },
+                function(peer_url, networkPeers, cb) {
+                    var url = peer_url + "/api/collected-references";
+                    var qs = _.merge(req.query, {network_peers: networkPeers});
+                    req.request({ 
+                        url: url, 
+                        qs: qs,
+                        strictSSL: false,
+                        json: true
+                    }, function(err, response, body) {
+                            if (err) {
+                                cb(err, null);
+                            }
+                            cb(null, body);
+                        });
+                    }
+            ],
+            function(err, referencesObj) {
+                var result = _.pick(referencesObj, ['total_number_of_items']);
+                referencesManager.getVerifiedReferences(
+                    req.referencesCollection,
+                    req.user.hashes,
+                    referencesObj.items, 
+                    null,
+                    function(err, references) {
                         if (err) {
                             console.log(err);
-                            res.status(404).end();
+                            res.status(500).end();
                             return;
                         }
-                        var url = seed.url + "/api/network-references";
-                        var networkPeerUrls = _.pluck(networkPeers, "url")
-                        networkPeerUrls.push(thisUrl);
-                        var qs = {keywords: keywords, network_peers: networkPeerUrls};
-                        req.request({
-                            url: url, 
-                            strictSSL: false,
-                            json: true,
-                            qs: qs
-                        }, function (error, response, references) {
-                            if (error) {
-                                res.status(404).end();
-                                return;
-                            }
-                            res.setHeader("Content-Type", "application/json");
-                            res.status(200).send(references).end();
-                        });                    
-                    }); 
-                });                
-            }
+                        result.items = references;
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(result);
+                        return;
+                    });
+            });
         }
     };
 };

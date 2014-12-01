@@ -577,7 +577,7 @@ application.get("/api/ranked-references/:id", function(req, res) {
 });
 
 // WORLD NETWORK REFERENCES
-application.get("/api/world-network-references", expressJwt({secret: 'scientilla'}),function(req, res) {
+application.get("/api/world-network-references", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all World Network References");
     systemController.checkUserCoherence(req, res);
     worldNetworkReferencesController.getReferences(req, res);
@@ -588,8 +588,9 @@ application.get("/api/world-network-references/:id", function(req, res) {
 });
 
 // NETWORK REFERENCES
-application.get("/api/network-references", function(req, res) {
+application.get("/api/network-references", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all Network References");
+    systemController.checkUserCoherence(req, res);
     networkReferencesController.getReferences(req, res);
 });
 
