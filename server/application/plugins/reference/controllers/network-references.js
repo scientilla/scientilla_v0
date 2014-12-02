@@ -60,6 +60,26 @@ module.exports = function () {
                             }
                             cb(null, body);
                         });
+                    },
+                    function(referencesObj, cb) {
+                        var result = _.pick(referencesObj, ['total_number_of_items']);
+                        async.mapSeries(
+                            referencesObj.items,
+                            function(reference, iterationCallback) {
+                                req.peersCollection.find({ url: reference.peer_url }).toArray(function(error, peers) {
+                                    if (error || _.isNull(peers) || _.isUndefined(peers) || peers.length === 0) {
+                                        iterationCallback(error, reference);
+                                        return;
+                                    }
+                                    reference.peer_id = peers[0]._id;
+                                    iterationCallback(null, reference);
+                                });
+                            },
+                            function(err, resolvedReferences) {
+                                result.items = resolvedReferences;
+                                cb(err, result);
+                            }
+                        );
                     }
             ],
             function(err, referencesObj) {
