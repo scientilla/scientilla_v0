@@ -46,28 +46,16 @@ module.exports = function () {
                 cb(null, body);
             });
     };
-    var verifyResults = function(req, res, err, referencesObj) {
-        if (err) {
-            console.log(err);
-            res.status(500).end();
-            return;
-        }
+    var verifyResults = function(referencesObj, referencesCollection, hashes, cb) {
         var result = _.pick(referencesObj, ['total_number_of_items']);
         referencesManager.getVerifiedReferences(
-            req.referencesCollection,
-            req.user.hashes,
+            referencesCollection,
+            hashes,
             referencesObj.items, 
             null,
             function(err, references) {
-                if (err) {
-                    console.log(err);
-                    res.status(500).end();
-                    return;
-                }
                 result.items = references;
-                res.setHeader("Content-Type", "application/json");
-                res.json(result);
-                return;
+                cb(err, result);
             });
     };
     
@@ -99,10 +87,20 @@ module.exports = function () {
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references";
                     makeRequest(reqUrl, req.query, cb);
+                },
+                function(referencesObj, cb) {
+                    verifyResults(referencesObj, req.referencesCollection, req.user.hashes, cb);
                 }
             ],
             function(err, referencesObj) {
-                verifyResults(req, res, err, referencesObj);
+                if (err) {
+                    console.log(err);
+                    res.status(500).end();
+                    return;
+                }
+                res.setHeader("Content-Type", "application/json");
+                res.json(referencesObj);
+                return;
             });
         },
         getRankedReference: function(req, res) {
@@ -114,10 +112,20 @@ module.exports = function () {
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references/" + id;
                     makeRequest(reqUrl, {}, cb);
+                },
+                function(referencesObj, cb) {
+                    verifyResults(referencesObj, req.referencesCollection, req.user.hashes, cb);
                 }
             ],
             function(err, referencesObj) {
-                verifyResults(req, res, err, referencesObj);
+                if (err) {
+                    console.log(err);
+                    res.status(500).end();
+                    return;
+                }
+                res.setHeader("Content-Type", "application/json");
+                res.json(referencesObj);
+                return;
             });
         }
     };
