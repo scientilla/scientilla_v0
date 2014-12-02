@@ -11,6 +11,13 @@ angular.module("network").controller(
             $scope.keywords = "";
             $scope.aReferences = [];
         
+            $scope.getPeerPath = function(peerId, peerUrl) {
+                if (peerUrl === $window.sessionStorage.url) {
+                    return '#/';
+                }
+                return '#/browse-peer-references/' + peerId + '/';
+            };
+        
             $scope.cloneReference = function(reference) {
                 referencesService.createReferenceAsync(
                     reference, 
