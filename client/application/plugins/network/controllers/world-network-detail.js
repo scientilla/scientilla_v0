@@ -119,7 +119,8 @@ angular.module("network").controller(
                             $routeParams.id,
                             $window.sessionStorage.userToken
                         ).success(function(data, status, headers, config) {
-                            $scope.aReferences = data;
+                            $scope.totalNumberOfItems = data.total_number_of_items;
+                            $scope.aReferences = data.items;
                             if ($scope.aReferences.length === 0) {
                                 $scope.empty = true;
                             }                    

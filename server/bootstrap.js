@@ -582,8 +582,9 @@ application.get("/api/world-network-references", expressJwt({secret: 'scientilla
     systemController.checkUserCoherence(req, res);
     worldNetworkReferencesController.getReferences(req, res);
 });
-application.get("/api/world-network-references/:id", function(req, res) {
+application.get("/api/world-network-references/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read details for a World Network Reference");
+    systemController.checkUserCoherence(req, res);
     worldNetworkReferencesController.getRankedReference(req, res);
 });
 
