@@ -59,9 +59,10 @@ module.exports = function () {
             });
     };
     
-    var resolveReferencePeers = function(references, peersCollection, finalizationCallback) {
+    var resolveReferencePeers = function(referencesObj, peersCollection, cb) {
+        var result = _.pick(referencesObj, ['total_number_of_items']);
         async.mapSeries(
-            references,
+            referencesObj.items,
             function(reference, iterationCallback) {
                 peersCollection.find({ url: reference.peer_url }).toArray(function(error, peers) {
                     if (error || _.isNull(peers) || _.isUndefined(peers) || peers.length === 0) {
@@ -72,8 +73,9 @@ module.exports = function () {
                     iterationCallback(null, reference);
                 });
             },
-            function(error, resolvedReferences) {
-                finalizationCallback(resolvedReferences);
+            function(err, resolvedReferences) {
+                result.items = resolvedReferences;
+                cb(err, result);
             }
         );
     };
@@ -112,6 +114,9 @@ module.exports = function () {
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references/" + id;
                     makeRequest(reqUrl, {}, cb);
+                },
+                function(referencesObj, cb) {
+                    resolveReferencePeers(referencesObj, req.peersCollection, cb);
                 },
                 function(referencesObj, cb) {
                     verifyResults(referencesObj, req.referencesCollection, req.user.hashes, cb);
