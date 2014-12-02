@@ -15,6 +15,9 @@ angular.module("setting").factory(
             if (data.peer_mode) {
                 $window.sessionStorage.peerMode = data.peer_mode;
             }
+            if (data.url) {
+                $window.sessionStorage.url = data.url;
+            }
             callback();
         };
         

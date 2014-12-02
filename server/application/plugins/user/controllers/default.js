@@ -422,13 +422,15 @@ module.exports = function () {
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
 
                             res.setHeader("Content-Type", "application/json");
+                            var configuration = configurationManager.get();
                             res.json({
                                 user_token: token,
                                 user_type: user.type,
                                 user_rights: user.rights,
                                 user_scientilla_nominative: user.scientilla_nominative,
                                 user_aliases: user.aliases,
-                                peer_mode: configurationManager.get().seed
+                                peer_mode: configuration.seed,
+                                url: configuration.url
                             });
                         }
                     );					

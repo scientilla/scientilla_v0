@@ -16,6 +16,13 @@ angular.module("network").controller(
         $scope.numberOfItemsPerPage = 20;
         $scope.totalNumberOfItems = 0;   
         
+        $scope.getPeerPath = function(peerId, peerUrl) {
+            if (peerUrl === $window.sessionStorage.url) {
+                return '#/';
+            }
+            return '#/browse-peer-references/' + peerId + '/';
+        };
+        
         $scope.cloneReference = function(reference) {
             referencesService.createReferenceAsync(
                 reference, 
