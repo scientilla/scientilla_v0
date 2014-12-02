@@ -15,7 +15,7 @@ var configurationManager = require("../../system/controllers/configuration.js");
 var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
-    var getSeedUrl = function(cb) {
+    var getSeedUrl = function(req, cb) {
         var configuration = configurationManager.get();
         var peer;
         if (configuration.seed) {
@@ -93,7 +93,9 @@ module.exports = function () {
     return {        
         getReferences: function(req, res) {
             async.waterfall([
-                getSeedUrl,
+                function(cb) {
+                    getSeedUrl(req, cb);
+                },
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references";
                     makeRequest(reqUrl, req.query, cb);
@@ -106,7 +108,9 @@ module.exports = function () {
         getRankedReference: function(req, res) {
             var id = req.params.id;
             async.waterfall([
-                getSeedUrl,
+                function(cb) {
+                    getSeedUrl(req, cb);
+                },
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references/" + id;
                     makeRequest(reqUrl, {}, cb);
