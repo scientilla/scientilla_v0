@@ -91,6 +91,9 @@ module.exports = function () {
                     makeRequest(reqUrl, req.query, cb);
                 },
                 function(referencesObj, cb) {
+                    resolveReferencePeers(referencesObj, req.peersCollection, cb);
+                },
+                function(referencesObj, cb) {
                     verifyResults(referencesObj, req.referencesCollection, req.user.hashes, cb);
                 }
             ],
