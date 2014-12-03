@@ -45,7 +45,8 @@ module.exports = function () {
             "creation_datetime",
             "last_modification_datetime",
             "peer_url",
-            "peer_id"
+            "peer_id",
+            "original_id"
         ];
         
         return buildReference(reference, newReferenceFields);
@@ -93,7 +94,8 @@ module.exports = function () {
             "others",
             "confirmedBy",
             "peer_url",
-            "peer_id"
+            "peer_id",
+            "original_id"
         ];
         
         return buildReference(reference, referenceFields, repository);

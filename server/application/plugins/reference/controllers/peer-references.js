@@ -101,6 +101,7 @@ module.exports = function () {
                                             function(publicReference, eachSeriesCallback) {
                                                 var cleanedPublicReference = referenceManager.createNewReference(publicReference);
                                                 cleanedPublicReference.peer_url = configurationManager.get().url;
+                                                cleanedPublicReference.original_id = publicReference._id;
                                                 collectedReferencesCollection.update({ peer_url: configurationManager.get().url, original_hash: cleanedPublicReference.original_hash, user_hash: cleanedPublicReference.user_hash }, { $set: cleanedPublicReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
                                                     if (err || _.isNull(storedCollectedReference)) {
                                                         // return; 
@@ -147,6 +148,7 @@ module.exports = function () {
                                                     function(peerReference, eachSeriesCallback) {
                                                         var cleanedPeerReference = referenceManager.createNewReference(peerReference);
                                                         cleanedPeerReference.peer_url = peers[0].url;
+                                                        cleanedPeerReference.original_id = peerReference._id;
                                                         collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: cleanedPeerReference.original_hash, user_hash: cleanedPeerReference.user_hash }, { $set: cleanedPeerReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
                                                             if (err || _.isNull(storedCollectedReference)) {
                                                                 // 
