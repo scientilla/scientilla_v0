@@ -16,18 +16,19 @@ angular.module("network").controller(
                     return '#/';
                 }
                 return '#/browse-peer-references/' + peerId + '/';
-            };
+            };      
         
             $scope.cloneReference = function(reference) {
-                referencesService.createReferenceAsync(
-                    reference, 
+                referencesService.cloneReferenceFromPeer(
+                    reference.peer_id, 
+                    reference.original_id,
                     $window.sessionStorage.userToken, 
                     function(result) {
                         switch(result.status) {
                             case 200: 
                                 notificationService.info('Reference cloned');
-                                result.reference.clonable = false;
-                                result.reference.selected = false;
+                                reference.clonable = false;
+                                reference.selected = false;
                                 break;
                             case 409:
                                 notificationService.warning('Element already cloned');
@@ -51,17 +52,22 @@ angular.module("network").controller(
                 var cloneReferences = 
                     _.map(selectedReferences, function(reference) {
                        return function(callback) {
-                           referencesService.createReferenceAsync(
-                               reference, 
-                               $window.sessionStorage.userToken,
+                           referencesService.cloneReferenceFromPeer(
+                                reference.peer_id, 
+                                reference.original_id,
+                                $window.sessionStorage.userToken,
                                 function(result) {
-                                   callback(null, result);
+                                   var data = {
+                                       reference: reference,
+                                       result: result
+                                   };
+                                   callback(null, data);
                                 }
                            );
                        };
                     });
 
-                var notifyResults = function(err, results){
+                var notifyResults = function(err, allData){
                     if (err) {
                         notificationService.info('Some error happened');
                         return;
@@ -69,11 +75,13 @@ angular.module("network").controller(
                     var clonedReferences = 0;
                     var duplicatedReferences = 0;
                     var errors = 0;
-                    results.forEach(function(result) {
+                    allData.forEach(function(data) {
+                        var result = data.result;
+                        var reference = data.reference;
                         switch(result.status) {
                             case 200: 
-                                result.reference.clonable = false;
-                                result.reference.selected = false;
+                                reference.clonable = false;
+                                reference.selected = false;
                                 clonedReferences++;
                                 break;
                             case 409:
@@ -90,7 +98,7 @@ angular.module("network").controller(
                         }
                     });
                     var msg = "";
-                    if (results.length === 0) {
+                    if (allData.length === 0) {
                         msg = 'No References Selected';
                     } else {
                         if (clonedReferences > 0) {
@@ -114,7 +122,7 @@ angular.module("network").controller(
                     notificationService.info(msg);
                 };
                 async.parallel(cloneReferences, notifyResults);
-            };     
+            };  
 
             $scope.retrieveReferences = function() {
                 $scope.empty = false;
