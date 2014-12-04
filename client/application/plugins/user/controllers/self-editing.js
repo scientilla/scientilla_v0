@@ -6,6 +6,29 @@
 
 angular.module("user").controller(
     "userSelfEditingController", ["$scope", "$routeParams", "usersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, usersService, systemStatusService, $window, $location) {
+        
+        var getUserAliases = function(user) {
+            var firstLetter = function(string) {return string.charAt(0).toUpperCase();};
+            var capitalize = function (str){
+                return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+            };
+            var first_name = capitalize(user.first_name);
+            var last_name = capitalize(user.last_name);
+            var initial_first_name = firstLetter(first_name);
+
+            var aliases = [];
+            aliases.push(first_name + " " + last_name);
+            aliases.push(last_name + " " + first_name);
+            aliases.push(last_name + " " + initial_first_name + ".");
+            aliases.push(initial_first_name + ". " + last_name + "");
+            aliases = _.uniq(_.union(aliases, user.aliases));
+            return aliases;
+        };
+        
+        $scope.resetUserAliases = function() {
+            $scope.oUser.aliases = getUserAliases($scope.oUser);
+        };
+            
         $scope.oUser = {
             type: "",
             rights: "",
@@ -26,21 +49,26 @@ angular.module("user").controller(
             status: ""
         };
         
-        $scope.retrieveUser = function retrieveUser() {
+        $scope.extractAliases = function() {
+            if (_.isUndefined($scope.oUser.aliasesStr))
+                return;
+            $scope.oUser.aliases = _.uniq($scope.oUser.aliasesStr.split(/,\s*/));
+        };
+        
+        $scope.retrieveUser = function() {
             usersService.getLoggedUser( 
                 $window.sessionStorage.userToken
             ).success(function(data, status, headers, config) {
-                for (key in data) {
+                for (var key in data) {
                     if (key !== "password" && key !== "password_repetition") {
                         $scope.oUser[key] = data[key];
                     }
                 }
+                $scope.oUser.aliasesStr = $scope.oUser.aliases.join(', ');
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
-            
-            return retrieveUser;
-        }();
+        };
         
         $scope.updateLoggedUser = function() {
             usersService.updateLoggedUser({
@@ -60,7 +88,8 @@ angular.module("user").controller(
                 username: $scope.oUser.username,
                 password: $scope.oUser.password,
                 password_repetition: $scope.oUser.password_repetition,
-                status: $scope.oUser.status
+                status: $scope.oUser.status,
+                aliases: $scope.oUser.aliases
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 usersService.updateExchangedInformation(data, function() {
                     $scope.$emit("exchanged-information-modification");
@@ -69,6 +98,10 @@ angular.module("user").controller(
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
-        };        
+        };       
+        
+        $scope.init = function() {
+            $scope.retrieveUser();
+        };
     }]
 );

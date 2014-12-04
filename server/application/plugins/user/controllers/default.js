@@ -261,6 +261,7 @@ module.exports = function () {
                 user.sex = !req.underscore.isUndefined(req.body.sex) ? req.body.sex.trim() : "";
                 user.email = !req.underscore.isUndefined(req.body.email) ? req.body.email.trim() : "";
                 user.username = !req.underscore.isUndefined(req.body.username) ? req.body.username.trim() : "";
+                user.aliases = !req.underscore.isUndefined(req.body.aliases) ? req.body.aliases : null;
                 var passwordToEncrypt = !req.underscore.isUndefined(req.body.password) ? req.body.password.trim() : "";
                 if (passwordToEncrypt != "") {
                     var encryptionSalt = req.bcryptNodejs.genSaltSync();
@@ -275,7 +276,9 @@ module.exports = function () {
                 if (!_.contains(user.hashes, user.hash)) {
                     user.hashes.push(user.hash);
                 }
-                user.aliases = getUserAliases(user);
+                if (_.isNull(user.aliases)) {
+                    user.aliases = getUserAliases(user);
+                }
                 user.last_modifier_id = req.user.id;
                 user.last_modification_datetime = req.moment().format();                
                 req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, userNum) {

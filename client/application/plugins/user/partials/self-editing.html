@@ -3,7 +3,7 @@
  ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  -->
-<div id="toolbar-container">
+<div id="toolbar-container" ng-init="init()">
     <div id="toolbar" class="container-fluid">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -148,7 +148,10 @@
                                 <li ng-repeat="alias in oUser.aliases">
                                     {{alias}}
                                 </li>
-                            </ul>                         
+                            </ul>  
+                            <div class="col-xs-12 nowrap">                          
+                                <input id="aliases" name="aliasesStr" ng-model="oUser.aliasesStr" ng-pattern="/^([^,]+)?(,\s*[^,]+)*$/" type="text" ng-change="extractAliases()" class="form-control">                            
+                            </div>
                         </div>
                     </div>              
                     <div class="form-group">
