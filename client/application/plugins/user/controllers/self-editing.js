@@ -21,12 +21,13 @@ angular.module("user").controller(
             aliases.push(last_name + " " + first_name);
             aliases.push(last_name + " " + initial_first_name + ".");
             aliases.push(initial_first_name + ". " + last_name + "");
-            aliases = _.uniq(_.union(aliases, user.aliases));
+            aliases = _.uniq(aliases);
             return aliases;
         };
         
         $scope.resetUserAliases = function() {
             $scope.oUser.aliases = getUserAliases($scope.oUser);
+            $scope.compressAliases();
         };
             
         $scope.oUser = {
@@ -54,6 +55,9 @@ angular.module("user").controller(
                 return;
             $scope.oUser.aliases = _.uniq($scope.oUser.aliasesStr.split(/,\s*/));
         };
+        $scope.compressAliases = function() {
+            $scope.oUser.aliasesStr = $scope.oUser.aliases.join(', ');
+        };
         
         $scope.retrieveUser = function() {
             usersService.getLoggedUser( 
@@ -64,7 +68,7 @@ angular.module("user").controller(
                         $scope.oUser[key] = data[key];
                     }
                 }
-                $scope.oUser.aliasesStr = $scope.oUser.aliases.join(', ');
+                $scope.compressAliases();
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
