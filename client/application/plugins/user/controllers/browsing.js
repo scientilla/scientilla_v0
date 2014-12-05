@@ -5,8 +5,33 @@
  */
 
 angular.module("user").controller(
-    "usersBrowsingController", ["$scope", "usersService", "systemStatusService", "$window", "$location", function($scope, usersService, systemStatusService, $window, $location) {
+    "usersBrowsingController", 
+    ["$scope", "usersService", "systemStatusService", "$window", "$location", "notificationService", 
+    function($scope, usersService, systemStatusService, $window, $location, notificationService) {
         $scope.aUsers = [];
+        
+        $scope.deleteUser = function(userId) {
+            usersService.deleteUser(userId, $window.sessionStorage.userToken)
+                .success(function(data, status, headers, config) {
+                    _.remove($scope.aUsers, {_id: userId} );
+                    notificationService.info("User deleted");
+                })
+                .error(function(data, status, headers, config) {
+                    switch(status) {
+                        case 400:
+                            systemStatusService.react(status);
+                            notificationService.warning('User cannot be delete.');
+                            break;
+                        case 500:
+                            systemStatusService.react(status);
+                            notificationService.error('An error happened');
+                            break;
+                        default:
+                            systemStatusService.react(status);
+                            notificationService.error('An error happened');
+                    }
+                });
+        };
         
         $scope.retrieveUsers = function retrieveUsers() {
             $scope.empty = false;

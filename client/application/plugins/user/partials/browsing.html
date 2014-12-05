@@ -4,6 +4,7 @@
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  -->
 <div id="toolbar-container">
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-left'}"></toaster-container>
     <div id="toolbar" class="container-fluid">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -49,6 +50,7 @@
                             <td>
                                 <button type="button" class="btn btn-default btn-block"><i class="fa fa-lock"></i> Block</button>
                                 <a href="#/edit-user/{{user._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
+                                <button ng-click="deleteUser(user._id)" type="button" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Delete</button>
                                 <!-- <a href="#/delete-user/{{user._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
                             </td>
                         </tr>
@@ -77,7 +79,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12">
                         <a href="#/add-user/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
-                    </div>                           
+        </div>
                     <div class="col-xs-12 col-sm-12" ng-repeat="user in aUsers">
                         <div class="panel panel-default">
                             <div class="panel-body">

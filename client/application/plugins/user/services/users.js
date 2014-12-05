@@ -124,6 +124,20 @@ angular.module("user").factory(
 			});
         };        
         
+        
+        usersProvider.deleteUser = function(userId, token) {
+            return $http({
+				method: "DELETE",
+				url: "/api/users/" + userId,
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+            
+        };
+        
         return usersProvider;
     }    
 );

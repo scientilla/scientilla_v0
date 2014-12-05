@@ -8,6 +8,7 @@
 var _ = require("lodash");
 var crypto = require("crypto");
 var path = require("path");
+var async = require("async");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 
@@ -91,6 +92,33 @@ module.exports = function () {
     };
     
     return {
+        deleteUser: function(req, res) {
+            var userId = req.params.id;
+            async.waterfall([
+                function(cb) {
+                    req.usersCollection.findOne({_id: userId}, cb);
+                },
+                function(user, cb) {
+                    req.referencesCollection.count({user_hash: { $in: user.hashes }}, cb);
+                },
+                function(referencesCount, cb) {
+                    if (referencesCount > 0) {
+                        console.log('User is not deletable.');
+                        res.status(400).end();
+                        return;
+                    }
+                    req.usersCollection.remove({ _id: userId }, cb);
+                }
+            ],
+            function(err, numRemoved) {
+                if (err || numRemoved !== 1) {
+                    console.log(err);
+                    res.status(500).end();
+                    return;
+                }
+                res.status(200).end();
+            });
+        },
         getUsers: function(req, res) {
             req.usersCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, users) {
                 if (err || req.underscore.isNull(users)) {

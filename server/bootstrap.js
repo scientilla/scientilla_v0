@@ -734,6 +734,12 @@ application.put("/api/users/:id", expressJwt({secret: 'scientilla'}), function(r
     usersController.updateUser(req, res);
 });
 
+application.delete("/api/users/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
+    console.log("Request to Delete a User");
+    systemController.checkUserCoherence(req, res);
+    usersController.deleteUser(req, res);
+});
+
 // LOGGED USERS
 application.get("/api/logged-users", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read the Logged User");
