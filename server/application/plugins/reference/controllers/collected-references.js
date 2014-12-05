@@ -71,9 +71,21 @@ module.exports = function () {
                             function(r) { 
                                 return _.pick(r, ['peer_url', 'original_hash', 'user_hash', 'clone_hash']);
                             });
+                        var affiliations = _.flatten(_.map(
+                            references,
+                            function(r) {
+                                if (_.isUndefined(r.author_signatures)) {
+                                    return [];
+                                }
+                                if (_.isUndefined(r.author_signatures.organizations)) {
+                                    return [];
+                                }
+                                return r.author_signatures.organizations;
+                            }));
                         var result = {
                             top: top,
-                            all: all
+                            all: all,
+                            affiliations: affiliations
                         };
                         return result;
                     }

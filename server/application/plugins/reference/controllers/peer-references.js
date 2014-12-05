@@ -102,6 +102,8 @@ module.exports = function () {
                                                 var cleanedPublicReference = referenceManager.createNewReference(publicReference);
                                                 cleanedPublicReference.peer_url = configurationManager.get().url;
                                                 cleanedPublicReference.original_id = publicReference._id;
+                                                cleanedPublicReference.author_signatures = publicReference.author_signatures;
+                                                cleanedPublicReference.organization_signatures = publicReference.organization_signatures;
                                                 collectedReferencesCollection.update({ peer_url: configurationManager.get().url, original_hash: cleanedPublicReference.original_hash, user_hash: cleanedPublicReference.user_hash }, { $set: cleanedPublicReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
                                                     if (err || _.isNull(storedCollectedReference)) {
                                                         // return; 
@@ -149,6 +151,8 @@ module.exports = function () {
                                                         var cleanedPeerReference = referenceManager.createNewReference(peerReference);
                                                         cleanedPeerReference.peer_url = peers[0].url;
                                                         cleanedPeerReference.original_id = peerReference._id;
+                                                        cleanedPeerReference.author_signatures = peerReference.author_signatures;
+                                                        cleanedPeerReference.organization_signatures = peerReference.organization_signatures;
                                                         collectedReferencesCollection.update({ peer_url: peers[0].url, original_hash: cleanedPeerReference.original_hash, user_hash: cleanedPeerReference.user_hash }, { $set: cleanedPeerReference }, { upsert: true, w: 1 }, function(err, storedCollectedReference) {
                                                             if (err || _.isNull(storedCollectedReference)) {
                                                                 // 
