@@ -48,10 +48,20 @@ module.exports = function () {
         var initial_first_name = firstLetter(first_name);
         
         var aliases = [];
-        aliases.push(first_name + " " + last_name);
-        aliases.push(last_name + " " + first_name);
-        aliases.push(last_name + " " + initial_first_name + ".");
-        aliases.push(initial_first_name + ". " + last_name + "");
+        if (user.type == 2) {
+            var businessName = capitalize(user.business_name);
+            aliases.push(businessName);
+        }
+        else {
+            var first_name = capitalize(user.first_name);
+            var last_name = capitalize(user.last_name);
+            var initial_first_name = firstLetter(first_name);
+
+            aliases.push(first_name + " " + last_name);
+            aliases.push(last_name + " " + first_name);
+            aliases.push(last_name + " " + initial_first_name + ".");
+            aliases.push(initial_first_name + ". " + last_name + "");
+        }
         aliases = _.uniq(_.union(aliases, user.aliases));
         return aliases;
     };

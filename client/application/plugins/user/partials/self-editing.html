@@ -106,7 +106,7 @@
                         <div ng-if="oUser.type == 2">
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="business_name" ng-model="oUser.business_name" type="text" placeholder="Business Name" class="form-control">
+                                    <input id="business_name" ng-model="oUser.business_name" type="text" placeholder="Business Name" ng-change="resetUserAliases()" class="form-control">
                                 </div>
                             </div>
                         </div>
