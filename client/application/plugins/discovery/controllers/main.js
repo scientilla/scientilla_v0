@@ -17,6 +17,7 @@ angular.module("discovery").controller(
         $scope.hasPaginationData = false;
         $scope.allSelected = false;
         $scope.aliases = JSON.parse($window.sessionStorage.userAliases);
+        $scope.userType = $window.sessionStorage.userType;
         $scope.config = {
             keywords: "",
             page: 1,
@@ -150,7 +151,8 @@ angular.module("discovery").controller(
                         keywords: $scope.config.keywords,
                         page: $scope.currentPage,
                         rows: $scope.config.rows,
-                        aliases: $scope.aliases
+                        aliases: $scope.aliases,
+                        user_type: $scope.userType
                     };
                     discoveryService.getReferences(
                         config,

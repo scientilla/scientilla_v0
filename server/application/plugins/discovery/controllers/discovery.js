@@ -18,7 +18,7 @@ var collectedReferencesManager = require("../../reference/models/collected-refer
 var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
-        var getReferencesFromAliases = function(rankedReferencesCollection, aliases, config, cb) {
+        var getReferencesFromAliases = function(rankedReferencesCollection, aliases, userType, config, cb) {
             if (!aliases) {
                 cb(new Error("no aliases"), null);
             }
@@ -29,18 +29,36 @@ module.exports = function () {
             var skip = (page - 1) * rows;
             var keywordsQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             
-            rankedReferencesCollection.find({
-                $and: [
-                    {"value.top.authors": { 
-                        $regex: aliasesQuery,
-                        $options: 'i'
-                    }},
-                    {"value.top.title": {
-                        $regex: keywordsQuery,
-                        $options: 'i'
-                    }}
-                ]
-            })
+            var searchQuery;
+            
+            if (userType == 2) {
+                searchQuery = {
+                    $and: [
+                        {"value.affiliations": { 
+                            $in: aliases
+                        }},
+                        {"value.top.title": {
+                            $regex: keywordsQuery,
+                            $options: 'i'
+                        }}
+                    ]
+                };
+            } else {
+                searchQuery = {
+                    $and: [
+                        {"value.top.authors": { 
+                            $regex: aliasesQuery,
+                            $options: 'i'
+                        }},
+                        {"value.top.title": {
+                            $regex: keywordsQuery,
+                            $options: 'i'
+                        }}
+                    ]
+                };
+            }
+            
+            rankedReferencesCollection.find(searchQuery)
                     .sort({ 
                     "value.top.creation_datetime": -1
                 }
@@ -61,10 +79,12 @@ module.exports = function () {
             var configuration = configurationManager.get();
             if (configuration.seed) {
                 var aliases = req.query.aliases;                
+                var userType = req.query.user_type;                
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
                 getReferencesFromAliases(
                     req.rankedReferencesCollection, 
                     aliases, 
+                    userType,
                     config, 
                     function(err, references) {
                         if (err) {
