@@ -45,7 +45,8 @@ module.exports = function () {
             var cleanedSearchTerms = _.map(searchTerms, function(t){return t.replace(/[^a-zA-Z.]/, '');});
             var regexTerms = _.map(cleanedSearchTerms, function(s) {return new RegExp(s, "i");});
             req.tagsCollection.find({
-                _id : {$in : regexTerms}
+                /* tingodb bug? */
+//                _id : {$in : regexTerms}
             })
                 .sort({ "value.count": -1 })
                 .toArray(function(err, tagsObj) {
@@ -54,7 +55,14 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
-                    var tags = _.pluck(tagsObj, '_id');
+                    var filteredTagsObj = _.filter(
+                            tagsObj, 
+                            function(t) { 
+                                return _.any(regexTerms, function(rt) {
+                                    return rt.test(t._id);
+                                });
+                            });
+                    var tags = _.pluck(filteredTagsObj, '_id');
                     res.json(tags);
                 });
         }
