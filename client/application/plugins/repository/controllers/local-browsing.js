@@ -6,7 +6,7 @@
 
 angular.module("repository").controller(
     "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, activatedRepositoriesService, systemStatusService, $window, $location) {
-        $scope.changingSharedRepositoryId = "";
+        // $scope.changingSharedRepositoryId = "";
         $scope.keywords = "";
         $scope.aRepositories = [];
         $scope.aReferences = [];
@@ -15,6 +15,7 @@ angular.module("repository").controller(
         $scope.numberOfItemsPerPage = 25;
         $scope.totalNumberOfItems = 10000;        
         
+        /*
         $scope.generateRepositoryIdsSharingMap = function(aRepositories) {
             var repositoryIdsSharingMap = {};
             for (lpKey in aRepositories) {
@@ -22,7 +23,9 @@ angular.module("repository").controller(
             }
             return repositoryIdsSharingMap;
         }
-        
+        */
+
+        /*    
         $scope.switchRepositorySharingStatus = function(id) {
             $scope.changingSharedRepositoryId = id;
             if (!$scope.repositoryIdsSharingMap[id]) {
@@ -49,6 +52,7 @@ angular.module("repository").controller(
                 });
             }
         }
+        */
         
         $scope.retrieveRepositories = function retrieveRepositories() {    
             $scope.iRepositories = 0;
@@ -78,10 +82,12 @@ angular.module("repository").controller(
                     $scope.activatedRepositoryId = $scope.oActivatedRepository.repository_id;
                     callback();
                 },
+                /*
                 function(callback) {
                     $scope.repositoryIdsSharingMap = $scope.generateRepositoryIdsSharingMap($scope.aRepositories);
                     callback();
-                },            
+                },
+                */
                 function(callback) {
                     $scope.ready = true;
                     callback();

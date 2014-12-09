@@ -84,6 +84,7 @@ angular.module("repository").factory(
 			});
         };        
         
+        /*
         repositoriesProvider.setRepositoryAsShared = function(id, token) {
             return $http({
 				method: "PUT",
@@ -96,7 +97,9 @@ angular.module("repository").factory(
                 }
 			});
         };
+        */
         
+        /*
         repositoriesProvider.setRepositoryAsNotShared = function(id, token) {
             return $http({
 				method: "PUT",
@@ -108,7 +111,8 @@ angular.module("repository").factory(
                     Authorization: 'Bearer ' + token
                 }
 			});
-        };        
+        };
+        */
         
         return repositoriesProvider;
     }    
