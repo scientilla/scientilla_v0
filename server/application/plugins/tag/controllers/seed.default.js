@@ -39,17 +39,24 @@ module.exports = function () {
         },
         getTags: function(req, res) {
             var searchTerms = req.query.keywords || [];
-            if (!req.underscore.isArray(searchTerms)) {
+            if (!_.isArray(searchTerms)) {
                 searchTerms = [searchTerms];
             }
-            var cleanedSearchTerms = req.underscore.map(searchTerms, function(t){return t.replace(/[^a-zA-Z]/, '');});
-            var searchRegex = new RegExp('(' + cleanedSearchTerms.join(').*?(') + ')');
-            var filteredTags = req.underscore.filter(
-                    tags, 
-                    function(t) {
-                        return searchRegex.test(t);
+            var cleanedSearchTerms = _.map(searchTerms, function(t){return t.replace(/[^a-zA-Z.]/, '');});
+            var regexTerms = _.map(cleanedSearchTerms, function(s) {return new RegExp(s, "i");});
+            req.tagsCollection.find({
+                _id : {$in : regexTerms}
+            })
+                .sort({ "value.count": -1 })
+                .toArray(function(err, tagsObj) {
+                    if (err) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+                    var tags = _.pluck(tagsObj, '_id');
+                    res.json(tags);
                 });
-            res.json(filteredTags);
         }
     };
 };
