@@ -65,24 +65,6 @@
                     </tbody>                    
                 </table>
             </div>
-            <div class="col-sm-12 visible-xs visible-sm">
-                <div class="row">                          
-                    <div class="col-xs-12 col-sm-12" ng-repeat="repository in aRepositories">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4><i class="fa fa-file-text"></i> Peer Name:</h4>
-                                {{repository.name}}<br />
-                                <h4><i class="fa fa-tags"></i> URL:</h4>
-                                {{repository.url}}<br />
-                            </div>
-                            <div class="panel-footer">
-                                <a href="#/copy-activated-peer-repository/{{repository._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-copy"></i> Copy</a>
-                                <div class="clearfix"></div>
-                            </div>                                    
-                        </div>
-                    </div>                                
-                </div>
-            </div>
         </div>
         <div ng-show="!ready" class="row">
             <div class="col-lg-12 waiting-screen">

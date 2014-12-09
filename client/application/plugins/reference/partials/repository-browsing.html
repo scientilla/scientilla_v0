@@ -106,37 +106,6 @@
                     </tbody>                    
                 </table>
             </div>
-            <div class="col-sm-12 visible-xs visible-sm">
-                <div class="row">                          
-                    <div class="col-xs-12 col-sm-12" ng-repeat="reference in aReferences">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4><i class="fa fa-file-text"></i> Bibliographic Data:</h4>
-                                {{reference.authors}}<br />
-                                <i>{{reference.title}}</i><br />
-                                <span ng-if="reference.journal_name">
-                                    {{reference.journal_name}}{{reference.hasOwnProperty("journal_volume") && reference.journal_volume !== "" ? ", " + reference.journal_volume : ""}}{{reference.hasOwnProperty("reference.journal_year") && reference.journal_year !== "" ? " (" + reference.journal_year + ")" : ""}}<br />
-                                </span>
-                                <span ng-if="reference.conference_name">
-                                    {{reference.conference_name}}{{reference.hasOwnProperty("conference_acronym") && reference.conference_acronym !== "" ? ", " + reference.conference_acronym : ""}}<br />
-                                </span>
-                                <span ng-if="reference.book_title">
-                                    {{reference.book_title}}{{reference.hasOwnProperty("book_pages") && reference.book_pages !== "" ? ", " + reference.book_pages : ""}}<br />
-                                </span>
-                                <strong ng-if="reference.doi">
-                                    <a ng-href="{{reference.doi}}" target="_blank">{{reference.doi}}</a><br />
-                                </strong>
-                                <h4><i class="fa fa-calendar"></i> Year:</h4>
-                                <strong>{{reference.year}}</strong>
-                            </div>
-                            <div class="panel-footer">
-                                <a href="#/clone-repository-reference/{{repositoryId}}/{{$index}}/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
-                                <div class="clearfix"></div>
-                            </div>                                    
-                        </div>
-                    </div>                                
-                </div>
-            </div>
         </div>
         <div ng-show="!ready && !error" class="row">
             <div class="col-lg-12 waiting-screen">
