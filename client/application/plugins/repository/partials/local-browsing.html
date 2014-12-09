@@ -66,9 +66,6 @@
                                 -->
                             </th>                            
                             <th><i class="fa fa-exchange"></i> Repository Name</th>
-                            <!--
-                            <th class="fixed-th-1x"></th>
-                            -->
                             <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x">
                                 <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
@@ -85,11 +82,6 @@
                                     <strong>{{repository.name}}</strong>
                                 </a>
                             </td>
-                            <!--
-                            <td>
-                                <a ng-click="switchRepositorySharingStatus(repository._id)" class="{{repositoryIdsSharingMap[repository._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{repository._id == changingSharedRepositoryId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{repositoryIdsSharingMap[repository._id] && changingSharedRepositoryId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>
-                            </td> 
-                            -->
                             <td>
                                 <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-edit"></i></a>
                             </td>
