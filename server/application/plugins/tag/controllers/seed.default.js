@@ -5,6 +5,7 @@
  */
 
 var model = require("../models/default.js")();
+var _ = require("lodash");
 
 module.exports = function () {
     var tags = [
@@ -12,6 +13,30 @@ module.exports = function () {
         'engineering.robotics.artificial intelligence'
     ];
     return {
+        extractTags: function(collectedReferencesCollection, cb) {
+            collectedReferencesCollection.mapReduce(
+                function() { 
+                    _.forEach(this.tags, function(t) {emit(t, 1); }); 
+                },
+                function(tag, count) {
+                    return count;
+                },
+                {
+                    query: {tags: { $exists: true }},
+                    out: { replace: 'tags.db' },
+                    finalize: function(tag, count) {
+                        if (!_.isArray(count)) {
+                            count = [count];
+                        }
+                        var totalCount = count.length;
+                        return {tag: tag, count: totalCount};
+                    }
+                }
+            );
+            if (_.isFunction(cb)) {
+                cb();
+            }
+        },
         getTags: function(req, res) {
             var searchTerms = req.query.keywords || [];
             if (!req.underscore.isArray(searchTerms)) {
