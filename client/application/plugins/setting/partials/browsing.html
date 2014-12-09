@@ -109,30 +109,6 @@
                     </div>                    
                 </form>
             </div>
-            <div class="col-sm-12 visible-xs visible-sm">
-                <div class="row">                           
-                    <div class="col-xs-12 col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4>Port:</h4>
-                                {{oSettings.port}}
-                                <h4>SSL Key Path:</h4>
-                                {{oSettings.ssl_key_path}}
-                                <h4>SSL Certificate Path:</h4>
-                                {{oSettings.ssl_cert_path}}
-                                <h4>Name:</h4>
-                                {{oSettings.name}}                                
-                                <h4>URL:</h4>
-                                {{oSettings.url}}
-                                <h4>Owner User:</h4>
-                                <select ng-model="oSettings.owner_user_id">
-                                    <option value="{{user._id}}" ng-repeat="user in aUsers" ng-selected="user._id == oSettings.owner_user_id">{{(((user.first_name + ' ' + user.last_name).trim() + ' ' + user.middle_name).trim() + ' ' + user.business_name).trim()}}</option>    
-                                </select>                                
-                            </div>                                    
-                        </div>
-                    </div>                                
-                </div>
-            </div>
         </div>
         <div ng-show="!ready" class="row">
             <div class="col-lg-12 waiting-screen">

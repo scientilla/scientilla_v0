@@ -82,33 +82,7 @@ angular.module("repository").factory(
                     Authorization: 'Bearer ' + token
                 }
 			});
-        };        
-        
-        repositoriesProvider.setRepositoryAsShared = function(id, token) {
-            return $http({
-				method: "PUT",
-				url: "/api/repositories/" + id,
-                data: { sharing_status: true },
-                cache: false,
-                timeout: 30000,
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-			});
         };
-        
-        repositoriesProvider.setRepositoryAsNotShared = function(id, token) {
-            return $http({
-				method: "PUT",
-				url: "/api/repositories/" + id,
-                data: { sharing_status: false },
-                cache: false,
-                timeout: 30000,
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
-			});
-        };        
         
         return repositoriesProvider;
     }    

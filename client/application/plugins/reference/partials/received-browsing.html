@@ -79,25 +79,6 @@
                     </tbody>                    
                 </table>
             </div>
-            <div class="col-sm-12 visible-xs visible-sm">
-                <div class="row">                          
-                    <div class="col-xs-12 col-sm-12" ng-repeat="reference in aReceivedReferences">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4><i class="fa fa-file-text"></i> Bibliographic Reference:</h4>
-                                {{reference.title}}<br /><strong>Journal:</strong> {{reference.journal}}, <strong>Authors:</strong> Thandu M., Rapozzi V., Xodo L., Albericio F., Comuzzi C. and <u>Cavalli S.</u>, <strong>Year:</strong> {{reference.year}}<br />
-                                <h4><i class="fa fa-tags"></i> Tags:</h4>
-                                {{reference.tags}}<br />
-                            </div>
-                            <div class="panel-footer">
-                                <a href="#/clone-received-reference/1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ/" class="btn btn-default btn-block"><i class="fa fa-code-fork"></i> Clone</a>
-                                <!-- <a href="#/delete-reference/1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
-                                <div class="clearfix"></div>
-                            </div>                                    
-                        </div>
-                    </div>                                
-                </div>
-            </div>
         </div>
         <div ng-show="!ready" class="row">
             <div class="col-lg-12 waiting-screen">
