@@ -76,6 +76,7 @@ var repositoriesCollection;
 var referencesCollection;
 var guestReferencesCollection;
 var collectedReferencesCollection;
+var tagsCollection;
 var usersCollection;
 var collectedUsersCollection;
 var datasetReferencesCollections = [];
@@ -270,6 +271,23 @@ async.series([
             nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
             seriesCallback();
         }
+    },
+    function(seriesCallback) {
+        if (configurationManager.get().seed) {
+            var extractTagsJob = (function extractTagsJob() {
+                console.log("Extracting tags...");
+                tagsController.extractTags(collectedReferencesCollection, function() {
+                    var database = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
+                    database.open(function(err, database) {
+                    database.collection("tags.db", function(err, collection) {
+                            tagsCollection = collection;
+                        });
+                    });
+                });
+            }());
+            nodeSchedule.scheduleJob({hour: 2, minute: 0}, extractTagsJob);
+            seriesCallback();
+        }
 	}
 ]);
 
@@ -299,6 +317,7 @@ application.use("*", function(req, res, next) {
     req.collectedUsersCollection = collectedUsersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
     req.rankedReferencesCollection = rankedReferencesCollection;
+    req.tagsCollection = tagsCollection;
     next();    
 });
 
