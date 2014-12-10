@@ -99,6 +99,7 @@ module.exports = function () {
                         !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
                         !req.underscore.isUndefined(req.body.sharing_status) ? newPeer.sharing_status = req.body.sharing_status : newPeer.sharing_status = ""; 
                         !req.underscore.isUndefined(req.body.aggregating_status) ? newPeer.aggregating_status = req.body.aggregating_status : newPeer.aggregating_status = "";
+                        !req.underscore.isUndefined(req.body.tags) ? newPeer.tags = req.body.tags : newPeer.tags = [];
                         newPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
                         newPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
                         newPeer.creator_id = req.user.id;
@@ -107,6 +108,7 @@ module.exports = function () {
                         newPeer.last_modification_datetime = req.moment().format();            
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
+                                console.log(err);
                                 res.status(409).end();
                                 return;
                             }

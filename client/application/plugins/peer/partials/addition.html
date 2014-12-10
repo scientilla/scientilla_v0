@@ -38,7 +38,21 @@
                         <div class="col-xs-12">
                             <input id="url" ng-model="oPeer.url" type="text" placeholder="URL" class="form-control">
                         </div>
-                    </div>                                        
+                    </div>                            
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <h3>Tags</h3>
+                            <span ng-hide="oPeer.tags && oPeer.tags.length">No tag associated</span>
+                            <ul class="tagList tagInsertion">
+                                <li ng-repeat="tag in oPeer.tags">
+                                    <div class="tag">
+                                        <i class="fa fa-tag"></i><b>{{tag}}</b>
+                                    </div>
+                                </li>
+                            </ul>  
+                            <input id="tags" name="tagsStr" ng-model="oPeer.tagsStr" type="text" ng-change="extractTags()" class="form-control" placeholder="tags, comma separated">                            
+                        </div>
+                    </div>                                              
                     <div class="form-group">
                         <div class="col-xs-12">
                             <button ng-click="createPeer()" type="button" class="btn btn-default form-control">Save</button>
