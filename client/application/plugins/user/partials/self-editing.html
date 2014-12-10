@@ -144,14 +144,13 @@
                     <div class="form-group" ng-show="oUser.aliases">
                         <div class="col-xs-12">
                             <h3>Aliases</h3>
+                            <span ng-hide="oUser.aliases && oUser.aliases.length">No aliases associated</span>
                             <ul>
                                 <li ng-repeat="alias in oUser.aliases">
                                     {{alias}}
                                 </li>
                             </ul>  
-                            <div class="col-xs-12 nowrap">                          
-                                <input id="aliases" name="aliasesStr" ng-model="oUser.aliasesStr" ng-pattern="/^([^,]+)?(,\s*[^,]+)*$/" type="text" ng-change="extractAliases()" class="form-control">                            
-                            </div>
+                            <input id="aliases" name="aliasesStr" ng-model="oUser.aliasesStr" type="text" ng-change="extractAliases()" class="form-control" placeholder="aliases, comma separeted">                            
                         </div>
                     </div>              
                     <div class="form-group">

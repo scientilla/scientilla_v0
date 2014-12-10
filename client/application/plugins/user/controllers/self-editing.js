@@ -57,9 +57,11 @@ angular.module("user").controller(
         };
         
         $scope.extractAliases = function() {
-            if (_.isUndefined($scope.oUser.aliasesStr))
-                return;
-            $scope.oUser.aliases = _.uniq($scope.oUser.aliasesStr.split(/,\s*/));
+            if (_.isEmpty($scope.oUser.aliasesStr)) {
+                $scope.oUser.aliases = [];
+            } else {
+                $scope.oUser.aliases = _.uniq($scope.oUser.aliasesStr.split(/,\s*/));
+            }
         };
         $scope.compressAliases = function() {
             $scope.oUser.aliasesStr = $scope.oUser.aliases.join(', ');
