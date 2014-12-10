@@ -417,6 +417,7 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
+                    reference.tags = _.union(reference.tags, peer.tags);
                     reference.user_hash = req.user.hash; 
                     reference.last_modifier_id = req.user.id;
                     reference.last_modification_datetime = req.moment().format(); 
