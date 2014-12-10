@@ -29,7 +29,7 @@ module.exports = function () {
             });
         },
         getPublicPeers: function(req, res) {
-            req.peersCollection.find({ sharing_status: true }).toArray(function(err, peers) {
+            req.peersCollection.find({ sharing_status: true }, { tags: 0}).toArray(function(err, peers) {
                 if (err || req.underscore.isNull(peers)) {
                     res.status(404).end();
                     return;
