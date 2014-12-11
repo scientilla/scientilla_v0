@@ -405,3 +405,20 @@ html, body {
     background-color: #f3f3f3;
     color: #999999;
 }
+
+.page-high {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.vertical-center {
+    position: absolute;
+    top: 50%;
+    margin-top: -22px;
+}
+
+.xlg {
+    font-size: 3em;
+}
