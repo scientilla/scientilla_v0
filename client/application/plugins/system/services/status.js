@@ -5,8 +5,17 @@
  */
 
 angular.module("system").factory(
-    "systemStatusService", function($location) {
+    "systemStatusService", function($location, $http) {
         var systemAuthenticationProvider = {};
+        
+        systemAuthenticationProvider.getStatus = function() {
+            return $http({
+				method: "GET",
+				url: "/api/status",
+                cache: false,
+                timeout: 30000
+			});
+        };
         
         systemAuthenticationProvider.react = function(status, callback) {
             switch (status) {

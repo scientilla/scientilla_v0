@@ -138,6 +138,9 @@ angular.module("scientilla").config([
         }).when("/login/", {
             templateUrl: "application/plugins/system/partials/login.html",
             controller: "systemAuthenticationController"            
+        }).when("/start/", {
+            templateUrl: "application/plugins/system/partials/start.html",
+            controller: "systemAuthenticationController"            
         }).when("/logout/", {
             templateUrl: "application/plugins/system/partials/logout.html",
             controller: "systemAuthenticationController"

@@ -5,7 +5,9 @@
  */
 
 angular.module("system").controller(
-    "systemAuthenticationController", ["$scope", "usersService", "settingsService", "systemStatusService", "$window", "$location", function($scope, usersService, settingsService, systemStatusService, $window, $location) {
+    "systemAuthenticationController", 
+    ["$scope", "usersService", "settingsService", "systemStatusService", "$window", "$location", 
+    function($scope, usersService, settingsService, systemStatusService, $window, $location) {
         $scope.oUser = {
             username: "", 
             password: ""
@@ -32,6 +34,8 @@ angular.module("system").controller(
             });
         };
         
+        $scope.start = $scope.login;
+        
         $scope.logout = function() {
             usersService.deleteExchangedInformation(function() {
                 settingsService.deleteExchangedInformation(function() {
@@ -41,5 +45,17 @@ angular.module("system").controller(
                 });
             });
         };
+        
+        $scope.init = function() {
+            systemStatusService.getStatus()
+                .success(function(data, status, headers, config) {
+                    if (data["users-count"] === 0) {
+                        $location.path("start");
+                   }
+               })
+               .error(function(data, status, headers, config) {
+               });
+        };
+        
     }]
 );
