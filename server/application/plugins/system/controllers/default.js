@@ -13,6 +13,7 @@ module.exports = function () {
         checkUserCoherence: function(req, res) {
             req.usersCollection.findOne({ _id: req.user.id }, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
+                    console.log(err);
                     res.status(401).end();
                     console.log('Unauthorized user');
                     return;
@@ -41,6 +42,17 @@ module.exports = function () {
                     console.log('Unvalid User Type or User Information');
                 }
             });
-        } 
+        },
+        getStatus: function(req, res) {
+            req.usersCollection.count(function(err, usersCount) {
+                if (err) {
+                    console.log(err);
+                    res.status(404).end;
+                    return;
+                }
+                var result = {"users-count": usersCount};
+                res.json(result).end();
+            });
+        }
     };
 };

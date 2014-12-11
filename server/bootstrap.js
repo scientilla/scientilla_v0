@@ -723,6 +723,13 @@ application.get("/api/tags", function(req, res) {
     tagsController.getTags(req, res);
 });
 
+//SYSTEM
+
+application.get("/api/status", function(req, res) {
+    console.log("Request to Read the System Status");
+    systemController.getStatus(req, res);
+});
+
 // USERS
 application.get("/api/users", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to Read all Users");
