@@ -46,11 +46,14 @@ angular.module("system").controller(
             });
         };
         
-        $scope.init = function() {
+        $scope.init = function(page) {
             systemStatusService.getStatus()
                 .success(function(data, status, headers, config) {
-                    if (data["users-count"] === 0) {
+                    if (data["users-count"] === 0 && page === 'login') {
                         $location.path("start");
+                   }
+                    if (data["users-count"] !== 0 && page === 'start') {
+                        $location.path("login");
                    }
                })
                .error(function(data, status, headers, config) {
