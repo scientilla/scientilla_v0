@@ -14,7 +14,26 @@ angular.module("network").controller(
         $scope.currentPageNumber = 1;
         $scope.lastPageNumber = 0;
         $scope.numberOfItemsPerPage = 20;
-        $scope.totalNumberOfItems = 0;  
+        $scope.totalNumberOfItems = 0;
+        
+        $scope.getPeerPath = function(peerId, peerUrl) {
+            if (peerUrl === $window.sessionStorage.url) {
+                return '#/';
+            }
+            return '#/browse-peer-references/' + peerId + '/';
+        };
+        
+        $scope.getReferencePath = function(referenceId, peerId, peerUrl) {
+            if (peerUrl === $window.sessionStorage.url) {
+                return '/open-reference/' + referenceId;
+            }
+            return '/open-peer-reference/' + peerId + '/' + referenceId;
+        };
+        
+        $scope.openReference = function(referenceId, peerId, peerUrl) {
+            $window.sessionStorage.referenceOpeningCallOrigin = "world-network-listing";
+            $location.path($scope.getReferencePath(referenceId, peerId, peerUrl));
+        };        
         
         $scope.cloneReference = function(reference) {
             referencesService.cloneReferenceFromPeer(
