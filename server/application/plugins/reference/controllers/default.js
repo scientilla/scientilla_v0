@@ -419,6 +419,7 @@ module.exports = function () {
                     }
                     reference.tags = _.union(reference.tags, peer.tags);
                     reference.user_hash = req.user.hash; 
+                    reference.sharing_status = false;
                     reference.last_modifier_id = req.user.id;
                     reference.last_modification_datetime = req.moment().format(); 
                     delete reference._id;

@@ -138,6 +138,20 @@ angular.module("user").factory(
             
         };
         
+        usersProvider.deleteUserAsync = function(userId, token, callback) {
+            usersProvider
+                .deleteUser(userId, token)
+                .success(function(data, status, headers, config) {
+                    if (_.isFunction(callback)) {
+                        callback({userId: userId, status: status});
+                    }
+                }).error(function(data, status, headers, config) {
+                    if (_.isFunction(callback)) {
+                        callback({userId: userId, status: status});
+                    }
+                });
+        };
+        
         return usersProvider;
     }    
 );
