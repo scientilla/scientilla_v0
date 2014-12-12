@@ -60,11 +60,11 @@ angular.module("user").controller(
             if (_.isEmpty($scope.oUser.aliasesStr)) {
                 $scope.oUser.aliases = [];
             } else {
-                $scope.oUser.aliases = _.uniq($scope.oUser.aliasesStr.split(/,\s*/));
+                $scope.oUser.aliases = _.uniq($scope.oUser.aliasesStr.split(/;\s*/));
             }
         };
         $scope.compressAliases = function() {
-            $scope.oUser.aliasesStr = $scope.oUser.aliases.join(', ');
+            $scope.oUser.aliasesStr = $scope.oUser.aliases.join('; ');
         };
         
         $scope.retrieveUser = function() {
