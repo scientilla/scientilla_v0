@@ -87,6 +87,9 @@ angular.module("scientilla").config([
         }).when("/add-reference/", {
             templateUrl: "application/plugins/reference/partials/addition.html",
             controller: "referenceAdditionController"
+        }).when("/open-reference/:id/", {
+            templateUrl: "application/plugins/reference/partials/opening.html",
+            controller: "referenceOpeningController"            
         }).when("/edit-reference/:id/", {
             templateUrl: "application/plugins/reference/partials/editing.html",
             controller: "referenceEditingController"
@@ -101,7 +104,10 @@ angular.module("scientilla").config([
             controller: "localReferenceCloningController"              
         }).when("/clone-dataset-reference/:peerId/:datasetId/:referenceId/", {
             templateUrl: "application/plugins/reference/partials/dataset-cloning.html",
-            controller: "datasetReferenceCloningController"             
+            controller: "datasetReferenceCloningController"
+        }).when("/open-peer-reference/:peerId/:referenceId/", {
+            templateUrl: "application/plugins/reference/partials/peer-opening.html",
+            controller: "peerReferenceOpeningController"             
         }).when("/clone-peer-reference/:peerId/:referenceId/", {
             templateUrl: "application/plugins/reference/partials/peer-cloning.html",
             controller: "peerReferenceCloningController"

@@ -32,9 +32,7 @@ var requirePrefix = (isSeed) ? 'seed.' : '';
 
 var datasetsController = require("./application/plugins/dataset/controllers/default.js")();
 var peerDatasetsController = require("./application/plugins/dataset/controllers/peer-datasets.js")();
-var activatedDatasetsController = require("./application/plugins/dataset/controllers/activated-datasets.js")();
 var peersController = require("./application/plugins/peer/controllers/default.js")();
-var activatedPeersController = require("./application/plugins/peer/controllers/activated-peers.js")();
 var referencesController = require("./application/plugins/reference/controllers/default.js")();
 var collectedReferencesController = require("./application/plugins/reference/controllers/collected-references.js")();
 var datasetReferencesController = require("./application/plugins/reference/controllers/dataset-references.js")();
@@ -46,7 +44,6 @@ var seedPeerReferencesController = require("./application/plugins/reference/cont
 var worldNetworkReferencesController = require("./application/plugins/reference/controllers/world-network-references.js")();
 var rankedReferencesController = require("./application/plugins/reference/controllers/ranked-references.js")();
 var repositoriesController = require("./application/plugins/repository/controllers/default.js")();
-var activatedRepositoriesController = require("./application/plugins/repository/controllers/activated-repositories.js")();
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
 var systemController = require("./application/plugins/system/controllers/default.js")();
 var usersController = require("./application/plugins/user/controllers/default.js")();
@@ -66,10 +63,7 @@ var dataPath;
 // Initializes databases
 var databaseEngine = tingodb({});
 var database;
-        
-var adCollection;
-var apCollection;
-var arCollection;
+
 var datasetsCollection;
 var peersCollection;
 var repositoriesCollection;
@@ -109,30 +103,6 @@ async.series([
     function(seriesCallback) {
         database = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
         seriesCallback();
-    },
-    function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("activated-datasets.db", function(err, collection) {
-                adCollection = collection;
-                seriesCallback();
-            });
-        });  
-    },
-    function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("activated-peers.db", function(err, collection) {
-                apCollection = collection;
-                seriesCallback();
-            });
-        }); 
-    },
-    function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("activated-repositories.db", function(err, collection) {
-                arCollection = collection;
-                seriesCallback();
-            });
-        });  
     },
     function(seriesCallback) {
         database.open(function(err, database) {
@@ -304,9 +274,6 @@ application.use("*", function(req, res, next) {
     req.underscore = underscore;
     req.configurationManager = configurationManager;
     req.seedsConfiguration = seedsConfiguration;
-    req.adCollection = adCollection;
-    req.apCollection = apCollection;
-    req.arCollection = arCollection;
     req.datasetsCollection = datasetsCollection;
     req.peersCollection = peersCollection;
     req.repositoriesCollection = repositoriesCollection;

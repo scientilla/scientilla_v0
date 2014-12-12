@@ -23,6 +23,17 @@ angular.module("network").controller(
             return '#/browse-peer-references/' + peerId + '/';
         };
         
+        $scope.getReferencePath = function(referenceId, peerId, peerUrl) {
+            if (peerUrl === $window.sessionStorage.url) {
+                return '#/open-reference/' + referenceId;
+            }
+            return '#/open-peer-reference/' + peerId + '/' + referenceId;
+        };
+        
+        $scope.openReference = function(reference) {
+            
+        };
+        
         $scope.cloneReference = function(reference) {
             referencesService.cloneReferenceFromPeer(
                 reference.peer_id, 
@@ -49,7 +60,7 @@ angular.module("network").controller(
                     }
                 }
             );
-        };        
+        };
 
         $scope.cloneSelectedReferences = function(){
             var selectedReferences = _.filter($scope.aReferences, {selected: true});

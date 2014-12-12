@@ -38,6 +38,7 @@ angular.module("reference").controller(
             print_status: "",
             note: ""
         };
+        
         $scope.organizationSelectOptions = {
             placeholder: "Search for an affiliation",
             minimumInputLength: 1,
@@ -49,6 +50,7 @@ angular.module("reference").controller(
             },
             tags: []
         };
+        
         $scope.select2Options = {
             placeholder: "Search for a tag",
             minimumInputLength: 1,
