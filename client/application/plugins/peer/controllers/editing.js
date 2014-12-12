@@ -32,11 +32,11 @@ angular.module("peer").controller(
                 $scope.oPeer.tags = [];
             }
             else {
-                $scope.oPeer.tags = _.uniq($scope.oPeer.tagsStr.split(/,\s*/));
+                $scope.oPeer.tags = _.uniq($scope.oPeer.tagsStr.split(/;\s*/));
             }
         };
         $scope.compressTags = function() {
-            $scope.oPeer.tagsStr = $scope.oPeer.tags.join(', ');
+            $scope.oPeer.tagsStr = $scope.oPeer.tags.join('; ');
         };
         
         $scope.updatePeer = function() {
