@@ -44,7 +44,7 @@ angular.module("reference").controller(
                 case "network-listing":
                     return "#/browse-network";
                     break;
-                case "network-listing":
+                case "world-network-listing":
                     return "#/browse-world-network";
                     break;
                 case "local-listing":
