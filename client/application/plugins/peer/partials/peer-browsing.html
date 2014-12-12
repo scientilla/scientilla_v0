@@ -33,16 +33,12 @@
                         <tr>
                             <th><i class="fa fa-users"></i> Peer Name</th>
                             <th><i class="fa fa-file-text"></i> URL</th>
-                            <th class="fixed-th-3x"></th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="peer in aPeers">
                             <td>{{peer.name}}</td>
                             <td><a href="{{peer.url}}/client/" target="PeerWindow">{{peer.url}}</a></td>
-                            <td>
-                                <a href="#/copy-activated-peer-peer/{{peer._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-copy"></i> Copy</a>
-                            </td>
                         </tr>  
                     </tbody>
                     <tbody ng-show="empty">

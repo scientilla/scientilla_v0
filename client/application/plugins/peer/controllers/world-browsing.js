@@ -5,8 +5,7 @@
  */
 
 angular.module("peer").controller(
-    "worldPeersBrowsingController", ["$scope", "peersService", "activatedPeersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, activatedPeersService, seedPeerReferencesService, systemStatusService, $window, $location) {
-        $scope.changingActivatedPeerId = "";
+    "worldPeersBrowsingController", ["$scope", "peersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, seedPeerReferencesService, systemStatusService, $window, $location) {
         $scope.changingSharedPeerId = "";
         $scope.changingAggregatedPeerId = "";
         $scope.keywords = "";        
@@ -33,20 +32,6 @@ angular.module("peer").controller(
             }
             return peerIdsAggregatingMap;
         }        
-        
-        $scope.setPeerAsActivated = function(id) {
-            $scope.changingActivatedPeerId = id;
-            activatedPeersService.setPeerAsActivated(
-                id,
-                $window.sessionStorage.userToken
-            ).success(function(data, status, headers, config) {
-                $scope.activatedPeerId = id;
-                $scope.changingActivatedPeerId = ""; 
-            }).error(function(data, status, headers, config) {
-                $scope.changingActivatedPeerId = "";
-                systemStatusService.react(status);
-            });
-        }
         
         $scope.switchPeerSharingStatus = function(id) {
             $scope.changingSharedPeerId = id;
@@ -116,19 +101,6 @@ angular.module("peer").controller(
                         $scope.error = true;
                         systemStatusService.react(status, callback);
                     });
-                },                
-                function(callback) {
-                    $scope.oActivatedPeer = {};
-                    activatedPeersService.getActivatedPeer($window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                        $scope.oActivatedPeer = data;
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    $scope.activatedPeerId = $scope.oActivatedPeer.peer_id;
-                    callback();
                 },
                 function(callback) {
                     $scope.peerIdsSharingMap = $scope.generatePeerIdsSharingMap($scope.aPeers);

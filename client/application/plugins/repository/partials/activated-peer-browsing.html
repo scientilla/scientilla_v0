@@ -33,16 +33,12 @@
                         <tr>
                             <th><i class="fa fa-users"></i> Repository Name</th>
                             <th><i class="fa fa-file-text"></i> URL</th>
-                            <th class="fixed-th-3x"></th>
                         </tr>
                     </thead>
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="repository in aRepositories">
                             <td>{{repository.name}}</td>
                             <td>{{repository.url}}</td>
-                            <td>
-                                <a href="#/copy-activated-peer-repository/{{repository._id}}/" class="btn btn-default btn-block disabled"><i class="fa fa-copy"></i> Copy</a>
-                            </td>
                         </tr>
                     </tbody>
                     <tbody ng-show="empty">

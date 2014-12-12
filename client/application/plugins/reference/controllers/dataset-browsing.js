@@ -5,7 +5,7 @@
  */
 
 angular.module("reference").controller(
-    "datasetReferencesBrowsingController", ["$scope", "$routeParams", "datasetReferencesService", "peerDatasetReferencesService", "activatedDatasetsService", "datasetsService", "systemStatusService", "$window", "$location", function($scope, $routeParams, datasetReferencesService, peerDatasetReferencesService, activatedDatasetsService, datasetsService, systemStatusService, $window, $location) {
+    "datasetReferencesBrowsingController", ["$scope", "$routeParams", "datasetReferencesService", "peerDatasetReferencesService", "datasetsService", "systemStatusService", "$window", "$location", function($scope, $routeParams, datasetReferencesService, peerDatasetReferencesService, datasetsService, systemStatusService, $window, $location) {
         $scope.peerId = $routeParams.peerId;
         $scope.datasetId = $routeParams.datasetId;
         $scope.keywords = "";
