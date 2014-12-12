@@ -121,10 +121,7 @@ angular.module("scientilla").config([
         // REPOSITORIES
         }).when("/browse-repositories/", {
             templateUrl: "application/plugins/repository/partials/local-browsing.html",
-            controller: "localRepositoriesBrowsingController"
-        }).when("/browse-activated-peer-repositories/", {
-            templateUrl: "application/plugins/repository/partials/activated-peer-browsing.html",
-            controller: "activatedPeerRepositoriesBrowsingController"            
+            controller: "localRepositoriesBrowsingController"          
         }).when("/add-repository/", {
             templateUrl: "application/plugins/repository/partials/addition.html",
             controller: "repositoryAdditionController"
