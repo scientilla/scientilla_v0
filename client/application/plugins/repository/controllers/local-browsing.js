@@ -5,7 +5,7 @@
  */
 
 angular.module("repository").controller(
-    "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "activatedRepositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, activatedRepositoriesService, systemStatusService, $window, $location) {
+    "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, systemStatusService, $window, $location) {
         $scope.keywords = "";
         $scope.aRepositories = [];
         $scope.aReferences = [];
@@ -28,19 +28,6 @@ angular.module("repository").controller(
                         $scope.error = true;
                         systemStatusService.react(status, callback);
                     });
-                },
-                function(callback) {
-                    $scope.oActivatedRepository = {};
-                    activatedRepositoriesService.getActivatedRepository($window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                        $scope.oActivatedRepository = data;
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    $scope.activatedRepositoryId = $scope.oActivatedRepository.repository_id;
-                    callback();
                 },
                 function(callback) {
                     $scope.ready = true;

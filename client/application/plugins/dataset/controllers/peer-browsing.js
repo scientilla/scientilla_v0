@@ -5,9 +5,8 @@
  */
          
 angular.module("dataset").controller(
-    "peerDatasetsBrowsingController", ["$scope", "$routeParams", "peerDatasetsService", "activatedPeersService", "peersService", "activatedDatasetsService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerDatasetsService, activatedPeersService, peersService, activatedDatasetsService, systemStatusService, $window, $location) { 
+    "peerDatasetsBrowsingController", ["$scope", "$routeParams", "peerDatasetsService", "peersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerDatasetsService, peersService, systemStatusService, $window, $location) { 
         $scope.peerId = $routeParams.peerId;
-        $scope.changingActivatedDatasetId = "";
         $scope.keywords = "";
         $scope.aDatasets = [];
         $scope.startPageNumber = 1;
@@ -19,22 +18,7 @@ angular.module("dataset").controller(
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
-            async.series([
-                function(callback) {
-                    $scope.oActivatedDataset = {};
-                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                        $scope.oActivatedDataset.id = data.dataset_id;
-                        $scope.oActivatedDataset.peerId = data.peer_id;
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    $scope.activatedDatasetId = $scope.oActivatedDataset.id;
-                    $scope.activatedDatasetPeerId = $scope.oActivatedDataset.peerId;
-                    callback();
-                },            
+            async.series([            
                 function(callback) {
                     peerDatasetsService.getDatasets(
                         $scope.peerId,
@@ -59,22 +43,6 @@ angular.module("dataset").controller(
             
             return retrieveDatasets 
         }();
-        
-        $scope.setDatasetAsActivated = function(id, peerId) {
-            $scope.changingActivatedDatasetId = id;
-            activatedDatasetsService.setDatasetAsActivated(
-                id, 
-                peerId,
-                $window.sessionStorage.userToken
-            ).success(function(data, status, headers, config) {
-                $scope.activatedDatasetId = id;
-                $scope.activatedDatasetPeerId = peerId;
-                $scope.changingActivatedDatasetId = ""; 
-            }).error(function(data, status, headers, config) {
-                $scope.changingActivatedDatasetId = "";
-                systemStatusService.react(status);
-            });
-        }
         
         $scope.retrievePreviousItemsPage = function() {
             if ($scope.startPageNumber > 1) {

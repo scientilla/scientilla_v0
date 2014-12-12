@@ -5,7 +5,7 @@
  */
 
 angular.module("reference").controller(
-    "repositoryReferenceCloningController", ["$scope", "$routeParams", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoryReferencesService, activatedRepositoriesService, repositoriesService, referencesService, systemStatusService, $window, $location) {
+    "repositoryReferenceCloningController", ["$scope", "$routeParams", "repositoryReferencesService", "repositoriesService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, repositoryReferencesService, repositoriesService, referencesService, systemStatusService, $window, $location) {
         $scope.repositoryId = $routeParams.repositoryId;
         $scope.oReference = {
             title: "",

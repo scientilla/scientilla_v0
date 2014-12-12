@@ -5,7 +5,7 @@
  */
 
 angular.module("reference").controller(
-    "datasetReferenceCloningController", ["$scope", "$routeParams", "datasetReferencesService", "peerDatasetReferencesService", "activatedDatasetsService", "datasetsService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, datasetReferencesService, peerDatasetReferencesService, activatedDatasetsService, datasetsService, referencesService, systemStatusService, $window, $location) {
+    "datasetReferenceCloningController", ["$scope", "$routeParams", "datasetReferencesService", "peerDatasetReferencesService", "datasetsService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, datasetReferencesService, peerDatasetReferencesService, datasetsService, referencesService, systemStatusService, $window, $location) {
         $scope.peerId = $routeParams.peerId; 
         $scope.datasetId = $routeParams.datasetId; 
         $scope.referenceId = $routeParams.referenceId; 

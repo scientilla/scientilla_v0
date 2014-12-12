@@ -5,7 +5,7 @@
  */
          
 angular.module("dataset").controller(
-    "localDatasetsBrowsingController", ["$scope", "datasetsService", "activatedDatasetsService", "peersService", "peerReferencesService", "datasetReferencesService", "systemStatusService", "$window", "$location", function($scope, datasetsService, activatedDatasetsService, peersService, peerReferencesService, datasetReferencesService, systemStatusService, $window, $location) {
+    "localDatasetsBrowsingController", ["$scope", "datasetsService", "peersService", "peerReferencesService", "datasetReferencesService", "systemStatusService", "$window", "$location", function($scope, datasetsService, peersService, peerReferencesService, datasetReferencesService, systemStatusService, $window, $location) {
         $scope.changingCollectedDatasetId = "";
         $scope.changingSharedDatasetId = "";
         $scope.aDatasets = [];
@@ -24,22 +24,6 @@ angular.module("dataset").controller(
         
         $scope.collect = function(id) {
 
-        }        
-        
-        $scope.setDatasetAsActivated = function(id) {
-            $scope.changingActivatedDatasetId = id;
-            activatedDatasetsService.setDatasetAsActivated(
-                id, 
-                "",
-                $window.sessionStorage.userToken
-            ).success(function(data, status, headers, config) {
-                $scope.activatedDatasetId = id;
-                $scope.activatedDatasetPeerId = "";
-                $scope.changingActivatedDatasetId = ""; 
-            }).error(function(data, status, headers, config) {
-                $scope.changingActivatedDatasetId = "";
-                systemStatusService.react(status);
-            });
         }
         
         $scope.switchDatasetSharingStatus = function(id) {
@@ -85,21 +69,6 @@ angular.module("dataset").controller(
                         $scope.error = true;
                         systemStatusService.react(status, callback);
                     });
-                },
-                function(callback) {
-                    $scope.oActivatedDataset = {};
-                    activatedDatasetsService.getActivatedDataset($window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                        $scope.oActivatedDataset.id = data.dataset_id;
-                        $scope.oActivatedDataset.peerId = data.peer_id;
-                        callback();
-                    }).error(function(data, status, headers, config) {
-                        systemStatusService.react(status, callback);
-                    });
-                },
-                function(callback) {
-                    $scope.activatedDatasetId = $scope.oActivatedDataset.id;
-                    $scope.activatedDatasetPeerId = $scope.oActivatedDataset.peerId;
-                    callback();
                 },
                 function(callback) {
                     $scope.datasetIdsSharingMap = $scope.generateDatasetIdsSharingMap($scope.aDatasets);

@@ -6,8 +6,8 @@
 
 angular.module("reference").controller(
     "repositoryReferencesBrowsingController", 
-    ["$scope", "$routeParams", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", "referencesService", 'notificationService',
-    function($scope, $routeParams, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location, referencesService, notificationService) {
+    ["$scope", "$routeParams", "repositoryReferencesService", "repositoriesService", "systemStatusService", "$window", "$location", "referencesService", 'notificationService',
+    function($scope, $routeParams, repositoryReferencesService, repositoriesService, systemStatusService, $window, $location, referencesService, notificationService) {
         $scope.repositoryId = $routeParams.repositoryId;            
         $scope.aReferences = [];      
         $scope.currentPage = 1;

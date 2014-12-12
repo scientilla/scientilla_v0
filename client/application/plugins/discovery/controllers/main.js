@@ -6,8 +6,8 @@
 
 angular.module("discovery").controller(
     "mainController", 
-    ["$scope", "$routeParams", "repositoryReferencesService", "activatedRepositoriesService", "repositoriesService", "systemStatusService", "$window", "$location", "referencesService", 'notificationService', 'discoveryService',
-    function($scope, $routeParams, repositoryReferencesService, activatedRepositoriesService, repositoriesService, systemStatusService, $window, $location, referencesService, notificationService, discoveryService) {
+    ["$scope", "$routeParams", "repositoryReferencesService", "repositoriesService", "systemStatusService", "$window", "$location", "referencesService", 'notificationService', 'discoveryService',
+    function($scope, $routeParams, repositoryReferencesService, repositoriesService, systemStatusService, $window, $location, referencesService, notificationService, discoveryService) {
         $scope.repositoryId = $routeParams.repositoryId;            
         $scope.aReferences = [];      
         $scope.currentPage = 1;

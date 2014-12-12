@@ -5,7 +5,7 @@
  */
 
 angular.module("reference").controller(
-    "peerReferenceCloningController", ["$scope", "$routeParams", "peerReferencesService", "activatedPeersService", "peersService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerReferencesService, activatedPeersService, peersService, referencesService, systemStatusService, $window, $location) {
+    "peerReferenceCloningController", ["$scope", "$routeParams", "peerReferencesService", "peersService", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peerReferencesService, peersService, referencesService, systemStatusService, $window, $location) {
         $scope.peerId = $routeParams.peerId;  
         $scope.referenceId = $routeParams.referenceId;   
         $scope.oReference = {

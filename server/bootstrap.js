@@ -361,19 +361,6 @@ application.post("/api/datasets/:datasetId/references", expressJwt({secret: 'sci
     datasetReferencesController.storeDatasetReference(req, res);
 });
 
-// ACTIVATED DATASETS
-application.get("/api/activated-datasets", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Read an Activated Dataset");
-    systemController.checkUserCoherence(req, res);
-    activatedDatasetsController.getActivatedDataset(req, res);
-});
-
-application.put("/api/activated-datasets/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Create/Update an Activated Dataset");
-    systemController.checkUserCoherence(req, res);
-    activatedDatasetsController.setDatasetAsActivated(req, res);
-});
-
 // PEERS
 application.get("/api/peers", expressJwt({secret: 'scientilla'}), cors(), function(req, res) {
     console.log("Request to Read all Peers");
@@ -457,19 +444,6 @@ application.get("/api/peers/:peerId/public-references/:referenceId", expressJwt(
     console.log("Request to Read a Peer Public Reference");
     systemController.checkUserCoherence(req, res);
     peerReferencesController.getPeerPublicReference(req, res);
-});
-
-// ACTIVATED PEERS
-application.get("/api/activated-peers", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Read an Activated Peer");
-    systemController.checkUserCoherence(req, res);
-    activatedPeersController.getActivatedPeer(req, res);
-});
-
-application.put("/api/activated-peers/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Create/Update an Activated Peer");
-    systemController.checkUserCoherence(req, res);
-    activatedPeersController.setPeerAsActivated(req, res);
 });
 
 // SEED PEERS
@@ -656,19 +630,6 @@ application.get("/api/repositories/:id/references", expressJwt({secret: 'scienti
     console.log("Request to Read all Repository References");
     systemController.checkUserCoherence(req, res);
     repositoryReferencesController.getRepositoryReferences(req, res);
-});
-
-// ACTIVATED REPOSITORIES
-application.get("/api/activated-repositories", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Read an Activated Repository");
-    systemController.checkUserCoherence(req, res);
-    activatedRepositoriesController.getActivatedRepository(req, res);
-});
-
-application.put("/api/activated-repositories/:id", expressJwt({secret: 'scientilla'}), function(req, res) {
-    console.log("Request to Create/Update an Activated Repository");
-    systemController.checkUserCoherence(req, res);
-    activatedRepositoriesController.setRepositoryAsActivated(req, res);
 });
 
 // SETTINGS
