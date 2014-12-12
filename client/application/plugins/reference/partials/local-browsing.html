@@ -4,6 +4,7 @@
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  -->
 <div id="toolbar-container">
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-left'}"></toaster-container>
     <div id="toolbar" class="container-fluid">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -47,10 +48,15 @@
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
                             <th ng-if="userRights == 1" class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x"></th>
-                            <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x">
                                 <a href="#/add-reference/" class="btn btn-default btn-block" title="Add new"><i class="fa fa-plus"></i></a>
+                            </th>
+                            <th class="fixed-th-1x"></th>
+                            <th class="fixed-th-1x">
+                                <button class="btn btn-default btn-block" title="Delete selected" ng-click="deleteSelectedReferences()"><i class="fa fa-trash-o"></i></button>
+                            </th>
+                            <th class="fixed-th-1x">
+                                <input type="checkbox" ng-click="selectAll()"/>
                             </th>
                         </tr>
                     </thead>
@@ -100,6 +106,9 @@
                             </td>
                             <td>
                                 <a href="#/delete-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Delete"><i class="fa fa-trash-o secondary-feature"></i></a>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="reference.selected" />
                             </td>
                         </tr>
                     </tbody>
