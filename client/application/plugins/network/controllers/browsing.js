@@ -25,13 +25,14 @@ angular.module("network").controller(
         
         $scope.getReferencePath = function(referenceId, peerId, peerUrl) {
             if (peerUrl === $window.sessionStorage.url) {
-                return '#/open-reference/' + referenceId;
+                return '/open-reference/' + referenceId;
             }
-            return '#/open-peer-reference/' + peerId + '/' + referenceId;
+            return '/open-peer-reference/' + peerId + '/' + referenceId;
         };
         
-        $scope.openReference = function(reference) {
-            
+        $scope.openReference = function(referenceId, peerId, peerUrl) {
+            $window.sessionStorage.referenceOpeningCallOrigin = "network-listing";
+            $location.path($scope.getReferencePath(referenceId, peerId, peerUrl));
         };
         
         $scope.cloneReference = function(reference) {

@@ -63,7 +63,7 @@
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="reference in aReferences">
                             <td>
-                                <a href="#/open-reference/{{reference._id}}/" class="btn btn-default btn-block secondary-feature" title="Open"><i class="fa fa-folder-open-o secondary-feature"></i></a>
+                                <a ng-click="openReference(reference._id)" class="btn btn-default btn-block secondary-feature" title="Open"><i class="fa fa-folder-open-o secondary-feature"></i></a>
                             </td>                            
                             <td>
                                 {{reference.authors}}<br />

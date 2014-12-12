@@ -39,6 +39,20 @@ angular.module("reference").controller(
             note: ""
         };
         
+        $scope.getReturnPath = function() {
+            switch ($window.sessionStorage.referenceOpeningCallOrigin) {
+                case "network-listing":
+                    return "#/browse-network";
+                    break;
+                case "world-network-listing":
+                    return "#/browse-world-network";
+                    break;
+                case "local-listing":
+                default:
+                    return "#/browse-references";                
+            }
+        };
+        
         $scope.extractAuthors = function() {
             if (_.isUndefined($scope.oReference.authors) || $scope.oReference.authors.trim() === "") { 
                 $scope.oReference.aAuthors = [];
