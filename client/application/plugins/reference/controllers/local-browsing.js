@@ -20,6 +20,15 @@ angular.module("reference").controller(
         $scope.numberOfItemsPerPage = 20;
         $scope.totalNumberOfItems = 0;
         
+        $scope.getReferencePath = function(referenceId) {
+            return '/open-reference/' + referenceId;
+        };
+        
+        $scope.openReference = function(referenceId) {
+            $window.sessionStorage.referenceOpeningCallOrigin = "local-listing";
+            $location.path($scope.getReferencePath(referenceId));
+        };        
+        
         $scope.generateReferenceIdsApprovingMap = function(aReferences) {
             var referenceIdsApprovingMap = {};
             for (var lpKey in aReferences) {

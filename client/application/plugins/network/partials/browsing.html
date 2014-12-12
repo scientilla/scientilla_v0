@@ -58,7 +58,7 @@
                     <tbody ng-show="ready && !empty">
                         <tr ng-repeat="reference in aReferences">
                             <td>
-                                <a ng-href="{{getReferencePath(reference.original_id, reference.peer_id, reference.peer_url)}}" class="btn btn-default btn-block secondary-feature" title="Open"><i class="fa fa-folder-open-o secondary-feature"></i></a>
+                                <a ng-click="openReference(reference.original_id, reference.peer_id, reference.peer_url)" class="btn btn-default btn-block secondary-feature" title="Open"><i class="fa fa-folder-open-o secondary-feature"></i></a>
                             </td>                            
                             <td>
                                 {{reference.authors}}<br />
