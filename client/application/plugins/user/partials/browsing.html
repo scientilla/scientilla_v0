@@ -3,7 +3,7 @@
  ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  -->
-<div id="toolbar-container">
+<div id="toolbar-container" ng-init="init()">
     <toaster-container toaster-options="{'position-class': 'toast-bottom-left'}"></toaster-container>
     <div id="toolbar" class="container-fluid">
         <nav class="navbar navbar-default" role="navigation">
@@ -36,8 +36,16 @@
                             <th><i class="fa fa-users"></i> Researcher Middle Name</th>                        
                             <th><i class="fa fa-users"></i> Researcher Last Name</th> 
                             <th><i class="fa fa-users"></i> Organization Name</th> 
-                            <th class="fixed-th-3x">
-                                <a href="#/add-user/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add...</a>
+                            <th class="fixed-th-1x">
+                                <a href="#/add-user/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> </a>
+                            </th>
+                            <th class="fixed-th-1x">
+                            </th>
+                            <th class="fixed-th-1x">
+                                <button class="btn btn-default btn-block" title="Delete selected" ng-click="deleteSelectedReferences()"><i class="fa fa-trash-o"></i></button>
+                            </th>
+                            <th class="fixed-th-1x">
+                                <input type="checkbox" ng-click="selectAll()"/>
                             </th>
                         </tr>
                     </thead>
@@ -48,10 +56,16 @@
                             <td>{{user.last_name}}</td>
                             <td>{{user.business_name}}</td>
                             <td>
-                                <button type="button" class="btn btn-default btn-block"><i class="fa fa-lock"></i> Block</button>
-                                <a href="#/edit-user/{{user._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> Edit</a>
-                                <button ng-click="deleteUser(user._id)" type="button" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Delete</button>
-                                <!-- <a href="#/delete-user/{{user._id}}/" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> Trash</a> -->
+                                <a href="#/edit-user/{{user._id}}/" class="btn btn-default btn-block"><i class="fa fa-edit"></i> </a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-block"><i class="fa fa-lock"></i> </button>
+                            </td>
+                            <td>
+                                <button ng-click="deleteUser(user._id)" type="button" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> </button>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="user.selected" />
                             </td>
                         </tr>
                     </tbody>
