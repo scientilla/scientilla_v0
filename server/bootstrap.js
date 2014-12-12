@@ -170,7 +170,7 @@ async.series([
     },
     function(seriesCallback) {
         database.open(function(err, database) {
-            database.collection("collected_users.db", function(err, collection) {
+            database.collection("collected-users.db", function(err, collection) {
                 collectedUsersCollection = collection;
                 seriesCallback();
             });
