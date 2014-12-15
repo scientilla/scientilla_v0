@@ -99,8 +99,6 @@ module.exports = function () {
                         var newPeer = {};
                         !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
                         !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
-                        !req.underscore.isUndefined(req.body.sharing_status) ? newPeer.sharing_status = req.body.sharing_status : newPeer.sharing_status = ""; 
-                        !req.underscore.isUndefined(req.body.aggregating_status) ? newPeer.aggregating_status = req.body.aggregating_status : newPeer.aggregating_status = "";
                         !req.underscore.isUndefined(req.body.tags) ? newPeer.tags = req.body.tags : newPeer.tags = [];
                         newPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
                         newPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
