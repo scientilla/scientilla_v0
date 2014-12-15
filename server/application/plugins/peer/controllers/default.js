@@ -110,6 +110,7 @@ module.exports = function () {
                         newPeer.last_modification_datetime = req.moment().format(); 
                         newPeer.type = LOCAL;
                         newPeer.sharing_status = false;
+                        newPeer.aggregating_status = true;
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
                                 console.log(err);
