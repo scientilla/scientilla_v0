@@ -16,6 +16,8 @@ var peerManager = require("../models/default.js")();
 
 // Defines actions
 module.exports = function () {
+    var LOCAL = 0;
+    var REMOTE = 1;
     return {
         getPeers: function(req, res) {
             req.peersCollection.find({}).toArray(function(err, peers) {
@@ -105,7 +107,8 @@ module.exports = function () {
                         newPeer.creator_id = req.user.id;
                         newPeer.creation_datetime = req.moment().format();
                         newPeer.last_modifier_id = req.user.id;
-                        newPeer.last_modification_datetime = req.moment().format();            
+                        newPeer.last_modification_datetime = req.moment().format(); 
+                        newPeer.type = LOCAL;
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
                                 console.log(err);
@@ -148,7 +151,8 @@ module.exports = function () {
                             newPeer.creator_id = "";
                             newPeer.creation_datetime = req.moment().format();
                             newPeer.last_modifier_id = "";
-                            newPeer.last_modification_datetime = req.moment().format();            
+                            newPeer.last_modification_datetime = req.moment().format();      
+                            newPeer.type = REMOTE;
                             req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                                 if (err || req.underscore.isNull(storedPeer)) {
                                     res.status(409).end();
@@ -230,7 +234,8 @@ module.exports = function () {
                                                 discoveredPeer.creator_id = "";
                                                 discoveredPeer.creation_datetime = peer.creation_datetime;
                                                 discoveredPeer.last_modifier_id = "";
-                                                discoveredPeer.last_modification_datetime = "";            
+                                                discoveredPeer.last_modification_datetime = "";  
+                                                discoveredPeer.type = REMOTE;
                                                 peersCollection.insert(discoveredPeer, {w:1}, function(err, createdPeer) {
                                                     eachSeriesCallback();
                                                 });
