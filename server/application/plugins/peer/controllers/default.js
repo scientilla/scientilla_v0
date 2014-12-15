@@ -187,13 +187,33 @@ module.exports = function () {
             });            
         },
         deletePeer: function(req, res) {          
-            req.peersCollection.remove({ _id: req.params.id }, {w: 1}, function(err) {
+            var id = req.params.id;
+            req.peersCollection.remove({ _id: id, type: 0 }, {w: 1}, function(err, num) {
                 if (err) {
+                    console.log(err);
                     res.status(500).end();
                     return;
                 }
-                
-                res.end();
+                if (num < 1) {
+                    req.peersCollection.count({ _id: id}, function(err, count) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).end();
+                            return;
+                        }
+                        if (count < 1) {
+                            console.log('A peer with id ' + id + ' does not exist');
+                            res.status(400).json('not exists').end();
+                            return;
+                        } else  {
+                            console.log('The peer cannot be deleted');
+                            res.status(430).json('not deletable').end();
+                            return;
+                        }
+                    });
+                } else {
+                    res.end();
+                }
             });            
         },        
         discoverPeers: function(seedsConfiguration, peersCollection) {
