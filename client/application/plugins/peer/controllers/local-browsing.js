@@ -289,6 +289,6 @@ angular.module("peer").controller(
             async.parallel(bulkAction, notifyResults);
         };  
         
-        $scope.deleteSelectedReferences = _.partial(applyOnSelectedPeers, deleteBulkParams);
+        $scope.deleteSelectedPeers = _.partial(applyOnSelectedPeers, deleteBulkParams);
     }]
 );
