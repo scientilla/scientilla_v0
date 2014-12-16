@@ -4,9 +4,14 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
-var model = require("../models/default.js")();
-
 var _ = require("lodash");
+
+var datasetsManager = require("../../dataset/controllers/default.js")();
+var peersManager = require("../../peer/controllers/default.js")();
+var referencesManager = require("../../reference/controllers/default.js")();
+var repositoriesManager = require("../../repository/controllers/default.js")();
+var usersManager = require("../../user/controllers/default.js")();
+var systemModel = require("../models/default.js")();
 
 module.exports = function () {
     return {
@@ -53,6 +58,46 @@ module.exports = function () {
                 var result = {"users-count": usersCount};
                 res.json(result).end();
             });
-        }
+        },
+        getPublicCounts: function(req, res) {
+            var counts = {};
+            datasetsManager.getPublicDatasetsCount(req, res, function(err, publicDatasetsCount) {
+                if (err || req.underscore.isNull(publicDatasetsCount)) {
+                    counts.public_datasets = 0;
+                } else {
+                    counts.public_datasets = publicDatasetsCount;
+                }
+                peersManager.getPublicPeersCount(req, res, function(err, publicPeersCount) {
+                    if (err || req.underscore.isNull(publicPeersCount)) {
+                        counts.public_peers = 0;
+                    } else {
+                        counts.public_peers = publicPeersCount;
+                    }
+                    referencesManager.getPublicReferencesCount(req, res, function(err, publicReferencesCount) {
+                        if (err || req.underscore.isNull(publicReferencesCount)) {
+                            counts.public_references = 0;
+                        } else {
+                            counts.public_references = publicReferencesCount;
+                        }                    
+                        repositoriesManager.getPublicRepositoriesCount(req, res, function(err, publicRepositoriesCount) {
+                            if (err || req.underscore.isNull(publicRepositoriesCount)) {
+                                counts.public_repositories = 0;
+                            } else {
+                                counts.public_repositories = publicRepositoriesCount;
+                            }
+                            usersManager.getPublicUsersCount(req, res, function(err, publicUsersCount) {
+                                if (err || req.underscore.isNull(publicUsersCount)) {
+                                    counts.public_users = 0;
+                                } else {
+                                    counts.public_users = publicUsersCount;
+                                }
+                                res.setHeader("Content-Type", "application/json");
+                                res.json(counts);                        
+                            });
+                        });
+                    });
+                });
+            });                        
+        }       
     };
 };
