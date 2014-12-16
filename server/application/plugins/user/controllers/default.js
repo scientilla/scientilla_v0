@@ -191,6 +191,18 @@ module.exports = function () {
             });                
         },
         
+        getPublicUsersCount: function(req, res, callback) {
+            req.usersCollection.find({ 
+                status: "U"                
+            }).count(function(err, publicUsersCount) {
+                if (err || req.underscore.isNull(publicUsersCount)) {
+                    callback(err, null);
+                    return;
+                }
+                callback(null, publicUsersCount);
+            });
+        },        
+        
         createUser: function(req, res) {
             var user = {};
             user.type = !req.underscore.isUndefined(req.body.type) ? req.body.type : "";
