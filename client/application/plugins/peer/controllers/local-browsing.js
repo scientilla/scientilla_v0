@@ -216,6 +216,23 @@ angular.module("peer").controller(
                 _.remove($scope.aPeers, {_id: id} );
             }
         };
+               
+        var unshareBulkParams = {
+            functionToApply: peersService.setPeerAsNotShared,
+            messages: {
+                successful: {
+                    singular: "Peer unshared.",
+                    plural: "Peers unshared."
+                },
+                unsuccessful: {
+                    singular: "Peer could not be unshared.",
+                    plural: "Peers could not be unshared."
+                }
+            },
+            onSuccess: function(id) {
+                $scope.peerIdsSharingMap[id] = false;
+            }
+        };
                 
         var applyOnSelectedPeers = function(params){
             var selectedPeers = _.filter($scope.aPeers, {selected: true});
@@ -290,5 +307,6 @@ angular.module("peer").controller(
         };  
         
         $scope.deleteSelectedPeers = _.partial(applyOnSelectedPeers, deleteBulkParams);
+        $scope.unshareSelectedPeers = _.partial(applyOnSelectedPeers, unshareBulkParams);
     }]
 );
