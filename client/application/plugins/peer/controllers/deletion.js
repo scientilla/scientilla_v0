@@ -7,9 +7,10 @@
 angular.module("peer").controller(
     "peerDeletionController", ["$scope", "$routeParams", "peersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peersService, systemStatusService, $window, $location) {
         $scope.deletePeer = function() {
-            peersService.deletePeer({              
-                id: $routeParams.id
-            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
+            peersService.deletePeer(              
+                $routeParams.id,
+                $window.sessionStorage.userToken
+            ).success(function(data, status, headers, config) {
                 $location.path("browse-peers");
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

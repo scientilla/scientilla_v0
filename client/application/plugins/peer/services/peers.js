@@ -8,20 +8,6 @@ angular.module("peer").factory(
     "peersService", function($http) {
         var peersProvider = {};
         
-        peersProvider.deletePeerAsync = function(id, token, callback) {
-            peersProvider
-                .deletePeer({id:id}, token)
-                .success(function(data, status, headers, config) {
-                    if (_.isFunction(callback)) {
-                        callback({peerId: id, status: status});
-                    }
-                }).error(function(data, status, headers, config) {
-                    if (_.isFunction(callback)) {
-                        callback({peerId: id, status: status});
-                    }
-                });
-        };
-        
         peersProvider.getPeers = function(token) {
             return $http({
 				method: "GET",
@@ -96,11 +82,10 @@ angular.module("peer").factory(
 			});
         };
         
-        peersProvider.deletePeer = function(data, token) {
+        peersProvider.deletePeer = function(id, token) {
             return $http({
 				method: "DELETE",
-				url: "/api/peers/" + data.id,
-                data: data,
+				url: "/api/peers/" + id,
                 cache: false,
                 timeout: 30000,
                 headers: {
