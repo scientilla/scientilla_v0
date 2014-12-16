@@ -72,6 +72,17 @@ module.exports = function () {
                 res.setHeader("Content-Type", "application/json");
                 res.json(dataset);
             });            
+        },
+        getPublicDatasetsCount: function(req, res, callback) {
+            req.datasetsCollection.find({ 
+                sharing_status: true                
+            }).count(function(err, publicDatasetsCount) {
+                if (err || req.underscore.isNull(publicDatasetsCount)) {
+                    callback(err, null);
+                    return;
+                }
+                callback(null, publicDatasetsCount);
+            });
         },        
         createDataset: function(req, res) {
             var dataset = {};
