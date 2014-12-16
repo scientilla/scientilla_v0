@@ -95,6 +95,17 @@ module.exports = function () {
                 res.setHeader("Content-Type", "application/json");
                 res.json(repository);
             });            
+        },
+        getPublicRepositoriesCount: function(req, res, callback) {
+            req.repositoriesCollection.find({ 
+                sharing_status: true                
+            }).count(function(err, publicRepositoriesCount) {
+                if (err || req.underscore.isNull(publicRepositoriesCount)) {
+                    callback(err, null);
+                    return;
+                }
+                callback(null, publicRepositoriesCount);
+            });
         },        
         createRepository: function(req, res) {
             var repository = {};
