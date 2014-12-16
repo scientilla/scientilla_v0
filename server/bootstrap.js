@@ -651,11 +651,15 @@ application.get("/api/tags", function(req, res) {
     tagsController.getTags(req, res);
 });
 
-//SYSTEM
-
+// SYSTEM
 application.get("/api/status", function(req, res) {
     console.log("Request to Read the System Status");
     systemController.getStatus(req, res);
+});
+
+application.get("/api/public-counts", cors(), function(req, res) {
+    console.log("Request to read Public Counts");
+    systemController.getPublicCounts(req, res);
 });
 
 // USERS
@@ -700,7 +704,7 @@ application.get("/api/logged-users", expressJwt({secret: 'scientilla'}), functio
     usersController.getLoggedUser(req, res);
 });
 
-application.post("/api/logged-users", function(req, res) {
+application.post("/api/logged-users", cors(), function(req, res) {
     console.log("Request to Login an User");
     usersController.loginUser(req, res);
 });
@@ -711,7 +715,7 @@ application.put("/api/logged-users", expressJwt({secret: 'scientilla'}), functio
 });
 
 // DISCOVERY
-application.get("/api/discovery/references", function(req, res) {
+application.get("/api/discovery/references", cors(), function(req, res) {
     console.log("Request to read All Discovery References");
     discoveryController.getReferences(req, res);
 });
