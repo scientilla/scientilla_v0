@@ -5,7 +5,9 @@
  */
 
 angular.module("peer").controller(
-    "localPeersBrowsingController", ["$scope", "peersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", function($scope, peersService, seedPeerReferencesService, systemStatusService, $window, $location) {
+    "localPeersBrowsingController", 
+    ["$scope", "peersService", "seedPeerReferencesService", "systemStatusService", "$window", "$location", "notificationService",
+    function($scope, peersService, seedPeerReferencesService, systemStatusService, $window, $location, notificationService) {
         $scope.changingSharedPeerId = "";
         $scope.changingAggregatedPeerId = "";
         $scope.keywords = "";        
@@ -19,7 +21,7 @@ angular.module("peer").controller(
             
         $scope.generatePeerIdsSharingMap = function(aPeers) {
             var peerIdsSharingMap = {};
-            for (lpKey in aPeers) {
+            for (var lpKey in aPeers) {
                 peerIdsSharingMap[aPeers[lpKey]._id] = aPeers[lpKey].sharing_status;
             }
             return peerIdsSharingMap;
@@ -27,7 +29,7 @@ angular.module("peer").controller(
         
         $scope.generatePeerIdsAggregatingMap = function(aPeers) {
             var peerIdsAggregatingMap = {};
-            for (lpKey in aPeers) {
+            for (var lpKey in aPeers) {
                 peerIdsAggregatingMap[aPeers[lpKey]._id] = aPeers[lpKey].aggregating_status;
             }
             return peerIdsAggregatingMap;
@@ -191,6 +193,82 @@ angular.module("peer").controller(
             if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber++; 
             }
-        };        
+        };   
+        
+        $scope.selectAll = function() {
+            var allSelected = _.every($scope.aPeers, 'selected');
+            _.each($scope.aPeers, function(p){p.selected = !allSelected;});
+        };
+               
+        
+        $scope.deleteSelectedReferences = function(){
+            var selectedPeers = _.filter($scope.aPeers, {selected: true});
+            
+            var deletePeers = 
+                _.map(selectedPeers, function(peer) {
+                   return function(callback) {
+                       peersService.deletePeerAsync(
+                            peer._id,
+                            $window.sessionStorage.userToken,
+                            function(result) {
+                               callback(null, result);
+                            }
+                       );
+                   };
+                });
+                
+            var notifyResults = function(err, allResults){
+                if (err) {
+                    notificationService.info('Some error happened');
+                    return;
+                }
+                var deletedPeers = 0;
+                var notDeletedPeers = 0;
+                var errors = 0;
+                allResults.forEach(function(result) {
+                    switch(result.status) {
+                        case 200: 
+                            _.remove($scope.aPeers, {_id: result.peerId} );
+                            deletedPeers++;
+                            break;
+                        case 430:
+                            notDeletedPeers++;
+                            break;
+                        case 404:
+                        case 500:
+                            systemStatusService.react(result.status);
+                            errors++;
+                            break;
+                        default:
+                            systemStatusService.react(result.status);
+                            errors++;
+                    }
+                });
+                var msg = "";
+                if (allResults.length === 0) {
+                    msg = 'No Peers Selected';
+                } else {
+                    if (deletedPeers > 0) {
+                        if (deletedPeers === 1) {
+                            msg += deletedPeers + ' Peer Deleted.\n';
+                        } else {
+                            msg += deletedPeers + ' Peers Not Deleted.\n';
+                        }
+                    }
+                    if (notDeletedPeers > 0 ) {
+                        if (notDeletedPeers === 1) {
+                            msg += notDeletedPeers + ' Peer could not be deleted.\n';
+                        } else {
+                            msg += notDeletedPeers + ' Peers could not be deleted.\n';
+                        }
+                    }
+                    if (errors > 0 ) {
+                        msg += 'Some error happened.\n';
+                    }
+                }
+                notificationService.info(msg);
+            };
+            async.parallel(deletePeers, notifyResults);
+        };  
     }]
 );
