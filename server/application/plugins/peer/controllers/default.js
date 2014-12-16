@@ -79,6 +79,17 @@ module.exports = function () {
                 res.setHeader("Content-Type", "application/json");
                 res.json(peer);
             });            
+        }, 
+        getPublicPeersCount: function(req, res, callback) {
+            req.peersCollection.find({ 
+                sharing_status: true                
+            }).count(function(err, publicPeersCount) {
+                if (err || req.underscore.isNull(publicPeersCount)) {
+                    callback(err, null);
+                    return;
+                }
+                callback(null, publicPeersCount);
+            });
         },        
         createPeer: function(req, res) {
             req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
