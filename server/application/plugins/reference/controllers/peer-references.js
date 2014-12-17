@@ -5,7 +5,7 @@
  */
 
 // Resolves dependencies
-var _ = require("underscore");
+var _ = require("lodash");
 var async = require("async");
 var path = require("path");
 var request = require("request");
@@ -21,6 +21,11 @@ module.exports = function () {
             callback();
         });
     };
+    var hasCorrectExchangeFormat = function(peerReferenceObj) {
+       return _.isObject(peerReferenceObj) && 
+              _.has(peerReferenceObj, 'items') && 
+              _.has(peerReferenceObj, 'total_number_of_items');
+    }
     return {
         getPeerPublicReferences: function(req, res) {
             req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {
@@ -142,7 +147,7 @@ module.exports = function () {
                                     strictSSL: false,
                                     json: true 
                                 }, function (err, res, peerReferencesObj) {
-                                    if (err || _.isNull(peerReferences)) {
+                                    if (err || _.isNull(peerReferencesObj) || !hasCorrectExchangeFormat(peerReferencesObj)) {
                                         updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
                                     } else {
                                         var peerReferences = peerReferencesObj.items;
