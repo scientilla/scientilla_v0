@@ -32,7 +32,8 @@ module.exports = function () {
                     url: peer.url + "/api/public-references?keywords=" + req.query.keywords, 
                     strictSSL: false,
                     json: true 
-                }, function (error, response, peerReferences) {
+                }, function (error, response, peerReferencesObj) {
+                    var peerReferences = peerReferencesObj.items;
                     if (error) {
                         res.status(404).end();
                         return;
@@ -47,8 +48,9 @@ module.exports = function () {
                                 res.status(404).end();
                                 return;
                             }
+                            var verifiedReferencesObj = {items: verifiedReferences, numberOfItems: verifiedReferences.length};
                             res.setHeader("Content-Type", "application/json");
-                            res.status(200).send(verifiedReferences).end();
+                            res.status(200).send(verifiedReferencesObj).end();
                         }
                     );
                 });
@@ -139,7 +141,9 @@ module.exports = function () {
                                     url: peers[0].url + "/api/public-references?datetime=" + encodeURIComponent(datetime), 
                                     strictSSL: false,
                                     json: true 
-                                }, function (err, res, peerReferences) {
+                                }, function (err, res, peerReferencesObj) {
+                                    console.log(peerReferencesObj);
+                                    var peerReferences = peerReferencesObj.items;
                                     if (err || _.isNull(peerReferences)) {
                                         updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
                                     } else {

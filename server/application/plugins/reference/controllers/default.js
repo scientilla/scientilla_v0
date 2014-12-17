@@ -109,8 +109,9 @@ module.exports = function () {
                     return;
                 }
                 publicReferences = cleanReferencesTags(publicReferences);
+                var publicReferencesObj = {items: publicReferences, numberOfItems: publicReferences.length};
                 res.setHeader("Content-Type", "application/json");
-                res.json(publicReferences);
+                res.json(publicReferencesObj);
             });            
         },        
         getReference: function(req, res) {

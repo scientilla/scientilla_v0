@@ -14,7 +14,7 @@ angular.module("reference").controller(
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
         $scope.numberOfItemsPerPage = 25;
-        $scope.totalNumberOfItems = 10000;
+        $scope.totalNumberOfItems = 0;
         $scope.allSelected = false;      
         
         $scope.cloneReference = function(reference) {
@@ -134,7 +134,8 @@ angular.module("reference").controller(
                         $scope.keywords,
                         $window.sessionStorage.userToken
                     ).success(function(data, status, headers, config) {
-                        $scope.aReferences = data;
+                        $scope.totalNumberOfItems = data.total_number_of_items;
+                        $scope.aReferences = data.items;
                         if ($scope.aReferences.length === 0) {
                             $scope.empty = true;
                         }                    
