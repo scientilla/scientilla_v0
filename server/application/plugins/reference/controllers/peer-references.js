@@ -48,7 +48,7 @@ module.exports = function () {
                                 res.status(404).end();
                                 return;
                             }
-                            var verifiedReferencesObj = {items: verifiedReferences, numberOfItems: verifiedReferences.length};
+                            var verifiedReferencesObj = {items: verifiedReferences, number_of_items: verifiedReferences.length};
                             res.setHeader("Content-Type", "application/json");
                             res.status(200).send(verifiedReferencesObj).end();
                         }
@@ -137,16 +137,16 @@ module.exports = function () {
                                     return;
                                 }
                                 var datetime = (_.isNull(collectedReferences.length) || _.isUndefined(collectedReferences.length) || collectedReferences.length == 0) ? "" : collectedReferences[0].last_modification_datetime;
+                                console.log(peers[0].url);
                                 request({ 
                                     url: peers[0].url + "/api/public-references?datetime=" + encodeURIComponent(datetime), 
                                     strictSSL: false,
                                     json: true 
                                 }, function (err, res, peerReferencesObj) {
-                                    console.log(peerReferencesObj);
-                                    var peerReferences = peerReferencesObj.items;
                                     if (err || _.isNull(peerReferences)) {
                                         updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
                                     } else {
+                                        var peerReferences = peerReferencesObj.items;
                                         async.series([
                                             function(secondSeriesCallback) {                                    
                                                 async.eachSeries(

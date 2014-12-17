@@ -109,7 +109,7 @@ module.exports = function () {
                     return;
                 }
                 publicReferences = cleanReferencesTags(publicReferences);
-                var publicReferencesObj = {items: publicReferences, numberOfItems: publicReferences.length};
+                var publicReferencesObj = {items: publicReferences, number_of_items: publicReferences.length};
                 res.setHeader("Content-Type", "application/json");
                 res.json(publicReferencesObj);
             });            
