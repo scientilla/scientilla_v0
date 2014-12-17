@@ -137,7 +137,6 @@ module.exports = function () {
                                     return;
                                 }
                                 var datetime = (_.isNull(collectedReferences.length) || _.isUndefined(collectedReferences.length) || collectedReferences.length == 0) ? "" : collectedReferences[0].last_modification_datetime;
-                                console.log(peers[0].url);
                                 request({ 
                                     url: peers[0].url + "/api/public-references?datetime=" + encodeURIComponent(datetime), 
                                     strictSSL: false,
