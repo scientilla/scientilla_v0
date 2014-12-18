@@ -172,25 +172,6 @@ angular.module("reference").controller(
             _.each($scope.aReferences, function(r){r.selected = !allSelected;});
         };
         
-        $scope.deleteSelected = function() {
-            async.parallel(
-                function(cb) {
-                    
-                }
-            );
-            $scope.deleteReference = function() {
-                referencesService.deleteReference({              
-                    id: $routeParams.id
-                }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                    $location.path("browse-references");
-                }).error(function(data, status, headers, config) {
-                    systemStatusService.react(status);
-                });
-            };
-        };
-        
-               
-        
         $scope.deleteSelectedReferences = function(){
             var selectedReferences = _.filter($scope.aReferences, {selected: true});
             
