@@ -22,7 +22,7 @@ module.exports = function () {
         },
        
         getTags: function(seedConfiguration, keywords, callback) {
-            getRandomSeed(seedConfiguration, function(err, seed){
+            this.getRandomSeed(seedConfiguration, function(err, seed){
                 if (err) {
                     callback(err, null);
                 }
