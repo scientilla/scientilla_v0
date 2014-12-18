@@ -212,8 +212,26 @@ angular.module("reference").controller(
                 $scope.referenceIdsSharingMap[id] = false;
             }
         }, referenceParams);
+               
+        var shareBulkParams = _.merge({
+            functionToApply: referencesService.setReferenceAsShared,
+            messages: {
+                successful: {
+                    singular: "Reference shared.",
+                    plural: "References shared."
+                },
+                unsuccessful: {
+                    singular: "Reference could not be shared.",
+                    plural: "References could not be shared."
+                }
+            },
+            onSuccess: function(id) {
+                $scope.referenceIdsSharingMap[id] = true;
+            }
+        }, referenceParams);
         
         $scope.deleteSelectedReferences = _.partial(notificationService.applyOnSelectedElements, deleteBulkParams);
         $scope.unshareSelectedPeers = _.partial(notificationService.applyOnSelectedElements, unshareBulkParams);
+        $scope.shareSelectedPeers = _.partial(notificationService.applyOnSelectedElements, shareBulkParams);
     }]
 );
