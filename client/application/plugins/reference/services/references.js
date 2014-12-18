@@ -39,20 +39,6 @@ angular.module("reference").factory(
         
         var referencesProvider = {};
         
-        referencesProvider.deleteReferenceAsync = function(id, token, callback) {
-            referencesProvider
-                .deleteReference(id, token)
-                .success(function(data, status, headers, config) {
-                    if (_.isFunction(callback)) {
-                        callback({referenceId: id, status: status});
-                    }
-                }).error(function(data, status, headers, config) {
-                    if (_.isFunction(callback)) {
-                        callback({referenceId: id, status: status});
-                    }
-                });
-        };
-        
         referencesProvider.createReferenceAsync = function(reference, token, callback) {
             var referenceData = cleanReferenceData(reference);
             referenceData.source = {type: 'N'};
