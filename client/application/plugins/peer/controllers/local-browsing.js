@@ -199,8 +199,15 @@ angular.module("peer").controller(
             var allSelected = _.every($scope.aPeers, 'selected');
             _.each($scope.aPeers, function(p){p.selected = !allSelected;});
         };
+        
+        var peerParams = {
+            messages: {
+                    "no-elems": 'No Peers Selected'
+                },
+            getCollection: function() {return $scope.aPeers;}
+        };
                
-        var deleteBulkParams = {
+        var deleteBulkParams = _.merge({
             functionToApply: peersService.deletePeer,
             messages: {
                 successful: {
@@ -215,9 +222,9 @@ angular.module("peer").controller(
             onSuccess: function(id) {
                 _.remove($scope.aPeers, {_id: id} );
             }
-        };
+        }, peerParams);
                
-        var unshareBulkParams = {
+        var unshareBulkParams = _.merge({
             functionToApply: peersService.setPeerAsNotShared,
             messages: {
                 successful: {
@@ -232,9 +239,9 @@ angular.module("peer").controller(
             onSuccess: function(id) {
                 $scope.peerIdsSharingMap[id] = false;
             }
-        };
+        }, peerParams);
                
-        var shareBulkParams = {
+        var shareBulkParams = _.merge({
             functionToApply: peersService.setPeerAsShared,
             messages: {
                 successful: {
@@ -249,21 +256,22 @@ angular.module("peer").controller(
             onSuccess: function(id) {
                 $scope.peerIdsSharingMap[id] = true;
             }
-        };
-                
-        var applyOnSelectedPeers = function(params){
-            var selectedPeers = _.filter($scope.aPeers, {selected: true});
+        }, peerParams);
+        
+        var applyOnSelectedElements = function(params){
+            var collection = params.getCollection();
+            var selectedElements = _.filter(collection, {selected: true});
             var funToApply = params.functionToApply;
             
             var bulkAction = 
-                _.map(selectedPeers, function(peer) {
+                _.map(selectedElements, function(elem) {
                     return function(callback) {
-                        funToApply(peer._id, $window.sessionStorage.userToken)
+                        funToApply(elem._id, $window.sessionStorage.userToken)
                             .success(function(data, status, headers, config) {
-                                    callback(null, {peerId: peer._id, status: status});
+                                    callback(null, {elemId: elem._id, status: status});
                             })
                             .error(function(data, status, headers, config) {
-                                    callback(null, {peerId: peer._id, status: status});
+                                    callback(null, {elemId: elem._id, status: status});
                             });
                    };
                 });
@@ -273,17 +281,17 @@ angular.module("peer").controller(
                     notificationService.info('Some error happened');
                     return;
                 }
-                var successfulPeers = 0;
-                var unsuccessfulPeer = 0;
+                var successfulElems = 0;
+                var unsuccessfulElems = 0;
                 var errors = 0;
                 allResults.forEach(function(result) {
                     switch(result.status) {
                         case 200: 
-                            params.onSuccess(result.peerId);
-                            successfulPeers++;
+                            params.onSuccess(result.elemId);
+                            successfulElems++;
                             break;
                         case 430:
-                            unsuccessfulPeer++;
+                            unsuccessfulElems++;
                             break;
                         case 404:
                         case 500:
@@ -298,20 +306,20 @@ angular.module("peer").controller(
                 var msg = "";
                 var messages = params.messages;
                 if (allResults.length === 0) {
-                    msg = 'No Peers Selected';
+                    msg = params.messages['no-elems'];
                 } else {
-                    if (successfulPeers > 0) {
-                        if (successfulPeers === 1) {
-                            msg += successfulPeers + ' ' + messages.successful.singular + '\n';
+                    if (successfulElems > 0) {
+                        if (successfulElems === 1) {
+                            msg += successfulElems + ' ' + messages.successful.singular + '\n';
                         } else {
-                            msg += successfulPeers + ' ' + messages.successful.plural + '\n';
+                            msg += successfulElems + ' ' + messages.successful.plural + '\n';
                         }
                     }
-                    if (unsuccessfulPeer > 0 ) {
-                        if (unsuccessfulPeer === 1) {
-                            msg += unsuccessfulPeer + ' ' + messages.unsuccessful.singular + '\n';
+                    if (unsuccessfulElems > 0 ) {
+                        if (unsuccessfulElems === 1) {
+                            msg += unsuccessfulElems + ' ' + messages.unsuccessful.singular + '\n';
                         } else {
-                            msg += unsuccessfulPeer + ' ' + messages.unsuccessful.plural + '\n';
+                            msg += unsuccessfulElems + ' ' + messages.unsuccessful.plural + '\n';
                         }
                     }
                     if (errors > 0 ) {
@@ -323,8 +331,8 @@ angular.module("peer").controller(
             async.parallel(bulkAction, notifyResults);
         };  
         
-        $scope.deleteSelectedPeers = _.partial(applyOnSelectedPeers, deleteBulkParams);
-        $scope.unshareSelectedPeers = _.partial(applyOnSelectedPeers, unshareBulkParams);
-        $scope.shareSelectedPeers = _.partial(applyOnSelectedPeers, shareBulkParams);
+        $scope.deleteSelectedPeers = _.partial(applyOnSelectedElements, deleteBulkParams);
+        $scope.unshareSelectedPeers = _.partial(applyOnSelectedElements, unshareBulkParams);
+        $scope.shareSelectedPeers = _.partial(applyOnSelectedElements, shareBulkParams);
     }]
 );
