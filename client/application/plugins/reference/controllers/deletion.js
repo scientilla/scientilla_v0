@@ -7,13 +7,13 @@
 angular.module("reference").controller(
     "referenceDeletionController", ["$scope", "$routeParams", "referencesService", "systemStatusService", "$window", "$location", function($scope, $routeParams, referencesService, systemStatusService, $window, $location) {
         $scope.deleteReference = function() {
-            referencesService.deleteReference({              
-                id: $routeParams.id
-            }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                $location.path("browse-references");
-            }).error(function(data, status, headers, config) {
-                systemStatusService.react(status);
-            });
+            referencesService.deleteReference(              
+                $routeParams.id, 
+                $window.sessionStorage.userToken).success(function(data, status, headers, config) {
+                    $location.path("browse-references");
+                }).error(function(data, status, headers, config) {
+                    systemStatusService.react(status);
+                });
         };
     }]
 );

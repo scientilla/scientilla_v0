@@ -41,7 +41,7 @@ angular.module("reference").factory(
         
         referencesProvider.deleteReferenceAsync = function(id, token, callback) {
             referencesProvider
-                .deleteReference({id:id}, token)
+                .deleteReference(id, token)
                 .success(function(data, status, headers, config) {
                     if (_.isFunction(callback)) {
                         callback({referenceId: id, status: status});
@@ -162,11 +162,10 @@ angular.module("reference").factory(
 			});
         };
         
-        referencesProvider.deleteReference = function(data, token) {
+        referencesProvider.deleteReference = function(id, token) {
             return $http({
 				method: "DELETE",
-				url: "/api/references/" + data.id,
-                data: data,
+				url: "/api/references/" + id,
                 cache: false,
                 timeout: 30000,
                 headers: {
