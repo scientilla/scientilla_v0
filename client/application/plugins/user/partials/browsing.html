@@ -40,7 +40,11 @@
                                 <a href="#/add-user/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> </a>
                             </th>
                             <th class="fixed-th-1x">
-                            </th>
+                                <button class="btn btn-default btn-block" title="Unshare selected" ><i class="fa fa-lock"></i></button>
+                            </th>                            
+                            <th class="fixed-th-1x text-center">
+                                <button class="btn btn-default btn-block" title="Share selected" ><i class="fa fa-unlock"></i></button>
+                            </th>    
                             <th class="fixed-th-1x">
                                 <button class="btn btn-default btn-block" title="Delete selected" ng-click="deleteSelectedReferences()"><i class="fa fa-trash-o"></i></button>
                             </th>
@@ -60,6 +64,8 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-default btn-block"><i class="fa fa-lock"></i> </button>
+                            </td>
+                            <td>
                             </td>
                             <td>
                                 <button ng-click="deleteUser(user._id)" type="button" class="btn btn-default btn-block"><i class="fa fa-trash-o"></i> </button>
