@@ -172,74 +172,30 @@ angular.module("reference").controller(
             _.each($scope.aReferences, function(r){r.selected = !allSelected;});
         };
         
-        $scope.deleteSelectedReferences = function(){
-            var selectedReferences = _.filter($scope.aReferences, {selected: true});
-            
-            var deleteReferences = 
-                _.map(selectedReferences, function(reference) {
-                   return function(callback) {
-                       referencesService.deleteReferenceAsync(
-                            reference._id,
-                            $window.sessionStorage.userToken,
-                            function(result) {
-                               callback(null, result);
-                            }
-                       );
-                   };
-                });
-                
-            var notifyResults = function(err, allResults){
-                if (err) {
-                    notificationService.info('Some error happened');
-                    return;
+        var referenceParams = {
+            messages: {
+                    "no-elems": 'No References Selected'
+                },
+            getCollection: function() {return $scope.aReferences;}
+        };
+               
+        var deleteBulkParams = _.merge({
+            functionToApply: referencesService.deleteReference,
+            messages: {
+                successful: {
+                    singular: "Reference deleted.",
+                    plural: "References deleted"
+                },
+                unsuccessful: {
+                    singular: "Reference could not be deleted.",
+                    plural: "References could not be deleted."
                 }
-                var deletedReferences = 0;
-                var notDeletedReferences = 0;
-                var errors = 0;
-                allResults.forEach(function(result) {
-                    switch(result.status) {
-                        case 200: 
-                            _.remove($scope.aReferences, {_id: result.referenceId} );
-                            deletedReferences++;
-                            break;
-                        case 409:
-                            notDeletedReferences++;
-                            break;
-                        case 404:
-                        case 500:
-                            systemStatusService.react(result.status);
-                            errors++;
-                            break;
-                        default:
-                            systemStatusService.react(result.status);
-                            errors++;
-                    }
-                });
-                var msg = "";
-                if (allResults.length === 0) {
-                    msg = 'No References Selected';
-                } else {
-                    if (deletedReferences > 0) {
-                        if (deletedReferences === 1) {
-                            msg += deletedReferences + ' Reference Deleted.\n';
-                        } else {
-                            msg += deletedReferences + ' References Not Deleted.\n';
-                        }
-                    }
-                    if (notDeletedReferences > 0 ) {
-                        if (notDeletedReferences === 1) {
-                            msg += notDeletedReferences + ' Reference could not be deleted.\n';
-                        } else {
-                            msg += notDeletedReferences + ' References could not be deleted.\n';
-                        }
-                    }
-                    if (errors > 0 ) {
-                        msg += 'Some error happened.\n';
-                    }
-                }
-                notificationService.info(msg);
-            };
-            async.parallel(deleteReferences, notifyResults);
-        };  
+            },
+            onSuccess: function(id) {
+                _.remove($scope.aReferences, {_id: id} );
+            }
+        }, referenceParams);
+        
+        $scope.deleteSelectedReferences = _.partial(notificationService.applyOnSelectedElements, deleteBulkParams);
     }]
 );
