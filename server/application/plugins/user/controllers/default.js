@@ -114,7 +114,7 @@ module.exports = function () {
                 function(referencesCount, cb) {
                     if (referencesCount > 0) {
                         console.log('User is not deletable.');
-                        res.status(400).end();
+                        res.status(430).end();
                         return;
                     }
                     req.usersCollection.remove({ _id: userId }, cb);
