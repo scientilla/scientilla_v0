@@ -51,7 +51,7 @@
                                 <a href="#/add-reference/" class="btn btn-default btn-block" title="Add new"><i class="fa fa-plus"></i></a>
                             </th>
                             <th ng-if="userRights == 1" class="fixed-th-1x">
-                                <button class="btn btn-default btn-block" title="Unshare selected" ><i class="fa fa-lock"></i></button>
+                                <button class="btn btn-default btn-block" title="Unshare selected" ng-click="unshareSelectedPeers()" ><i class="fa fa-lock"></i></button>
                             </th>                            
                             <th class="fixed-th-1x text-center">
                                 <button  ng-if="userRights == 1" class="btn btn-default btn-block" title="Share selected" ><i class="fa fa-unlock"></i></button>

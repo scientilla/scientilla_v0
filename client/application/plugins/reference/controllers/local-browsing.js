@@ -195,7 +195,25 @@ angular.module("reference").controller(
                 _.remove($scope.aReferences, {_id: id} );
             }
         }, referenceParams);
+               
+        var unshareBulkParams = _.merge({
+            functionToApply: referencesService.setReferenceAsNotShared,
+            messages: {
+                successful: {
+                    singular: "Reference unshared.",
+                    plural: "References unshared."
+                },
+                unsuccessful: {
+                    singular: "Reference could not be unshared.",
+                    plural: "References could not be unshared."
+                }
+            },
+            onSuccess: function(id) {
+                $scope.referenceIdsSharingMap[id] = false;
+            }
+        }, referenceParams);
         
         $scope.deleteSelectedReferences = _.partial(notificationService.applyOnSelectedElements, deleteBulkParams);
+        $scope.unshareSelectedPeers = _.partial(notificationService.applyOnSelectedElements, unshareBulkParams);
     }]
 );
