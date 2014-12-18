@@ -80,7 +80,7 @@ angular.module("user").controller(
             }
         }, usersParams);
         
-        $scope.deleteSelectedReferences = _.partial(notificationService.applyOnSelectedElements, deleteBulkParams);
+        $scope.deleteSelectedUsers = _.partial(notificationService.applyOnSelectedElements, deleteBulkParams);
         
         $scope.init = function() {
             $scope.retrieveUsers();
