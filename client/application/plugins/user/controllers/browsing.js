@@ -56,76 +56,31 @@ angular.module("user").controller(
             _.each($scope.aUsers, function(u){u.selected = !allSelected;});
         };
         
-        $scope.deleteSelectedReferences = function(){
-            var selectedUsers = _.filter($scope.aUsers, {selected: true});
-            
-            var deleteUsers = 
-                _.map(selectedUsers, function(user) {
-                   return function(callback) {
-                       usersService.deleteUserAsync(
-                            user._id,
-                            $window.sessionStorage.userToken,
-                            function(result) {
-                               callback(null, result);
-                            }
-                       );
-                   };
-                });
-                
-            var notifyResults = function(err, allResults){
-                if (err) {
-                    notificationService.info('Some error happened');
-                    return;
+        var usersParams = {
+            messages: {
+                    "no-elems": 'No Users Selected'
+                },
+            getCollection: function() {return $scope.aUsers;}
+        };
+               
+        var deleteBulkParams = _.merge({
+            functionToApply: usersService.deleteUser,
+            messages: {
+                successful: {
+                    singular: "User deleted.",
+                    plural: "Users deleted"
+                },
+                unsuccessful: {
+                    singular: "User could not be deleted.",
+                    plural: "Users could not be deleted."
                 }
-                var deletedUsers = 0;
-                var notDeletedUsers = 0;
-                var errors = 0;
-                allResults.forEach(function(result) {
-                    switch(result.status) {
-                        case 200: 
-                            _.remove($scope.aUsers, {_id: result.userId} );
-                            deletedUsers++;
-                            break;
-                        case 400:
-                            notDeletedUsers++;
-                            break;
-                        case 404:
-                        case 500:
-                            systemStatusService.react(result.status);
-                            errors++;
-                            break;
-                        default:
-                            systemStatusService.react(result.status);
-                            errors++;
-                    }
-                });
-                var msg = "";
-                if (allResults.length === 0) {
-                    msg = 'No Users Selected';
-                } else {
-                    if (deletedUsers > 0) {
-                        if (deletedUsers === 1) {
-                            msg += deletedUsers + ' User Deleted.\n';
-                        } else {
-                            msg += deletedUsers + ' Users Not Deleted.\n';
-                        }
-                    }
-                    if (notDeletedUsers > 0 ) {
-                        if (notDeletedUsers === 1) {
-                            msg += notDeletedUsers + ' User could not be deleted.\n';
-                        } else {
-                            msg += notDeletedUsers + ' Users could not be deleted.\n';
-                        }
-                    }
-                    if (errors > 0 ) {
-                        msg += 'Some error happened.\n';
-                    }
-                }
-                notificationService.info(msg);
-            };
-            async.parallel(deleteUsers, notifyResults);
-        };  
+            },
+            onSuccess: function(id) {
+                _.remove($scope.aUsers, {_id: id} );
+            }
+        }, usersParams);
         
+        $scope.deleteSelectedReferences = _.partial(notificationService.applyOnSelectedElements, deleteBulkParams);
         
         $scope.init = function() {
             $scope.retrieveUsers();
