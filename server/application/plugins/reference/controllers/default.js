@@ -136,17 +136,6 @@ module.exports = function () {
                 res.json(publicReference);
             });                
         },
-        getPublicReferencesCount: function(req, res, callback) {
-            req.referencesCollection.find({ 
-                sharing_status: true                
-            }).count(function(err, publicReferencesCount) {
-                if (err || req.underscore.isNull(publicReferencesCount)) {
-                    callback(err, null);
-                    return;
-                }
-                callback(null, publicReferencesCount);
-            });
-        },
         createReference: function(req, res) {
             switch (req.body.source.type) {
                 case "I":
