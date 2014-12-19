@@ -15,7 +15,6 @@ angular.module("setting").controller(
                 function(callback) {
                     settingsService.getSettings($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.oSettings = data;
-                        $scope.oSettings.database = "tingodb";
                         callback();
                     }).error(function(data, status, headers, config) {
                         systemStatusService.react(status, callback);
@@ -47,7 +46,8 @@ angular.module("setting").controller(
                 name: $scope.oSettings.name,
                 url: $scope.oSettings.url,
                 owner_user_id: $scope.oSettings.owner_user_id,
-                seed: $scope.oSettings.seed
+                seed: $scope.oSettings.seed,
+                database_type: $scope.oSettings.database_type
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {

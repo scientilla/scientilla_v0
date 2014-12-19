@@ -28,6 +28,8 @@ module.exports = function () {
             settings.url = !req.underscore.isUndefined(req.body.url) ? ('' + req.body.url).trim() : '';
             settings.owner_user_id = !req.underscore.isUndefined(req.body.owner_user_id) ? ('' + req.body.owner_user_id).trim() : '';
             settings.seed = !req.underscore.isUndefined(req.body.seed) ? req.body.seed : false;
+            settings.files_routing = !req.underscore.isUndefined(req.body.files_routing) ? req.body.files_routing : false;
+            settings.database_type = !req.underscore.isUndefined(req.body.database_type) ? req.body.database_type : "tingodb";
             configurationManager.set(settings);
             configurationManager.save();
             configurationManager.reload();

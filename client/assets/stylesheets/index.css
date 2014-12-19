@@ -349,6 +349,11 @@ html, body {
     color: #FFFFFF;
 }
 
+#content .panel {
+    margin-top: 0px;
+    margin-bottom: 14px;
+}
+
 /* Common */
 .nowrap {
     white-space: nowrap;
@@ -391,7 +396,6 @@ html, body {
     display: inline-block;
 }
 
-
 .organizationSelector, .select2-container.organizationSelector {
     width: 350px;
     display: block;
@@ -413,6 +417,7 @@ html, body {
     left: 0;
     right: 0;
 }
+
 .vertical-center {
     position: absolute;
     top: 50%;
