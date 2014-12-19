@@ -6,7 +6,7 @@
 
 angular.module("setting").controller(
     "settingsBrowsingController", ["$scope", "settingsService", "usersService", "systemStatusService", "$window", "$location", function($scope, settingsService, usersService, systemStatusService, $window, $location) {
-        $scope.aSettings = [];
+        $scope.oSettings = {};
         
         $scope.retrieveSettings = function retrieveSettings() {
             $scope.empty = false;
@@ -15,6 +15,7 @@ angular.module("setting").controller(
                 function(callback) {
                     settingsService.getSettings($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.oSettings = data;
+                        $scope.oSettings.database = "tingodb";
                         callback();
                     }).error(function(data, status, headers, config) {
                         systemStatusService.react(status, callback);

@@ -48,53 +48,85 @@
         <div class="row">
             <div class="col-lg-12 visible-md visible-lg">
                 <form name="form" class="form-horizontal" role="form" novalidate>
-                    <div class="form-group">
-                        <div class="col-xs-12 nowrap">
-                            <label for="port" class="label label-default">Port</label>                          
-                            <input id="port" ng-model="oSettings.port" ng-required="true" type="text" class="form-control">                             
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Network Connectivity</h3>
+                        </div>                        
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="port" class="label label-default">Port</label>                          
+                                    <input id="port" ng-model="oSettings.port" ng-required="true" type="text" class="form-control">                             
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="ssl-key-path" class="label label-default">SSL Key Path</label>                          
+                                    <input id="ssl-key-path" ng-model="oSettings.ssl_key_path" ng-required="true" type="text" class="form-control">                             
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="ssl-certificate-path" class="label label-default">SSL Certificate Path</label>                          
+                                    <input id="ssl-certificate-path" ng-model="oSettings.ssl_cert_path" ng-required="true" type="text" class="form-control">                             
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-xs-12 nowrap">
-                            <label for="ssl-key-path" class="label label-default">SSL Key Path</label>                          
-                            <input id="ssl-key-path" ng-model="oSettings.ssl_key_path" ng-required="true" type="text" class="form-control">                             
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Data Persistence</h3>
+                        </div>                        
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="database" class="label label-default">Database</label>
+                                    <div>
+                                        <div class="btn-group">
+                                            <label class="btn btn-default" ng-model="oSettings.database" btn-radio="'tingodb'">TingoDB</label>
+                                            <label class="btn btn-default" ng-model="oSettings.database" btn-radio="'mongodb'">MongoDB</label>
+                                        </div>                                
+                                    </div>                           
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-xs-12 nowrap">
-                            <label for="ssl-certificate-path" class="label label-default">SSL Certificate Path</label>                          
-                            <input id="ssl-certificate-path" ng-model="oSettings.ssl_cert_path" ng-required="true" type="text" class="form-control">                             
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-12 nowrap">
-                            <label for="name" class="label label-default">Name</label>                          
-                            <input id="name" ng-model="oSettings.name" ng-required="true" type="text" class="form-control">                             
-                        </div>
-                    </div>                    
-                    <div class="form-group">
-                        <div class="col-xs-12 nowrap">
-                            <label for="url" class="label label-default">URL</label>                          
-                            <input id="url" ng-model="oSettings.url" ng-required="true" type="text" class="form-control">                             
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-12 nowrap">
-                            <label for="owner-user-id" class="label label-default">Owner User</label>                          
-                            <select id="owner-user-id" ng-model="oSettings.owner_user_id" ng-required="true" class="form-control">
-                                <option value="{{user._id}}" ng-repeat="user in aUsers" ng-selected="user._id == oSettings.owner_user_id">{{(((user.first_name + ' ' + user.last_name).trim() + ' ' + user.middle_name).trim() + ' ' + user.business_name).trim()}}</option>    
-                            </select>                            
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-12 nowrap">
-                            <label for="seed" class="label label-default">Mode</label>
-                            <div>
-                                <div class="btn-group">
-                                    <label class="btn btn-default" ng-model="oSettings.seed" btn-radio="false">Peer</label>
-                                    <label class="btn btn-default" ng-model="oSettings.seed" btn-radio="true">Seed</label>
-                                </div>                                
-                            </div>                           
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Installation Options</h3>
+                        </div>                        
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="seed" class="label label-default">Mode</label>
+                                    <div>
+                                        <div class="btn-group">
+                                            <label class="btn btn-default" ng-model="oSettings.seed" btn-radio="false">Peer</label>
+                                            <label class="btn btn-default" ng-model="oSettings.seed" btn-radio="true">Seed</label>
+                                        </div>                                
+                                    </div>                           
+                                </div>
+                            </div>                            
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="owner-user-id" class="label label-default">Owner User</label>                          
+                                    <select id="owner-user-id" ng-model="oSettings.owner_user_id" ng-required="true" class="form-control">
+                                        <option value="{{user._id}}" ng-repeat="user in aUsers" ng-selected="user._id == oSettings.owner_user_id">{{(((user.first_name + ' ' + user.last_name).trim() + ' ' + user.middle_name).trim() + ' ' + user.business_name).trim()}}</option>    
+                                    </select>                            
+                                </div>
+                            </div>                            
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="name" class="label label-default">Name</label>                          
+                                    <input id="name" ng-model="oSettings.name" ng-required="true" type="text" class="form-control">                             
+                                </div>
+                            </div>                    
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="url" class="label label-default">URL</label>                          
+                                    <input id="url" ng-model="oSettings.url" ng-required="true" type="text" class="form-control">                             
+                                </div>
+                            </div>
                         </div>
                     </div>                    
                     <div class="form-group">
