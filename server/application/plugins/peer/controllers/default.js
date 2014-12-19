@@ -79,17 +79,6 @@ module.exports = function () {
                 res.setHeader("Content-Type", "application/json");
                 res.json(peer);
             });            
-        }, 
-        getPublicPeersCount: function(req, res, callback) {
-            req.peersCollection.find({ 
-                sharing_status: true                
-            }).count(function(err, publicPeersCount) {
-                if (err || req.underscore.isNull(publicPeersCount)) {
-                    callback(err, null);
-                    return;
-                }
-                callback(null, publicPeersCount);
-            });
         },        
         createPeer: function(req, res) {
             req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
@@ -254,21 +243,34 @@ module.exports = function () {
                                                 } else {
                                                     defaultPeerReferencesDiscoveringHits = existingPeers[0].references_discovering_hits;
                                                     defaultPeerUsersDiscoveringHits = existingPeers[0].users_discovering_hits;
-                                                }                                            
-                                                var discoveredPeer = {};
-                                                discoveredPeer.name = peer.name;
-                                                discoveredPeer.url = peer.url;
-                                                discoveredPeer.sharing_status = true; 
-                                                discoveredPeer.aggregating_status = false;
-                                                discoveredPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
-                                                discoveredPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
-                                                discoveredPeer.creator_id = "";
-                                                discoveredPeer.creation_datetime = peer.creation_datetime;
-                                                discoveredPeer.last_modifier_id = "";
-                                                discoveredPeer.last_modification_datetime = "";  
-                                                discoveredPeer.type = REMOTE;
-                                                peersCollection.insert(discoveredPeer, {w:1}, function(err, createdPeer) {
-                                                    eachSeriesCallback();
+                                                }
+                                                console.log(peer.url);
+                                                request({
+                                                    method: "GET",
+                                                    url: peer.url + "/api/public-counts", 
+                                                    strictSSL: false 
+                                                }, function (err, res, body) {
+                                                    var discoveredPeer = {};
+                                                    if (!err && body != "") {
+                                                        var publicCounts = JSON.parse(body);
+                                                        discoveredPeer.size = publicCounts;
+                                                    } else {
+                                                        discoveredPeer.size = 0;
+                                                    }
+                                                    discoveredPeer.name = peer.name;
+                                                    discoveredPeer.url = peer.url;
+                                                    discoveredPeer.sharing_status = true; 
+                                                    discoveredPeer.aggregating_status = false;
+                                                    discoveredPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
+                                                    discoveredPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
+                                                    discoveredPeer.creator_id = "";
+                                                    discoveredPeer.creation_datetime = peer.creation_datetime;
+                                                    discoveredPeer.last_modifier_id = "";
+                                                    discoveredPeer.last_modification_datetime = "";  
+                                                    discoveredPeer.type = REMOTE;
+                                                    peersCollection.insert(discoveredPeer, {w: 1}, function(err, createdPeer) {
+                                                        eachSeriesCallback();
+                                                    });                                                    
                                                 });
                                             });
                                         } else {
