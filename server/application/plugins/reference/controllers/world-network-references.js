@@ -42,6 +42,7 @@ module.exports = function () {
         }, function(err, response, body) {
                 if (err) {
                     cb(err, null);
+                    return;
                 }
                 cb(null, body);
             });
@@ -100,7 +101,7 @@ module.exports = function () {
             function(err, referencesObj) {
                 if (err) {
                     console.log(err);
-                    res.status(500).end();
+                    res.status(404).end();
                     return;
                 }
                 res.setHeader("Content-Type", "application/json");
