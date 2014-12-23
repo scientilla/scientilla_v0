@@ -31,11 +31,9 @@ module.exports = function () {
                         var totalCount = count.length;
                         return {tag: tag, count: totalCount};
                     }
-                }
+                },
+                cb
             );
-            if (_.isFunction(cb)) {
-                cb();
-            }
         },
         getTags: function(req, res) {
             var searchTerms = req.query.keywords || [];

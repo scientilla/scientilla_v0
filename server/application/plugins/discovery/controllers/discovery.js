@@ -147,12 +147,18 @@ module.exports = function () {
                     }, function(err, response, body) {
                             if (err) {
                                 cb(err, null);
+                                return;
                             }
                             cb(null, body);
                         });
                     }
             ],
             function(err, aliasesReferences) {
+                if (err) {
+                    console.log(err);
+                    res.status(404).end();
+                    return;
+                }
                 referencesManager.getVerifiedReferences(
                     req.referencesCollection,
                     req.user.hashes,

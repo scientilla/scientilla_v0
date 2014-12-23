@@ -93,11 +93,9 @@ module.exports = function () {
                         };
                         return result;
                     }
-                }
+                },
+                cb
             );
-            if (_.isFunction(cb)) {
-                cb();
-            }
         },
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? "" : req.query.keywords;
