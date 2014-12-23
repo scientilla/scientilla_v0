@@ -6,11 +6,13 @@
 
 // Resolves dependencies
 var _ = require("lodash");
+var mongodb = require("mongodb");
 var path = require("path");
 
-var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
-
 var model = require("../models/default.js")();
+
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 
 // Defines actions
 module.exports = function () {
@@ -84,7 +86,7 @@ module.exports = function () {
             });            
         },        
         getRepository: function(req, res) {
-            req.repositoriesCollection.findOne({ _id: req.params.id }, function(err, repository) {
+            req.repositoriesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, repository) {
                 if (err || req.underscore.isNull(repository)) {
                     console.log(err);
                     res.status(404).end();
@@ -125,7 +127,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : null;
             repository.last_modifier_id = req.user.id;
             repository.last_modification_datetime = req.moment().format();         
-            req.repositoriesCollection.update({ _id: req.params.id }, { $set: repository }, {w: 1}, function(err, repository) {
+            req.repositoriesCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: repository }, {w: 1}, function(err, repository) {
                 if (err || req.underscore.isNull(repository)) {
                     res.status(404).end();
                     return;
@@ -135,7 +137,7 @@ module.exports = function () {
             });            
         },
         deleteRepository: function(req, res) {          
-            req.repositoriesCollection.remove({ _id: req.params.id }, {w: 1}, function(err) {
+            req.repositoriesCollection.remove({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, {w: 1}, function(err) {
                 if (err) {
                     res.status(500).end();
                     return;
