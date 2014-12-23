@@ -57,6 +57,7 @@ module.exports = function () {
                     }, function(err, response, body) {
                             if (err) {
                                 cb(err, null);
+                                return;
                             }
                             cb(null, body);
                         });
@@ -83,6 +84,11 @@ module.exports = function () {
                     }
             ],
             function(err, referencesObj) {
+                if (err) {
+                    console.log(err);
+                    res.status(404).end();
+                    return;
+                }
                 var result = _.pick(referencesObj, ['total_number_of_items']);
                 referencesManager.getVerifiedReferences(
                     req.referencesCollection,
