@@ -174,12 +174,11 @@ angular.module("discovery").controller(
                             $scope.error = true;
                             systemStatusService.react(status, callback);
                         });
-                },
-                function(callback) {
-                    $scope.ready = true;
-                    callback();
                 }
-            ]);
+            ],
+                function(err) {
+                    $scope.ready = true;
+                });
         };
         
         $scope.init = function(){
