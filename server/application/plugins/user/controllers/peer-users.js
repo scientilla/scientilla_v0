@@ -7,16 +7,17 @@
 // Resolves dependencies
 var _ = require("underscore");
 var async = require("async");
+var mongodb = require("mongodb");
 var path = require("path");
 var request = require("request");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
-
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 var userManager = require("../../user/models/default.js")();
 
 module.exports = function () {
     var updateUsersDiscoveringHits = function(peersCollection, currentPeer, callback) {
-        peersCollection.update({ _id: currentPeer._id }, { $set: { users_discovering_hits: (currentPeer.users_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
+        peersCollection.update({_id: identificationManager.getDatabaseSpecificId(currentPeer._id)}, { $set: { users_discovering_hits: (currentPeer.users_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
             callback();
         });
     };    
