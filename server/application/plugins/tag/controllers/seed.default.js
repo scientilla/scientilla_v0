@@ -46,7 +46,7 @@ module.exports = function () {
             var regexTerms = _.map(cleanedSearchTerms, function(s) {return new RegExp(s, "i");});
             req.tagsCollection.find({
                 /* tingodb bug? */
-//                _id : {$in : regexTerms}
+                // _id : {$in : regexTerms}
             })
                 .sort({ "value.count": -1 })
                 .toArray(function(err, tagsObj) {
