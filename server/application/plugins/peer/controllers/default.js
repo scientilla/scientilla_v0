@@ -6,12 +6,13 @@
 
 // Resolves dependencies
 var async = require("async");
+var mongodb = require("mongodb");
 var path = require("path");
 var request = require("request");
 var underscore = require("underscore");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
-
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 var peerManager = require("../models/default.js")();
 
 // Defines actions
@@ -59,7 +60,7 @@ module.exports = function () {
             });
         },        
         getPeer: function(req, res) {
-            req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -70,7 +71,7 @@ module.exports = function () {
             });            
         },
         getPublicPeer: function(req, res) {
-            req.peersCollection.findOne({ _id: req.params.id, sharing_status: true }, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id), sharing_status: true}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -177,7 +178,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.tags) ? peer.tags = req.body.tags : [];
             peer.last_modifier_id = req.user.id;
             peer.last_modification_datetime = req.moment().format();         
-            req.peersCollection.update({ _id: req.params.id }, { $set: peer }, {w: 1}, function(err, peer) {
+            req.peersCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: peer }, {w: 1}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -188,14 +189,14 @@ module.exports = function () {
         },
         deletePeer: function(req, res) {          
             var id = req.params.id;
-            req.peersCollection.remove({ _id: id, type: 0 }, {w: 1}, function(err, num) {
+            req.peersCollection.remove({_id: identificationManager.getDatabaseSpecificId(id), type: 0}, {w: 1}, function(err, num) {
                 if (err) {
                     console.log(err);
                     res.status(500).end();
                     return;
                 }
                 if (num < 1) {
-                    req.peersCollection.count({ _id: id}, function(err, count) {
+                    req.peersCollection.count({_id: identificationManager.getDatabaseSpecificId(id)}, function(err, count) {
                         if (err) {
                             console.log(err);
                             res.status(500).end();
