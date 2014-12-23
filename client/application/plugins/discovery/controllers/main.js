@@ -14,7 +14,6 @@ angular.module("discovery").controller(
         $scope.lastPage = null;
         $scope.firstPage = 1;
         $scope.oRepositories = null;
-        $scope.hasPaginationData = false;
         $scope.allSelected = false;
         $scope.aliases = JSON.parse($window.sessionStorage.userAliases);
         $scope.userType = $window.sessionStorage.userType;
