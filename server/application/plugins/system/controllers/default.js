@@ -5,18 +5,22 @@
  */
 
 var _ = require("lodash");
+var mongodb = require("mongodb");
+var path = require("path");
+
+var systemModel = require("../models/default.js")();
 
 var datasetsManager = require("../../dataset/controllers/default.js")();
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 var peersManager = require("../../peer/controllers/default.js")();
 var referencesManager = require("../../reference/controllers/default.js")();
 var repositoriesManager = require("../../repository/controllers/default.js")();
 var usersManager = require("../../user/controllers/default.js")();
-var systemModel = require("../models/default.js")();
 
 module.exports = function () {
     return {
         checkUserCoherence: function(req, res) {
-            req.usersCollection.findOne({ _id: req.user.id }, function(err, user) {
+            req.usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.user.id)}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     console.log(err);
                     res.status(401).end();
