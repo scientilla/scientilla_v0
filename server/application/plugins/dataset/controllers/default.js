@@ -4,7 +4,12 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var mongodb = require("mongodb");
+var path = require("path");
+
 var model = require("../models/default.js")();
+
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 
 module.exports = function () {
     return {
@@ -52,7 +57,7 @@ module.exports = function () {
             });            
         },        
         getDataset: function(req, res) {
-            req.datasetsCollection.findOne({ _id: req.params.id }, function(err, dataset) {
+            req.datasetsCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, dataset) {
                 if (err || req.underscore.isNull(dataset)) {
                     res.status(404).end();
                     return;
@@ -63,7 +68,7 @@ module.exports = function () {
             });            
         },
         getPublicDataset: function(req, res) {
-            req.datasetsCollection.findOne({ _id: req.params.id, sharing_status: true }, function(err, dataset) {
+            req.datasetsCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id), sharing_status: true}, function(err, dataset) {
                 if (err || req.underscore.isNull(dataset)) {
                     res.status(404).end();
                     return;
@@ -102,7 +107,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.sharing_status) ? dataset.sharing_status = req.body.sharing_status : null;
             dataset.last_modifier_id = req.user.id;
             dataset.last_modification_datetime = req.moment().format();         
-            req.datasetsCollection.update({ _id: req.params.id }, { $set: dataset }, {w: 1}, function(err, dataset) {
+            req.datasetsCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: dataset }, {w: 1}, function(err, dataset) {
                 if (err || req.underscore.isNull(dataset)) {
                     res.status(404).end();
                     return;
