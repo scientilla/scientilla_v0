@@ -4,15 +4,20 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
-var referenceManager = require("../../reference/models/default.js")();
-var model = require("../models/repository-references.js")();
 var _ = require("underscore");
 var crypto = require("crypto");
+var mongodb = require("mongodb");
+var path = require("path");
+
+var model = require("../models/repository-references.js")();
+
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
+var referenceManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
     return {        
         getRepositoryReferences: function(req, res) {
-            req.repositoriesCollection.findOne({ _id: req.params.id }, function(err, repository) {
+            req.repositoriesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, repository) {
                 if (err || _.isNull(repository)) {
                     res.status(404).end();
                     return;

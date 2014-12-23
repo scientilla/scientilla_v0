@@ -6,8 +6,12 @@
 
 // Resolves dependencies
 var _ = require("lodash");
+var mongodb = require("mongodb");
+var path = require("path");
 
 var model = require("../models/collected-references.js")();
+
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 
 // Defines actions
 module.exports = function () {
@@ -121,7 +125,7 @@ module.exports = function () {
             });            
         },
         getReference: function(req, res) {
-            req.collectedReferencesCollection.findOne({ _id: req.params.id }, function(err, reference) {
+            req.collectedReferencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;

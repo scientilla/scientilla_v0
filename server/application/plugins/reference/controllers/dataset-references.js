@@ -4,7 +4,12 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var mongodb = require("mongodb");
+var path = require("path");
+
 var model = require("../models/dataset-references.js")();
+
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 
 module.exports = function () {
     return {        
@@ -63,7 +68,7 @@ module.exports = function () {
             });            
         },        
         getDatasetReference: function(req, res) {
-            req.datasetReferencesCollections[req.params.datasetId].findOne({ _id: req.params.referenceId }, function(err, reference) {
+            req.datasetReferencesCollections[req.params.datasetId].findOne({_id: identificationManager.getDatabaseSpecificId(req.params.referenceId)}, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
@@ -74,7 +79,7 @@ module.exports = function () {
             });                
         },
         getPublicDatasetReference: function(req, res) {
-            req.datasetReferencesCollections[req.params.datasetId].findOne({ _id: req.params.referenceId }, function(err, reference) {
+            req.datasetReferencesCollections[req.params.datasetId].findOne({_id: identificationManager.getDatabaseSpecificId(req.params.referenceId)}, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
