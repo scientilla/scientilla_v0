@@ -17,6 +17,7 @@ var http = require("http");
 var https = require("https");
 var jsonWebToken = require("jsonwebtoken");
 var moment = require("moment");
+var mongodb = require("mongodb");
 var nodeSchedule = require("node-schedule");
 var path = require("path");
 var request = require("request");
@@ -61,7 +62,12 @@ var isLinux = /^lin/.test(process.platform);
 var dataPath;
 
 // Initializes databases
-var databaseEngine = tingodb({});
+var databaseEngine
+if (configurationManager.get().database_type == "mongodb") {
+    databaseEngine = mongodb.MongoClient;
+} else {
+    databaseEngine = tingodb({});
+}
 var database;
 
 var datasetsCollection;
@@ -101,81 +107,77 @@ async.series([
         seriesCallback();
     },    
     function(seriesCallback) {
-        database = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
-        seriesCallback();
-    },
-    function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("datasets.db", function(err, collection) {
-                datasetsCollection = collection;
+        if (configurationManager.get().database_type == "mongodb") {
+            databaseEngine.connect(
+                "mongodb://" + configurationManager.get().database_host + ":" + configurationManager.get().database_port + "/scientilla", 
+                function(err, db) {
+                    database = db;
+                    seriesCallback();
+                }
+            );
+        } else {
+            resource = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
+            resource.open(function(err, db) {
+                database = db;
                 seriesCallback();
             });
+        }
+    },
+    function(seriesCallback) {
+        database.collection("datasets", function(err, collection) {
+            datasetsCollection = collection;
+            seriesCallback();
         });
     },
     function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("peers.db", function(err, collection) {
-                peersCollection = collection;
-                seriesCallback();
-            });
+        database.collection("peers", function(err, collection) {
+            peersCollection = collection;
+            seriesCallback();
         });
     },
     function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("repositories.db", function(err, collection) {
-                repositoriesCollection = collection;
-                seriesCallback();
-            });
-        }); 
-    },
-    function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("references.db", function(err, collection) {
-                referencesCollection = collection;
-                seriesCallback();
-            });
+        database.collection("repositories", function(err, collection) {
+            repositoriesCollection = collection;
+            seriesCallback();
         });
     },
     function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("guest-references.db", function(err, collection) {
-                guestReferencesCollection = collection;
-                seriesCallback();
-            });
+        database.collection("references", function(err, collection) {
+            referencesCollection = collection;
+            seriesCallback();
         });
     },
     function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("collected-references.db", function(err, collection) {
-                collectedReferencesCollection = collection;
-                seriesCallback();
-            });
-        });
-    },    
-    function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("ranked-references.db", function(err, collection) {
-                rankedReferencesCollection = collection;
-                seriesCallback();
-            });
+        database.collection("guest_references", function(err, collection) {
+            guestReferencesCollection = collection;
+            seriesCallback();
         });
     },
     function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("users.db", function(err, collection) {
-                usersCollection = collection;
-                seriesCallback();
-            });
-        });
-    },
-    function(seriesCallback) {
-        database.open(function(err, database) {
-            database.collection("collected-users.db", function(err, collection) {
-                collectedUsersCollection = collection;
-                seriesCallback();
-            });
+        database.collection("collected_references", function(err, collection) {
+            collectedReferencesCollection = collection;
+            seriesCallback();
         });
     },    
+    function(seriesCallback) {
+        database.collection("ranked_references", function(err, collection) {
+            rankedReferencesCollection = collection;
+            seriesCallback();
+        });
+    },
+    function(seriesCallback) {
+        database.collection("users", function(err, collection) {
+            usersCollection = collection;
+            seriesCallback();
+        });
+    },
+    function(seriesCallback) {
+        database.collection("collected_users", function(err, collection) {
+            collectedUsersCollection = collection;
+            seriesCallback();
+        });
+    }, 
+    /*
     function(seriesCallback) {
         database = new databaseEngine.Db(path.resolve(dataPath + "/files/datasets/") + path.sep, {});
         seriesCallback();
@@ -186,17 +188,16 @@ async.series([
             datasetFileNames,
             function(datasetFileName, eachSeriesCallback) {
                 if (datasetFileName !== "." && datasetFileName !== "..") {
-                    database.open(function(err, database) {
-                        database.collection(datasetFileName, function(err, collection) {
-                            datasetReferencesCollections[datasetFileName.replace(".db", "")] = collection;
-                            eachSeriesCallback();
-                        });
+                    database.collection(datasetFileName, function(err, collection) {
+                        datasetReferencesCollections[datasetFileName.replace(".db", "")] = collection;
+                        eachSeriesCallback();
                     }); 
                 }
             },
             seriesCallback
         );        
     },
+    */
     function(seriesCallback) {
         var peersAndRepositoriesCollectionJob = function peersAndRepositoriesCollectionJob() {
             console.log("Collecting peers and repositories...");
@@ -230,11 +231,8 @@ async.series([
             var rankReferencesJob = (function rankReferencesJob() {
                 console.log("Ranking references...");
                 collectedReferencesController.rankReferences(collectedReferencesCollection, function() {
-                    var database = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
-                    database.open(function(err, database) {
-                    database.collection("ranked-references.db", function(err, collection) {
-                            rankedReferencesCollection = collection;
-                        });
+                    database.collection("ranked_references", function(err, collection) {
+                        rankedReferencesCollection = collection;
                     });
                 });
             }());
@@ -247,11 +245,8 @@ async.series([
             var extractTagsJob = (function extractTagsJob() {
                 console.log("Extracting tags...");
                 tagsController.extractTags(collectedReferencesCollection, function() {
-                    var database = new databaseEngine.Db(path.resolve(dataPath + "/files/") + path.sep, {});
-                    database.open(function(err, database) {
-                    database.collection("tags.db", function(err, collection) {
-                            tagsCollection = collection;
-                        });
+                    database.collection("tags", function(err, collection) {
+                        tagsCollection = collection;
                     });
                 });
             }());
@@ -274,7 +269,7 @@ application.use("*", function(req, res, next) {
     req.underscore = underscore;
     req.configurationManager = configurationManager;
     req.seedsConfiguration = seedsConfiguration;
-    req.datasetsCollection = datasetsCollection;
+    // req.datasetsCollection = datasetsCollection;
     req.peersCollection = peersCollection;
     req.repositoriesCollection = repositoriesCollection;
     req.referencesCollection = referencesCollection;

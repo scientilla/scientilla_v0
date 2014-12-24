@@ -4,12 +4,17 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var mongodb = require("mongodb");
+var path = require("path");
+
 var model = require("../models/peer-dataset-references.js")();
+
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 
 module.exports = function () {
     return {        
         getPeerPublicDatasetReferences: function(req, res) {
-            req.peersCollection.findOne({ _id: req.params.peerId }, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.peerId)}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -29,7 +34,7 @@ module.exports = function () {
         },
         
         getPeerPublicDatasetReference: function(req, res) {
-            req.peersCollection.findOne({ _id: req.params.peerId }, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.peerId)}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;

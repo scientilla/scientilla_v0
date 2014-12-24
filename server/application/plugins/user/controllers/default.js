@@ -6,14 +6,15 @@
 
 // Resolves dependencies
 var _ = require("lodash");
-var crypto = require("crypto");
-var path = require("path");
 var async = require("async");
-
-var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+var crypto = require("crypto");
+var mongodb = require("mongodb");
+var path = require("path");
 
 var model = require("../models/default.js")();
 
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 var userManager = require("../../user/models/default.js")();
 
 // Defines actions
@@ -106,7 +107,7 @@ module.exports = function () {
             var userId = req.params.id;
             async.waterfall([
                 function(cb) {
-                    req.usersCollection.findOne({_id: userId}, cb);
+                    req.usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(userId)}, cb);
                 },
                 function(user, cb) {
                     req.referencesCollection.count({user_hash: { $in: user.hashes }}, cb);
@@ -117,7 +118,7 @@ module.exports = function () {
                         res.status(430).end();
                         return;
                     }
-                    req.usersCollection.remove({ _id: userId }, cb);
+                    req.usersCollection.remove({_id: identificationManager.getDatabaseSpecificId(userId)}, cb);
                 }
             ],
             function(err, numRemoved) {
@@ -168,7 +169,7 @@ module.exports = function () {
         },
         
         getUser: function(req, res) {
-            req.usersCollection.findOne({ _id: req.params.id }, function(err, user) {
+            req.usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
                     return;
@@ -180,7 +181,7 @@ module.exports = function () {
         },
         
         getLoggedUser: function(req, res) {
-            req.usersCollection.findOne({ _id: req.user.id }, function(err, user) {
+            req.usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.user.id)}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     res.status(404).end();
                     return;
@@ -230,7 +231,7 @@ module.exports = function () {
         },
         
         updateUser: function(req, res) { 
-            req.usersCollection.findOne({ _id: req.params.id }, function(err, user) {
+            req.usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     console.log(err);
                     res.status(500).end();
@@ -267,7 +268,7 @@ module.exports = function () {
                 user.aliases = getUserAliases(user);
                 user.last_modifier_id = req.user.id;
                 user.last_modification_datetime = req.moment().format();                
-                req.usersCollection.update({ _id: req.params.id }, { $set: user }, {w: 1}, function(err, user) {
+                req.usersCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: user }, {w: 1}, function(err, user) {
                     if (err || req.underscore.isNull(user)) {
                         console.log(err);
                         res.status(404).end();
@@ -279,7 +280,7 @@ module.exports = function () {
         },
         
         updateLoggedUser: function(req, res) { 
-            req.usersCollection.findOne({ _id: req.user.id }, function(err, user) {
+            req.usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.user.id)}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     console.log(err);
                     res.status(500).end();
@@ -319,7 +320,7 @@ module.exports = function () {
                 }
                 user.last_modifier_id = req.user.id;
                 user.last_modification_datetime = req.moment().format();                
-                req.usersCollection.update({ _id: req.user.id }, { $set: user }, {w: 1}, function(err, userNum) {
+                req.usersCollection.update({_id: identificationManager.getDatabaseSpecificId(req.user.id)}, { $set: user }, {w: 1}, function(err, userNum) {
                     if (err || userNum===0) {
                         console.log(err);
                         res.status(404).end();

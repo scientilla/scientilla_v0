@@ -5,6 +5,10 @@
  */
 
 var _ = require("lodash");
+var mongodb = require("mongodb");
+var path = require("path");
+
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 
 module.exports = function () {
     var createNewUser = function(user) {
@@ -74,11 +78,11 @@ module.exports = function () {
                 if (!_.contains(aliases, reference.author_signatures.author_string)) {
                     aliases.push(reference.author_signatures.author_string);
                 }
-                usersCollection.findAndModify({_id: user._id}, {}, {$set: {aliases: aliases}}, callback);
+                usersCollection.findAndModify({_id: identificationManager.getDatabaseSpecificId(user._id)}, {}, {$set: {aliases: aliases}}, callback);
             });
         },
         getUser: function(usersCollection, userId, callback) {
-            usersCollection.findOne({ _id: userId }, function(err, user) {
+            usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(userId)}, function(err, user) {
                 if (err) {
                     callback(err, null);
                     return;

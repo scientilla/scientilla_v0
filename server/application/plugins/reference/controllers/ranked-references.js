@@ -7,12 +7,15 @@
 // Resolves dependencies
 var _ = require("lodash");
 var async = require("async");
+var mongodb = require("mongodb");
+var path = require("path");
 var request = require("request");
 
-var referenceManager = require("../../reference/models/default.js")();
-var networkModel = require("../../network/models/default.js")();
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
-var configurationManager = require("../../system/controllers/configuration.js");
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
+var networkModel = require("../../network/models/default.js")();
+var referenceManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
     var objsArray2MongoSearchQuery = function(objsArray) {
@@ -139,7 +142,7 @@ module.exports = function () {
             var configuration = configurationManager.get();
             var id = req.params.id;
             if (configuration.seed) {
-                req.rankedReferencesCollection.findOne({_id: id}, function(err, rankedReference) {
+                req.rankedReferencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(id)}, function(err, rankedReference) {
                     if (err || req.underscore.isNull(rankedReference)) {
                         console.log(err);
                         res.status(404).end();

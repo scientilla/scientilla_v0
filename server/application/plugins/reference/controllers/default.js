@@ -4,10 +4,14 @@
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
+var _ = require("lodash");
+var mongodb = require("mongodb");
+var path = require("path");
+
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 var networkManager = require("../../network/models/default.js")();
 var referenceManager = require("../models/default.js")();
 var userManager = require("../../user/models/default.js")();
-var _ = require("lodash");
 
 module.exports = function () {
     var cleanReferenceTags = function(reference) {
@@ -29,7 +33,7 @@ module.exports = function () {
         });
         return cleanedReferences;
     };
-    var retrieveReferences = function(referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
+    var retrieveReferences = function(referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {        
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
         return referencesCollection.find({                
             "$or": [
@@ -53,7 +57,8 @@ module.exports = function () {
         ).skip(
             currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
         ).limit(
-            numberOfItemsPerPage
+            // numberOfItemsPerPage
+            20
         );
     };
     return {
@@ -76,7 +81,7 @@ module.exports = function () {
                     }
                     result.items = cleanReferencesTags(references);
                     res.setHeader("Content-Type", "application/json");
-                    res.json(result);                
+                    res.json(result);
                 });                
             });
         },
@@ -115,7 +120,7 @@ module.exports = function () {
             });            
         },        
         getReference: function(req, res) {
-            req.referencesCollection.findOne({ _id: req.params.id }, function(err, reference) {
+            req.referencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
@@ -126,7 +131,7 @@ module.exports = function () {
             });                
         },
         getPublicReference: function(req, res) {
-            req.referencesCollection.findOne({ _id: req.params.id, sharing_status: true }, function(err, publicReference) {
+            req.referencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id), sharing_status: true}, function(err, publicReference) {
                 if (err || req.underscore.isNull(publicReference)) {
                     res.status(404).end();
                     return;
@@ -207,7 +212,7 @@ module.exports = function () {
             var refUpdate = req.body;
             refUpdate.last_modifier_id = req.user.id;
             refUpdate.last_modification_datetime = req.moment().format();    
-            req.referencesCollection.update({ _id: req.params.id }, { $set: refUpdate }, { w: 1 }, function(err, count) {
+            req.referencesCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: refUpdate }, { w: 1 }, function(err, count) {
                 if (err || count === 0) {
                     console.log(err);
                     res.status(404).end();
@@ -255,7 +260,7 @@ module.exports = function () {
             reference.user_hash = req.user.hash; 
             reference.last_modifier_id = req.user.id;
             reference.last_modification_datetime = req.moment().format();            
-            req.referencesCollection.update({ _id: req.params.id }, { $set: reference }, { w: 1 }, function(err, count) {
+            req.referencesCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: reference }, { w: 1 }, function(err, count) {
                 if (err || count === 0) {
                     console.log(err);
                     res.status(404).end();
@@ -272,7 +277,7 @@ module.exports = function () {
             });
         },
         deleteReference: function(req, res) {          
-            req.referencesCollection.remove({ _id: req.params.id }, { w: 1 }, function(err) {
+            req.referencesCollection.remove({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { w: 1 }, function(err) {
                 if (err) {
                     res.status(500).end();
                     return;
@@ -377,7 +382,7 @@ module.exports = function () {
             reference.user_hash = req.user.hash; 
             reference.last_modifier_id = req.user.id;
             reference.last_modification_datetime = req.moment().format();            
-            req.referencesCollection.update({ _id: req.params.id }, { $set: reference }, { w: 1 }, function(err, reference) {
+            req.referencesCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: reference }, { w: 1 }, function(err, reference) {
                 if (err || req.underscore.isNull(reference)) {
                     res.status(404).end();
                     return;
@@ -396,7 +401,7 @@ module.exports = function () {
             }
             var peerId = req.body.source.peer_id;
             var referenceId = req.body.source.reference_id;
-            req.peersCollection.findOne({ _id: peerId }, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.peerId)}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;

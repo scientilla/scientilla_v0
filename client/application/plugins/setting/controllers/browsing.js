@@ -47,7 +47,10 @@ angular.module("setting").controller(
                 url: $scope.oSettings.url,
                 owner_user_id: $scope.oSettings.owner_user_id,
                 seed: $scope.oSettings.seed,
-                database_type: $scope.oSettings.database_type
+                files_routing: $scope.oSettings.files_routing,
+                database_type: $scope.oSettings.database_type,
+                database_host: $scope.oSettings.database_host,
+                database_port: $scope.oSettings.database_port
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-references");
             }).error(function(data, status, headers, config) {

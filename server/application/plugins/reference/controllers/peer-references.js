@@ -7,17 +7,19 @@
 // Resolves dependencies
 var _ = require("lodash");
 var async = require("async");
+var mongodb = require("mongodb");
 var path = require("path");
 var request = require("request");
 
-var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
-
-var referenceManager = require("../../reference/models/default.js")();
 var model = require("../models/peer-references.js")();
+
+var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
+var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
+var referenceManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
     var updateReferencesDiscoveringHits = function(peersCollection, currentPeer, callback) {
-        peersCollection.update({ _id: currentPeer._id }, { $set: { references_discovering_hits: (currentPeer.references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
+        peersCollection.update({_id: identificationManager.getDatabaseSpecificId(currentPeer._id)}, { $set: { references_discovering_hits: (currentPeer.references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
             callback();
         });
     };
@@ -28,7 +30,7 @@ module.exports = function () {
     }
     return {
         getPeerPublicReferences: function(req, res) {
-            req.peersCollection.findOne({ _id: req.params.id }, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, peer) {
                 if (err || _.isNull(peer)) {
                     res.status(404).end();
                     return;
@@ -63,7 +65,7 @@ module.exports = function () {
         },
         
         getPeerPublicReference: function(req, res) {
-            req.peersCollection.findOne({ _id: req.params.peerId }, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.peerId)}, function(err, peer) {
                 if (err || _.isNull(peer)) {
                     res.status(404).end();
                     return;

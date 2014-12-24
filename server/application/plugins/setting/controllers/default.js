@@ -30,6 +30,8 @@ module.exports = function () {
             settings.seed = !req.underscore.isUndefined(req.body.seed) ? req.body.seed : false;
             settings.files_routing = !req.underscore.isUndefined(req.body.files_routing) ? req.body.files_routing : false;
             settings.database_type = !req.underscore.isUndefined(req.body.database_type) ? req.body.database_type : "tingodb";
+            settings.database_host = !req.underscore.isUndefined(req.body.database_host) ? req.body.database_host : "localhost";
+            settings.database_port = !req.underscore.isUndefined(req.body.database_port) ? req.body.database_port : 27017;
             configurationManager.set(settings);
             configurationManager.save();
             configurationManager.reload();
