@@ -170,9 +170,9 @@ angular.module("discovery").controller(
                             }                    
                             callback();
                         },
-                        function(data, status, headers, config) {
+                        function(results) {
                             $scope.error = true;
-                            systemStatusService.react(status, callback);
+                            systemStatusService.react(results.status, callback);
                         });
                 }
             ],

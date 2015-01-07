@@ -717,6 +717,7 @@ application.get("/api/discovery/references", cors(), function(req, res) {
 
 application.get("/api/discovery/filtered-references", expressJwt({secret: 'scientilla'}), function(req, res) {
     console.log("Request to read Discovery References");
+    systemController.checkUserCoherence(req, res);
     discoveryController.getFilteredReferences(req, res);
 });
 
