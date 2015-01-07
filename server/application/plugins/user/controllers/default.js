@@ -137,7 +137,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(users);
             });
         },
@@ -163,7 +163,7 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(publicUsers);
             });            
         },
@@ -175,7 +175,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(user);
             });                
         },
@@ -187,7 +187,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(user);
             });                
         },        
@@ -326,7 +326,7 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
-                    res.setHeader("Content-Type", "application/json");
+                    // res.setHeader("Content-Type", "application/json");
                     res.json({
                         user_type: user.type,
                         user_rights: user.rights,
@@ -403,7 +403,7 @@ module.exports = function () {
 
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
 
-                            res.setHeader("Content-Type", "application/json");
+                            // res.setHeader("Content-Type", "application/json");
                             res.json({
                                 user_token: token,
                                 user_type: user.type,
@@ -463,7 +463,7 @@ module.exports = function () {
 
                             var token = req.jsonWebToken.sign(userDataForToken, "scientilla", { expiresInMinutes: 60 });
 
-                            res.setHeader("Content-Type", "application/json");
+                            // res.setHeader("Content-Type", "application/json");
                             var configuration = configurationManager.get();
                             res.json({
                                 user_token: token,

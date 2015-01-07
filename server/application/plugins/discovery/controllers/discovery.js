@@ -92,7 +92,8 @@ module.exports = function () {
                             res.status(500).end();
                             return;
                         }
-                        res.setHeader("Content-Type", "application/json");
+                        
+                        // res.setHeader("Content-Type", "application/json");
                         res.json(references);
                         return;
                     });
@@ -110,7 +111,8 @@ module.exports = function () {
                                 res.status(500).end();
                                 return;
                             }
-                            res.setHeader("Content-Type", "application/json");
+                            
+                            // res.setHeader("Content-Type", "application/json");
                             res.json(body);
                             return;
                         });
@@ -170,7 +172,8 @@ module.exports = function () {
                             res.status(500).end();
                             return;
                         }
-                        res.setHeader("Content-Type", "application/json");
+                        
+                        // res.setHeader("Content-Type", "application/json");
                         res.json(references);
                         return;
                     });

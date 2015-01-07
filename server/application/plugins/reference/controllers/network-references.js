@@ -102,7 +102,8 @@ module.exports = function () {
                             return;
                         }
                         result.items = references;
-                        res.setHeader("Content-Type", "application/json");
+                        
+                        // res.setHeader("Content-Type", "application/json");
                         res.json(result);
                         return;
                     });

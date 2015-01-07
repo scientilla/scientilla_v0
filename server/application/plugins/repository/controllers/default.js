@@ -70,7 +70,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(repositories);
             });            
         },
@@ -81,7 +81,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(repositories);
             });            
         },        
@@ -94,7 +94,7 @@ module.exports = function () {
                 }
                 repository.extractors = getCleanExtractors(repository.extractors);
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(repository);
             });            
         },        

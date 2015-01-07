@@ -36,7 +36,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(references);
             });            
         },
@@ -63,7 +63,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(references);
             });            
         },        
@@ -74,7 +74,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(reference);
             });                
         },
@@ -85,7 +85,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(reference);
             });                
         },        

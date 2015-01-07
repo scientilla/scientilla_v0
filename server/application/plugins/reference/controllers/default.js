@@ -80,7 +80,8 @@ module.exports = function () {
                         return;
                     }
                     result.items = cleanReferencesTags(references);
-                    res.setHeader("Content-Type", "application/json");
+                    
+                    // res.setHeader("Content-Type", "application/json");
                     res.json(result);
                 });                
             });
@@ -115,7 +116,8 @@ module.exports = function () {
                 }
                 publicReferences = cleanReferencesTags(publicReferences);
                 var publicReferencesObj = {items: publicReferences, total_number_of_items: publicReferences.length};
-                res.setHeader("Content-Type", "application/json");
+                
+                // res.setHeader("Content-Type", "application/json");
                 res.json(publicReferencesObj);
             });            
         },        
@@ -126,7 +128,8 @@ module.exports = function () {
                     return;
                 }
                 reference = cleanReferenceTags(reference);
-                res.setHeader("Content-Type", "application/json");
+                
+                // res.setHeader("Content-Type", "application/json");
                 res.json(reference);
             });                
         },
@@ -137,7 +140,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(publicReference);
             });                
         },
@@ -429,7 +432,8 @@ module.exports = function () {
                     reference.last_modifier_id = req.user.id;
                     reference.last_modification_datetime = req.moment().format(); 
                     delete reference._id;
-                    res.setHeader("Content-Type", "application/json");
+                    
+                    // res.setHeader("Content-Type", "application/json");
                     req.referencesCollection
                         .find({ 
                             original_hash: reference.original_hash,
