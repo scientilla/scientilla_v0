@@ -23,7 +23,7 @@ module.exports = function () {
                 },
                 {
                     query: {tags: { $exists: true }},
-                    out: { replace: 'tags.db' },
+                    out: { replace: 'tags' },
                     finalize: function(tag, count) {
                         if (!_.isArray(count)) {
                             count = [count];
