@@ -117,7 +117,7 @@ module.exports = function () {
                         }
                         resolveUserPeers(users, req.peersCollection, function(resolvedUsers) {
                             result.items = resolvedUsers;
-                            res.setHeader("Content-Type", "application/json");
+                            // res.setHeader("Content-Type", "application/json");
                             res.json(result);                             
                         });              
                     });                
@@ -139,7 +139,7 @@ module.exports = function () {
                         }
                         resolveUserPeers(result.items, req.peersCollection, function(resolvedUsers) {
                             result.items = resolvedUsers;
-                            res.setHeader("Content-Type", "application/json");
+                            // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(result).end();
                         });
                     });                    

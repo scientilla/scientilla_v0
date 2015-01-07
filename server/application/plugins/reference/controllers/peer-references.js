@@ -56,7 +56,8 @@ module.exports = function () {
                                 return;
                             }
                             var verifiedReferencesObj = {items: verifiedReferences, total_number_of_items: verifiedReferences.length};
-                            res.setHeader("Content-Type", "application/json");
+                            
+                            // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(verifiedReferencesObj).end();
                         }
                     );
@@ -78,7 +79,8 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
-                    res.setHeader("Content-Type", "application/json");
+                    
+                    // res.setHeader("Content-Type", "application/json");
                     res.status(200).send(body).end();
                 });
             });            

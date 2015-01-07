@@ -27,7 +27,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(peers);
             });
         },
@@ -38,13 +38,13 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(peers);
             });            
         },
         getSeedPeers: function(req, res) {
             peerManager.getSeedPeers(req.seedsConfiguration, function(seedPeers) {
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(seedPeers);            
             });
         },
@@ -55,7 +55,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(peers);
             });
         },        
@@ -66,7 +66,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(peer);
             });            
         },
@@ -77,7 +77,7 @@ module.exports = function () {
                     return;
                 }
                 
-                res.setHeader("Content-Type", "application/json");
+                // res.setHeader("Content-Type", "application/json");
                 res.json(peer);
             });            
         },        

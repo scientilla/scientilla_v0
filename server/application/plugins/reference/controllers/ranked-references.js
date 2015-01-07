@@ -107,7 +107,8 @@ module.exports = function () {
                         var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
                         resolveReferencePeers(normalizedReferences, req.peersCollection, function(resolvedReferences) {
                             result.items = resolvedReferences;
-                            res.setHeader("Content-Type", "application/json");
+                            
+                            // res.setHeader("Content-Type", "application/json");
                             res.json(result);                             
                         });              
                     });                
@@ -131,7 +132,8 @@ module.exports = function () {
                         }
                         resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
                             result.items = resolvedReferences;
-                            res.setHeader("Content-Type", "application/json");
+                            
+                            // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(result).end();
                         });
                     });                    
@@ -156,7 +158,8 @@ module.exports = function () {
                                 return;
                             }
                             var result = {items: references, total_number_of_items: references.length};
-                            res.setHeader("Content-Type", "application/json");
+                            
+                            // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(result).end();
                         });            
                 });                
@@ -180,7 +183,8 @@ module.exports = function () {
                                         res.status(404).end();
                                         return;
                                     }
-                                    res.setHeader("Content-Type", "application/json");
+                                    
+                                    // res.setHeader("Content-Type", "application/json");
                                     res.status(200).json(body).end();
                                 });
                         }

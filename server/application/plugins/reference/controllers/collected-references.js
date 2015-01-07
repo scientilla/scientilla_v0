@@ -117,7 +117,8 @@ module.exports = function () {
                             return;
                         }
                         result.items = references;
-                        res.setHeader("Content-Type", "application/json");
+                        
+                        // res.setHeader("Content-Type", "application/json");
                         res.json(result);                
                     });                
             });            
@@ -128,7 +129,8 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                res.setHeader("Content-Type", "application/json");
+                
+                // res.setHeader("Content-Type", "application/json");
                 res.json(reference);
             });                
         }        

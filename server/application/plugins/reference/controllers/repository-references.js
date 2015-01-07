@@ -51,7 +51,8 @@ module.exports = function () {
                                 res.status(404).end();
                                 return;
                             }
-                            res.setHeader("Content-Type", "application/json");
+                            
+                            // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(verifiedReferences).end();
                         }
                     );

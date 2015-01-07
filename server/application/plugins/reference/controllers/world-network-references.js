@@ -104,7 +104,8 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                res.setHeader("Content-Type", "application/json");
+                
+                // res.setHeader("Content-Type", "application/json");
                 res.json(referencesObj);
                 return;
             });
@@ -132,7 +133,8 @@ module.exports = function () {
                     res.status(500).end();
                     return;
                 }
-                res.setHeader("Content-Type", "application/json");
+                
+                // res.setHeader("Content-Type", "application/json");
                 res.json(referencesObj);
                 return;
             });
