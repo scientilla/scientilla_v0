@@ -245,16 +245,13 @@ module.exports = function () {
                                                     defaultPeerReferencesDiscoveringHits = existingPeers[0].references_discovering_hits;
                                                     defaultPeerUsersDiscoveringHits = existingPeers[0].users_discovering_hits;
                                                 }
-                                                console.log("peer.url: " + peer.url);
                                                 request({
                                                     method: "GET",
                                                     url: peer.url + "/api/public-counts", 
                                                     strictSSL: false 
                                                 }, function (err, res, body) {
-													console.log(body);
                                                     var discoveredPeer = {};
                                                     if (!err && body != "") {
-                                                        console.log("body: " + body);
                                                         var publicCounts = JSON.parse(body);
                                                         discoveredPeer.size = publicCounts.public_references;
                                                     } else {
