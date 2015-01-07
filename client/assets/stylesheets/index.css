@@ -418,10 +418,12 @@ html, body {
     right: 0;
 }
 
-.vertical-center {
+.start-center {
     position: absolute;
     top: 50%;
-    margin-top: -22px;
+    margin-top: -32px;
+    left: 50%;
+    margin-left: -95px;
 }
 
 .xlg {
