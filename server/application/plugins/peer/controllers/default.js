@@ -238,19 +238,19 @@ module.exports = function () {
                                             }).limit(1).toArray(function(err, existingPeers) {
                                                 var defaultPeerReferencesDiscoveringHits;
                                                 var defaultPeerUsersDiscoveringHits;
-                                                if (err || req.underscore.isNull(existingPeers)) {
+                                                if (err || underscore.isNull(existingPeers) || underscore.isEmpty(existingPeers)) {
                                                     defaultPeerReferencesDiscoveringHits = 0;
                                                     defaultPeerUsersDiscoveringHits = 0;
                                                 } else {
                                                     defaultPeerReferencesDiscoveringHits = existingPeers[0].references_discovering_hits;
                                                     defaultPeerUsersDiscoveringHits = existingPeers[0].users_discovering_hits;
                                                 }
-                                                console.log(peer.url);
                                                 request({
                                                     method: "GET",
                                                     url: peer.url + "/api/public-counts", 
                                                     strictSSL: false 
                                                 }, function (err, res, body) {
+													console.log(body);
                                                     var discoveredPeer = {};
                                                     if (!err && body != "") {
                                                         var publicCounts = JSON.parse(body);
