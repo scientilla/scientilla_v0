@@ -6,5 +6,8 @@
     "url": "https://127.0.0.1:60000",
     "owner_user_id": 2,
     "seed": false,
-    "files_routing": true    
+    "files_routing": true,
+    "database_type": "tingodb",
+    "database_host": "127.0.0.1",
+    "database_port": "27017"    
 }
