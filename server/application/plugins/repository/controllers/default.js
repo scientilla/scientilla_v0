@@ -150,6 +150,9 @@ module.exports = function () {
             for (key in seedsConfiguration) {
                 
             }
+        },
+        getPublicRepositoriesCount: function(req, res, callback) {
+            callback(null, 0);
         } 
     };
 };

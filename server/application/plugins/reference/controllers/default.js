@@ -462,6 +462,9 @@ module.exports = function () {
                     );
                 });
             });
+        },
+        getPublicReferencesCount: function(req, res, callback) {
+            callback(null, 0);
         }
     };
 };

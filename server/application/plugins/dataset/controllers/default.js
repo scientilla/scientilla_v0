@@ -115,6 +115,9 @@ module.exports = function () {
                 
                 res.end();
             });            
+        },
+        getPublicDatasetsCount: function(req, res, callback) {
+            callback(null, 0);
         }
     };
 };

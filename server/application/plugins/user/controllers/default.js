@@ -478,6 +478,9 @@ module.exports = function () {
                     );					
                 }
             });
+        },
+        getPublicUsersCount: function(req, res, callback) {
+            callback(null, 0);
         }
     };
 };
