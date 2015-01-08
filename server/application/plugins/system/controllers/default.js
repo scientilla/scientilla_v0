@@ -18,8 +18,28 @@ var repositoriesManager = require("../../repository/controllers/default.js")();
 var usersManager = require("../../user/controllers/default.js")();
 
 module.exports = function () {
+    var isUserProfileComplete = function(user) {
+        return ! (_.isNull(user.type) ||
+            (user.type === 0 && 
+                _.isEmpty(user.first_name) && 
+                _.isEmpty(user.middle_name) && 
+                _.isEmpty(user.last_name)) ||
+            (user.type === 0 && _.isEmpty(user.birth_date)) ||
+            (user.type === 0 && _.isEmpty(user.birth_city)) ||
+            (user.type === 0 && _.isEmpty(user.birth_country)) ||
+            (user.type === 0 && _.isEmpty(user.sex)) || 
+            (user.type === 1 &&
+                _.isEmpty(user.first_name) && 
+                _.isEmpty(user.middle_name) && 
+                _.isEmpty(user.last_name)) ||
+            (user.type === 1 && _.isEmpty(user.birth_date)) ||
+            (user.type === 1 && _.isEmpty(user.birth_city)) ||
+            (user.type === 1 && _.isEmpty(user.birth_country)) ||
+            (user.type === 1 && _.isEmpty(user.sex)) || 
+            (user.type === 2 && _.isEmpty(user.business_name)));
+    };
     return {
-        checkUserCoherence: function(req, res) {
+        checkUserCoherence: function(req, res, next) {
             req.usersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.user.id)}, function(err, user) {
                 if (err || req.underscore.isNull(user)) {
                     console.log(err);
@@ -27,28 +47,13 @@ module.exports = function () {
                     console.log('Unauthorized user');
                     return;
                 } 
-                if (
-                    _.isNull(user.type) ||
-                    (user.type === 0 && 
-                        _.isEmpty(user.first_name) && 
-                        _.isEmpty(user.middle_name) && 
-                        _.isEmpty(user.last_name)) ||
-                    (user.type === 0 && _.isEmpty(user.birth_date)) ||
-                    (user.type === 0 && _.isEmpty(user.birth_city)) ||
-                    (user.type === 0 && _.isEmpty(user.birth_country)) ||
-                    (user.type === 0 && _.isEmpty(user.sex)) || 
-                    (user.type === 1 &&
-                        _.isEmpty(user.first_name) && 
-                        _.isEmpty(user.middle_name) && 
-                        _.isEmpty(user.last_name)) ||
-                    (user.type === 1 && _.isEmpty(user.birth_date)) ||
-                    (user.type === 1 && _.isEmpty(user.birth_city)) ||
-                    (user.type === 1 && _.isEmpty(user.birth_country)) ||
-                    (user.type === 1 && _.isEmpty(user.sex)) || 
-                    (user.type === 2 && _.isEmpty(user.business_name))
-                ) {
+                if (!isUserProfileComplete(user)) {
                     res.status(500).end();
                     console.log('Unvalid User Type or User Information');
+                    return;
+                }
+                if (_.isFunction(next)) {
+                    next();
                 }
             });
         },
