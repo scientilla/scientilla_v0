@@ -57,15 +57,14 @@ module.exports = function () {
         ).skip(
             currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
         ).limit(
-            // numberOfItemsPerPage
-            20
+            numberOfItemsPerPage
         );
     };
     return {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
-            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
+            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
             var retrievedCollection = retrieveReferences(req.referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
             var result = {};
             retrievedCollection.count(function(err, referencesCount) {

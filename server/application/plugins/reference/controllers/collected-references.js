@@ -15,7 +15,7 @@ var identificationManager = require(path.resolve(__dirname + "/../../system/cont
 
 // Defines actions
 module.exports = function () {
-    var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {            
+    var retrieveReferences = function(referencesCollection, peers, keywords, currentPageNumber, numberOfItemsPerPage) {
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
         return referencesCollection.find({                
             "$and": [
@@ -100,8 +100,8 @@ module.exports = function () {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? "" : req.query.keywords;
             var networkPeers = _.isUndefined(req.query.network_peers) ? [] : req.query.network_peers;
-            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
+            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
             var retrievedCollection = retrieveReferences(req.collectedReferencesCollection, networkPeers, keywords, currentPageNumber, numberOfItemsPerPage);
             var result = {};
             retrievedCollection.count(function(err, referencesCount) {
