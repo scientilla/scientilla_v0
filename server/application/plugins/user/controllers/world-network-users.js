@@ -99,8 +99,8 @@ module.exports = function () {
         getUsers: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var userType = _.isUndefined(req.query.user_type) ? '' : parseInt(req.query.user_type, 10);
-            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : req.query.current_page_number;
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : req.query.number_of_items_per_page;            
+            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
             var result = {};            
             if (configurationManager.get().seed) {
                 var retrievedCollection = retrieveUsers(req.collectedUsersCollection, keywords, userType, currentPageNumber, numberOfItemsPerPage);
