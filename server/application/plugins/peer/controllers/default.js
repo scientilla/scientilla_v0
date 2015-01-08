@@ -250,11 +250,10 @@ module.exports = function () {
                                                     url: peer.url + "/api/public-counts", 
                                                     strictSSL: false 
                                                 }, function (err, res, body) {
-													console.log(body);
                                                     var discoveredPeer = {};
                                                     if (!err && body != "") {
                                                         var publicCounts = JSON.parse(body);
-                                                        discoveredPeer.size = publicCounts;
+                                                        discoveredPeer.size = publicCounts.public_references;
                                                     } else {
                                                         discoveredPeer.size = 0;
                                                     }
@@ -299,6 +298,9 @@ module.exports = function () {
                     }
                 });                               
             }
+        },
+        getPublicPeersCount: function(req, res, callback) {
+            callback(null, 0);
         } 
     };
 };
