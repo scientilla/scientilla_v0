@@ -555,7 +555,7 @@ application.get("/api/public-world-network-users", function(req, res) {
     console.log("Request to Read all Public World Network Users");
     worldNetworkUsersController.getUsers(req, res);
 });
-application.get("/api/world-network-users", function(req, res) {
+application.get("/api/world-network-users", expressJwt({secret: 'scientilla'}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all World Network Users");
     worldNetworkUsersController.getUsers(req, res);
 });
