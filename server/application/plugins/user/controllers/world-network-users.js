@@ -128,7 +128,7 @@ module.exports = function () {
                         //
                     }
                     req.request({ 
-                        url: seed.url + "/api/world-network-users/", 
+                        url: seed.url + "/api/public-world-network-users/", 
                         strictSSL: false,
                         json: true,
                         qs: req.query
