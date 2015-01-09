@@ -178,8 +178,9 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.tags) ? peer.tags = req.body.tags : [];
             peer.last_modifier_id = req.user.id;
             peer.last_modification_datetime = req.moment().format();         
-            req.peersCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: peer }, {w: 1}, function(err, peer) {
-                if (err || req.underscore.isNull(peer)) {
+            req.peersCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: peer }, {w: 1}, function(err, count) {
+                if (err || count === 0) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
