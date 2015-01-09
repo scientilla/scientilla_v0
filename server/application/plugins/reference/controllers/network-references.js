@@ -22,7 +22,7 @@ module.exports = function () {
             var peer;
             async.waterfall([
                 function(cb) {
-                    if (configuration.seed) {
+                    if (configuration.mode === 1) {
                         peer = configuration.url;
                         cb(null, peer);
                     } else {

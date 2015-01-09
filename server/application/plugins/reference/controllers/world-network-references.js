@@ -18,7 +18,7 @@ module.exports = function () {
     var getSeedUrl = function(req, cb) {
         var configuration = configurationManager.get();
         var peer;
-        if (configuration.seed) {
+        if (configuration.mode === 1) {
             peer = configuration.url;
             cb(null, peer);
         } else {

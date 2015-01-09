@@ -91,7 +91,7 @@ module.exports = function () {
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
             var result = {};            
-            if (configuration.seed) {
+            if (configuration.mode === 1) {
                 var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
@@ -143,7 +143,7 @@ module.exports = function () {
         getRankedReference: function(req, res) {
             var configuration = configurationManager.get();
             var id = req.params.id;
-            if (configuration.seed) {
+            if (configuration.mode === 1) {
                 req.rankedReferencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(id)}, function(err, rankedReference) {
                     if (err || req.underscore.isNull(rankedReference)) {
                         console.log(err);

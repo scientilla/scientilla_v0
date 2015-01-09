@@ -53,7 +53,7 @@ angular.module("system").controller(
         
         $scope.updateControllerStatus = function updateControllerStatus() {
             $scope.userScientillaNominative = $window.sessionStorage.userScientillaNominative;
-            $scope.bCollectedPublicationsMenuVisualizationStatus = $window.sessionStorage.peerMode;
+            $scope.bCollectedPublicationsMenuVisualizationStatus = $window.sessionStorage.peerMode === 1;
             
             return updateControllerStatus;
         }();

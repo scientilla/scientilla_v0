@@ -102,7 +102,7 @@ module.exports = function () {
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
             var result = {};            
-            if (configurationManager.get().seed) {
+            if (configurationManager.get().mode === 1) {
                 var retrievedCollection = retrieveUsers(req.collectedUsersCollection, keywords, userType, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, usersCount) {
                     if (err || req.underscore.isNull(usersCount)) {

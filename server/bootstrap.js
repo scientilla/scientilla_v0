@@ -28,8 +28,8 @@ var application = express();
 
 var configurationManager = require(path.resolve(__dirname + "/application/plugins/system/controllers/configuration.js"));
 var seedsConfiguration = require("./configuration/seeds.json");
-var isSeed = configurationManager.get().seed;
-var requirePrefix = (isSeed) ? 'seed.' : '';
+var peerMode = configurationManager.get().mode;
+var requirePrefix = (peerMode === 1) ? 'seed.' : '';
 
 var datasetsController = require("./application/plugins/dataset/controllers/default.js")();
 var peerDatasetsController = require("./application/plugins/dataset/controllers/peer-datasets.js")();
@@ -212,7 +212,7 @@ async.series([
         seriesCallback();
     },
     function(seriesCallback) {
-        if (configurationManager.get().seed) {
+        if (peerMode === 1) {
             var referencesAndUsersCollectionJob = function referencesAndUsersCollectionJob() {
                 console.log("Collecting references and users...");
                 peerReferencesController.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection);
@@ -227,7 +227,7 @@ async.series([
         seriesCallback();
     },
     function(seriesCallback) {
-        if (configurationManager.get().seed) {
+        if (peerMode === 1) {
             var rankReferencesJob = (function rankReferencesJob() {
                 console.log("Ranking references...");
                 collectedReferencesController.rankReferences(collectedReferencesCollection, function() {
@@ -241,7 +241,7 @@ async.series([
         }
     },
     function(seriesCallback) {
-        if (configurationManager.get().seed) {
+        if (peerMode === 1) {
             var extractTagsJob = (function extractTagsJob() {
                 console.log("Extracting tags...");
                 tagsController.extractTags(collectedReferencesCollection, function() {

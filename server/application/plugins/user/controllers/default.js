@@ -465,13 +465,14 @@ module.exports = function () {
 
                             // res.setHeader("Content-Type", "application/json");
                             var configuration = configurationManager.get();
+                            console.log(configuration.mode);
                             res.json({
                                 user_token: token,
                                 user_type: user.type,
                                 user_rights: user.rights,
                                 user_scientilla_nominative: user.scientilla_nominative,
                                 user_aliases: user.aliases,
-                                peer_mode: configuration.seed,
+                                peer_mode: configuration.mode,
                                 url: configuration.url
                             });
                         }

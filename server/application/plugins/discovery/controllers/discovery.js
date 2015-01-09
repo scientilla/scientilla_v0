@@ -77,7 +77,7 @@ module.exports = function () {
     return {
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
-            if (configuration.seed) {
+            if (configuration.mode === 1) {
                 var aliases = req.query.aliases;                
                 var userType = req.query.user_type;                
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
@@ -124,7 +124,7 @@ module.exports = function () {
             var peer;
             async.waterfall([
                 function(cb) {
-                    if (configuration.seed) {
+                    if (configuration.mode === 1) {
                         peer = configuration.url;
                         cb(null, peer);
                     } else {
