@@ -62,7 +62,7 @@ var isLinux = /^lin/.test(process.platform);
 var dataPath;
 
 // Initializes databases
-var databaseEngine
+var databaseEngine;
 if (configurationManager.get().database_type == "mongodb") {
     databaseEngine = mongodb.MongoClient;
 } else {
