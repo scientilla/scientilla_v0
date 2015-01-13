@@ -237,8 +237,8 @@ async.series([
                 });
             }());
             nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
-            seriesCallback();
         }
+        seriesCallback();
     },
     function(seriesCallback) {
         if (peerMode === 1) {
@@ -251,8 +251,8 @@ async.series([
                 });
             }());
             nodeSchedule.scheduleJob({hour: 2, minute: 0}, extractTagsJob);
-            seriesCallback();
         }
+        seriesCallback();
 	}
 ]);
 
