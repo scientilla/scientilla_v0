@@ -1,6 +1,6 @@
 /*
- * Scientilla v0.0.1 (http://www.scientilla.net)
- * Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ * Scientilla v1.0 Beta (http://www.scientilla.net)
+ * Copyright 2014-2015 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
  * Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  */
 
@@ -45,6 +45,7 @@ angular.module("setting").controller(
                 ssl_cert_path: $scope.oSettings.ssl_cert_path,
                 name: $scope.oSettings.name,
                 url: $scope.oSettings.url,
+                secret: $scope.oSettings.secret,
                 owner_user_id: $scope.oSettings.owner_user_id,
                 mode: $scope.oSettings.mode,
                 files_routing: $scope.oSettings.files_routing,

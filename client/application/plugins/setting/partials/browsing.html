@@ -1,6 +1,6 @@
 <!--
- ! Scientilla v0.0.1 (http://www.scientilla.net)
- ! Copyright 2014 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Scientilla v1.0 Beta (http://www.scientilla.net)
+ ! Copyright 2014-2015 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
  -->
 <div id="toolbar-container">
@@ -121,12 +121,12 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="col-xs-12 nowrap">
-                                    <label for="seed" class="label label-default">Seed Mode</label>
+                                    <label for="seed" class="label label-default">Mode</label>
                                     <div>
                                         <div class="btn-group">
-                                            <label class="btn btn-default" ng-model="oSettings.mode" btn-radio="0">Standard</label>
+                                            <label class="btn btn-default" ng-model="oSettings.mode" btn-radio="0">Standard Peer</label>
+                                            <label class="btn btn-default" ng-model="oSettings.mode" btn-radio="2">Partial Seed</label>
                                             <label class="btn btn-default" ng-model="oSettings.mode" btn-radio="1">Full Seed</label>
-                                            <label class="btn btn-default" ng-model="oSettings.mode" btn-radio="2">Local Seed</label>
                                         </div>                                
                                     </div>                           
                                 </div>
@@ -151,6 +151,12 @@
                                     <input id="url" ng-model="oSettings.url" ng-required="true" type="text" class="form-control">                             
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="secret" class="label label-default">Secret</label>                          
+                                    <input id="secret" ng-model="oSettings.secret" ng-required="true" type="text" class="form-control">                             
+                                </div>
+                            </div>                            
                         </div>
                     </div>                    
                     <div class="form-group">

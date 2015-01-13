@@ -4,6 +4,7 @@
     "ssl_cert_path": "/../certs/certificate.cert",
     "name": "SCIENTILLA",
     "url": "https://127.0.0.1:60000",
+    "secret": "scientilla",
     "owner_user_id": 2,
     "mode": 0,
     "files_routing": true,
