@@ -18,8 +18,15 @@ var identificationManager = require(path.resolve(__dirname + "/../../system/cont
 var referenceManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
+    var DISCOVER_GLOBAL = 0;
+    var DISCOVER_LOCAL = 1;
     var updateReferencesDiscoveringHits = function(peersCollection, currentPeer, callback) {
         peersCollection.update({_id: identificationManager.getDatabaseSpecificId(currentPeer._id)}, { $set: { references_discovering_hits: (currentPeer.references_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
+            callback();
+        });
+    };
+    var updateReferencesLocalDiscoveringHits = function(peersCollection, currentPeer, callback) {
+        peersCollection.update({_id: identificationManager.getDatabaseSpecificId(currentPeer._id)}, { $set: { references_local_discovering_hits: ( (currentPeer.references_local_discovering_hits || 0) + 1) } }, { w: 1}, function(err, peer) {
             callback();
         });
     };
@@ -85,8 +92,15 @@ module.exports = function () {
                 });
             });            
         },
+
+        discoverLocalReferences: function(peersCollection, referencesCollection, collectedReferencesCollection) {
+            this.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection, DISCOVER_LOCAL);
+        },
         
-        discoverReferences: function(peersCollection, referencesCollection, collectedReferencesCollection) {
+        discoverReferences: function(peersCollection, referencesCollection, collectedReferencesCollection, type) {
+            if (_.isUndefined(type)) {
+                type = DISCOVER_GLOBAL;
+            }
             async.series([
                 function(firstSeriesCallback) {
                     collectedReferencesCollection.find({ peer_url: configurationManager.get().url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
@@ -134,7 +148,16 @@ module.exports = function () {
                     });
                 },
                 function(firstSeriesCallback) {
-                    peersCollection.find({}).sort({ references_discovering_hits: 1 }).limit(1).toArray(function(err, peers) {
+                    var searchQuery;
+                    var sortingQuery;
+                    if (type === DISCOVER_GLOBAL) {
+                        searchQuery = {};
+                        sortingQuery = { references_discovering_hits: 1 };
+                    } else {
+                        searchQuery = { aggregating_status: true };
+                        sortingQuery = { references_local_discovering_hits: 1 };
+                    }
+                    peersCollection.find(searchQuery).sort(sortingQuery).limit(1).toArray(function(err, peers) {
                         if (err || _.isNull(peers)) {
                             firstSeriesCallback();
                             return;
@@ -152,7 +175,11 @@ module.exports = function () {
                                     json: true 
                                 }, function (err, res, peerReferencesObj) {
                                     if (err || _.isNull(peerReferencesObj) || !hasCorrectExchangeFormat(peerReferencesObj)) {
-                                        updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                        if (type === DISCOVER_GLOBAL) {
+                                            updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                        } else {
+                                            updateReferencesLocalDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                        }
                                     } else {
                                         var peerReferences = peerReferencesObj.items;
                                         async.series([
@@ -176,7 +203,11 @@ module.exports = function () {
                                                 secondSeriesCallback();
                                             },
                                             function(secondSeriesCallback) {
-                                                updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                                if (type === DISCOVER_GLOBAL) {
+                                                    updateReferencesDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                                } else {
+                                                    updateReferencesLocalDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                                }
                                             }
                                         ]);                                    
                                     }
