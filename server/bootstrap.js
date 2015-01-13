@@ -81,6 +81,8 @@ var usersCollection;
 var collectedUsersCollection;
 var datasetReferencesCollections = [];
 var rankedReferencesCollection;
+var localCollectedReferencesCollection;
+var localCollectedUsersCollection;
 
 async.series([
     function(seriesCallback) {
@@ -158,7 +160,13 @@ async.series([
             collectedReferencesCollection = collection;
             seriesCallback();
         });
-    },    
+    },
+    function(seriesCallback) {
+        database.collection("local_collected_references", function(err, collection) {
+            localCollectedReferencesCollection = collection;
+            seriesCallback();
+        });
+    },
     function(seriesCallback) {
         database.collection("ranked_references", function(err, collection) {
             rankedReferencesCollection = collection;
@@ -223,6 +231,21 @@ async.series([
             var referencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
             referencesAndUsersCollectionRecurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
             nodeSchedule.scheduleJob(referencesAndUsersCollectionRecurrenceRule, referencesAndUsersCollectionJob);
+        }
+        seriesCallback();
+    },
+    function(seriesCallback) {
+        if (peerMode === 2) {
+            var localReferencesAndUsersCollectionJob = function localReferencesAndUsersCollectionJob() {
+                console.log("Collecting local references and users...");
+                peerReferencesController.discoverLocalReferences(peersCollection, referencesCollection, localCollectedReferencesCollection);
+                //peerUsersController.discoverLocalUsers(peersCollection, usersCollection, localCollectedUsersCollection);
+
+                return localReferencesAndUsersCollectionJob;
+            }();
+            var localReferencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            localReferencesAndUsersCollectionRecurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+            nodeSchedule.scheduleJob(localReferencesAndUsersCollectionRecurrenceRule, localReferencesAndUsersCollectionJob);
         }
         seriesCallback();
     },
