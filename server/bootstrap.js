@@ -223,7 +223,7 @@ async.series([
         if (peerMode === 1) {
             var referencesAndUsersCollectionJob = function referencesAndUsersCollectionJob() {
                 console.log("Collecting references and users...");
-                peerReferencesController.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection);
+                peerReferencesController.discoverGlobalReferences(peersCollection, referencesCollection, collectedReferencesCollection);
                 peerUsersController.discoverUsers(peersCollection, usersCollection, collectedUsersCollection);
 
                 return referencesAndUsersCollectionJob;
