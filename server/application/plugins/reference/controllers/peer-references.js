@@ -96,7 +96,11 @@ module.exports = function () {
         discoverLocalReferences: function(peersCollection, referencesCollection, collectedReferencesCollection) {
             this.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection, DISCOVER_LOCAL);
         },
-        
+
+        discoverGlobalReferences: function(peersCollection, referencesCollection, collectedReferencesCollection) {
+            this.discoverReferences(peersCollection, referencesCollection, collectedReferencesCollection, DISCOVER_GLOBAL);
+        },
+
         discoverReferences: function(peersCollection, referencesCollection, collectedReferencesCollection, type) {
             if (_.isUndefined(type)) {
                 type = DISCOVER_GLOBAL;
