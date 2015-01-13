@@ -26,6 +26,7 @@ module.exports = function () {
             settings.ssl_cert_path = !req.underscore.isUndefined(req.body.ssl_cert_path) ? ('' + req.body.ssl_cert_path).trim() : '';
             settings.name = !req.underscore.isUndefined(req.body.name) ? ('' + req.body.name).trim() : ''; 
             settings.url = !req.underscore.isUndefined(req.body.url) ? ('' + req.body.url).trim() : '';
+            settings.secret = !req.underscore.isUndefined(req.body.secret) ? ('' + req.body.secret).trim() : 'scientilla';
             settings.owner_user_id = !req.underscore.isUndefined(req.body.owner_user_id) ? ('' + req.body.owner_user_id).trim() : '';
             settings.mode = !req.underscore.isUndefined(req.body.mode) ? req.body.mode : false;
             settings.files_routing = !req.underscore.isUndefined(req.body.files_routing) ? req.body.files_routing : false;
