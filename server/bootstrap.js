@@ -253,7 +253,7 @@ async.series([
         if (peerMode === 1) {
             var rankReferencesJob = (function rankReferencesJob() {
                 console.log("Ranking references...");
-                collectedReferencesController.rankReferences(collectedReferencesCollection, function() {
+                collectedReferencesController.rankGlobalReferences(collectedReferencesCollection, function() {
                     database.collection("ranked_references", function(err, collection) {
                         rankedReferencesCollection = collection;
                     });
