@@ -59,6 +59,10 @@ module.exports = function () {
             this.rankReferences(collectedReferencesCollection, 'ranked_references', cb);
         },
 
+        rankLocalReferences: function(collectedReferencesCollection, cb) {
+            this.rankReferences(collectedReferencesCollection, 'local_ranked_references', cb);
+        },
+
         rankReferences: function(collectedReferencesCollection, outputFile, cb) {
             collectedReferencesCollection.mapReduce(
                 function() { emit(this.original_hash, this); },
