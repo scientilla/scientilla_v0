@@ -598,6 +598,12 @@ application.get("/api/network-references", expressJwt({secret: configurationMana
 });
 
 // WORLD NETWORK USERS
+application.get("/api/ranked-network-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+    console.log("Request to Read all Local Ranked References");
+    systemController.checkUserCoherence(req, res);
+    localRankedReferencesController.getReferences(req, res);
+});
+
 application.get("/api/public-world-network-users", function(req, res) {
     console.log("Request to Read all Public World Network Users");
     worldNetworkUsersController.getUsers(req, res);
