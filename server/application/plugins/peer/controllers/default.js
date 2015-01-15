@@ -14,6 +14,7 @@ var underscore = require("underscore");
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 var peerManager = require("../models/default.js")();
+var userManager = require("../../user/models/default.js")();
 
 // Defines actions
 module.exports = function () {
@@ -218,7 +219,7 @@ module.exports = function () {
                 }
             });            
         },        
-        discoverPeers: function(seedsConfiguration, peersCollection) {
+        discoverPeers: function(seedsConfiguration, peersCollection, usersCollection) {
             for (var seedKey in seedsConfiguration) {
                 request({
                     method: "GET",
@@ -285,11 +286,19 @@ module.exports = function () {
 						);
                     }
                     if (seedsConfiguration[seedKey] != configurationManager.get().url) {
+                        var ownerUserScientillaNominative = "";
+                        userManager.getUser(usersCollection, configurationManager.get().owner_user_id, function(err, user) {
+                            if (!err) {
+                                ownerUserScientillaNominative = user.scientilla_nominative;
+                            } else {
+                                ownerUserScientillaNominative = "";
+                            }
+                        });
                         request({
                             method: "POST",
                             url: seedsConfiguration[seedKey] + "/api/public-peers", 
                             json: { 
-                                name: configurationManager.get().name, 
+                                name: ownerUserScientillaNominative, 
                                 url: configurationManager.get().url 
                             },
                             strictSSL: false 
