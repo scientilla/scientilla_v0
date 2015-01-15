@@ -43,7 +43,6 @@ angular.module("setting").controller(
                 port: $scope.oSettings.port,
                 ssl_key_path: $scope.oSettings.ssl_key_path,
                 ssl_cert_path: $scope.oSettings.ssl_cert_path,
-                name: $scope.oSettings.name,
                 url: $scope.oSettings.url,
                 secret: $scope.oSettings.secret,
                 owner_user_id: $scope.oSettings.owner_user_id,

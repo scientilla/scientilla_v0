@@ -138,13 +138,7 @@
                                         <option value="{{user._id}}" ng-repeat="user in aUsers" ng-selected="user._id == oSettings.owner_user_id">{{(((user.first_name + ' ' + user.last_name).trim() + ' ' + user.middle_name).trim() + ' ' + user.business_name).trim()}}</option>    
                                     </select>                            
                                 </div>
-                            </div>                            
-                            <div class="form-group">
-                                <div class="col-xs-12 nowrap">
-                                    <label for="name" class="label label-default">Name</label>                          
-                                    <input id="name" ng-model="oSettings.name" ng-required="true" type="text" class="form-control">                             
-                                </div>
-                            </div>                    
+                            </div>
                             <div class="form-group">
                                 <div class="col-xs-12 nowrap">
                                     <label for="url" class="label label-default">URL</label>                          
