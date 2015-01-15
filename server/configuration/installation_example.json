@@ -2,7 +2,6 @@
     "port": 60000,
     "ssl_key_path": "/../certs/certificate.key",
     "ssl_cert_path": "/../certs/certificate.cert",
-    "name": "SCIENTILLA",
     "url": "https://127.0.0.1:60000",
     "secret": "scientilla",
     "owner_user_id": 2,
