@@ -21,7 +21,7 @@ angular.module("reference").factory(
             }            
             return $http({
 				method: "GET",
-				url: "/api/network-references",
+				url: "/api/ranked-network-references",
                 params: params,
                 cache: false,
                 timeout: 30000,

@@ -76,8 +76,20 @@
                                     <a ng-href="{{reference.doi}}" target="_blank">{{reference.doi}}</a><br />
                                 </strong>
                                 <small>
-                                    <br />From: <i class="fa fa-folder-open-o"></i> 
-                                    <a ng-href="{{getPeerPath(reference.peer_id, reference.peer_url)}}">{{reference.peer_url}}</a>
+                                    <br />Your Network: Confirmed by
+                                    <span ng-pluralize count="reference.confirmedBy"
+                                          when="{'0': 'Nobody',
+                                               '1': 'one user',
+                                               'other': '{} users'}">
+                                    </span>
+                                    <span ng-show="reference.versions > 1">-
+                                        <span ng-pluralize
+                                              count="reference.versions" offset="1"
+                                              when="{'1': 'No other version exists',
+                                                   '2': 'Another version exists',
+                                                   'other': '{} other versions exist'}"></span>
+                                    </span>
+                                    <br><a class="btn btn-default btn-xs" ng-href="#/browse-world-network/{{reference.original_hash}}/"><i class="fa fa-comments-o"></i> Show All Available Versions</a>
                                 </small>
                             </td>
                             <td class="text-center">

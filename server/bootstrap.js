@@ -44,6 +44,7 @@ var repositoryReferencesController = require("./application/plugins/reference/co
 var seedPeerReferencesController = require("./application/plugins/reference/controllers/seed-peer-references.js")();
 var worldNetworkReferencesController = require("./application/plugins/reference/controllers/world-network-references.js")();
 var rankedReferencesController = require("./application/plugins/reference/controllers/ranked-references.js")();
+var localRankedReferencesController = require("./application/plugins/reference/controllers/local-ranked-references.js")();
 var repositoriesController = require("./application/plugins/repository/controllers/default.js")();
 var settingsController = require("./application/plugins/setting/controllers/default.js")();
 var systemController = require("./application/plugins/system/controllers/default.js")();
@@ -81,6 +82,7 @@ var usersCollection;
 var collectedUsersCollection;
 var datasetReferencesCollections = [];
 var rankedReferencesCollection;
+var localRankedReferencesCollection;
 var localCollectedReferencesCollection;
 var localCollectedUsersCollection;
 
@@ -95,7 +97,7 @@ async.series([
             dataPath = path.resolve(__dirname + "/../");
         }
         seriesCallback();
-    },    
+    },
     function(seriesCallback) {
         if (!fs.existsSync(path.resolve(dataPath + "/files/"))) {
             fs.mkdirSync(path.resolve(dataPath + "/files/"));
@@ -107,11 +109,11 @@ async.series([
             fs.mkdirSync(path.resolve(dataPath + "/files/datasets/"));
         }
         seriesCallback();
-    },    
+    },
     function(seriesCallback) {
         if (configurationManager.get().database_type == "mongodb") {
             databaseEngine.connect(
-                "mongodb://" + configurationManager.get().database_host + ":" + configurationManager.get().database_port + "/scientilla", 
+                "mongodb://" + configurationManager.get().database_host + ":" + configurationManager.get().database_port + "/scientilla",
                 function(err, db) {
                     database = db;
                     seriesCallback();
@@ -174,6 +176,12 @@ async.series([
         });
     },
     function(seriesCallback) {
+        database.collection("local_ranked_references", function(err, collection) {
+            localRankedReferencesCollection = collection;
+            seriesCallback();
+        });
+    },
+    function(seriesCallback) {
         database.collection("users", function(err, collection) {
             usersCollection = collection;
             seriesCallback();
@@ -184,34 +192,34 @@ async.series([
             collectedUsersCollection = collection;
             seriesCallback();
         });
-    }, 
+    },
     /*
-    function(seriesCallback) {
-        database = new databaseEngine.Db(path.resolve(dataPath + "/files/datasets/") + path.sep, {});
-        seriesCallback();
-    },
-    function(seriesCallback) {
-        var datasetFileNames = fs.readdirSync(path.resolve(dataPath + "/files/datasets/") + path.sep);
-        async.eachSeries(
-            datasetFileNames,
-            function(datasetFileName, eachSeriesCallback) {
-                if (datasetFileName !== "." && datasetFileName !== "..") {
-                    database.collection(datasetFileName, function(err, collection) {
-                        datasetReferencesCollections[datasetFileName.replace(".db", "")] = collection;
-                        eachSeriesCallback();
-                    }); 
-                }
-            },
-            seriesCallback
-        );        
-    },
-    */
+     function(seriesCallback) {
+     database = new databaseEngine.Db(path.resolve(dataPath + "/files/datasets/") + path.sep, {});
+     seriesCallback();
+     },
+     function(seriesCallback) {
+     var datasetFileNames = fs.readdirSync(path.resolve(dataPath + "/files/datasets/") + path.sep);
+     async.eachSeries(
+     datasetFileNames,
+     function(datasetFileName, eachSeriesCallback) {
+     if (datasetFileName !== "." && datasetFileName !== "..") {
+     database.collection(datasetFileName, function(err, collection) {
+     datasetReferencesCollections[datasetFileName.replace(".db", "")] = collection;
+     eachSeriesCallback();
+     });
+     }
+     },
+     seriesCallback
+     );
+     },
+     */
     function(seriesCallback) {
         var peersAndRepositoriesCollectionJob = function peersAndRepositoriesCollectionJob() {
             console.log("Collecting peers and repositories...");
             peersController.discoverPeers(seedsConfiguration, peersCollection, usersCollection);
             repositoriesController.discoverRepositories(seedsConfiguration, peersCollection);
-            
+
             return peersAndRepositoriesCollectionJob;
         }();
         var peersAndRepositoriesCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
@@ -253,9 +261,23 @@ async.series([
         if (peerMode === 1) {
             var rankReferencesJob = (function rankReferencesJob() {
                 console.log("Ranking references...");
-                collectedReferencesController.rankReferences(collectedReferencesCollection, function() {
+                collectedReferencesController.rankGlobalReferences(collectedReferencesCollection, function() {
                     database.collection("ranked_references", function(err, collection) {
                         rankedReferencesCollection = collection;
+                    });
+                });
+            }());
+            nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
+        }
+        seriesCallback();
+    },
+    function(seriesCallback) {
+        if (peerMode === 2) {
+            var rankReferencesJob = (function rankReferencesJob() {
+                console.log("Ranking local references...");
+                collectedReferencesController.rankLocalReferences(localCollectedReferencesCollection, function() {
+                    database.collection("local_ranked_references", function(err, collection) {
+                        localRankedReferencesCollection = collection;
                     });
                 });
             }());
@@ -276,7 +298,7 @@ async.series([
             nodeSchedule.scheduleJob({hour: 2, minute: 0}, extractTagsJob);
         }
         seriesCallback();
-	}
+    }
 ]);
 
 // Executes middlewares
@@ -286,7 +308,7 @@ application.use("*", function(req, res, next) {
     req.crypto = crypto;
     req.expressJwt = expressJwt;
     req.fs = fs;
-    req.jsonWebToken = jsonWebToken;    
+    req.jsonWebToken = jsonWebToken;
     req.moment = moment;
     req.request = request;
     req.underscore = underscore;
@@ -298,12 +320,14 @@ application.use("*", function(req, res, next) {
     req.referencesCollection = referencesCollection;
     req.guestReferencesCollection = guestReferencesCollection;
     req.collectedReferencesCollection = collectedReferencesCollection;
+    req.localCollectedReferencesCollection = localCollectedReferencesCollection;
     req.usersCollection = usersCollection;
     req.collectedUsersCollection = collectedUsersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
     req.rankedReferencesCollection = rankedReferencesCollection;
+    req.localRankedReferencesCollection = localRankedReferencesCollection;
     req.tagsCollection = tagsCollection;
-    next();    
+    next();
 });
 
 application.use("*", bodyParser.json());
@@ -323,7 +347,7 @@ application.get("/api/datasets", expressJwt({secret: configurationManager.get().
 });
 
 application.get("/api/public-datasets", cors(), function(req, res) {
-    console.log("Request to Read all Public Datasets");   
+    console.log("Request to Read all Public Datasets");
     datasetsController.getPublicDatasets(req, res);
 });
 
@@ -334,7 +358,7 @@ application.get("/api/datasets/:id", expressJwt({secret: configurationManager.ge
 });
 
 application.get("/api/public-datasets/:id", cors(), function(req, res) {
-    console.log("Request to Read a Public Dataset");   
+    console.log("Request to Read a Public Dataset");
     datasetsController.getPublicDataset(req, res);
 });
 
@@ -387,7 +411,7 @@ application.get("/api/peers", expressJwt({secret: configurationManager.get().sec
 });
 
 application.get("/api/public-peers", cors(), function(req, res) {
-    console.log("Request to Read all Public Peers");   
+    console.log("Request to Read all Public Peers");
     peersController.getPublicPeers(req, res);
 });
 
@@ -398,7 +422,7 @@ application.get("/api/peers/:id", expressJwt({secret: configurationManager.get()
 });
 
 application.get("/api/public-peers/:id", cors(), function(req, res) {
-    console.log("Request to Read a Public Peer");   
+    console.log("Request to Read a Public Peer");
     peersController.getPublicPeer(req, res);
 });
 
@@ -480,7 +504,7 @@ application.get("/api/aggregated-peers", expressJwt({secret: configurationManage
 
 // SEED PEER REFERENCES
 application.get("/api/seed-peers/:seedPeerIndex/public-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
-    console.log("Request to Read all Seed Peer Public References"); 
+    console.log("Request to Read all Seed Peer Public References");
     systemController.checkUserCoherence(req, res);
     seedPeerReferencesController.getSeedPeerPublicReferences(req, res);
 });
@@ -493,13 +517,13 @@ application.get("/api/seed-peers/:seedPeerIndex/public-references/:referenceId",
 
 // REFERENCES
 application.get("/api/references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
-    console.log("Request to Read all References"); 
+    console.log("Request to Read all References");
     systemController.checkUserCoherence(req, res);
     referencesController.getReferences(req, res);
 });
 
 application.get("/api/public-references", cors(), function(req, res) {
-    console.log("Request to Read all Public References");   
+    console.log("Request to Read all Public References");
     referencesController.getPublicReferences(req, res);
 });
 
@@ -574,6 +598,12 @@ application.get("/api/network-references", expressJwt({secret: configurationMana
 });
 
 // WORLD NETWORK USERS
+application.get("/api/ranked-network-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+    console.log("Request to Read all Local Ranked References");
+    systemController.checkUserCoherence(req, res);
+    localRankedReferencesController.getReferences(req, res);
+});
+
 application.get("/api/public-world-network-users", function(req, res) {
     console.log("Request to Read all Public World Network Users");
     worldNetworkUsersController.getUsers(req, res);
@@ -619,7 +649,7 @@ application.get("/api/repositories", expressJwt({secret: configurationManager.ge
 });
 
 application.get("/api/public-repositories", cors(), function(req, res) {
-    console.log("Request to Read all Public Repositories");   
+    console.log("Request to Read all Public Repositories");
     repositoriesController.getPublicRepositories(req, res);
 });
 
@@ -692,7 +722,7 @@ application.get("/api/users", expressJwt({secret: configurationManager.get().sec
 });
 
 application.get("/api/public-users", cors(), function(req, res) {
-    console.log("Request to Read all Public Users");   
+    console.log("Request to Read all Public Users");
     usersController.getPublicUsers(req, res);
 });
 

@@ -54,8 +54,16 @@ module.exports = function () {
         );
     };
     
-    return {        
-        rankReferences: function(collectedReferencesCollection, cb) {
+    return {
+        rankGlobalReferences: function(collectedReferencesCollection, cb) {
+            this.rankReferences(collectedReferencesCollection, 'ranked_references', cb);
+        },
+
+        rankLocalReferences: function(collectedReferencesCollection, cb) {
+            this.rankReferences(collectedReferencesCollection, 'local_ranked_references', cb);
+        },
+
+        rankReferences: function(collectedReferencesCollection, outputFile, cb) {
             collectedReferencesCollection.mapReduce(
                 function() { emit(this.original_hash, this); },
                 function(original_hash, references) {
@@ -63,7 +71,7 @@ module.exports = function () {
                 },
                 {
                     query: {original_hash: { $exists: true }},
-                    out: { replace: 'ranked_references' },
+                    out: { replace: outputFile },
                     finalize: function(original_hash, references) {
                         if (!_.isArray(references)) {
                             references = [references];
