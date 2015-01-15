@@ -291,7 +291,7 @@ module.exports = function () {
                             if (!err) {
                                 ownerUserScientillaNominative = user.scientilla_nominative;
                             } else {
-                                ownerUserScientillaNominative = "";
+                                ownerUserScientillaNominative = "SCIENTILLA";
                             }
                         });
                         request({
