@@ -20,10 +20,10 @@ var referenceManager = require("../../reference/models/default.js")();
 module.exports = function () {
     var objsArray2MongoSearchQuery = function(objsArray) {
         var searchCriteria = _.map(
-            objsArray, 
+            objsArray,
             function(r){
                 var propCriteria = _.mapValues(
-                    r, 
+                    r,
                     function(val, key) {
                         var propCriterion = {};
                         propCriterion[key] = val;
@@ -35,28 +35,37 @@ module.exports = function () {
         var searchQuery = {$or: searchCriteria};
         return searchQuery;
     };
-    var retrieveReferences = function(rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {            
+    var retrieveReferences = function(rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls) {
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        return rankedReferencesCollection.find({                
+        var titleAuthorQuery = {
             "$or": [
                 {
-                    "value.top.title": { 
+                    "value.top.title": {
                         $regex: regexQuery,
                         $options: 'i'
                     }
                 },
                 {
-                    "value.top.authors": { 
+                    "value.top.authors": {
                         $regex: regexQuery,
                         $options: 'i'
                     }
                 }
             ]
-        }).sort(
-            { 
+        };
+        var searchCriteria = {$and: []};
+        searchCriteria.$and.push(titleAuthorQuery);
+        if (!_.isEmpty(peerUrls)) {
+            var peerQuery = {
+                "value.sources_cache": {$in: peerUrls}
+            };
+            searchCriteria.$and.push(peerQuery);
+        }
+        return rankedReferencesCollection.find(searchCriteria).sort(
+            {
                 original_hash: 1,
-                clone_hash: 1,                
-                creation_datetime: -1 
+                clone_hash: 1,
+                creation_datetime: -1
             }
         ).skip(
             currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
@@ -64,7 +73,7 @@ module.exports = function () {
             numberOfItemsPerPage
         );
     };
-    
+
     var resolveReferencePeers = function(references, peersCollection, finalizationCallback) {
         async.mapSeries(
             references,
@@ -83,16 +92,17 @@ module.exports = function () {
             }
         );
     };
-    
-    return {        
+
+    return {
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
-            var result = {};            
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);
+            var peerUrls = _.isUndefined(req.query.peer_urls) ? [] : req.query.peer_urls;
+            var result = {};
             if (configuration.mode === 1) {
-                var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
+                var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
                         res.status(404).end();
@@ -107,12 +117,12 @@ module.exports = function () {
                         var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
                         resolveReferencePeers(normalizedReferences, req.peersCollection, function(resolvedReferences) {
                             result.items = resolvedReferences;
-                            
+
                             // res.setHeader("Content-Type", "application/json");
-                            res.json(result);                             
-                        });              
-                    });                
-                });                
+                            res.json(result);
+                        });
+                    });
+                });
             } else {
                 networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
                     if (err) {
@@ -120,8 +130,8 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
-                    req.request({ 
-                        url: seed.url + "/api/world-network-references/", 
+                    req.request({
+                        url: seed.url + "/api/world-network-references/",
                         strictSSL: false,
                         json: true,
                         qs: req.query
@@ -132,12 +142,12 @@ module.exports = function () {
                         }
                         resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
                             result.items = resolvedReferences;
-                            
+
                             // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(result).end();
                         });
-                    });                    
-                });                
+                    });
+                });
             }
         },
         getRankedReference: function(req, res) {
@@ -158,14 +168,14 @@ module.exports = function () {
                                 return;
                             }
                             var result = {items: references, total_number_of_items: references.length};
-                            
+
                             // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(result).end();
-                        });            
-                });                
+                        });
+                });
             } else {
                 networkModel.getRandomSeed(
-                    req.seedsConfiguration, 
+                    req.seedsConfiguration,
                     function(err, seed) {
                         if (err) {
                             console.log(err);
@@ -173,20 +183,20 @@ module.exports = function () {
                             return;
                         } else {
                             var url = seed.url + "/api/world-network-references/" + req.params.id + "/";
-                            req.request({ 
-                                url: url, 
+                            req.request({
+                                url: url,
                                 strictSSL: false,
                                 json: true
                             }, function(err, response, body) {
-                                    if (err) {
-                                        console.log(err);
-                                        res.status(404).end();
-                                        return;
-                                    }
-                                    
-                                    // res.setHeader("Content-Type", "application/json");
-                                    res.status(200).json(body).end();
-                                });
+                                if (err) {
+                                    console.log(err);
+                                    res.status(404).end();
+                                    return;
+                                }
+
+                                // res.setHeader("Content-Type", "application/json");
+                                res.status(200).json(body).end();
+                            });
                         }
                     });
             }
