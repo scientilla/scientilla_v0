@@ -120,23 +120,37 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
-                    req.request({ 
-                        url: seed.url + "/api/world-network-references/", 
-                        strictSSL: false,
-                        json: true,
-                        qs: req.query
-                    }, function (error, response, result) {
-                        if (error) {
+                    var qs = req.query;
+                    req.peersCollection.find({
+                        aggregating_status: true
+                    }).toArray(function(err, networkPeers) {
+                        if (err) {
                             res.status(404).end();
                             return;
                         }
-                        resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
-                            result.items = resolvedReferences;
-                            
-                            // res.setHeader("Content-Type", "application/json");
-                            res.status(200).send(result).end();
+                        var networkPeerUrls = _.pluck(networkPeers, "url");
+                        var thisUrl = configuration.url;
+                        networkPeerUrls.push(thisUrl);
+                        qs.peer_urls = networkPeerUrls;
+                        req.request({
+                            url: seed.url + "/api/ranked-references/",
+                            strictSSL: false,
+                            json: true,
+                            qs: qs
+                        }, function (error, response, result) {
+                            if (error) {
+                                res.status(404).end();
+                                return;
+                            }
+                            resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
+                                result.items = resolvedReferences;
+
+                                // res.setHeader("Content-Type", "application/json");
+                                res.status(200).send(result).end();
+                            });
                         });
-                    });                    
+
+                    });
                 });                
             }
         },
