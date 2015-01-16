@@ -5,8 +5,9 @@
  */
 
 angular.module("user").controller(
-    "userSelfEditingController", ["$scope", "$routeParams", "usersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, usersService, systemStatusService, $window, $location) {
-        
+    "userSelfEditingController", 
+    ["$scope", "$routeParams", "usersService", "systemStatusService", "$window", "$location", 
+    function($scope, $routeParams, usersService, systemStatusService, $window, $location) {
         var getUserAliases = function(user) {
             var firstLetter = function(string) {return string.charAt(0).toUpperCase();};
             var capitalize = function (str){
@@ -38,7 +39,7 @@ angular.module("user").controller(
             
         $scope.oUser = {
             type: "",
-            rights: "",
+            rights: 1,
             scientilla_nominative: "",
             first_name: "",
             middle_name: "",
