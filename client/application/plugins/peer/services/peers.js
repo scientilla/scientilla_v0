@@ -42,6 +42,30 @@ angular.module("peer").factory(
                     Authorization: 'Bearer ' + token
                 }
 			});
+        };
+        
+        peersProvider.getCustomPeers = function(token) {
+            return $http({
+				method: "GET",
+				url: "/api/custom-peers",
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
+        };
+        
+        peersProvider.getAggregatedAndCustomPeers = function(token) {
+            return $http({
+				method: "GET",
+				url: "/api/aggregated-and-custom-peers",
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+			});
         };        
         
         peersProvider.getPeer = function(id, token) {
