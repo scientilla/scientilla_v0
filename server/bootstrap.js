@@ -217,7 +217,7 @@ async.series([
     function(seriesCallback) {
         var peersAndRepositoriesCollectionJob = function peersAndRepositoriesCollectionJob() {
             console.log("Collecting peers and repositories...");
-            peersController.discoverPeers(seedsConfiguration, peersCollection);
+            peersController.discoverPeers(seedsConfiguration, peersCollection, usersCollection);
             repositoriesController.discoverRepositories(seedsConfiguration, peersCollection);
 
             return peersAndRepositoriesCollectionJob;
