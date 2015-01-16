@@ -404,9 +404,8 @@ application.post("/api/datasets/:datasetId/references", expressJwt({secret: conf
 });
 
 // PEERS
-application.get("/api/peers", expressJwt({secret: configurationManager.get().secret}), cors(), function(req, res) {
+application.get("/api/peers", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Peers");
-    systemController.checkUserCoherence(req, res);
     peersController.getPeers(req, res);
 });
 
@@ -415,9 +414,8 @@ application.get("/api/public-peers", cors(), function(req, res) {
     peersController.getPublicPeers(req, res);
 });
 
-application.get("/api/peers/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/peers/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read a Peer");
-    systemController.checkUserCoherence(req, res);
     peersController.getPeer(req, res);
 });
 
@@ -469,56 +467,48 @@ application.get("/api/peers/:peerId/public-datasets/:datasetId/references", expr
     peerDatasetReferencesController.getPeerPublicDatasetReferences(req, res);
 });
 
-application.get("/api/peers/:peerId/public-datasets/:datasetId/references/:referenceId", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/peers/:peerId/public-datasets/:datasetId/references/:referenceId", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read a Peer Public Dataset Reference");
-    systemController.checkUserCoherence(req, res);
     peerDatasetReferencesController.getPeerPublicDatasetReference(req, res);
 });
 
 // PEER REFERENCES
-application.get("/api/peers/:id/public-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/peers/:id/public-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Peer Public References");
-    systemController.checkUserCoherence(req, res);
     peerReferencesController.getPeerPublicReferences(req, res);
 });
 
-application.get("/api/peers/:peerId/public-references/:referenceId", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/peers/:peerId/public-references/:referenceId", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read a Peer Public Reference");
-    systemController.checkUserCoherence(req, res);
     peerReferencesController.getPeerPublicReference(req, res);
 });
 
 // SEED PEERS
-application.get("/api/seed-peers", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/seed-peers", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Seed Peers");
-    systemController.checkUserCoherence(req, res);
     peersController.getSeedPeers(req, res);
 });
 
 // SEED PEERS
-application.get("/api/aggregated-peers", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/aggregated-peers", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Aggregated Peers");
-    systemController.checkUserCoherence(req, res);
     peersController.getAggregatedPeers(req, res);
 });
 
 // SEED PEER REFERENCES
-application.get("/api/seed-peers/:seedPeerIndex/public-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/seed-peers/:seedPeerIndex/public-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Seed Peer Public References");
-    systemController.checkUserCoherence(req, res);
     seedPeerReferencesController.getSeedPeerPublicReferences(req, res);
 });
 
-application.get("/api/seed-peers/:seedPeerIndex/public-references/:referenceId", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/seed-peers/:seedPeerIndex/public-references/:referenceId", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read a Seed Peer Public Reference");
-    systemController.checkUserCoherence(req, res);
     seedPeerReferencesController.getPeerPublicReference(req, res);
 });
 
 // REFERENCES
-application.get("/api/references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all References");
-    systemController.checkUserCoherence(req, res);
     referencesController.getReferences(req, res);
 });
 
@@ -527,9 +517,8 @@ application.get("/api/public-references", cors(), function(req, res) {
     referencesController.getPublicReferences(req, res);
 });
 
-application.get("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read a Reference");
-    systemController.checkUserCoherence(req, res);
     referencesController.getReference(req, res);
 });
 
@@ -538,33 +527,28 @@ application.get("/api/public-references/:id", cors(), function(req, res) {
     referencesController.getPublicReference(req, res);
 });
 
-application.post("/api/references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.post("/api/references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Create a Reference");
-    systemController.checkUserCoherence(req, res);
     referencesController.createReference(req, res);
 });
 
-application.put("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.put("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Update a Reference");
-    systemController.checkUserCoherence(req, res);
     referencesController.updateReference(req, res);
 });
 
-application.patch("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.patch("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Partially Update a Reference");
-    systemController.checkUserCoherence(req, res);
     referencesController.patchReference(req, res);
 });
 
-application.delete("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.delete("/api/references/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Delete a Reference");
-    systemController.checkUserCoherence(req, res);
     referencesController.deleteReference(req, res);
 });
 
-application.get("/api/received-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/received-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Received References");
-    systemController.checkUserCoherence(req, res);
     referencesController.getReceivedReferences(req, res);
 });
 
@@ -579,28 +563,24 @@ application.get("/api/ranked-references/:id", function(req, res) {
 });
 
 // WORLD NETWORK REFERENCES
-application.get("/api/world-network-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/world-network-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all World Network References");
-    systemController.checkUserCoherence(req, res);
     worldNetworkReferencesController.getReferences(req, res);
 });
-application.get("/api/world-network-references/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/world-network-references/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read details for a World Network Reference");
-    systemController.checkUserCoherence(req, res);
     worldNetworkReferencesController.getRankedReference(req, res);
 });
 
 // NETWORK REFERENCES
-application.get("/api/network-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/network-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Network References");
-    systemController.checkUserCoherence(req, res);
     networkReferencesController.getReferences(req, res);
 });
 
 // WORLD NETWORK USERS
-application.get("/api/ranked-network-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/ranked-network-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Local Ranked References");
-    systemController.checkUserCoherence(req, res);
     localRankedReferencesController.getReferences(req, res);
 });
 
@@ -635,16 +615,14 @@ application.get("/api/collected-references/:id", function(req, res) {
 });
 
 // CLONED REFERENCES
-application.post("/api/cloned-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.post("/api/cloned-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Clone a Reference");
-    systemController.checkUserCoherence(req, res);
     referencesController.cloneReference(req, res);
 });
 
 // REPOSITORIES
-application.get("/api/repositories", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/repositories", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Repositories");
-    systemController.checkUserCoherence(req, res);
     repositoriesController.getRepositories(req, res);
 });
 
@@ -653,47 +631,40 @@ application.get("/api/public-repositories", cors(), function(req, res) {
     repositoriesController.getPublicRepositories(req, res);
 });
 
-application.get("/api/repositories/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/repositories/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read a Repository");
-    systemController.checkUserCoherence(req, res);
     repositoriesController.getRepository(req, res);
 });
 
-application.post("/api/repositories", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.post("/api/repositories", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Create a Repository");
-    systemController.checkUserCoherence(req, res);
     repositoriesController.createRepository(req, res);
 });
 
-application.put("/api/repositories/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.put("/api/repositories/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Update a Repository");
-    systemController.checkUserCoherence(req, res);
     repositoriesController.updateRepository(req, res);
 });
 
-application.delete("/api/repositories/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.delete("/api/repositories/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Delete a Repository");
-    systemController.checkUserCoherence(req, res);
     repositoriesController.deleteRepository(req, res);
 });
 
 // REPOSITORY REFERENCES
-application.get("/api/repositories/:id/references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/repositories/:id/references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Repository References");
-    systemController.checkUserCoherence(req, res);
     repositoryReferencesController.getRepositoryReferences(req, res);
 });
 
 // SETTINGS
-application.get("/api/settings", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/settings", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Settings");
-    systemController.checkUserCoherence(req, res);
     settingsController.getSettings(req, res);
 });
 
-application.put("/api/settings", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.put("/api/settings", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Update all Settings");
-    systemController.checkUserCoherence(req, res);
     settingsController.updateSettings(req, res);
 });
 
@@ -715,9 +686,8 @@ application.get("/api/public-counts", cors(), function(req, res) {
 });
 
 // USERS
-application.get("/api/users", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/users", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Users");
-    systemController.checkUserCoherence(req, res);
     usersController.getUsers(req, res);
 });
 
@@ -726,27 +696,23 @@ application.get("/api/public-users", cors(), function(req, res) {
     usersController.getPublicUsers(req, res);
 });
 
-application.get("/api/users/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/users/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read a User");
-    systemController.checkUserCoherence(req, res);
     usersController.getUser(req, res);
 });
 
-application.post("/api/users", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.post("/api/users", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Create a User");
-    systemController.checkUserCoherence(req, res);
     usersController.createUser(req, res);
 });
 
-application.put("/api/users/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.put("/api/users/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Update a User");
-    systemController.checkUserCoherence(req, res);
     usersController.updateUser(req, res);
 });
 
-application.delete("/api/users/:id", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.delete("/api/users/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Delete a User");
-    systemController.checkUserCoherence(req, res);
     usersController.deleteUser(req, res);
 });
 
@@ -772,9 +738,8 @@ application.get("/api/discovery/references", cors(), function(req, res) {
     discoveryController.getReferences(req, res);
 });
 
-application.get("/api/discovery/filtered-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+application.get("/api/discovery/filtered-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to read Discovery References");
-    systemController.checkUserCoherence(req, res);
     discoveryController.getFilteredReferences(req, res);
 });
 
