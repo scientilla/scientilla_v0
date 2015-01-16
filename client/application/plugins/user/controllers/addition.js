@@ -5,10 +5,12 @@
  */
 
 angular.module("user").controller(
-    "userAdditionController", ["$scope", "usersService", "systemStatusService", "$window", "$location", function($scope, usersService, systemStatusService, $window, $location) {
+    "userAdditionController", 
+    ["$scope", "usersService", "systemStatusService", "$window", "$location", 
+    function($scope, usersService, systemStatusService, $window, $location) {
         $scope.oUser = {
             type: "",
-            rights: "",
+            rights: 1,
             scientilla_nominative: "",
             first_name: "",
             middle_name: "",

@@ -59,6 +59,33 @@ module.exports = function () {
                 // res.setHeader("Content-Type", "application/json");
                 res.json(peers);
             });
+        },
+        getCustomPeers: function(req, res) {
+            req.peersCollection.find({ type: 0 }).toArray(function(err, peers) {
+                if (err || req.underscore.isNull(peers)) {
+                    res.status(404).end();
+                    return;
+                }
+                
+                // res.setHeader("Content-Type", "application/json");
+                res.json(peers);
+            });
+        },
+        getAggregatedAndCustomPeers: function(req, res) {
+            req.peersCollection.find({
+                $or: [
+                    { aggregating_status: true }, 
+                    { type: 0 }
+                ]
+            }).toArray(function(err, peers) {
+                if (err || req.underscore.isNull(peers)) {
+                    res.status(404).end();
+                    return;
+                }
+                
+                // res.setHeader("Content-Type", "application/json");
+                res.json(peers);
+            });
         },        
         getPeer: function(req, res) {
             req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, peer) {

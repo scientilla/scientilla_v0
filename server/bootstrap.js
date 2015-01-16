@@ -447,6 +447,30 @@ application.delete("/api/peers/:id", expressJwt({secret: configurationManager.ge
     peersController.deletePeer(req, res);
 });
 
+application.get("/api/seed-peers", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+    console.log("Request to Read all Seed Peers");
+    systemController.checkUserCoherence(req, res);
+    peersController.getSeedPeers(req, res);
+});
+
+application.get("/api/aggregated-peers", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+    console.log("Request to Read all Aggregated Peers");
+    systemController.checkUserCoherence(req, res);
+    peersController.getAggregatedPeers(req, res);
+});
+
+application.get("/api/custom-peers", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+    console.log("Request to Read all Custom Peers");
+    systemController.checkUserCoherence(req, res);
+    peersController.getCustomPeers(req, res);
+});
+
+application.get("/api/aggregated-and-custom-peers", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
+    console.log("Request to Read all Aggregated and Custom Peers");
+    systemController.checkUserCoherence(req, res);
+    peersController.getAggregatedAndCustomPeers(req, res);
+});
+
 // PEER DATASETS
 application.get("/api/peers/:id/public-datasets", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
     console.log("Request to Read all Peer Public Datasets");
@@ -483,20 +507,7 @@ application.get("/api/peers/:peerId/public-references/:referenceId", expressJwt(
     peerReferencesController.getPeerPublicReference(req, res);
 });
 
-// SEED PEERS
-application.get("/api/seed-peers", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
-    console.log("Request to Read all Seed Peers");
-    peersController.getSeedPeers(req, res);
-});
-
-// SEED PEERS
-application.get("/api/aggregated-peers", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
-    console.log("Request to Read all Aggregated Peers");
-    peersController.getAggregatedPeers(req, res);
-});
-
-// SEED PEER REFERENCES
-application.get("/api/seed-peers/:seedPeerIndex/public-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
+application.get("/api/seed-peers/:seedPeerIndex/public-references", expressJwt({secret: configurationManager.get().secret}), function(req, res) {
     console.log("Request to Read all Seed Peer Public References");
     seedPeerReferencesController.getSeedPeerPublicReferences(req, res);
 });

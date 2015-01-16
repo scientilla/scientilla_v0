@@ -95,7 +95,7 @@ angular.module("peer").controller(
             $scope.error = false;
             async.series([
                 function(callback) {
-                    peersService.getAggregatedPeers($window.sessionStorage.userToken).success(function(data, status, headers, config) {
+                    peersService.getAggregatedAndCustomPeers($window.sessionStorage.userToken).success(function(data, status, headers, config) {
                         $scope.aPeers = data;
                         $scope.iPeers = $scope.aPeers.length;                  
                         callback();
