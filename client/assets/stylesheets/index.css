@@ -365,6 +365,10 @@ html, body {
     cursor: default;
 }
 
+.nocursor {
+    cursor: default !important;
+}
+
 /* Presentation */
 .tagSelector, .select2-container.tagSelector {
     width: 500px;
