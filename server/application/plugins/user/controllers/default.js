@@ -472,6 +472,7 @@ module.exports = function () {
                                 user_rights: user.rights,
                                 user_scientilla_nominative: user.scientilla_nominative,
                                 user_aliases: user.aliases,
+                                owner_scientilla_nominative: owner.scientilla_nominative,
                                 peer_mode: configuration.mode,
                                 url: configuration.url
                             });
