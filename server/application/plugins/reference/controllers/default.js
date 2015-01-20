@@ -403,7 +403,7 @@ module.exports = function () {
             }
             var peerId = req.body.source.peer_id;
             var referenceId = req.body.source.reference_id;
-            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.peerId)}, function(err, peer) {
+            req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(peerId)}, function(err, peer) {
                 if (err || req.underscore.isNull(peer)) {
                     res.status(404).end();
                     return;
