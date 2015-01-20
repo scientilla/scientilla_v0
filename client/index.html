@@ -21,7 +21,7 @@
             <div id="sidebar" class="container-fluid">
                 <ul class="sidebar-nav nav nav-stacked nav-pills first-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleConfigurationMenu()" href="#/edit-user/" class="tree-toggle nav-header"><i class="fa fa-mortar-board"></i> <strong>{{userScientillaNominative}}</strong></a>                       
+                        <a class="tree-toggle nav-header nocursor"><i class="fa fa-mortar-board"></i> <strong>SCIENTILLA</strong></a>
                     </li>
                 </ul>
                 <!--
@@ -118,6 +118,18 @@
         <div id="toolbar-and-content-container">
             <div ng-view>
 
+            </div>
+        </div>
+        <div id="footerbar-container">
+            <div id="footerbar" class="container-fluid">
+                <div class="pull-left">
+                    <span id="installation-nominative">This is the installation of: <b>{{ownerScientillaNominative}}</b></span>
+                    <span> - </span>
+                    <a href="mailto:scientilla@iit.it" id="support-request-link">Support Contact: <b>scientilla@iit.it</b></a>
+                </div>
+                <div class="pull-right">
+                    <a href="" id="update-download-link">New Update Available: <b>Download it!</b></a>
+                </div>
             </div>
         </div>
         <div class="modal fade" id="get-started-button" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">

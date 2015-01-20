@@ -13,7 +13,7 @@ html, body {
 }
 
 /* Layout */
-#sidebar-container, #toolbar-and-content-container, #toolbar-container, #content-container {
+#sidebar-container, #toolbar-and-content-container, #toolbar-container, #content-container, #footerbar-container {
     position: absolute;
 }
 
@@ -61,6 +61,17 @@ html, body {
     border-color: #CCCCCC;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+#footerbar-container {
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 27px;
+    background-color: #FFFFFF;
+    border-width: 1px 0px 0px 0px;
+    border-style: solid;
+    border-color: #CCCCCC;
 }
 
 /* Sidebar */
@@ -354,6 +365,21 @@ html, body {
     margin-bottom: 14px;
 }
 
+/* Footerbar */
+#footerbar {
+    margin: 0px;
+    padding: 3px 15px 3px 15px;
+}
+
+#footerbar span {
+    color: #AAAAAA;
+}
+
+#footerbar a {
+    color: #AAAAAA;
+    text-decoration: none;
+}
+
 /* Common */
 .nowrap {
     white-space: nowrap;
@@ -363,6 +389,10 @@ html, body {
     color: #DDDDDD !important;
     pointer-events: none;
     cursor: default;
+}
+
+.nocursor {
+    cursor: default !important;
 }
 
 /* Presentation */

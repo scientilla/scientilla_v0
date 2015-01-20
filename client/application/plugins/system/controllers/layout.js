@@ -9,6 +9,7 @@ angular.module("system").controller(
         $scope.bSidebarVisualizationStatus = $window.sessionStorage.hasOwnProperty("sidebarVisualizationStatus") ? $window.sessionStorage.sidebarVisualizationStatus : "closed";
         $window.sessionStorage.sidebarVisualizationStatus = $scope.bSidebarVisualizationStatus;
         $scope.userScientillaNominative = "SCIENTILLA";
+        $scope.ownerScientillaNominative = "---";
         $scope.bCollectedPublicationsMenuVisualizationStatus = false;
         
         $scope.updateSidebarStatus = function updateSidebarStatus() {          
@@ -53,6 +54,7 @@ angular.module("system").controller(
         
         $scope.updateControllerStatus = function updateControllerStatus() {
             $scope.userScientillaNominative = $window.sessionStorage.userScientillaNominative;
+            $scope.ownerScientillaNominative = $window.sessionStorage.ownerScientillaNominative;
             $scope.bCollectedPublicationsMenuVisualizationStatus = $window.sessionStorage.peerMode === 1;
             
             return updateControllerStatus;

@@ -27,6 +27,9 @@ angular.module("user").factory(
             if (data.user_aliases) {
                 $window.sessionStorage.userAliases = JSON.stringify(data.user_aliases);
             }
+            if (data.owner_scientilla_nominative) {
+                $window.sessionStorage.ownerScientillaNominative = data.owner_scientilla_nominative;
+            }            
             callback();
         };       
         
