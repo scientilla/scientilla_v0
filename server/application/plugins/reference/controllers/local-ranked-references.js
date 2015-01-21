@@ -95,12 +95,14 @@ module.exports = function () {
                 var retrievedCollection = retrieveReferences(req.localRankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
+                        console.log(err);
                         res.status(404).end();
                         return;
                     }
                     result.total_number_of_items = referencesCount;
                     retrievedCollection.toArray(function(err, references) {
                         if (err || req.underscore.isNull(references)) {
+                            console.log(err);
                             res.status(404).end();
                             return;
                         }
@@ -125,6 +127,7 @@ module.exports = function () {
                         aggregating_status: true
                     }).toArray(function(err, networkPeers) {
                         if (err) {
+                            console.log(err);
                             res.status(404).end();
                             return;
                         }
@@ -139,6 +142,7 @@ module.exports = function () {
                             qs: qs
                         }, function (error, response, result) {
                             if (error) {
+                                console.log(error);
                                 res.status(404).end();
                                 return;
                             }
