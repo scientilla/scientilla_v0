@@ -61,7 +61,7 @@ module.exports = function () {
             };
             searchCriteria.$and.push(peerQuery);
         }
-        return rankedReferencesCollection.find(searchCriteria).sort(
+        return rankedReferencesCollection.find(searchCriteria, {"_tiarr.value.sources_cache":0}).sort(
             {
                 original_hash: 1,
                 clone_hash: 1,
