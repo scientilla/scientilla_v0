@@ -48,12 +48,13 @@ module.exports = function () {
                     strictSSL: false,
                     json: true 
                 }, function (error, response, peerReferencesObj) {
-                    var peerReferences = peerReferencesObj.items;
                     if (error) {
                         console.log(error);
                         res.status(404).end();
                         return;
                     }
+                    
+                    var peerReferences = peerReferencesObj.items;
                     referenceManager.getVerifiedReferences(
                         req.referencesCollection,
                         req.user.hashes,
