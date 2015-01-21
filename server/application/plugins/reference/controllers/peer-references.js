@@ -39,6 +39,7 @@ module.exports = function () {
         getPeerPublicReferences: function(req, res) {
             req.peersCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, peer) {
                 if (err || _.isNull(peer)) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
@@ -49,6 +50,7 @@ module.exports = function () {
                 }, function (error, response, peerReferencesObj) {
                     var peerReferences = peerReferencesObj.items;
                     if (error) {
+                        console.log(error);
                         res.status(404).end();
                         return;
                     }
@@ -59,6 +61,7 @@ module.exports = function () {
                         null,
                         function (err, verifiedReferences) {
                             if (err) {
+                                console.log(err);
                                 res.status(404).end();
                                 return;
                             }
@@ -83,6 +86,7 @@ module.exports = function () {
                     strictSSL: false 
                 }, function (error, response, body) {
                     if (error) {
+                        console.log(error);
                         res.status(404).end();
                         return;
                     }
