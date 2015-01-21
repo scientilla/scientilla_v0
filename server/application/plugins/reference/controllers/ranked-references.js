@@ -80,6 +80,7 @@ module.exports = function () {
             function(reference, iterationCallback) {
                 peersCollection.find({ url: reference.peer_url }).toArray(function(error, peers) {
                     if (error || _.isNull(peers) || _.isUndefined(peers) || peers.length === 0) {
+                        console.log(error);
                         iterationCallback(error, reference);
                         return;
                     }
@@ -105,12 +106,14 @@ module.exports = function () {
                 var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
+                        console.log(err);
                         res.status(404).end();
                         return;
                     }
                     result.total_number_of_items = referencesCount;
                     retrievedCollection.toArray(function(err, references) {
                         if (err || req.underscore.isNull(references)) {
+                            console.log(err);
                             res.status(404).end();
                             return;
                         }
@@ -164,6 +167,7 @@ module.exports = function () {
                     req.collectedReferencesCollection.find(searchQuery)
                         .toArray(function(err, references) {
                             if (err || req.underscore.isNull(references)) {
+                                console.log(err);
                                 res.status(404).end();
                                 return;
                             }
