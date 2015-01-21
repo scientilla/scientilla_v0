@@ -38,6 +38,8 @@ angular.module("reference").controller(
             print_status: "",
             note: ""
         };
+        $scope.error = false;
+        $scope.ready = false;
         
         $scope.getReturnPath = function() {
             switch ($window.sessionStorage.referenceOpeningCallOrigin) {
@@ -80,8 +82,11 @@ angular.module("reference").controller(
                 }
                 $scope.extractAuthors();
                 $scope.extractOrganizations();
+                $scope.ready = true;
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
+                $scope.error = true;
+                $scope.ready = true;
             });
         };
         

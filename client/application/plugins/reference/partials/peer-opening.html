@@ -2,7 +2,7 @@
  ! Scientilla v1.0 Beta (http://www.scientilla.net)
  ! Copyright 2014-2015 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
  ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
- -->
+-->
 <div id="toolbar-container" ng-init="init()">
     <div id="toolbar" class="container-fluid">
         <nav class="navbar navbar-default" role="navigation">
@@ -26,223 +26,237 @@
 </div>
 <div id="content-container">
     <div id="content" class="container-fluid">
-        <div class="row">            
-            <div class="col-lg-12">
-                <form name="form" class="form-horizontal" role="form" novalidate>
-                    <div class="form-group" ng-if="oReference.title != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="title" class="label label-default">Title</label>
-                            <div id="title">
-                                <br /><strong>{{oReference.title}}</strong>
+        <div ng-show="ready">
+            <div class="row">            
+                <div class="col-lg-12">
+                    <form name="form" class="form-horizontal" role="form" novalidate>
+                        <div ng-show="!error">
+                            <div class="form-group" ng-if="oReference.title != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="title" class="label label-default">Title</label>
+                                    <div id="title">
+                                        <br /><strong>{{oReference.title}}</strong>
+                                    </div>
+                                </div>
+                            </div>                    
+                            <div class="form-group" ng-if="oReference.authors != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="authors" class="label label-default">Authors</label>
+                                    <div id="authors">
+                                        <br /><strong>{{oReference.authors}}</strong> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.tags.length > 0">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="tag" class="label label-default">Tags</label>
+                                    <div id="tag">
+                                        <br />
+                                        <ul class="tagList tagInsertion" ng-if="oReference.tags.length > 0">
+                                            <li>test</li>
+                                            <li ng-repeat="tag in oReference.tags">
+                                                <div class="tag">
+                                                    <i class="fa fa-tag"></i><b>{{tag}}</b>
+                                                </div>
+                                            </li>
+                                        </ul>                                
+                                    </div>
+                                </div>
+                            </div>                    
+                            <div class="form-group" ng-if="oReference.year != ''">
+                                <div class="col-xs-1 nowrap">
+                                    <label for="year" class="label label-default">Year</label>
+                                    <div id="year">                        
+                                        <br /><strong>{{oReference.year}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.doi != ''">
+                                <div class="col-xs-6 nowrap">
+                                    <label for="doi" class="label label-default">DOI</label>
+                                    <div id="doi">
+                                        <br /><a ng-href="{{oReference.doi}}" target="_blank"><strong>{{oReference.doi}}</strong></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.journal_name != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="journal-name" class="label label-default">Journal Name</label>
+                                    <div id="journal-name">
+                                        <br /><strong>{{oReference.journal_name}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.journal_acronym != ''">
+                                <div class="col-xs-6 nowrap">
+                                    <label for="journal-acronym" class="label label-default">Journal Acronym</label>
+                                    <div id="journal-acronym">
+                                        <br /><strong>{{oReference.journal_acronym}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.journal_pissn != ''">
+                                <div class="col-xs-6 nowrap">
+                                    <label for="journal-pissn" class="label label-default">Journal P-ISSN</label>
+                                    <div id="journal-pissn">
+                                        <br /><strong>{{oReference.journal_pissn}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.journal_eissn != ''">
+                                <div class="col-xs-6 nowrap">
+                                    <label for="journal-eissn" class="label label-default">Journal E-ISSN</label>
+                                    <div id="journal-eissn">
+                                        <br /><strong>{{oReference.journal_eissn}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.journal_issnl != ''">
+                                <div class="col-xs-6 nowrap">
+                                    <label for="journal-issnl" class="label label-default">Journal ISSN-L</label>
+                                    <div id="journal-issnl">
+                                        <br /><strong>{{oReference.journal_issnl}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.journal_volume != ''">
+                                <div class="col-xs-1 nowrap">
+                                    <label for="journal-volume" class="label label-default">Journal Volume</label>
+                                    <div id="journal-volume">
+                                        <br /><strong>{{oReference.journal_volume}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.journal_year != ''">
+                                <div class="col-xs-1 nowrap">
+                                    <label for="journal-year" class="label label-default">Journal Year</label>
+                                    <div id="journal-year">
+                                        <br /><strong>{{oReference.journal_year}}</strong>
+                                    </div>                           
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.conference_name != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="conference-name" class="label label-default">Conference Name</label>
+                                    <div id="conference-name">
+                                        <br /><strong>{{oReference.conference_name}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.conference_acronym != ''">
+                                <div class="col-xs-6 nowrap">
+                                    <label for="conference-acronym" class="label label-default">Conference Acronym</label>
+                                    <div id="conference-acronym">
+                                        <br /><strong>{{oReference.conference_acronym}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.conference_place != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="conference-place" class="label label-default">Conference Place</label>
+                                    <div id="conference-place">
+                                        <br /><strong>{{oReference.conference_place}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.conference_year != ''">
+                                <div class="col-xs-1 nowrap">
+                                    <label for="conference-year" class="label label-default">Conference Year</label>
+                                    <div id="conference-year">
+                                        <br /><strong>{{oReference.conference_year}}</strong>
+                                    </div>                                                        
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.book_title != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="book-title" class="label label-default">Book Title</label>
+                                    <div id="book-title">
+                                        <br /><strong>{{oReference.book_title}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.book_isbn != ''">
+                                <div class="col-xs-6 nowrap">
+                                    <label for="book-isbn" class="label label-default">Book ISBN</label>
+                                    <div id="book-isbn">
+                                        <br /><strong>{{oReference.book_isbn}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.book_pages != ''">
+                                <div class="col-xs-1 nowrap">
+                                    <label for="book-pages" class="label label-default">Book Pages</label>
+                                    <div id="book-pages">
+                                        <br /><strong>{{oReference.book_pages}}</strong>
+                                    </div>
+                                </div>
+                            </div>                    
+                            <div class="form-group" ng-if="oReference.book_editor != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="book-editor" class="label label-default">Book Editor</label>
+                                    <div id="book-editor">
+                                        <br /><strong>{{oReference.book_editor}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.book_year != ''">
+                                <div class="col-xs-1 nowrap">
+                                    <label for="book-year" class="label label-default">Book Year</label>
+                                    <div id="book-year">
+                                        <br /><strong>{{oReference.book_year}}</strong>
+                                    </div>                             
+                                </div>
+                            </div>                    
+                            <div class="form-group" ng-if="oReference.abstract != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="abstract" class="label label-default">Abstract</label>
+                                    <div id="abstract">
+                                        <br /><strong>{{oReference.abstract}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="oReference.month != ''">
+                                <div class="col-xs-1 nowrap">
+                                    <label for="month" class="label label-default">Month</label>
+                                    <div id="month">
+                                        <br /><strong>{{oReference.month}}</strong>
+                                    </div>                          
+                                </div>
+                            </div>                    
+                            <div class="form-group" ng-if="oReference.print_status === 0 || oReference.print_status === 1">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="print-status" class="label label-default">Print Status</label>
+                                    <div id="print-status">
+                                        <br /><strong>{{oReference.print_status === 0 ? "Published" : "In Press" }}</strong>
+                                    </div>                            
+                                </div>                        
+                            </div>                    
+                            <div class="form-group" ng-if="oReference.note != ''">
+                                <div class="col-xs-12 nowrap">
+                                    <label for="note" class="label label-default">Note</label>
+                                    <div id="note">
+                                        <br /><strong>{{oReference.note}}</strong>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>                    
-                    <div class="form-group" ng-if="oReference.authors != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="authors" class="label label-default">Authors</label>
-                            <div id="authors">
-                                <br /><strong>{{oReference.authors}}</strong> 
+                        <div ng-show="error && ready" class="well well-lg">
+                            An error happened while contacting the server.
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <a href="{{getReturnPath()}}" class="btn btn-default form-control">Cancel</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.tags.length > 0">
-                        <div class="col-xs-12 nowrap">
-                            <label for="tag" class="label label-default">Tags</label>
-                            <div id="tag">
-                                <br />
-                                <ul class="tagList tagInsertion" ng-if="oReference.tags.length > 0">
-                                    <li>test</li>
-                                    <li ng-repeat="tag in oReference.tags">
-                                        <div class="tag">
-                                            <i class="fa fa-tag"></i><b>{{tag}}</b>
-                                        </div>
-                                    </li>
-                                </ul>                                
-                            </div>
-                        </div>
-                    </div>                    
-                    <div class="form-group" ng-if="oReference.year != ''">
-                        <div class="col-xs-1 nowrap">
-                            <label for="year" class="label label-default">Year</label>
-                            <div id="year">                        
-                                <br /><strong>{{oReference.year}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.doi != ''">
-                        <div class="col-xs-6 nowrap">
-                            <label for="doi" class="label label-default">DOI</label>
-                            <div id="doi">
-                                <br /><a ng-href="{{oReference.doi}}" target="_blank"><strong>{{oReference.doi}}</strong></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.journal_name != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="journal-name" class="label label-default">Journal Name</label>
-                            <div id="journal-name">
-                                <br /><strong>{{oReference.journal_name}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.journal_acronym != ''">
-                        <div class="col-xs-6 nowrap">
-                            <label for="journal-acronym" class="label label-default">Journal Acronym</label>
-                            <div id="journal-acronym">
-                                <br /><strong>{{oReference.journal_acronym}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.journal_pissn != ''">
-                        <div class="col-xs-6 nowrap">
-                            <label for="journal-pissn" class="label label-default">Journal P-ISSN</label>
-                            <div id="journal-pissn">
-                                <br /><strong>{{oReference.journal_pissn}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.journal_eissn != ''">
-                        <div class="col-xs-6 nowrap">
-                            <label for="journal-eissn" class="label label-default">Journal E-ISSN</label>
-                            <div id="journal-eissn">
-                                <br /><strong>{{oReference.journal_eissn}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.journal_issnl != ''">
-                        <div class="col-xs-6 nowrap">
-                            <label for="journal-issnl" class="label label-default">Journal ISSN-L</label>
-                            <div id="journal-issnl">
-                                <br /><strong>{{oReference.journal_issnl}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.journal_volume != ''">
-                        <div class="col-xs-1 nowrap">
-                            <label for="journal-volume" class="label label-default">Journal Volume</label>
-                            <div id="journal-volume">
-                                <br /><strong>{{oReference.journal_volume}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.journal_year != ''">
-                        <div class="col-xs-1 nowrap">
-                            <label for="journal-year" class="label label-default">Journal Year</label>
-                            <div id="journal-year">
-                                <br /><strong>{{oReference.journal_year}}</strong>
-                            </div>                           
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.conference_name != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="conference-name" class="label label-default">Conference Name</label>
-                            <div id="conference-name">
-                                <br /><strong>{{oReference.conference_name}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.conference_acronym != ''">
-                        <div class="col-xs-6 nowrap">
-                            <label for="conference-acronym" class="label label-default">Conference Acronym</label>
-                            <div id="conference-acronym">
-                                <br /><strong>{{oReference.conference_acronym}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.conference_place != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="conference-place" class="label label-default">Conference Place</label>
-                            <div id="conference-place">
-                                <br /><strong>{{oReference.conference_place}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.conference_year != ''">
-                        <div class="col-xs-1 nowrap">
-                            <label for="conference-year" class="label label-default">Conference Year</label>
-                            <div id="conference-year">
-                                <br /><strong>{{oReference.conference_year}}</strong>
-                            </div>                                                        
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.book_title != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="book-title" class="label label-default">Book Title</label>
-                            <div id="book-title">
-                                <br /><strong>{{oReference.book_title}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.book_isbn != ''">
-                        <div class="col-xs-6 nowrap">
-                            <label for="book-isbn" class="label label-default">Book ISBN</label>
-                            <div id="book-isbn">
-                                <br /><strong>{{oReference.book_isbn}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.book_pages != ''">
-                        <div class="col-xs-1 nowrap">
-                            <label for="book-pages" class="label label-default">Book Pages</label>
-                            <div id="book-pages">
-                                <br /><strong>{{oReference.book_pages}}</strong>
-                            </div>
-                        </div>
-                    </div>                    
-                    <div class="form-group" ng-if="oReference.book_editor != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="book-editor" class="label label-default">Book Editor</label>
-                            <div id="book-editor">
-                                <br /><strong>{{oReference.book_editor}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.book_year != ''">
-                        <div class="col-xs-1 nowrap">
-                            <label for="book-year" class="label label-default">Book Year</label>
-                            <div id="book-year">
-                                <br /><strong>{{oReference.book_year}}</strong>
-                            </div>                             
-                        </div>
-                    </div>                    
-                    <div class="form-group" ng-if="oReference.abstract != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="abstract" class="label label-default">Abstract</label>
-                            <div id="abstract">
-                                <br /><strong>{{oReference.abstract}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" ng-if="oReference.month != ''">
-                        <div class="col-xs-1 nowrap">
-                            <label for="month" class="label label-default">Month</label>
-                            <div id="month">
-                                <br /><strong>{{oReference.month}}</strong>
-                            </div>                          
-                        </div>
-                    </div>                    
-                    <div class="form-group" ng-if="oReference.print_status === 0 || oReference.print_status === 1">
-                        <div class="col-xs-12 nowrap">
-                            <label for="print-status" class="label label-default">Print Status</label>
-                            <div id="print-status">
-                                <br /><strong>{{oReference.print_status === 0 ? "Published" : "In Press" }}</strong>
-                            </div>                            
-                        </div>                        
-                    </div>                    
-                    <div class="form-group" ng-if="oReference.note != ''">
-                        <div class="col-xs-12 nowrap">
-                            <label for="note" class="label label-default">Note</label>
-                            <div id="note">
-                                <br /><strong>{{oReference.note}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-12">
-                            <a href="{{getReturnPath()}}" class="btn btn-default form-control">Cancel</a>
-                        </div>
-                    </div>                    
-                </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
             </div>
         </div>
     </div>
