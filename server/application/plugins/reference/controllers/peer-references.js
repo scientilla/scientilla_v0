@@ -91,7 +91,7 @@ module.exports = function () {
                         return;
                     }
                     if (response.statusCode !== 200) {
-                        console.log('An error happend');
+                        console.log('An error happened owhile contacting ' + peer.url + '.');
                         res.status(404).end();
                         return;
                     }
