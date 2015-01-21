@@ -90,6 +90,11 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
+                    if (response.statusCode !== 200) {
+                        console.log('An error happend');
+                        res.status(404).end();
+                        return;
+                    }
                     
                     // res.setHeader("Content-Type", "application/json");
                     res.status(200).send(body).end();
