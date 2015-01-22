@@ -147,7 +147,7 @@ module.exports = function () {
                                 return;
                             }
                             if (response.statusCode !== 200) {
-                                console.log('An error happened owhile contacting ' + seed.url + '.');
+                                console.log('An error happened while contacting ' + seed.url + '.');
                                 res.status(404).end();
                                 return;
                             }
