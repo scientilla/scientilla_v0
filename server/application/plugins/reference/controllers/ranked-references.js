@@ -140,6 +140,12 @@ module.exports = function () {
                         qs: req.query
                     }, function (error, response, result) {
                         if (error) {
+                            console.log(error);
+                            res.status(404).end();
+                            return;
+                        }
+                        if (response.statusCode !== 200) {
+                            console.log('An error happened owhile contacting ' + seed.url + '.');
                             res.status(404).end();
                             return;
                         }
