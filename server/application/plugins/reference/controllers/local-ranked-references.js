@@ -146,6 +146,11 @@ module.exports = function () {
                                 res.status(404).end();
                                 return;
                             }
+                            if (response.statusCode !== 200) {
+                                console.log('An error happened owhile contacting ' + seed.url + '.');
+                                res.status(404).end();
+                                return;
+                            }
                             resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
                                 result.items = resolvedReferences;
 
