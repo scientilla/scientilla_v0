@@ -350,7 +350,7 @@ module.exports = function () {
                     console.log("Needed to Create the Default User");
                     var user = {};
                     user.type = 0;
-                    user.rights = 0;
+                    user.rights = 1;
                     user.scientilla_nominative = "";
                     user.first_name = "";
                     user.middle_name = "";
