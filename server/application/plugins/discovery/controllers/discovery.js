@@ -79,6 +79,9 @@ module.exports = function () {
             var configuration = configurationManager.get();
             if (configuration.mode === 1) {
                 var aliases = req.query.aliases;       
+                if (!_.isArray(aliases)) {
+                    aliases = [aliases];
+                }
                 var userType = req.query.user_type;                
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
                 getReferencesFromAliases(
