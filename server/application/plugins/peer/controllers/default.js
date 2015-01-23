@@ -318,12 +318,14 @@ module.exports = function () {
                     if (seedsConfiguration[seedKey] != configurationManager.get().url) {
                         userManager.getUser(usersCollection, configurationManager.get().owner_user_id, function(err, user) {
                             var ownerUserScientillaNominative = "";
+                            var userDescription = "";
                             if (!err) {
                                 ownerUserScientillaNominative = user.scientilla_nominative;
+                                userDescription = user.description;
                             } else {
                                 ownerUserScientillaNominative = "SCIENTILLA";
+                                userDescription = "";
                             }
-                            var userDescription = user.description || "";
                             request({
                                 method: "POST",
                                 url: seedsConfiguration[seedKey] + "/api/public-peers", 
