@@ -316,24 +316,26 @@ module.exports = function () {
 						);
                     }
                     if (seedsConfiguration[seedKey] != configurationManager.get().url) {
-                        var ownerUserScientillaNominative = "";
                         userManager.getUser(usersCollection, configurationManager.get().owner_user_id, function(err, user) {
+                            var ownerUserScientillaNominative = "";
                             if (!err) {
                                 ownerUserScientillaNominative = user.scientilla_nominative;
                             } else {
                                 ownerUserScientillaNominative = "SCIENTILLA";
                             }
-                        });
-                        request({
-                            method: "POST",
-                            url: seedsConfiguration[seedKey] + "/api/public-peers", 
-                            json: { 
-                                name: ownerUserScientillaNominative, 
-                                url: configurationManager.get().url 
-                            },
-                            strictSSL: false 
-                        }, function (err, res, body) {
-                            //
+                            var userDescription = user.description || "";
+                            request({
+                                method: "POST",
+                                url: seedsConfiguration[seedKey] + "/api/public-peers", 
+                                json: { 
+                                    name: ownerUserScientillaNominative, 
+                                    url: configurationManager.get().url,
+                                    description: userDescription
+                                },
+                                strictSSL: false 
+                            }, function (err, res, body) {
+                                //
+                            });
                         });
                     }
                 });                               
