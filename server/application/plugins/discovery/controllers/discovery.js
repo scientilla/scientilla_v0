@@ -78,7 +78,7 @@ module.exports = function () {
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
             if (configuration.mode === 1) {
-                var aliases = req.query.aliases;                
+                var aliases = req.query.aliases;       
                 var userType = req.query.user_type;                
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
                 getReferencesFromAliases(
@@ -109,6 +109,11 @@ module.exports = function () {
                             if (err) {
                                 console.log(err);
                                 res.status(500).end();
+                                return;
+                            }
+                            if (response.statusCode !== 200) {
+                                console.log('An error happened while contacting ' + seed.url + '.');
+                                res.status(404).end();
                                 return;
                             }
                             
@@ -149,6 +154,11 @@ module.exports = function () {
                     }, function(err, response, body) {
                             if (err) {
                                 cb(err, null);
+                                return;
+                            }
+                            if (response.statusCode !== 200) {
+                                console.log('An error happened while contacting ' + peer_url + '.');
+                                res.status(404).end();
                                 return;
                             }
                             cb(null, body);
