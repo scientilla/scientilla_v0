@@ -105,7 +105,9 @@
                                 <span>R{{peer.references_discovering_hits}} - U{{peer.users_discovering_hits}}</span>
                             </td>                            
                             <td>
-                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature fixed-button-1x"><i class="fa fa-edit secondary-feature"></i></a>
+                                <a href="#/edit-peer/{{peer._id}}/" class="btn btn-default btn-block secondary-feature fixed-button-1x"  ng-disabled="{{!peer.editable}}" >
+                                    <i class="fa fa-edit secondary-feature"></i>
+                                </a>
                             </td>                            
 <!--                            <td>
                                 <a ng-click="switchPeerSharingStatus(peer._id)" class="{{peerIdsSharingMap[peer._id] ? 'btn btn-default btn-block secondary-feature fixed-button-1x turned-on' : 'btn btn-default btn-block secondary-feature fixed-button-1x turned-off'}}"><i class="{{!peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-lock secondary-feature turned-off' : '' }}{{peer._id == changingSharedPeerId ? 'fa fa-spinner fa-spin secondary-feature' : '' }}{{peerIdsSharingMap[peer._id] && changingSharedPeerId == '' ? 'fa fa-unlock secondary-feature turned-on' : '' }}"></i></a>

@@ -114,6 +114,7 @@ angular.module("peer").controller(
                 },             
                 function(callback) {
                     _.each($scope.aPeers, function(p) {p.deletable = (p.type === 0);});
+                    _.each($scope.aPeers, function(p) {p.editable = (p.type === 0);});
                     callback();
                 },
                 function(callback) {
