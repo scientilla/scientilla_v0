@@ -201,7 +201,6 @@ module.exports = function () {
             var peer = {};
             !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : null;
             !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : null; 
-            !req.underscore.isUndefined(req.body.sharing_status) ? peer.sharing_status = req.body.sharing_status : null;
             !req.underscore.isUndefined(req.body.aggregating_status) ? peer.aggregating_status = req.body.aggregating_status : null;
             !req.underscore.isUndefined(req.body.tags) ? peer.tags = req.body.tags : [];
             peer.last_modifier_id = req.user.id;
