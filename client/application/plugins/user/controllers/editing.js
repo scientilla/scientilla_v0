@@ -25,7 +25,8 @@ angular.module("user").controller(
             username: "",
             password: "",
             password_repetition: "",
-            status: ""
+            status: "",
+            description: ""
         };
 
         $scope.retrieveUser = function retrieveUser() {
@@ -64,6 +65,7 @@ angular.module("user").controller(
                 password: $scope.oUser.password,
                 password_repetition: $scope.oUser.password_repetition,
                 status: $scope.oUser.status,
+                description: $scope.oUser.description,
                 id: $scope.oUser._id
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 usersService.getLoggedUser($window.sessionStorage.userToken).success(function(data, status, headers, config) {

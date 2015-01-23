@@ -54,7 +54,8 @@ angular.module("user").controller(
             username: "",
             password: "",
             password_repetition: "",
-            status: ""
+            status: "",
+            description: ""
         };
         
         $scope.extractAliases = function() {
@@ -102,7 +103,8 @@ angular.module("user").controller(
                 password: $scope.oUser.password,
                 password_repetition: $scope.oUser.password_repetition,
                 status: $scope.oUser.status,
-                aliases: $scope.oUser.aliases
+                aliases: $scope.oUser.aliases,
+                description: $scope.oUser.description
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 usersService.updateExchangedInformation(data, function() {
                     $scope.$emit("exchanged-information-modification");

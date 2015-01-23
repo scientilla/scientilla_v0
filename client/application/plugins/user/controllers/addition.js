@@ -25,7 +25,8 @@ angular.module("user").controller(
             username: "",
             password: "",
             password_repetition: "",
-            status: ""
+            status: "",
+            description: ""
         };
         
         $scope.createUser = function() {
@@ -46,7 +47,8 @@ angular.module("user").controller(
                 username: $scope.oUser.username,
                 password: $scope.oUser.password,
                 password_repetition: $scope.oUser.password_repetition,
-                status: $scope.oUser.status
+                status: $scope.oUser.status,
+                description: $scope.oUser.description
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-users");
             }).error(function(data, status, headers, config) {
