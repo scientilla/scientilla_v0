@@ -1,21 +1,65 @@
+--------------------------------------------------
+
+*** SOFTWARE LICENSE
+
 The MIT License (MIT)
 
 Copyright (c) 2014 Fondazione Istituto Italiano di Tecnologia
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+--------------------------------------------------
+
+*** USAGE TERMS
+
+Continuing to install and use this software You implicitly acknowledge that the personal data You will freely enter here may be subject to the consultation of thirds.
+
+Istituto Italiano di Tecnologia, the Scientilla Authors, the Scientilla Team and the Scientilla GitHub Community Contributors will not be held responsible for the truthfulness, the accuracy or the completeness of the contents entered in the software by You or by others, nor for any infringement of intellectual property rights related to the contents entered, committed by You or by others. 
+
+If You don't agree with these conditions please interrupt this installation and delete the downloaded package from your computer.
+
+--------------------------------------------------
+
+*** DIGITAL CERTIFICATE
+
+For your convenience this installation uses a self-signed digital certificate so that you are not required to generate one by yourself.
+
+This is fine until you interact with the software only from this machine and to manage personal data.
+
+Remember that you should obtain and configure a real certificate, or maybe another self-signed certificate, in case you want to interact with the software from another machine or to manage data of other people.
+
+For more information about digital certificates please read the following guide:
+
+http://en.wikipedia.org/wiki/Public_key_certificate
+
+ATTENTION: we suggest you to ask for help to a specialist in case you don't know what to do.
+
+The certificate files reside into the {installation path}/certs/ folder.
+
+If you want to put your certificate files into another folder please use the "Settings" panel of the software to set the correct paths. You can also manually change the paths by opening the {installation path}/server/configuration/installation.json file with a text editor.
+
+--------------------------------------------------
+
+*** NSSM LICENSE
+
+Scientilla for Windows creates a specific local system service using NSSM, the Non-Sucking Service Manager. 
+
+NSSM is distributed together with the other files of the application but is not related to the Istituto Italiano di Tecnologia nor to the Scientilla Development Community.
+
+NSSM is under Public Domain license and the relative information are available from {installation path}/nssm/README.txt.
+
+--------------------------------------------------
+
+*** LIBRARY LICENSES
+
+Scientilla is built up on several server-side and client-side HTML/CSS/JavaScript libraries.
+
+The libraries are distributed together with the other files of the application but are not related to the Istituto Italiano di Tecnologia nor to the Scientilla Development Community.
+
+The libraries are each one under a specific license and the relative information are available, as provided by the respective authors, from each sub-folders of {installation path}/client/libraries and {installation path}/server/node_modules.
+
+--------------------------------------------------
