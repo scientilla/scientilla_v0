@@ -62,4 +62,4 @@ The libraries are distributed together with the other files of the application b
 
 The libraries are each one under a specific license and the relative information are available, as provided by the respective authors, from each sub-folders of {installation path}/client/libraries and {installation path}/server/node_modules.
 
---------------------------------------------------
+-------------------------------------------------- 
