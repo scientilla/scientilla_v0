@@ -128,6 +128,7 @@ module.exports = function () {
                         var newPeer = {};
                         !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
                         !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
+                        !req.underscore.isUndefined(req.body.description) ? newPeer.description = req.body.description.trim() : newPeer.description = "";
                         !req.underscore.isUndefined(req.body.tags) ? newPeer.tags = req.body.tags : newPeer.tags = [];
                         newPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
                         newPeer.users_discovering_hits = defaultPeerUsersDiscoveringHits;
@@ -173,6 +174,7 @@ module.exports = function () {
                             var newPeer = {};
                             !req.underscore.isUndefined(req.body.name) ? newPeer.name = req.body.name.trim() : newPeer.name = "";
                             !req.underscore.isUndefined(req.body.url) ? newPeer.url = req.body.url.trim() : newPeer.url = "";
+                            !req.underscore.isUndefined(req.body.description) ? newPeer.description = req.body.description.trim() : newPeer.description = "";
                             newPeer.sharing_status = true;
                             newPeer.aggregating_status = false;
                             newPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
@@ -201,6 +203,7 @@ module.exports = function () {
             var peer = {};
             !req.underscore.isUndefined(req.body.name) ? peer.name = req.body.name.trim() : null;
             !req.underscore.isUndefined(req.body.url) ? peer.url = req.body.url.trim() : null; 
+            !req.underscore.isUndefined(req.body.description) ? peer.description = req.body.description.trim() : null; 
             !req.underscore.isUndefined(req.body.aggregating_status) ? peer.aggregating_status = req.body.aggregating_status : null;
             !req.underscore.isUndefined(req.body.tags) ? peer.tags = req.body.tags : [];
             peer.last_modifier_id = req.user.id;
@@ -287,6 +290,7 @@ module.exports = function () {
                                                     }
                                                     discoveredPeer.name = peer.name;
                                                     discoveredPeer.url = peer.url;
+                                                    discoveredPeer.description = peer.description;
                                                     discoveredPeer.sharing_status = true; 
                                                     discoveredPeer.aggregating_status = false;
                                                     discoveredPeer.references_discovering_hits = defaultPeerReferencesDiscoveringHits;
@@ -312,24 +316,26 @@ module.exports = function () {
 						);
                     }
                     if (seedsConfiguration[seedKey] != configurationManager.get().url) {
-                        var ownerUserScientillaNominative = "";
                         userManager.getUser(usersCollection, configurationManager.get().owner_user_id, function(err, user) {
+                            var ownerUserScientillaNominative = "";
                             if (!err) {
                                 ownerUserScientillaNominative = user.scientilla_nominative;
                             } else {
                                 ownerUserScientillaNominative = "SCIENTILLA";
                             }
-                        });
-                        request({
-                            method: "POST",
-                            url: seedsConfiguration[seedKey] + "/api/public-peers", 
-                            json: { 
-                                name: ownerUserScientillaNominative, 
-                                url: configurationManager.get().url 
-                            },
-                            strictSSL: false 
-                        }, function (err, res, body) {
-                            //
+                            var userDescription = user.description || "";
+                            request({
+                                method: "POST",
+                                url: seedsConfiguration[seedKey] + "/api/public-peers", 
+                                json: { 
+                                    name: ownerUserScientillaNominative, 
+                                    url: configurationManager.get().url,
+                                    description: userDescription
+                                },
+                                strictSSL: false 
+                            }, function (err, res, body) {
+                                //
+                            });
                         });
                     }
                 });                               

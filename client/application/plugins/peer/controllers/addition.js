@@ -8,14 +8,17 @@ angular.module("peer").controller(
     "peerAdditionController", ["$scope", "peersService", "systemStatusService", "$window", "$location", function($scope, peersService, systemStatusService, $window, $location) {
         $scope.oPeer = {
             name: "",
-            url: ""
+            url: "",
+            tags: [],
+            description: ""
         };
         
         $scope.createPeer = function() {
             peersService.createPeer({
                 name: $scope.oPeer.name,
                 url: $scope.oPeer.url,
-                tags: $scope.oPeer.tags
+                tags: $scope.oPeer.tags,
+                description: $scope.oPeer.description
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-peers");
             }).error(function(data, status, headers, config) {

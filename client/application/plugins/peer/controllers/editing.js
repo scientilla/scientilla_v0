@@ -8,7 +8,9 @@ angular.module("peer").controller(
     "peerEditingController", ["$scope", "$routeParams", "peersService", "systemStatusService", "$window", "$location", function($scope, $routeParams, peersService, systemStatusService, $window, $location) {
         $scope.oPeer = {
             name: "",
-            url: ""
+            url: "",
+            tags: [],
+            description: ""
         };
         
         $scope.retrievePeer = function retrievePeer() {
@@ -43,6 +45,7 @@ angular.module("peer").controller(
             peersService.updatePeer({
                 name: $scope.oPeer.name,
                 url: $scope.oPeer.url,
+                description: $scope.oPeer.description,
                 id: $scope.oPeer._id,
                 tags: $scope.oPeer.tags
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
