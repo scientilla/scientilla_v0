@@ -47,13 +47,14 @@ html, body {
     border-width: 0px 0px 0px 0px;
     border-style: solid;
     border-color: #CCCCCC;
+    overflow: hidden;
 }
 
 #content-container {
     top: 54px;
     left: 0px;
     right: 0px;
-    bottom: 0px;
+    bottom: 27px;
     min-width: 320px;
     background-color: #EEEEEE;
     border-width: 1px 0px 0px 0px;
@@ -72,6 +73,7 @@ html, body {
     border-width: 1px 0px 0px 0px;
     border-style: solid;
     border-color: #CCCCCC;
+    overflow: hidden;
 }
 
 /* Sidebar */
