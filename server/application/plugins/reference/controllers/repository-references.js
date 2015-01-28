@@ -32,11 +32,13 @@ module.exports = function () {
                     var paramPlaceholder = '{{'+param+'}}';
                     url = url.replace(paramPlaceholder, paramEncoded);
                 });
+                // console.log(url);
                 req.request({ 
                     url: url, 
                     strictSSL: false,
                     json: true 
                 }, function (error, response, repositoryReferences) {
+                    // console.log(repositoryReferences);
                     if (error) {
                         res.status(404).end();
                         return;
@@ -47,6 +49,7 @@ module.exports = function () {
                         repositoryReferences, 
                         repository,
                         function (err, verifiedReferences) {
+                            // console.log(verifiedReferences);
                             if (err) {
                                 res.status(404).end();
                                 return;
