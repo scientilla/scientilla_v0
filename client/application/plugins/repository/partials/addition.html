@@ -59,76 +59,16 @@
                             <input id="page" ng-model="oRepository.config.page" type="number" placeholder="Page" class="form-control">
                         </div>
                     </div>                       
-                    <div class="form-group">
+                    <div class="form-group" ng-repeat="(f, e) in oRepository.extractors" ng-init="label = (f | extractor)">
                         <div class="col-xs-6">
-                            <label for="authorsField" class="label label-default">Authors Mapping Field</label>
-                            <input id="authorsField" ng-model="oRepository.extractors.authors.field" type="text" placeholder="Authors Mapping Field" class="form-control">
+                            <label for="{{f}}Field" class="label label-default">{{label}} Field</label>
+                            <input id="{{f}}Field" ng-model="e.field" type="text" placeholder="{{f}} Field" class="form-control">
                         </div>
                         <div class="col-xs-6">
-                            <label for="authorsRegex" class="label label-default">Authors Regex</label>
-                            <input id="authorsRegex" ng-model="oRepository.extractors.authors.regex" type="text" placeholder="Authors Regex" class="form-control">
+                            <label for="{{f}}Regex" class="label label-default">{{label}} RegExp</label>
+                            <input id="{{f}}Regex" ng-model="e.regex" type="text" placeholder="{{f}} Regex" class="form-control">
                         </div>
-                    </div>                       
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="titleField" class="label label-default">Title Mapping Field</label>
-                            <input id="titleField" ng-model="oRepository.extractors.title.field" type="text" placeholder="Title Mapping Field" class="form-control">
-                        </div>
-                        <div class="col-xs-6">
-                            <label for="titleRegex" class="label label-default">Title Regex</label>
-                            <input id="titleRegex" ng-model="oRepository.extractors.title.regex" type="text" placeholder="Title Regex" class="form-control">
-                        </div>
-                    </div>                       
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="journal_nameField" class="label label-default">Journal Name Mapping Field</label>
-                            <input id="journal_nameField" ng-model="oRepository.extractors.journal_name.field" type="text" placeholder="Journal Name Mapping Field" class="form-control">
-                        </div>
-                        <div class="col-xs-6">
-                            <label for="journal_nameRegex" class="label label-default">Journal Name Regex</label>
-                            <input id="journal_nameRegex" ng-model="oRepository.extractors.journal_name.regex" type="text" placeholder="Journal Name Regex" class="form-control">
-                        </div>
-                    </div>                       
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="conference_nameField" class="label label-default">Conference Name Mapping Field</label>
-                            <input id="conference_nameField" ng-model="oRepository.extractors.conference_name.field" type="text" placeholder="Conference Name Mapping Field" class="form-control">
-                        </div>
-                        <div class="col-xs-6">
-                            <label for="conference_nameRegex" class="label label-default">Conference Name Regex</label>
-                            <input id="conference_nameRegex" ng-model="oRepository.extractors.conference_name.regex" type="text" placeholder="Conference Name Regex" class="form-control">
-                        </div>
-                    </div>                       
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="book_titleField" class="label label-default">Book Title Mapping Field</label>
-                            <input id="book_titleField" ng-model="oRepository.extractors.book_title.field" type="text" placeholder="Book Title Mapping Field" class="form-control">
-                        </div>
-                        <div class="col-xs-6">
-                            <label for="book_titleRegex" class="label label-default">Book Title Regex</label>
-                            <input id="book_titleRegex" ng-model="oRepository.extractors.book_title.regex" type="text" placeholder="Book Title Regex" class="form-control">
-                        </div>
-                    </div>                       
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="doiField" class="label label-default">DOI Mapping Field</label>
-                            <input id="doiField" ng-model="oRepository.extractors.doi.field" type="text" placeholder="DOI Mapping Field" class="form-control">
-                        </div>
-                        <div class="col-xs-6">
-                            <label for="doiRegex" class="label label-default">DOI Regex</label>
-                            <input id="doiRegex" ng-model="oRepository.extractors.doi.regex" type="text" placeholder="DOI Regex" class="form-control">
-                        </div>
-                    </div>                       
-                    <div class="form-group">
-                        <div class="col-xs-6">
-                            <label for="yearField" class="label label-default">Year Mapping Field</label>
-                            <input id="yearField" ng-model="oRepository.extractors.year.field" type="text" placeholder="Year Mapping Field" class="form-control">
-                        </div>
-                        <div class="col-xs-6">
-                            <label for="yearRegex" class="label label-default">Year Regex</label>
-                            <input id="yearRegex" ng-model="oRepository.extractors.year.regex" type="text" placeholder="Year Regex" class="form-control">
-                        </div>
-                    </div>                       
+                    </div>                      
                     <div class="form-group">
                         <div class="col-xs-12">
                             <button ng-click="createRepository()" type="button" class="btn btn-default form-control">Save</button>
