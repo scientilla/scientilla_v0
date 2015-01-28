@@ -6,6 +6,7 @@
 
 // Resolves dependencies
 var async = require("async");
+var moment = require("moment");
 var mongodb = require("mongodb");
 var path = require("path");
 var request = require("request");
@@ -156,8 +157,8 @@ module.exports = function () {
         },
         createPublicPeer: function(req, res) {
             if (req.body.url != configurationManager.get().url && !req.body.url.match("/.*127\.0\.0\.1.*/i") && !req.body.url.match("/.*localhost.*/i")) {
-                req.peersCollection.findOne({ url: req.body.url }, function(err, existingpeer) {
-                    if (err || req.underscore.isNull(existingpeer)) {
+                req.peersCollection.findOne({ url: req.body.url }, function(err, existingPeer) {
+                    if (err || req.underscore.isNull(existingPeer)) {
                         req.peersCollection.find({}).sort({ 
                             references_discovering_hits: 1,
                             users_discovering_hits: 1 
@@ -193,8 +194,18 @@ module.exports = function () {
                             });
                         });
                     } else {
-                        res.status(409).end();
-                        return;
+                        var renewedPeer = {};
+                        !req.underscore.isUndefined(req.body.name) ? renewedPeer.name = req.body.name.trim() : renewedPeer.name = existingPeer.name;
+                        !req.underscore.isUndefined(req.body.description) ? renewedPeer.description = req.body.description.trim() : renewedPeer.description = existingPeer.description;
+                        renewedPeer.last_modification_datetime = req.moment().format();      
+                        renewedPeer.type = REMOTE;
+                        req.peersCollection.update({ url: existingPeer.url }, { $set: renewedPeer }, { w: 1 }, function(err, storedPeer) {
+                            if (err || req.underscore.isNull(storedPeer)) {
+                                res.status(409).end();
+                                return;
+                            }
+                            res.end();
+                        });
                     }
                 });
             }
@@ -298,7 +309,7 @@ module.exports = function () {
                                                     discoveredPeer.creator_id = "";
                                                     discoveredPeer.creation_datetime = peer.creation_datetime;
                                                     discoveredPeer.last_modifier_id = "";
-                                                    discoveredPeer.last_modification_datetime = "";  
+                                                    discoveredPeer.last_modification_datetime = moment().format();  
                                                     discoveredPeer.type = REMOTE;
                                                     peersCollection.insert(discoveredPeer, {w: 1}, function(err, createdPeer) {
                                                         eachSeriesCallback();
@@ -306,7 +317,26 @@ module.exports = function () {
                                                 });
                                             });
                                         } else {
-                                            eachSeriesCallback();
+                                            request({
+                                                method: "GET",
+                                                url: peer.url + "/api/public-counts", 
+                                                strictSSL: false 
+                                            }, function (err, res, body) {
+                                                var rediscoveredPeer = {};
+                                                if (!err && body != "") {
+                                                    var publicCounts = JSON.parse(body);
+                                                    rediscoveredPeer.size = publicCounts.public_references;
+                                                } else {
+                                                    rediscoveredPeer.size = 0;
+                                                }
+                                                rediscoveredPeer.name = peer.name;
+                                                rediscoveredPeer.description = peer.description;
+                                                rediscoveredPeer.last_modification_datetime = moment().format();  
+                                                rediscoveredPeer.type = REMOTE;
+                                                peersCollection.update({ url: peer.url }, { $set: rediscoveredPeer }, {w: 1}, function(err, createdPeer) {
+                                                    eachSeriesCallback();
+                                                });                                                    
+                                            });
                                         }
                                     });
                                 } else {
@@ -318,12 +348,14 @@ module.exports = function () {
                     if (seedsConfiguration[seedKey] != configurationManager.get().url) {
                         userManager.getUser(usersCollection, configurationManager.get().owner_user_id, function(err, user) {
                             var ownerUserScientillaNominative = "";
+                            var userDescription = "";
                             if (!err) {
                                 ownerUserScientillaNominative = user.scientilla_nominative;
+                                userDescription = user.description;
                             } else {
                                 ownerUserScientillaNominative = "SCIENTILLA";
+                                userDescription = "";
                             }
-                            var userDescription = user.description || "";
                             request({
                                 method: "POST",
                                 url: seedsConfiguration[seedKey] + "/api/public-peers", 

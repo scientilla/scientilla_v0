@@ -33,7 +33,7 @@
                 -->
                 <ul class="sidebar-nav nav nav-stacked nav-pills third-submenus-group">
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/"><b><i class="fa fa-suitcase"></i> Your Work!</b></a>
+                        <a ng-click="toggleReferencesMenu()" href="#/browse-references/"><b><i class="fa fa-suitcase"></i> Your Works!</b></a>
                         <ul id="referencesMenu" class="nav nav-stacked nav-pills tree">
                             <li>
                                 <a activate href="#/browse-references/"><i class="glyphicon glyphicon-book"></i> Publications</a>
@@ -47,7 +47,7 @@
 
                     </li>                    
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleNetworkMenu()" href="#/browse-network/"><i class="fa fa-sitemap"></i> Your Network</a>
+                        <a ng-click="toggleNetworkMenu()" href="#/browse-network/"><i class="fa fa-sitemap"></i> <b>Your Network</b></a>
                         <ul id="networkMenu" class="nav nav-stacked nav-pills tree">
                             <li>
                                 <a activate href="#/browse-network/"><i class="glyphicon glyphicon-book"></i> Publications</a>
@@ -57,9 +57,6 @@
                             </li>                            
                             <li>
                                 <a class="disabled-link"><i class="fa fa-institution"></i> Organizations</a>
-                            </li>
-                            <li>
-                                <a activate href="#/browse-repositories/"><i class="fa fa-exchange"></i> Web Repositories</a>
                             </li>                            
                             <li>
                                 <a activate href="#/browse-peers/"><i class="fa fa-cloud"></i> Scientilla Installations</a>
@@ -70,7 +67,7 @@
 
                     </li>
                     <li ng-controller="systemCollapseController" class="sidebar-submenu">
-                        <a ng-click="toggleWorldNetworkMenu()" href="#/browse-world-network/" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> World Network</a>
+                        <a ng-click="toggleWorldNetworkMenu()" href="#/browse-world-network/" class="tree-toggle nav-header"><i class="fa fa-globe scientilla-globe"></i> <b>World Network</b></a>
                         <ul id="worldNetworkMenu" class="nav nav-stacked nav-pills tree">
                             <li>
                                 <a activate href="#/browse-world-network/"><i class="glyphicon glyphicon-book"></i> Publications</a>
@@ -80,15 +77,18 @@
                             </li>                            
                             <li>
                                 <a activate href="#/browse-world-network-users/organizations/"><i class="fa fa-institution"></i> Organizations</a>
-                            </li>
-                            <li>
-                                <a class="disabled-link"><i class="fa fa-exchange"></i> Web Repositories</a>
                             </li>                            
                             <li>
                                 <a activate href="#/browse-world-peers/"><i class="fa fa-cloud"></i> Scientilla Installations</a>
                             </li>                                                        
                         </ul>                        
                     </li>
+                    <li class="sidebar-divider">
+
+                    </li>
+                    <li>
+                        <a activate href="#/browse-repositories/"><i class="fa fa-exchange"></i> Other Resources</a>
+                    </li>                    
                     <li class="sidebar-divider">
 
                     </li>                                                            
@@ -128,7 +128,7 @@
                     <a href="mailto:scientilla@iit.it" id="support-request-link">Support Contact: <b>scientilla@iit.it</b></a>
                 </div>
                 <div class="pull-right">
-                    <a href="" id="update-download-link">New Update Available: <b>Download it!</b></a>
+                    <!-- <a href="" id="update-download-link">New Update Available: <b>Download it!</b></a> -->
                 </div>
             </div>
         </div>
@@ -146,7 +146,7 @@
                             <small><i class="glyphicon glyphicon-book"></i> <u>Publications</u> = List of your publications, here you can edit, share and sign them with your profile.</small><br />
                             <small><i class="fa fa-binoculars"></i> <u>Discoveries to be verified</u> = Your publications suggested from Scientilla and got from World Network. If you copy one of these publications, you will find it in "publications" under "your work!".</small><br />
                             <hr />
-                            <i class="fa fa-sitemap"></i> <b>YOUR NETWORK!</b> = <small>Data from installations selected among those around the world.</small><br />
+                            <i class="fa fa-sitemap"></i> <b>YOUR NETWORK!</b> = <small>Data from installations selected among those around the world plus those that you have manually added.</small><br />
                             <small><i class="fa fa-suitcase"></i> <u>Publications</u> = List of all Publications. If you copy one of these publications, you will find it in "Publications" under "Your work!".</small><br />
                             <small><i class="fa fa-mortar-board"></i> <u>Researchers</u> = List of all Researchers.</small><br />
                             <small><i class="fa fa-institution"></i> <u>Organizations</u> = List of all Organizations.</small><br />

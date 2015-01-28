@@ -114,16 +114,37 @@ module.exports = function () {
         
         var extract = function(reference, extractors) {
             var extractedReference = {};
-            for(var key in extractors) {
+            for (var key in extractors) {
                 var extractorField = extractors[key].field;
-                var extractorRegex = new RegExp(extractors[key].regex);
+                var extractorRegex = new RegExp(extractors[key].regex, "g");
+                var matches = [];
                 if (!_.isUndefined(reference[extractorField]) && !_.isNull(reference[extractorField])) {
-                    var matches = reference[extractorField].match(extractorRegex);
-                    if (!_.isNull(matches) && matches.length > 0) {
-                        extractedReference[key] = _.last(matches);
-                    } else {
-                        extractedReference[key] = "";
+                    if (!_.isString(reference[extractorField])) {
+                        reference[extractorField] = JSON.stringify(reference[extractorField]);
                     }
+                    var extractionProcessStatus = true;
+                    var previousExtractionIndex = null;
+                    while (extractionProcessStatus) {
+                        var match = extractorRegex.exec(reference[extractorField]);
+                        if (!_.isNull(match)) {
+                            if (_.isNull(match.index) || match.index === previousExtractionIndex) {
+                                extractionProcessStatus = false;
+                            } else {
+                                previousExtractionIndex = match.index;
+                            }
+                            if (match.length > 0) {
+                                if (match.length > 1) {
+                                    match.shift();
+                                };
+                                matches.push(match.join(" "));
+                            } else {
+                                matches.push("");
+                            }                            
+                        } else {
+                            extractionProcessStatus = false;
+                        }                       
+                    }
+                    extractedReference[key] = matches.join(" ");
                 }
             }
             return extractedReference;
@@ -238,6 +259,7 @@ module.exports = function () {
         createReference: createReference,
         getReferenceHash: referenceHash,
         getVerifiedReferences: function(referencesCollection, userHashes, references, repository, callback) {
+            // console.log(references);
             referencesCollection
                 .find({user_hash: { $in: userHashes }})
                 .toArray(function(err, existingReferences) {
@@ -245,11 +267,13 @@ module.exports = function () {
                         callback(err, null);
                         return;
                     }
+                    // console.log(existingReferences);
                     var verifiedReferences = references.map(function(reference){
-                        var verifiedReferences = createReference(reference, repository);
-                        var hash = referenceHash(verifiedReferences);
-                        verifiedReferences.clonable = !_.some(existingReferences, {original_hash: hash});
-                        return verifiedReferences;
+                        var verifiedReference = createReference(reference, repository);
+                        // console.log(verifiedReference);
+                        var hash = referenceHash(verifiedReference);
+                        verifiedReference.clonable = !_.some(existingReferences, {original_hash: hash});
+                        return verifiedReference;
                     });
                     callback(null, verifiedReferences);
                 });
