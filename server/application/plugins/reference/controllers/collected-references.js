@@ -73,27 +73,48 @@ module.exports = function () {
                     query: {original_hash: { $exists: true }},
                     out: { replace: outputFile },
                     finalize: function(original_hash, references) {
-                        if (!_.isArray(references)) {
+                        if (!Array.isArray(references)) {
                             references = [references];
                         }
-                        var groupedReferences = _.groupBy(references, 'clone_hash');
-                        var top = _.first(_.max(_.values(groupedReferences), 'length'));
-                        var all = _.map(
-                            references, 
+//                        var groupedReferences = _.groupBy(references, 'clone_hash');
+                        var groupedReferences = references.reduce(function(res, r) {
+                            var refHash = r.clone_hash;
+                            if (!res.hasOwnProperty(refHash)) {
+                                res[refHash] = [];
+                            }
+                            res[refHash].push(r);
+                            return res;
+                        }, {});
+//                        var top = _.first(_.max(_.values(groupedReferences), 'length'));
+                        var top = Object
+                                .keys(groupedReferences)
+                                .map(function(k){return groupedReferences[k];})
+                                .reduce(function(bestGroup, refsGroup){
+                                    return (bestGroup.length > refsGroup.length) ? bestGroup : refsGroup;
+                                }, [])[0];
+                        var all = references.map(
                             function(r) { 
-                                return _.pick(r, ['peer_url', 'original_hash', 'user_hash', 'clone_hash']);
+                                return {
+                                    peer_url: r.peer_url, 
+                                    original_hash: r.original_hash, 
+                                    user_hash: r.user_hash, 
+                                    clone_hash: r.clone_hash
+                                };
                             });
-                        var affiliations = _.flatten(_.map(
-                            references,
+                        //flatmap
+                        var affiliations = references.map(
                             function(r) {
-                                if (_.isUndefined(r.author_signatures)) {
+                                if (!("author_signatures" in r)) {
                                     return [];
                                 }
-                                if (_.isUndefined(r.author_signatures.organizations)) {
+                                if (!("organizations"in r.author_signatures)) {
                                     return [];
                                 }
                                 return r.author_signatures.organizations;
-                            }));
+                            }).reduce(
+                                    function(res, orgs){
+                                        return res.concat(orgs);
+                                    }, []);
                         var result = {
                             top: top,
                             all: all,

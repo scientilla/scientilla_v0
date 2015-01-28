@@ -259,28 +259,32 @@ async.series([
     },
     function(seriesCallback) {
         if (peerMode === 1) {
-            var rankReferencesJob = (function rankReferencesJob() {
+            var rankReferencesJob = function rankReferencesJob() {
                 console.log("Ranking references...");
                 collectedReferencesController.rankGlobalReferences(collectedReferencesCollection, function() {
                     database.collection("ranked_references", function(err, collection) {
                         rankedReferencesCollection = collection;
                     });
                 });
-            }());
+                
+                return rankReferencesJob;
+            }();
             nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
         }
         seriesCallback();
     },
     function(seriesCallback) {
         if (peerMode === 2) {
-            var rankReferencesJob = (function rankReferencesJob() {
-                console.log("Ranking local references...");
-                collectedReferencesController.rankLocalReferences(localCollectedReferencesCollection, function() {
+            var rankReferencesJob = function rankReferencesJob() {
+                console.log("Ranking Local References...");
+                    collectedReferencesController.rankLocalReferences(localCollectedReferencesCollection, function() {
                     database.collection("local_ranked_references", function(err, collection) {
                         localRankedReferencesCollection = collection;
                     });
                 });
-            }());
+                    
+                return rankReferencesJob;
+            }();
             nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
         }
         seriesCallback();
