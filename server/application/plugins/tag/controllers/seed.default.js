@@ -25,7 +25,7 @@ module.exports = function () {
                     query: {tags: { $exists: true }},
                     out: { replace: 'tags' },
                     finalize: function(tag, count) {
-                        if (!_.isArray(count)) {
+                        if (!Array.isArray(count)) {
                             count = [count];
                         }
                         var totalCount = count.length;
