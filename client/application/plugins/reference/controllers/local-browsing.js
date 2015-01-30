@@ -158,10 +158,11 @@ angular.module("reference").controller(
         };         
         
         $scope.retrieveNextItemsPage = function() {
-            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+            var numberOfPages = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
+            if ($scope.startPageNumber < (numberOfPages - 2)) {
                 $scope.startPageNumber++;
             }
-            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+            if ($scope.currentPageNumber < numberOfPages) {
                 $scope.currentPageNumber++; 
             }
             $scope.retrieveReferences();
