@@ -24,7 +24,7 @@ If You don't agree with these conditions please interrupt this installation and 
 
 *** DIGITAL CERTIFICATE
 
-For your convenience this installation uses a self-signed digital certificate so that you are not required to generate one by yourself.
+For your convenience the Scientilla GitHub repository, as well as any Scientilla installation packages released by the Istituto Italiano di Tecnologia, includes a self-signed digital certificate so that you are not required to generate one by yourself.
 
 This is fine until you interact with the software only from this machine and to manage personal data.
 
@@ -42,20 +42,32 @@ If you want to put your certificate files into another folder please use the "Se
 
 --------------------------------------------------
 
-*** NSSM LICENSE
-
-Scientilla for Windows creates a specific local system service using NSSM, the Non-Sucking Service Manager. 
-
-NSSM is distributed together with the other files of the application but is not related to the Istituto Italiano di Tecnologia nor to the Scientilla Development Community.
-
-NSSM is under Public Domain license and the relative information are available from {installation path}/nssm/README.txt.
-
---------------------------------------------------
-
 *** LIBRARY LICENSES
 
 Scientilla is built up on several server-side and client-side HTML/CSS/JavaScript libraries.
 
-The libraries are distributed together with the other files of the application but are not related to the Istituto Italiano di Tecnologia nor to the Scientilla Development Community.
+Scientilla installation packages include a copy of each one of these libraries because they are needed to run the application. 
 
-The libraries are each one under a specific license and the relative information are available, as provided by the respective authors, from each sub-folders of {installation path}/client/libraries and {installation path}/server/node_modules.
+These libraries are distributed together with the other files of the application but are not related to the Istituto Italiano di Tecnologia nor to the Scientilla Development Community.
+
+These libraries are each one under a specific license and the relative information are available, as provided by the respective authors, from each sub-folders of {installation path}/client/libraries and {installation path}/server/node_modules.
+
+--------------------------------------------------
+
+*** NODE.JS LICENSE
+
+Scientilla installation packages include a copy of Node.js because it is needed to run the application. 
+
+Node.js is distributed together with the other files of the application but is not related to the Istituto Italiano di Tecnologia nor to the Scientilla Development Community.
+
+Node.js is under MIT license and the relative information are available from {installation path}/node/LICENSE.
+
+--------------------------------------------------
+
+*** NSSM LICENSE
+
+Scientilla installation packages for Windows include a copy of NSSM, the Non-Sucking Service Manager, because it is needed to create a specific local system service that starts the application. 
+
+NSSM is distributed together with the other files of the application but is not related to the Istituto Italiano di Tecnologia nor to the Scientilla Development Community.
+
+NSSM is under Public Domain license and the relative information are available from {installation path}/nssm/README.txt.
