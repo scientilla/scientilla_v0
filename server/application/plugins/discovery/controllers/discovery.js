@@ -18,10 +18,7 @@ var collectedReferencesManager = require("../../reference/models/collected-refer
 var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
-        var getReferencesFromAliases = function(rankedReferencesCollection, aliases, userType, config, cb) {
-            if (!aliases) {
-                cb(new Error("no aliases"), null);
-            }
+        var getReferencesFromAliases = function(rankedReferencesCollection, aliases, userType, config) {
             var aliasesQuery = aliases.join("|");
             var keywords = config.keywords || "";
             var page = config.page || 1;
@@ -58,7 +55,7 @@ module.exports = function () {
                 };
             }
             
-            rankedReferencesCollection.find(searchQuery)
+            return rankedReferencesCollection.find(searchQuery)
                     .sort({ 
                     "value.top.creation_datetime": -1
                 }
@@ -66,13 +63,7 @@ module.exports = function () {
                 skip
             ).limit(
                 rows
-            ).toArray(function(err, references) {
-                if (err) {
-                    cb(err, null);
-                }
-                var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
-                cb(null, normalizedReferences);
-            });
+            );
         };
     return {
         getReferences: function(req, res) {
@@ -84,20 +75,19 @@ module.exports = function () {
                 }
                 var userType = req.query.user_type;                
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
-                getReferencesFromAliases(
-                    req.rankedReferencesCollection, 
-                    aliases, 
-                    userType,
-                    config, 
+                var referencesCollection = getReferencesFromAliases(req.rankedReferencesCollection, aliases, userType, config);
+                
+                referencesCollection.toArray(
                     function(err, references) {
                         if (err) {
                             console.log(err);
                             res.status(500).end();
                             return;
                         }
+                        var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
                         
                         // res.setHeader("Content-Type", "application/json");
-                        res.json(references);
+                        res.json(normalizedReferences);
                         return;
                     });
             } else {
