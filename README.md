@@ -181,7 +181,7 @@ The development of Scientilla continues constantly and collaborations are really
 
   - ######Mac OS X 32bit or 64bit:
     * Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
-    <pre>
+    <code>
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
@@ -201,7 +201,7 @@ The development of Scientilla continues constantly and collaborations are really
                 </array>
             </dict>
         </plist>
-    </pre>
+    </code>
 
     * Open a "Terminal" window.
     * Write and run the following command into the "Terminal" window:
@@ -212,7 +212,7 @@ The development of Scientilla continues constantly and collaborations are really
 
   - ######Mac OSX 32bit (alternative method):
     * Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
-    <pre>
+    <code>
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
@@ -232,7 +232,7 @@ The development of Scientilla continues constantly and collaborations are really
                 </array>
             </dict>
         </plist>
-    </pre>
+    </code>
 
     * Open a "Terminal" window.
     * Write and run the following command into the "Terminal" window:
@@ -243,7 +243,7 @@ The development of Scientilla continues constantly and collaborations are really
 
   - ######Mac OSX 64bit (alternative method):
     * Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
-    <pre>
+    <code>
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
@@ -263,7 +263,7 @@ The development of Scientilla continues constantly and collaborations are really
                 </array>
             </dict>
         </plist>
-    </pre>
+    </code>
 
     * Open a "Terminal" window.
     * Write and run the following command into the "Terminal" window:
