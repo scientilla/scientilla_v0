@@ -8,10 +8,11 @@ angular.module("peer").factory(
     "peersService", function($http) {
         var peersProvider = {};
         
-        peersProvider.getPeers = function(token) {
+        peersProvider.getPeers = function(token, config) {
             return $http({
 				method: "GET",
 				url: "/api/peers",
+                params: config,
                 cache: false,
                 timeout: 30000,
                 headers: {
