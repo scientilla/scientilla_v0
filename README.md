@@ -267,7 +267,7 @@ The development of Scientilla continues constantly and collaborations are really
 
 ## Sponsor
 
-** Istituto Italiano di Tecnologia
+**Istituto Italiano di Tecnologia**
 
 - <http://www.iit.it>
 
@@ -275,17 +275,17 @@ The development of Scientilla continues constantly and collaborations are really
 
 ## Inventors
 
-** Antonio De Luca
+**Antonio De Luca**
 
 - <http://www.iit.it/en/people/antonio-deluca.html>
 - <http://www.antoniodeluca.info>
 
-** Elisa Molinari
+**Elisa Molinari**
 
 - <http://www.iit.it/en/people/elisa-molinari.html>
 - <http://www.elisamolinari.info>
 
-** Eleonora Palmaro
+**Eleonora Palmaro**
 
 - <http://www.iit.it/en/people/eleonora-palmaro.html>
 - <http://www.eleonorapalmaro.info>
