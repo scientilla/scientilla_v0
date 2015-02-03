@@ -160,7 +160,7 @@ angular.module("discovery").controller(
                             if (results.data.length < $scope.config.rows) {
                                 $scope.lastPage = $scope.currentPage;
                             }
-                            $scope.aReferences = results.data;
+                            $scope.aReferences = results.data.items;
                             _.each($scope.aReferences, function(reference) {
                                 reference.selected = false;
                             });

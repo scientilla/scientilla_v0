@@ -77,18 +77,27 @@ module.exports = function () {
                 var config = _.pick(req.query, ['keywords', 'page', 'rows']);
                 var referencesCollection = getReferencesFromAliases(req.rankedReferencesCollection, aliases, userType, config);
                 
-                referencesCollection.toArray(
-                    function(err, references) {
-                        if (err) {
-                            console.log(err);
-                            res.status(500).end();
-                            return;
-                        }
-                        var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
-                        
-                        // res.setHeader("Content-Type", "application/json");
-                        res.json(normalizedReferences);
+                 var result = {};
+                referencesCollection.count(function(err, referencesCount) {
+                    if (err || req.underscore.isNull(referencesCount)) {
+                        res.status(404).end();
                         return;
+                    }   
+                        result.total_number_of_items = referencesCount;
+                        referencesCollection.toArray(
+                            function(err, references) {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(500).end();
+                                    return;
+                                }
+                                var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
+
+                                result.items = normalizedReferences;
+                    
+                                // res.setHeader("Content-Type", "application/json");
+                                res.json(result);
+                            });
                     });
             } else {
                 networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
@@ -158,16 +167,17 @@ module.exports = function () {
                         });
                     }
             ],
-            function(err, aliasesReferences) {
+            function(err, referencesObj) {
                 if (err) {
                     console.log(err);
                     res.status(404).end();
                     return;
                 }
+                var result = {};
                 referencesManager.getVerifiedReferences(
                     req.referencesCollection,
                     req.user.hashes,
-                    aliasesReferences, 
+                    referencesObj.items, 
                     null,
                     function(err, references) {
                         if (err) {
@@ -176,8 +186,10 @@ module.exports = function () {
                             return;
                         }
                         
+                        result.items = references;
+                        
                         // res.setHeader("Content-Type", "application/json");
-                        res.json(references);
+                        res.json(result);
                         return;
                     });
             });
