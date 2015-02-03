@@ -16,7 +16,7 @@ angular.module("peer").controller(
         $scope.aReferences = [];        
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
-        $scope.numberOfItemsPerPage = 25;
+        $scope.numberOfItemsPerPage = 20;
         $scope.totalNumberOfItems = 10000;               
             
         $scope.generatePeerIdsSharingMap = function(aPeers) {
@@ -90,14 +90,19 @@ angular.module("peer").controller(
         }        
         
         $scope.retrievePeers = function retrievePeers() {        
-            $scope.iPeers = 0;
             $scope.ready = false;
             $scope.error = false;
+            var config = {
+                keywords: $scope.keywords,
+                page: $scope.currentPageNumber,
+                rows: $scope.numberOfItemsPerPage,
+            };
             async.series([
                 function(callback) {
-                    peersService.getAggregatedAndCustomPeers($window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                        $scope.aPeers = data;
-                        $scope.iPeers = $scope.aPeers.length;                  
+                    peersService.getAggregatedAndCustomPeers($window.sessionStorage.userToken, config).success(function(data, status, headers, config) {
+                        $scope.aPeers = data.items;
+                        $scope.totalNumberOfItems = data.total_number_of_items;                  
+                        $scope.lastPageNumber = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
                         callback();
                     }).error(function(data, status, headers, config) {
                         $scope.error = true;
@@ -170,7 +175,7 @@ angular.module("peer").controller(
                     }
                 ]);
             }
-        };        
+        };       
         
         $scope.retrievePreviousItemsPage = function() {
             if ($scope.startPageNumber > 1) {
@@ -179,22 +184,26 @@ angular.module("peer").controller(
             if ($scope.currentPageNumber > 1) {
                 $scope.currentPageNumber--;
             }
+            $scope.retrievePeers();
         };
         
         $scope.retrieveCustomItemsPage = function(customPageNumber) {            
             if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber = customPageNumber;
             }
+            $scope.retrievePeers();
         };         
         
         $scope.retrieveNextItemsPage = function() {
-            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+            var numberOfPages = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
+            if ($scope.startPageNumber < (numberOfPages - 2)) {
                 $scope.startPageNumber++;
             }
-            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+            if ($scope.currentPageNumber < numberOfPages) {
                 $scope.currentPageNumber++; 
             }
-        };   
+            $scope.retrievePeers();
+        }; 
         
         $scope.selectAll = function() {
             var allSelected = _.every($scope.aPeers, 'selected');

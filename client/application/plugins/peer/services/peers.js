@@ -57,11 +57,12 @@ angular.module("peer").factory(
 			});
         };
         
-        peersProvider.getAggregatedAndCustomPeers = function(token) {
+        peersProvider.getAggregatedAndCustomPeers = function(token, config) {
             return $http({
 				method: "GET",
 				url: "/api/aggregated-and-custom-peers",
                 cache: false,
+                params: config,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
