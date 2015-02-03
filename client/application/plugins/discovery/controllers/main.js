@@ -17,6 +17,11 @@ angular.module("discovery").controller(
         $scope.allSelected = false;
         $scope.aliases = JSON.parse($window.sessionStorage.userAliases);
         $scope.userType = $window.sessionStorage.userType;
+        $scope.startPageNumber = 1;
+        $scope.currentPageNumber = 1;
+        $scope.lastPageNumber = 0;
+        $scope.numberOfItemsPerPage = 20;
+        $scope.totalNumberOfItems = 0;   
         $scope.config = {
             keywords: "",
             page: 1,
@@ -121,16 +126,34 @@ angular.module("discovery").controller(
             async.parallel(cloneReferences, notifyResults);
         };
         
-        $scope.retrievePrevReferences = function() {
-            $scope.retrieveReferences(-1);
+        $scope.retrievePreviousItemsPage = function() {
+            if ($scope.startPageNumber > 1) {
+                $scope.startPageNumber--;
+            }            
+            if ($scope.currentPageNumber > 1) {
+                $scope.currentPageNumber--;
+            }
+            $scope.retrieveReferences();
         };
         
-        $scope.retrieveNextReferences = function() {
-            $scope.retrieveReferences(+1);
-        };
+        $scope.retrieveCustomItemsPage = function(customPageNumber) {            
+            if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber = customPageNumber;
+            }
+            $scope.retrieveReferences();
+        };         
         
-        $scope.retrieveReferences = function(pageIncr) {
-            pageIncr = pageIncr || 0;
+        $scope.retrieveNextItemsPage = function() {
+            if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
+                $scope.startPageNumber++;
+            }
+            if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
+                $scope.currentPageNumber++; 
+            }
+            $scope.retrieveReferences();
+        };       
+        
+        $scope.retrieveReferences = function() {
             $scope.empty = false;
             $scope.ready = false;
             $scope.error = false;
@@ -138,18 +161,12 @@ angular.module("discovery").controller(
 //                $scope.error = true;
 //                return;
 //            }
-            if (pageIncr === 0) {
-                $scope.currentPage = $scope.config.page;
-                $scope.firstPage = $scope.config.page;
-                $scope.lastPage = null;
-            }
             async.series([
                 function(callback) {
-                    $scope.currentPage+= pageIncr;
                     var config = {
                         keywords: $scope.config.keywords,
                         page: $scope.currentPage,
-                        rows: $scope.config.rows,
+                        rows: $scope.numberOfItemsPerPage,
                         aliases: $scope.aliases,
                         user_type: $scope.userType
                     };
@@ -160,7 +177,11 @@ angular.module("discovery").controller(
                             if (results.data.length < $scope.config.rows) {
                                 $scope.lastPage = $scope.currentPage;
                             }
-                            $scope.aReferences = results.data;
+                            $scope.aReferences = results.data.items;
+                            
+                            $scope.totalNumberOfItems = results.data.total_number_of_items;
+                            $scope.lastPageNumber = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
+                            
                             _.each($scope.aReferences, function(reference) {
                                 reference.selected = false;
                             });

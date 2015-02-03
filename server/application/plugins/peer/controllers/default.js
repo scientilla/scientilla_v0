@@ -11,6 +11,7 @@ var mongodb = require("mongodb");
 var path = require("path");
 var request = require("request");
 var underscore = require("underscore");
+var _ = require("lodash");
 
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
@@ -23,14 +24,36 @@ module.exports = function () {
     var REMOTE = 1;
     return {
         getPeers: function(req, res) {
-            req.peersCollection.find({}).toArray(function(err, peers) {
-                if (err || req.underscore.isNull(peers)) {
+            var config = _.pick(req.query, ['keywords', 'page', 'rows']);
+            var page = config.page || 1;
+            var rows = config.rows || 20;
+            var skip = (page - 1) * rows;
+            var result = {};
+            var peersCollection = req.peersCollection
+            .find({})
+            .skip(
+                skip
+            ).limit(
+                rows
+            );
+    
+            peersCollection.count(function(err, count) {
+                if (err) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
-                
-                // res.setHeader("Content-Type", "application/json");
-                res.json(peers);
+                result.total_number_of_items = count;
+                peersCollection.toArray(function(err, peers) {
+                    if (err || req.underscore.isNull(peers)) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+                    result.items = peers;
+                    // res.setHeader("Content-Type", "application/json");
+                    res.json(result);
+                });
             });
         },
         getPublicPeers: function(req, res) {
@@ -73,19 +96,42 @@ module.exports = function () {
             });
         },
         getAggregatedAndCustomPeers: function(req, res) {
-            req.peersCollection.find({
+            
+            var config = _.pick(req.query, ['keywords', 'page', 'rows']);
+            var page = config.page || 1;
+            var rows = config.rows || 20;
+            var skip = (page - 1) * rows;
+            var result = {};
+            var peersCollection = req.peersCollection
+            .find({
                 $or: [
                     { aggregating_status: true }, 
                     { type: 0 }
                 ]
-            }).toArray(function(err, peers) {
-                if (err || req.underscore.isNull(peers)) {
+            })
+            .skip(
+                skip
+            ).limit(
+                rows
+            );
+    
+            peersCollection.count(function(err, count) {
+                if (err) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
-                
-                // res.setHeader("Content-Type", "application/json");
-                res.json(peers);
+                result.total_number_of_items = count;
+                peersCollection.toArray(function(err, peers) {
+                    if (err || req.underscore.isNull(peers)) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+                    result.items = peers;
+                    // res.setHeader("Content-Type", "application/json");
+                    res.json(result);
+                });
             });
         },        
         getPeer: function(req, res) {

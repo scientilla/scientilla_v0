@@ -25,11 +25,11 @@
                                 <a ng-click="retrieveUsers()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>                        
-                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-if="currentPageNumber <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber}}</a>
-                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 1}}</a>
-                        <a ng-if="(currentPageNumber + 2) <= lastPageNumber" ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}}">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>
+                        <a ng-disabled="currentPageNumber == 1" ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-if="currentPageNumber -1 >= 1" ng-click="retrieveCustomItemsPage(currentPageNumber - 1)" class="btn btn-default">{{currentPageNumber -1}}</a>
+                        <a class="btn btn-default active">{{currentPageNumber}}</a>
+                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(currentPageNumber + 1)" class="btn btn-default">{{currentPageNumber + 1}}</a>
+                        <a ng-disabled="currentPageNumber == lastPageNumber" ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>
                     </form>                              
                 </div>
             </div>

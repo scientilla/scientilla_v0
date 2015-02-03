@@ -8,10 +8,11 @@ angular.module("peer").factory(
     "peersService", function($http) {
         var peersProvider = {};
         
-        peersProvider.getPeers = function(token) {
+        peersProvider.getPeers = function(token, config) {
             return $http({
 				method: "GET",
 				url: "/api/peers",
+                params: config,
                 cache: false,
                 timeout: 30000,
                 headers: {
@@ -56,11 +57,12 @@ angular.module("peer").factory(
 			});
         };
         
-        peersProvider.getAggregatedAndCustomPeers = function(token) {
+        peersProvider.getAggregatedAndCustomPeers = function(token, config) {
             return $http({
 				method: "GET",
 				url: "/api/aggregated-and-custom-peers",
                 cache: false,
+                params: config,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token

@@ -40,12 +40,12 @@
                                     </li>                                    
                                 </ul>                                
                             </div>                            
-                        </div>
-                        <a ng-click="retrievePreviousItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-left"></i> Prev</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber)" class="{{startPageNumber == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 1)" class="{{(startPageNumber + 1) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 1}}</a>
-                        <a ng-click="retrieveCustomItemsPage(startPageNumber + 2)" class="{{(startPageNumber + 2) == currentPageNumber ? 'btn btn-default active': 'btn btn-default'}} disabled">{{startPageNumber + 2}}</a>
-                        <a ng-click="retrieveNextItemsPage()" class="btn btn-default disabled"><i class="fa fa-angle-double-right"></i> Next</a>                        
+                        </div>                        
+                        <a ng-disabled="currentPageNumber == 1" ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-if="currentPageNumber -1 >= 1" ng-click="retrieveCustomItemsPage(currentPageNumber - 1)" class="btn btn-default">{{currentPageNumber -1}}</a>
+                        <a class="btn btn-default active">{{currentPageNumber}}</a>
+                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(currentPageNumber + 1)" class="btn btn-default">{{currentPageNumber + 1}}</a>
+                        <a ng-disabled="currentPageNumber == lastPageNumber" ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                         
                     </form>                    
                 </div>
             </div>
@@ -83,7 +83,7 @@
                             </th>                        
                         </tr>
                     </thead>
-                    <tbody ng-show="ready && iPeers > 0">
+                    <tbody ng-show="ready && totalNumberOfItems > 0">
                         <tr ng-repeat="peer in aPeers" class="fixed-tr-1x">
                             <td>
                                 <a href="#/browse-peer-references/{{peer._id}}/" class="btn btn-default btn-mini primary-feature"><i class="fa fa-folder-open-o primary-feature"></i></a>
@@ -125,7 +125,7 @@
                             </td>                       
                         </tr>
                     </tbody>
-                    <tbody ng-show="iPeers === 0">
+                    <tbody ng-show="totalNumberOfItems === 0">
                         <tr>
                             <td colspan="9">
                                 <div class="col-lg-12 empty-message">
