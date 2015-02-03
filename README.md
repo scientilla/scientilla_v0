@@ -100,48 +100,39 @@ The development of Scientilla continues constantly and collaborations are really
 5. **Execute one of the following steps group:**
 
   - ######Windows 32bit:
-  Download, from <http://nodejs.org>, the 32-bit Windows Installer (.msi) package.
-
+  Download, from <http://nodejs.org>, the 32-bit Windows Installer (.msi) package.<br />
   Install the package.
 
   - ######Windows 32bit (alternative method):
-  Download, from <http://nodejs.org>, the 32-bit Windows Binary (.exe) file.
-
+  Download, from <http://nodejs.org>, the 32-bit Windows Binary (.exe) file.<br />
   Copy the file into a sub-folder of the Scientilla path (for example "C:\Program Files (x86)\Scientilla\node\").
 
   - ######Windows 64bit:
-  Download, from <http://nodejs.org>, the 64-bit Windows Installer (.msi) package.
-
+  Download, from <http://nodejs.org>, the 64-bit Windows Installer (.msi) package.<br />
   Install the package.
 
   - ######Windows 64bit (alternative method):
-  Download, from <http://nodejs.org>, the 64-bit Windows Binary (.exe) file.
-
+  Download, from <http://nodejs.org>, the 64-bit Windows Binary (.exe) file.<br />
   Copy the file into a sub-folder of the Scientilla path (for example "C:\Program Files\Scientilla\node\").
 
   - ######Linux 32bit:
-  Download, from <http://nodejs.org>, the 32-bit Linux Binaries (.tar.gz) package.
-
+  Download, from <http://nodejs.org>, the 32-bit Linux Binaries (.tar.gz) package.<br />
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/opt/scientilla/node/").
 
   - ######Linux 64bit:
-  Download, from <http://nodejs.org>, the 64-bit Linux Binaries (.tar.gz) package.
-
+  Download, from <http://nodejs.org>, the 64-bit Linux Binaries (.tar.gz) package.<br />
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/opt/scientilla/node/").
 
   - ######Mac OS X 32bit or 64bit:
-  Download, from <http://nodejs.org>, the Universal Mac OS X Installer (.pkg) package.
-
+  Download, from <http://nodejs.org>, the Universal Mac OS X Installer (.pkg) package.<br />
   Install the package.
 
   - ######Mac OS X 32bit (alternative method):
-  Download, from <http://nodejs.org>, the 32-bit Mac OS X Binaries (.tar.gz) package.
-
+  Download, from <http://nodejs.org>, the 32-bit Mac OS X Binaries (.tar.gz) package.<br />
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/Applications/Scientilla/node/").
 
   - ######Mac OS X 64bit (alternative method):
-  Download, from <http://nodejs.org>, the 64-bit Mac OS X Binaries (.tar.gz) package.
-
+  Download, from <http://nodejs.org>, the 64-bit Mac OS X Binaries (.tar.gz) package.<br />
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/Applications/Scientilla/node/").
 
 6. **Execute one of the following steps group:**
