@@ -69,9 +69,9 @@ The development of Scientilla continues constantly and collaborations are really
 
 **Manual Procedure**
 
-1. Download the Scientilla Zip package from <http://www.scientilla.net>.*
+1. Download the Scientilla Zip package from <http://www.scientilla.net>.
 
-2. Execute one of the following steps group:*
+2. Execute one of the following steps group:
 
   - **Windows 32bit:**
   Unzip the Scientilla Zip package and copy its content into your preferred path (for example "C:\Program Files (x86)\Scientilla\").
@@ -85,11 +85,11 @@ The development of Scientilla continues constantly and collaborations are really
   - **Max OSX 32bit or 64bit:**
   Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/Applications/Scientilla/").
 
-3. If your Operating System is Windows execute the following step:*
+3. If your Operating System is Windows execute the following step:
 
   Download the NSSM Zip package from <https://nssm.cc>.
 
-4. If your Operating System is Windows execute one of the following steps group:*
+4. If your Operating System is Windows execute one of the following steps group:
 
   - **Windows 32bit:**
   Unzip the NSSM Zip package and copy its content into a sub-folder of the Scientilla path (for example "C:\Program Files (x86)\Scientilla\nssm\").
@@ -97,7 +97,7 @@ The development of Scientilla continues constantly and collaborations are really
   - **Windows 64bit:**
   Unzip the NSSM Zip package and copy its content into a sub-folder of the Scientilla path (for example "C:\Program Files\Scientilla\nssm\").
 
-5. Execute one of the following steps group:*
+5. Execute one of the following steps group:
 
   - **Windows 32bit:**
   Download, from <http://nodejs.org>, the 32-bit Windows Installer (.msi) package.
@@ -135,7 +135,7 @@ The development of Scientilla continues constantly and collaborations are really
   Download, from <http://nodejs.org>, the 64-bit Mac OS X Binaries (.tar.gz) package.
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/Applications/Scientilla/node/").
 
-6. Execute one of the following steps group:*
+6. Execute one of the following steps group:
 
   - **Windows 32bit:** 
     * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
