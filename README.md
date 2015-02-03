@@ -294,9 +294,9 @@ The development of Scientilla continues constantly and collaborations are really
 
 ## Team
 
-**The Inventors &
+**The Inventors &**
 
-**Federico Bozzini
+**Federico Bozzini**
 
 - <http://www.iit.it/en/people/federico-bozzini.html>
 
