@@ -138,129 +138,129 @@ The development of Scientilla continues constantly and collaborations are really
 6. Execute one of the following steps group:*
 
   - **Windows 32bit:** 
-    * a) Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
-    * b) Write and run the following command into the "Command Prompt" window: 
-           C:\Program Files\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"
-           ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
-    * c) Write and run the following command into the "Command Prompt" window:
-           net start Scientilla
-    * d) Close the "Command Prompt" window.
-    * e) Open your preferred browser and navigate the following URL:
-           <https://localhost:60000> 
+    * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
+    * Write and run the following command into the "Command Prompt" window: 
+      C:\Program Files\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"
+      ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
+    * Write and run the following command into the "Command Prompt" window:
+      net start Scientilla
+    * Close the "Command Prompt" window.
+    * Open your preferred browser and navigate the following URL:
+      <https://localhost:60000> 
 
   - **Windows 64bit:** 
-    * a) Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
-    * b) Write and run the following command into the "Command Prompt" window: 
-           C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"
-           ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
-    * c) Write and run the following command into the "Command Prompt" window:
-           net start Scientilla
-    * d) Close the "Command Prompt" window.
-    * e) Open your preferred browser and navigate the following URL:
-           <https://localhost:60000>
+    * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
+    * Write and run the following command into the "Command Prompt" window: 
+      C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"
+      ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
+    * Write and run the following command into the "Command Prompt" window:
+      net start Scientilla
+    * Close the "Command Prompt" window.
+    * Open your preferred browser and navigate the following URL:
+      <https://localhost:60000>
 
   - **Linux 32bit:**
-    * a) Modify the file /etc/rc.local and add to it the following line:
-           /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
-    * b) Open a "Terminal" window.
-    * c) Write and run the following command into the "Terminal" window:
-           nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
-    * d) Close the "Terminal" window.
-    * e) Open your preferred browser and navigate the following URL:
-           <https://localhost:60000>
+    * Modify the file /etc/rc.local and add to it the following line:
+      /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Open a "Terminal" window.
+    * Write and run the following command into the "Terminal" window:
+      nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Close the "Terminal" window.
+    * Open your preferred browser and navigate the following URL:
+      <https://localhost:60000>
 
   - **Linux 64bit:**
-    * a) Modify the file /etc/rc.local and add to it the following line:
-           /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
-    * b) Open a "Terminal" window.
-    * c) Write and run the following command into the "Terminal" window:
-           nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
-    * d) Close the "Terminal" window.
-    * e) Open your preferred browser and navigate the following URL:
-           <https://localhost:60000>
+    * Modify the file /etc/rc.local and add to it the following line:
+      /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Open a "Terminal" window.
+    * Write and run the following command into the "Terminal" window:
+      nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Close the "Terminal" window.
+    * Open your preferred browser and navigate the following URL:
+      <https://localhost:60000>
 
   - **Mac OS X 32bit or 64bit:**
-    * a) Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
-           <?xml version="1.0" encoding="UTF-8"?>
-           <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-           <plist version="1.0">
-               <dict>
-                   <key>Label</key>
-                   <string>net.scientilla.application</string>
-                   <key>OnDemand</key>
-                   <false/>
-                   <key>scientilla</key>
-                   <string>Scientilla</string>
-                   <key>scientilla</key>
-                   <string>Scientilla</string>
-                   <key>ProgramArguments</key>
-                   <array>
-                       <string>node</string>
-                       <string>/Applications/Scientilla/server/bootstrap.js</string>
-                   </array>
-               </dict>
-           </plist>
-    * b) Open a "Terminal" window.
-    * c) Write and run the following command into the "Terminal" window:
+    * Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+          <dict>
+              <key>Label</key>
+              <string>net.scientilla.application</string>
+              <key>OnDemand</key>
+              <false/>
+              <key>scientilla</key>
+              <string>Scientilla</string>
+              <key>scientilla</key>
+              <string>Scientilla</string>
+              <key>ProgramArguments</key>
+              <array>
+                  <string>node</string>
+                  <string>/Applications/Scientilla/server/bootstrap.js</string>
+              </array>
+          </dict>
+      </plist>
+    * Open a "Terminal" window.
+    * Write and run the following command into the "Terminal" window:
        sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
-    * d) Close the "Terminal" window.
-    * e) Open your preferred browser and navigate the following URL:
+    * Close the "Terminal" window.
+    * Open your preferred browser and navigate the following URL:
            <https://localhost:60000>
 
   - **Mac OSX 32bit (alternative method):**
-    * a) Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
-           <?xml version="1.0" encoding="UTF-8"?>
-           <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-           <plist version="1.0">
-               <dict>
-                   <key>Label</key>
-                   <string>net.scientilla.application</string>
-                   <key>OnDemand</key>
-                   <false/>
-                   <key>scientilla</key>
-                   <string>Scientilla</string>
-                   <key>scientilla</key>
-                   <string>Scientilla</string>
-                   <key>ProgramArguments</key>
-                   <array>
-                       <string>/Applications/Scientilla/node/node</string>
-                       <string>/Applications/Scientilla/server/bootstrap.js</string>
-                   </array>
-               </dict>
-           </plist>
-    * b) Open a "Terminal" window.
-    * c) Write and run the following command into the "Terminal" window:
-       sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
-    * d) Close the "Terminal" window.
-    * e) Open your preferred browser and navigate the following URL:
+    * Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
+       <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+          <dict>
+              <key>Label</key>
+              <string>net.scientilla.application</string>
+              <key>OnDemand</key>
+              <false/>
+              <key>scientilla</key>
+              <string>Scientilla</string>
+              <key>scientilla</key>
+              <string>Scientilla</string>
+              <key>ProgramArguments</key>
+              <array>
+                  <string>/Applications/Scientilla/node/node</string>
+                  <string>/Applications/Scientilla/server/bootstrap.js</string>
+              </array>
+          </dict>
+      </plist>
+    * Open a "Terminal" window.
+    * Write and run the following command into the "Terminal" window:
+      sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
+    * Close the "Terminal" window.
+    * Open your preferred browser and navigate the following URL:
            <https://localhost:60000>
 
   - **Mac OSX 64bit (alternative method):**
-    * a) Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
-           <?xml version="1.0" encoding="UTF-8"?>
-           <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-           <plist version="1.0">
-               <dict>
-                   <key>Label</key>
-                   <string>net.scientilla.application</string>
-                   <key>OnDemand</key>
-                   <false/>
-                   <key>scientilla</key>
-                   <string>Scientilla</string>
-                   <key>scientilla</key>
-                   <string>Scientilla</string>
-                   <key>ProgramArguments</key>
-                   <array>
-                       <string>/Applications/Scientilla/node/node</string>
-                       <string>/Applications/Scientilla/server/bootstrap.js</string>
-                   </array>
-               </dict>
-           </plist>
-    * b) Open a "Terminal" window.
-    * c) Write and run the following command into the "Terminal" window:
-       sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
-    * d) Close the "Terminal" window.
-    * e) Open your preferred browser and navigate the following URL:
+    * Create the file /Library/LaunchAgents/net.scientilla.application.plist and fill it with the following content:
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+          <dict>
+              <key>Label</key>
+              <string>net.scientilla.application</string>
+              <key>OnDemand</key>
+              <false/>
+              <key>scientilla</key>
+              <string>Scientilla</string>
+              <key>scientilla</key>
+              <string>Scientilla</string>
+              <key>ProgramArguments</key>
+              <array>
+                  <string>/Applications/Scientilla/node/node</string>
+                  <string>/Applications/Scientilla/server/bootstrap.js</string>
+              </array>
+          </dict>
+      </plist>
+    * Open a "Terminal" window.
+    * Write and run the following command into the "Terminal" window:
+      sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
+    * Close the "Terminal" window.
+    * Open your preferred browser and navigate the following URL:
            <https://localhost:60000>
 
 
