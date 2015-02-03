@@ -173,7 +173,7 @@ module.exports = function () {
                     res.status(404).end();
                     return;
                 }
-                var result = {};
+                var result = _.pick(referencesObj, ['total_number_of_items']);
                 referencesManager.getVerifiedReferences(
                     req.referencesCollection,
                     req.user.hashes,
