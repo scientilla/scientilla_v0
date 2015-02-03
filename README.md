@@ -67,6 +67,10 @@ The development of Scientilla continues constantly and collaborations are really
 
 ## Installing SCIENTILLA
 
+####Guided Procedure
+
+Depending on your operating system just download the appropriate Installation package from <http://www.scientilla.net> and install it.
+
 ####Manual Procedure
 
 1. **Download the Scientilla Zip package from <http://www.scientilla.net>.**
