@@ -141,6 +141,7 @@ The development of Scientilla continues constantly and collaborations are really
     * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
     * Write and run the following command into the "Command Prompt" window:<br /> 
       **C:\Program Files\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**<br />
+      
       ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
     * Write and run the following command into the "Command Prompt" window:<br />
       **net start Scientilla**
@@ -152,6 +153,7 @@ The development of Scientilla continues constantly and collaborations are really
     * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
     * Write and run the following command into the "Command Prompt" window:<br /> 
       **C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**<br />
+      
       ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
     * Write and run the following command into the "Command Prompt" window:<br />
       **net start Scientilla**
