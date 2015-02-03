@@ -69,11 +69,15 @@ The development of Scientilla continues constantly and collaborations are really
 
 ####Guided Procedure
 
-Depending on your operating system just download the appropriate Installation package from <http://www.scientilla.net> and install it.
+1. Depending on your operating system download the appropriate Installation package from <http://www.scientilla.net> and install it.
+
+2. Open your preferred browser and navigate the following URL:
+
+   <https://localhost:60000>
 
 ####Manual Procedure
 
-1. **Download the Scientilla Zip package from <http://www.scientilla.net>.**
+1. **Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
 
 2. **Execute one of the following steps group:**
 
