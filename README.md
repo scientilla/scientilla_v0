@@ -101,38 +101,47 @@ The development of Scientilla continues constantly and collaborations are really
 
   - ######Windows 32bit:
   Download, from <http://nodejs.org>, the 32-bit Windows Installer (.msi) package.
+
   Install the package.
 
   - ######Windows 32bit (alternative method):
   Download, from <http://nodejs.org>, the 32-bit Windows Binary (.exe) file.
+
   Copy the file into a sub-folder of the Scientilla path (for example "C:\Program Files (x86)\Scientilla\node\").
 
   - ######Windows 64bit:
   Download, from <http://nodejs.org>, the 64-bit Windows Installer (.msi) package.
+
   Install the package.
 
   - ######Windows 64bit (alternative method):
   Download, from <http://nodejs.org>, the 64-bit Windows Binary (.exe) file.
+
   Copy the file into a sub-folder of the Scientilla path (for example "C:\Program Files\Scientilla\node\").
 
   - ######Linux 32bit:
   Download, from <http://nodejs.org>, the 32-bit Linux Binaries (.tar.gz) package.
+
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/opt/scientilla/node/").
 
   - ######Linux 64bit:
   Download, from <http://nodejs.org>, the 64-bit Linux Binaries (.tar.gz) package.
+
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/opt/scientilla/node/").
 
   - ######Mac OS X 32bit or 64bit:
   Download, from <http://nodejs.org>, the Universal Mac OS X Installer (.pkg) package.
+
   Install the package.
 
   - ######Mac OS X 32bit (alternative method):
   Download, from <http://nodejs.org>, the 32-bit Mac OS X Binaries (.tar.gz) package.
+
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/Applications/Scientilla/node/").
 
   - ######Mac OS X 64bit (alternative method):
   Download, from <http://nodejs.org>, the 64-bit Mac OS X Binaries (.tar.gz) package.
+
   Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/Applications/Scientilla/node/").
 
 6. **Execute one of the following steps group:**
@@ -141,9 +150,9 @@ The development of Scientilla continues constantly and collaborations are really
     * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
     * Write and run the following command into the "Command Prompt" window:
  
-      **C:\Program Files\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**
+      **C:\Program Files (x86)\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files (x86)\Scientilla\node\node.exe" "C:\Program Files (x86)\Scientilla\server\bootstrap.js"**
       
-      ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
+      ATTENTION: if you have not copied Scientilla under C:\Program Files (x86)\Scientilla\, NSSM under C:\Program Files (x86)\Scientilla\nssm\ and Node.js under C:\Program Files (x86)\Scientilla\node\ please substitute the right paths into the above command.
     * Write and run the following command into the "Command Prompt" window:
 
       **net start Scientilla**
@@ -157,9 +166,9 @@ The development of Scientilla continues constantly and collaborations are really
     * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
     * Write and run the following command into the "Command Prompt" window:
  
-      **C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**
+      **C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Scientilla\node\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**
       
-      ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
+      ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\, NSSM under C:\Program Files\Scientilla\nssm\ and Node.js under C:\Program Files\Scientilla\node\ please substitute the right paths into the above command.
     * Write and run the following command into the "Command Prompt" window:
 
       **net start Scientilla**
