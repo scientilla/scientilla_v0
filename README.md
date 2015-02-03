@@ -139,44 +139,44 @@ The development of Scientilla continues constantly and collaborations are really
 
   - ######Windows 32bit: 
     * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
-    * Write and run the following command into the "Command Prompt" window: 
-      C:\Program Files\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"
+    * Write and run the following command into the "Command Prompt" window:<br /> 
+      **C:\Program Files\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**<br />
       ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
-    * Write and run the following command into the "Command Prompt" window:
-      net start Scientilla
+    * Write and run the following command into the "Command Prompt" window:<br />
+      **net start Scientilla**
     * Close the "Command Prompt" window.
-    * Open your preferred browser and navigate the following URL:
+    * Open your preferred browser and navigate the following URL:<br />
       <https://localhost:60000> 
 
   - ######Windows 64bit:
     * Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
-    * Write and run the following command into the "Command Prompt" window: 
-      C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"
+    * Write and run the following command into the "Command Prompt" window:<br /> 
+      **C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Node.js\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**<br />
       ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\ and NSSM under C:\Program Files\Scientilla\nssm\ please substitute the right paths into the above command.
-    * Write and run the following command into the "Command Prompt" window:
-      net start Scientilla
+    * Write and run the following command into the "Command Prompt" window:<br />
+      **net start Scientilla**
     * Close the "Command Prompt" window.
-    * Open your preferred browser and navigate the following URL:
+    * Open your preferred browser and navigate the following URL:<br />
       <https://localhost:60000>
 
   - ######Linux 32bit:
-    * Modify the file /etc/rc.local and add to it the following line:
-      /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Modify the file /etc/rc.local and add to it the following line:<br />
+      **/opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
     * Open a "Terminal" window.
-    * Write and run the following command into the "Terminal" window:
-      nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Write and run the following command into the "Terminal" window:<br />
+      **nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
     * Close the "Terminal" window.
-    * Open your preferred browser and navigate the following URL:
+    * Open your preferred browser and navigate the following URL:<br />
       <https://localhost:60000>
 
   - ######Linux 64bit:
-    * Modify the file /etc/rc.local and add to it the following line:
-      /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Modify the file /etc/rc.local and add to it the following line:<br />
+      **/opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
     * Open a "Terminal" window.
-    * Write and run the following command into the "Terminal" window:
-      nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js
+    * Write and run the following command into the "Terminal" window:<br />
+      **nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
     * Close the "Terminal" window.
-    * Open your preferred browser and navigate the following URL:
+    * Open your preferred browser and navigate the following URL:<br />
       <https://localhost:60000>
 
   - ######Mac OS X 32bit or 64bit:
@@ -204,10 +204,10 @@ The development of Scientilla continues constantly and collaborations are really
     </pre>
 
     * Open a "Terminal" window.
-    * Write and run the following command into the "Terminal" window:
-      sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
+    * Write and run the following command into the "Terminal" window:<br />
+      **sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist**
     * Close the "Terminal" window.
-    * Open your preferred browser and navigate the following URL:
+    * Open your preferred browser and navigate the following URL:<br />
       <https://localhost:60000>
 
   - ######Mac OSX 32bit (alternative method):
@@ -235,10 +235,10 @@ The development of Scientilla continues constantly and collaborations are really
     </pre>
 
     * Open a "Terminal" window.
-    * Write and run the following command into the "Terminal" window:
-      sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
+    * Write and run the following command into the "Terminal" window:<br />
+      **sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist**
     * Close the "Terminal" window.
-    * Open your preferred browser and navigate the following URL:
+    * Open your preferred browser and navigate the following URL:<br />
       <https://localhost:60000>
 
   - ######Mac OSX 64bit (alternative method):
@@ -266,10 +266,10 @@ The development of Scientilla continues constantly and collaborations are really
     </pre>
 
     * Open a "Terminal" window.
-    * Write and run the following command into the "Terminal" window:
-      sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist
+    * Write and run the following command into the "Terminal" window:<br />
+      **sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist**
     * Close the "Terminal" window.
-    * Open your preferred browser and navigate the following URL:
+    * Open your preferred browser and navigate the following URL:<br />
       <https://localhost:60000>
 
 
