@@ -22,7 +22,7 @@
                         <div class="input-group">                                        
                             <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
                             <span class="input-group-btn">
-                                <a ng-click="retrieveReferences()" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                                <a ng-click="retrieveCustomItemsPage(1)" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
                             </span>                            
                         </div>                        
                         <a ng-disabled="currentPageNumber == 1" ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
