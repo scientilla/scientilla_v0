@@ -55,7 +55,7 @@ Consider that you could experiment minor malfunctions until we are in the Beta p
 
 
 
-## Installing SCIENTILLA
+## How to install SCIENTILLA
 
 ####Guided Procedure
 
