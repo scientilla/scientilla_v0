@@ -11,10 +11,13 @@ module.exports = function () {
         return _.map(references, function(r) {
             var reference = r.value.top;
             var all = r.value.all;
+            var clonesNum = all.length;
             var confirmedBy = _.where(all, function(r) {return r.clone_hash === reference.clone_hash;}).length;
-            var reliability = parseInt(confirmedBy / all.length * 100);
+            var reliability = parseInt(confirmedBy / clonesNum * 100);
             var versions = _.uniq(_.pluck(all, 'clone_hash')).length;
             reference.reliability = reliability;
+            reference.clonesNum = clonesNum;
+            reference.confirmedBy = confirmedBy;
             reference.others = r.value.others;
             reference.confirmedBy = confirmedBy;
             reference.versions = versions;

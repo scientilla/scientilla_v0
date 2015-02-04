@@ -95,7 +95,8 @@ module.exports = function () {
             "confirmedBy",
             "peer_url",
             "peer_id",
-            "original_id"
+            "original_id",
+            "clonesNum"
         ];
         
         return buildReference(reference, referenceFields, repository);
