@@ -49,7 +49,9 @@ In this way you can quickly define and complete your references list.
 
 ## IMPORTANT
 
-SCIENTILLA is in Alpha phase. While we are writing documentation to help people using it, as well as contributing to the development, it is at moment recommended only for a technical audience.
+After 8 months of Alpha phase SCIENTILLA is now in Beta phase. 
+We are writing documentation to help final users using it as well as to help developers contributing to the advancement of the project.
+Consider that you could experiment minor malfunctions until we are in the Beta phase.
 
 
 
