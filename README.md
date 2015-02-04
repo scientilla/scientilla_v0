@@ -55,18 +55,6 @@ Consider that you could experiment minor malfunctions until we are in the Beta p
 
 
 
-## Using SCIENTILLA
-
-Scientilla is a web application that works also from your desktop and that is compatible with Windows, Mac and Linux. You can download the installation package and run it from your hardware and networking facilities or request a demo on [http://www.scientilla.net](http://www.scientilla.net) so that you can check what the software does.
-
-
-
-## Extending SCIENTILLA
-
-The development of Scientilla continues constantly and collaborations are really wanted and accepted.
-
-
-
 ## Installing SCIENTILLA
 
 ####Guided Procedure
@@ -79,7 +67,7 @@ The development of Scientilla continues constantly and collaborations are really
 
 ####Manual Procedure
 
-1. Windows 32bit
+1. **Windows 32bit**
 
   - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "C:\Program Files (x86)\Scientilla\").
@@ -103,7 +91,7 @@ The development of Scientilla continues constantly and collaborations are really
 
     <https://localhost:60000> 
 
-2. Windows 64bit
+2. **Windows 64bit**
 
   - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "C:\Program Files\Scientilla\").
@@ -127,7 +115,7 @@ The development of Scientilla continues constantly and collaborations are really
 
     <https://localhost:60000>
 
-3. Linux 32bit
+3. **Linux 32bit**
 
   - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/opt/scientilla/").
@@ -147,7 +135,7 @@ The development of Scientilla continues constantly and collaborations are really
 
     <https://localhost:60000>
 
-4. Linux 64bit
+4. **Linux 64bit**
 
   - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/opt/scientilla/").
@@ -167,7 +155,7 @@ The development of Scientilla continues constantly and collaborations are really
 
     <https://localhost:60000>
 
-5. Mac OS X 32bit
+5. **Mac OS X 32bit**
 
   - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/Applications/Scientilla/").
@@ -210,7 +198,7 @@ The development of Scientilla continues constantly and collaborations are really
 
     <https://localhost:60000>
 
-6. Mac OS X 64bit
+6. **Mac OS X 64bit**
 
   - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/Applications/Scientilla/").
@@ -255,7 +243,13 @@ The development of Scientilla continues constantly and collaborations are really
 
 
 
-## Configuring SCIENTILLA
+## How to use SCIENTILLA
+
+Scientilla is a web application that works also from your desktop and that is compatible with Windows, Mac and Linux. You can download the installation package and run it from your hardware and networking facilities or request a demo on [http://www.scientilla.net](http://www.scientilla.net) so that you can check what the software does.
+
+
+
+## How to configure SCIENTILLA
 
 ####Other Resources
 
@@ -279,6 +273,14 @@ To configure the ORCID web service follow this steps:
 - Click the Update button
 - Click the [Open] button on the left of the new ORCID entry
 - Click on the [Clone] button to import the information about a specific publication into the [Your Works!] area
+
+
+
+## How to extend SCIENTILLA
+
+The development of Scientilla continues constantly and collaborations are really wanted and accepted.
+If you are a developer Fork the project and send us Pull Requests.
+If you want to contribute with translation please send us an email so we can keep in touch while we implement the multilingual system.
 
 
 
