@@ -28,9 +28,32 @@ module.exports = function () {
             var page = config.page || 1;
             var rows = config.rows || 20;
             var skip = (page - 1) * rows;
+            var keywords = config.keywords || "";
             var result = {};
+            var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             var peersCollection = req.peersCollection
-            .find({})
+            .find({
+                $or: [
+                    {
+                        name : { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        description : { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        url : { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    }
+                ]
+            })
             .skip(
                 skip
             ).limit(
