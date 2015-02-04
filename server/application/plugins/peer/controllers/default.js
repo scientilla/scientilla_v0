@@ -124,12 +124,36 @@ module.exports = function () {
             var page = config.page || 1;
             var rows = config.rows || 20;
             var skip = (page - 1) * rows;
+            var keywords = config.keywords || "";
             var result = {};
+            var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             var peersCollection = req.peersCollection
             .find({
-                $or: [
-                    { aggregating_status: true }, 
-                    { type: 0 }
+                $and: [
+                    {$or: [
+                        {
+                            name : { 
+                                $regex: regexQuery,
+                                $options: 'i'
+                            }
+                        },
+                        {
+                            description : { 
+                                $regex: regexQuery,
+                                $options: 'i'
+                            }
+                        },
+                        {
+                            url : { 
+                                $regex: regexQuery,
+                                $options: 'i'
+                            }
+                        }
+                    ]},
+                    {$or: [
+                        { aggregating_status: true }, 
+                        { type: 0 }
+                    ]}
                 ]
             })
             .skip(
