@@ -8,11 +8,12 @@ angular.module("repository").factory(
     "repositoriesService", function($http) {
         var repositoriesProvider = {};
         
-        repositoriesProvider.getRepositories = function(token) {
+        repositoriesProvider.getRepositories = function(token, config) {
             return $http({
 				method: "GET",
 				url: "/api/repositories",
                 cache: false,
+                params: config,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token

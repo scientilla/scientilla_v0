@@ -11,18 +11,24 @@ angular.module("repository").controller(
         $scope.aReferences = [];
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
-        $scope.numberOfItemsPerPage = 25;
-        $scope.totalNumberOfItems = 10000;        
+        $scope.lastPageNumber = 0;
+        $scope.numberOfItemsPerPage = 20;
+        $scope.totalNumberOfItems = 0;      
         
         $scope.retrieveRepositories = function retrieveRepositories() {    
-            $scope.iRepositories = 0;
             $scope.ready = false;
             $scope.error = false;
+            var config = {
+                keywords: $scope.keywords,
+                page: $scope.currentPageNumber,
+                rows: $scope.numberOfItemsPerPage,
+            };
             async.series([
                 function(callback) {
-                    repositoriesService.getRepositories($window.sessionStorage.userToken).success(function(data, status, headers, config) {
-                        $scope.aRepositories = data;
-                        $scope.iRepositories = $scope.aRepositories.length;
+                    repositoriesService.getRepositories($window.sessionStorage.userToken, config).success(function(data, status, headers, config) {
+                        $scope.aRepositories = data.items;
+                        $scope.totalNumberOfItems = data.total_number_of_items;
+                        $scope.lastPageNumber = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
                         callback();
                     }).error(function(data, status, headers, config) {
                         $scope.error = true;
@@ -36,7 +42,7 @@ angular.module("repository").controller(
             ]);
             
             return retrieveRepositories;
-        }();        
+        }();   
         
         $scope.retrievePreviousItemsPage = function() {
             if ($scope.startPageNumber > 1) {
@@ -45,12 +51,14 @@ angular.module("repository").controller(
             if ($scope.currentPageNumber > 1) {
                 $scope.currentPageNumber--;
             }
+            $scope.retrieveRepositories();
         };
         
         $scope.retrieveCustomItemsPage = function(customPageNumber) {            
             if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber = customPageNumber;
             }
+            $scope.retrieveRepositories();
         };         
         
         $scope.retrieveNextItemsPage = function() {
@@ -60,6 +68,7 @@ angular.module("repository").controller(
             if ($scope.currentPageNumber < Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber++; 
             }
-        };        
+            $scope.retrieveRepositories();
+        };              
     }]
 );
