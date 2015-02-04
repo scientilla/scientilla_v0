@@ -64,15 +64,50 @@ module.exports = function () {
     };
     return {
         getRepositories: function(req, res) {
-            req.repositoriesCollection.find({}).sort({ creation_datetime: -1 }).toArray(function(err, repositories) {
-                if (err || req.underscore.isNull(repositories)) {
+            var config = _.pick(req.query, ['keywords', 'page', 'rows']);
+            var page = config.page || 1;
+            var rows = config.rows || 20;
+            var skip = (page - 1) * rows;
+            var keywords = config.keywords || "";
+            var result = {};
+            var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
+            
+            var repositoriesCollection = req.repositoriesCollection
+            .find({
+                $or: [
+                    {
+                        name : { 
+                            $regex: regexQuery,
+                            $options: 'i'
+                        }
+                    }
+                ]
+            })
+            .sort({ creation_datetime: -1 })
+            .skip(
+                skip
+            ).limit(
+                rows
+            );
+    
+            repositoriesCollection.count(function(err, count) {
+                if (err) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
-                
-                // res.setHeader("Content-Type", "application/json");
-                res.json(repositories);
-            });            
+                result.total_number_of_items = count;
+                repositoriesCollection.toArray(function(err, repositories) {
+                    if (err || req.underscore.isNull(repositories)) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+                    result.items = repositories;
+                    // res.setHeader("Content-Type", "application/json");
+                    res.json(result);
+                });
+            });    
         },
         getPublicRepositories: function(req, res) {
             req.repositoriesCollection.find({ sharing_status: true }).sort({ creation_datetime: -1 }).toArray(function(err, repositories) {
