@@ -40,11 +40,11 @@
                                 </ul>                                
                             </div>                            
                         </div>                        
-                        <a ng-disabled="currentPageNumber == 1" ng-click="retrievePreviousItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Prev</a>
+                        <a ng-click="retrieveCustomItemsPage(1)" class="btn btn-default"><i class="fa fa-angle-double-left"></i> First</a>
                         <a ng-if="currentPageNumber -1 >= 1" ng-click="retrieveCustomItemsPage(currentPageNumber - 1)" class="btn btn-default">{{currentPageNumber -1}}</a>
                         <a class="btn btn-default active">{{currentPageNumber}}</a>
                         <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(currentPageNumber + 1)" class="btn btn-default">{{currentPageNumber + 1}}</a>
-                        <a ng-disabled="currentPageNumber == lastPageNumber" ng-click="retrieveNextItemsPage()" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Next</a>                      
+                        <a ng-click="retrieveCustomItemsPage(lastPageNumber)" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Last</a>                   
                     </form>                    
                 </div>
             </div>
