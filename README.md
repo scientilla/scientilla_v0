@@ -255,6 +255,33 @@ The development of Scientilla continues constantly and collaborations are really
 
 
 
+## Configuring SCIENTILLA
+
+####Other Resources
+
+Scientilla supports access to public web services like ORCID and/or organization specific ones that help you locate and report your scientific production.
+These web services can be configured into the application under the "Other Resources" section.
+Normally these web services have a "personalized" configuration so you are called to correctly set the entries as by your need.
+
+Example:
+
+To configure the ORCID web service follow this steps:
+
+- Log into your Scientilla Installation
+- Click the [Other Resources] link on the sidebar menu
+- Press the [+] button on the upper-right part of the page
+- Enter the following value in the Name field: ```ORCID```
+- Enter the following value in the URL field: ```http://feed.labs.orcid-eu.org/{{write here your ORCID identifier}}.json```
+- Enter the following value in the Authors field: ```author```
+- Enter the following value in the Authors RegExp field: ```(?:{"family":"([a-zA-Z0-9]+)","given":"([a-zA-Z0-9]+)"}(,)?)```
+- Enter the following value in the Year field: ```issued```
+- Enter the following value in the Year RegExp field: ```.*\[\[([0-9]+)\]\].*```
+- Click the Update button
+- Click the [Open] button on the left of the new ORCID entry
+- Click on the [Clone] button to import the information about a specific publication into the [Your Works!] area
+
+
+
 ## Sponsor
 
 **Istituto Italiano di Tecnologia**
