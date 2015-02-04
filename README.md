@@ -55,6 +55,13 @@ Consider that you could experiment minor malfunctions until we are in the Beta p
 
 
 
+## ATTENTION
+
+MongoDB support is not stable at moment.
+While you can see the configuration selector into your installation is highly suggested to not use it untile the feature will be declared stable.
+
+
+
 ## How to install SCIENTILLA
 
 ####Guided Procedure
