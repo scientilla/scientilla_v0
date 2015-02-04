@@ -79,7 +79,7 @@ The development of Scientilla continues constantly and collaborations are really
 
 1. Windows 32bit
 
-  - **Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
+  - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "C:\Program Files (x86)\Scientilla\").
   - Download the NSSM Zip package from <https://nssm.cc>.
   - Unzip the NSSM Zip package and copy its content into a sub-folder of the Scientilla path (for example "C:\Program Files (x86)\Scientilla\nssm\").
@@ -88,12 +88,12 @@ The development of Scientilla continues constantly and collaborations are really
   - Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
   - Write and run the following command into the "Command Prompt" window:
 
-  **C:\Program Files (x86)\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files (x86)\Scientilla\node\node.exe" "C:\Program Files (x86)\Scientilla\server\bootstrap.js"**
+    **C:\Program Files (x86)\Scientilla\nssm\win32\nssm.exe install Scientilla "C:\Program Files (x86)\Scientilla\node\node.exe" "C:\Program Files (x86)\Scientilla\server\bootstrap.js"**
       
   ATTENTION: if you have not copied Scientilla under C:\Program Files (x86)\Scientilla\, NSSM under C:\Program Files (x86)\Scientilla\nssm\ and Node.js under C:\Program Files (x86)\Scientilla\node\ please substitute the right paths into the above command.
   - Write and run the following command into the "Command Prompt" window:
 
-  **net start Scientilla**
+    **net start Scientilla**
 
   - Close the "Command Prompt" window.
   - Open your preferred browser and navigate the following URL:
@@ -102,7 +102,7 @@ The development of Scientilla continues constantly and collaborations are really
 
 2. Windows 64bit
 
-  - **Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
+  - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "C:\Program Files\Scientilla\").
   - Download the NSSM Zip package from <https://nssm.cc>.
   - Unzip the NSSM Zip package and copy its content into a sub-folder of the Scientilla path (for example "C:\Program Files\Scientilla\nssm\").
@@ -111,12 +111,12 @@ The development of Scientilla continues constantly and collaborations are really
   - Locate the "Command Prompt" link into your Windows Menu, right click on the icon and then click on "Run As Administrator".
   - Write and run the following command into the "Command Prompt" window:
  
-  **C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Scientilla\node\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**
+    **C:\Program Files\Scientilla\nssm\win64\nssm.exe install Scientilla "C:\Program Files\Scientilla\node\node.exe" "C:\Program Files\Scientilla\server\bootstrap.js"**
       
   ATTENTION: if you have not copied Scientilla under C:\Program Files\Scientilla\, NSSM under C:\Program Files\Scientilla\nssm\ and Node.js under C:\Program Files\Scientilla\node\ please substitute the right paths into the above command.
   - Write and run the following command into the "Command Prompt" window:
 
-  **net start Scientilla**
+    **net start Scientilla**
 
   - Close the "Command Prompt" window.
   - Open your preferred browser and navigate the following URL:
@@ -125,18 +125,18 @@ The development of Scientilla continues constantly and collaborations are really
 
 3. Linux 32bit
 
-  - **Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
+  - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/opt/scientilla/").
   - Download, from <http://nodejs.org>, the 32-bit Linux Binaries (.tar.gz) package.
   - Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/opt/scientilla/node/").
   - Modify the file /etc/rc.local and add to it the following line:
 
-  **/opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
+    **/opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
 
   - Open a "Terminal" window.
   - Write and run the following command into the "Terminal" window:
 
-  **nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
+    **nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
 
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
@@ -145,18 +145,18 @@ The development of Scientilla continues constantly and collaborations are really
 
 4. Linux 64bit
 
-  - **Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
+  - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/opt/scientilla/").
   - Download, from <http://nodejs.org>, the 64-bit Linux Binaries (.tar.gz) package.
   - Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/opt/scientilla/node/").
   - Modify the file /etc/rc.local and add to it the following line:
 
-  **/opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
+    **/opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
 
   - Open a "Terminal" window.
   - Write and run the following command into the "Terminal" window:
 
-  **nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
+    **nohup /opt/scientilla/node/bin/node /opt/scientilla/server/bootstrap.js**
 
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
@@ -165,7 +165,7 @@ The development of Scientilla continues constantly and collaborations are really
 
 5. Mac OS X 32bit
 
-  - **Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
+  - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/Applications/Scientilla/").
   - Download, from <http://nodejs.org>, the 64-bit Mac OS X Binaries (.tar.gz) package.
   - Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/Applications/Scientilla/node/").
@@ -199,7 +199,7 @@ The development of Scientilla continues constantly and collaborations are really
   - Open a "Terminal" window.
   - Write and run the following command into the "Terminal" window:
 
-  **sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist**
+    **sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist**
 
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
@@ -208,7 +208,7 @@ The development of Scientilla continues constantly and collaborations are really
 
 6. Mac OS X 64bit
 
-  - **Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
+  - Download the Scientilla Zip package (Any OS) from <http://www.scientilla.net>.**
   - Unzip the Scientilla Zip package and copy its content into your preferred path (for example "/Applications/Scientilla/").
   - Download, from <http://nodejs.org>, the 64-bit Mac OS X Binaries (.tar.gz) package.
   - Unzip the package and copy its content into a sub-folder of the Scientilla path (for example "/Applications/Scientilla/node/").
@@ -242,7 +242,7 @@ The development of Scientilla continues constantly and collaborations are really
   - Open a "Terminal" window.
   - Write and run the following command into the "Terminal" window:
 
-  **sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist**
+    **sudo launchctl load /Library/LaunchAgents/net.scientilla.application.plist**
 
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
