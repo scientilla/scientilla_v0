@@ -16,13 +16,21 @@ var identificationManager = require(path.resolve(__dirname + "/../../system/cont
 var userManager = require("../../user/models/default.js")();
 
 module.exports = function () {
+    var DISCOVER_GLOBAL = 0;
+    var DISCOVER_LOCAL = 1;
     var updateUsersDiscoveringHits = function(peersCollection, currentPeer, callback) {
         peersCollection.update({_id: identificationManager.getDatabaseSpecificId(currentPeer._id)}, { $set: { users_discovering_hits: (currentPeer.users_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
             callback();
         });
     };    
     return {
-        discoverUsers: function(peersCollection, usersCollection, collectedUsersCollection) {
+        discoverGlobalUsers: function(peersCollection, usersCollection, collectedUsersCollection) {
+            discoverUsers(peersCollection, usersCollection, collectedUsersCollection, DISCOVER_GLOBAL);
+        },
+        discoverUsers: function(peersCollection, usersCollection, collectedUsersCollection, type) {
+            if (_.isUndefined(type)) {
+                type = DISCOVER_GLOBAL;
+            }
             async.series([
                 function(firstSeriesCallback) {
                     collectedUsersCollection.find({ peer_url: configurationManager.get().url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedUsers) {

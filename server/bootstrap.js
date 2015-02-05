@@ -232,7 +232,7 @@ async.series([
             var referencesAndUsersCollectionJob = function referencesAndUsersCollectionJob() {
                 console.log("Collecting references and users...");
                 peerReferencesController.discoverGlobalReferences(peersCollection, referencesCollection, collectedReferencesCollection);
-                peerUsersController.discoverUsers(peersCollection, usersCollection, collectedUsersCollection);
+                peerUsersController.discoverGlobalUsers(peersCollection, usersCollection, collectedUsersCollection);
 
                 return referencesAndUsersCollectionJob;
             }();
