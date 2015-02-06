@@ -25,7 +25,7 @@ module.exports = function () {
     };    
     return {
         discoverGlobalUsers: function(peersCollection, usersCollection, collectedUsersCollection) {
-            discoverUsers(peersCollection, usersCollection, collectedUsersCollection, DISCOVER_GLOBAL);
+            this.discoverUsers(peersCollection, usersCollection, collectedUsersCollection, DISCOVER_GLOBAL);
         },
         discoverUsers: function(peersCollection, usersCollection, collectedUsersCollection, type) {
             if (_.isUndefined(type)) {
@@ -39,12 +39,14 @@ module.exports = function () {
                             return; 
                         }
                         var datetime = (_.isNull(collectedUsers.length) || _.isUndefined(collectedUsers.length) || collectedUsers.length == 0) ? "" : collectedUsers[0].last_modification_datetime;
-                        usersCollection.find({ 
+                        var searchQuery;
+                        searchQuery = { 
                             status: "U",
                             last_modification_datetime: {
                                 $gt: datetime
                             }                
-                        }).sort({ creation_datetime: -1 }).toArray(function(err, publicUsers) {
+                        };
+                        usersCollection.find(searchQuery).sort({ creation_datetime: -1 }).toArray(function(err, publicUsers) {
                             if (err || _.isNull(publicUsers)) {
                                 firstSeriesCallback();
                                 return;
@@ -75,7 +77,16 @@ module.exports = function () {
                     });
                 },
                 function(firstSeriesCallback) {
-                    peersCollection.find({}).sort({ users_discovering_hits: 1 }).limit(1).toArray(function(err, peers) {
+                    var searchQuery;
+                    var sortingQuery;
+                    if (type === DISCOVER_GLOBAL) {
+                        searchQuery = {};
+                        sortingQuery = { users_discovering_hits: 1 };
+                    } else {
+                        searchQuery = { aggregating_status: true };
+                        sortingQuery = { users_local_discovering_hits: 1 };
+                    }
+                    peersCollection.find(searchQuery).sort(sortingQuery).limit(1).toArray(function(err, peers) {
                         if (err || _.isNull(peers)) {
                             firstSeriesCallback();
                             return; 
