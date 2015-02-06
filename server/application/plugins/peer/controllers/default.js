@@ -384,11 +384,12 @@ module.exports = function () {
                                                 request({
                                                     method: "GET",
                                                     url: peer.url + "/api/public-counts", 
-                                                    strictSSL: false 
+                                                    strictSSL: false,
+                                                    json: true
                                                 }, function (err, res, body) {
                                                     var discoveredPeer = {};
                                                     if (!err && body != "") {
-                                                        var publicCounts = JSON.parse(body);
+                                                        var publicCounts = body;
                                                         discoveredPeer.size = publicCounts.public_references;
                                                     } else {
                                                         discoveredPeer.size = 0;
@@ -414,11 +415,12 @@ module.exports = function () {
                                             request({
                                                 method: "GET",
                                                 url: peer.url + "/api/public-counts", 
-                                                strictSSL: false 
+                                                strictSSL: false,
+                                                json; true
                                             }, function (err, res, body) {
                                                 var rediscoveredPeer = {};
                                                 if (!err && body != "") {
-                                                    var publicCounts = JSON.parse(body);
+                                                    var publicCounts = body;
                                                     rediscoveredPeer.size = publicCounts.public_references;
                                                 } else {
                                                     rediscoveredPeer.size = 0;
