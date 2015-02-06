@@ -357,7 +357,8 @@ module.exports = function () {
                 request({
                     method: "GET",
                     url: seedsConfiguration[seedKey] + "/api/public-peers", 
-                    strictSSL: false 
+                    strictSSL: false,
+                    json:true
                 }, function (err, res, body) {
                     if (!err && body != "") {
                         var peers = JSON.parse(body);
