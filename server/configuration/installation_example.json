@@ -1,8 +1,8 @@
 {
-    "port": 60000,
+    "port": 443,
     "ssl_key_path": "/../certs/certificate.key",
     "ssl_cert_path": "/../certs/certificate.cert",
-    "url": "https://127.0.0.1:60000",
+    "url": "https://127.0.0.1:443",
     "secret": "scientilla",
     "owner_user_id": 2,
     "mode": 0,
