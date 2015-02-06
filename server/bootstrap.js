@@ -592,12 +592,12 @@ application.get("/api/network-references", expressJwt({secret: configurationMana
     console.log("Request to Read all Network References");
     networkReferencesController.getReferences(req, res);
 });
-
-// WORLD NETWORK USERS
 application.get("/api/ranked-network-references", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
     console.log("Request to Read all Local Ranked References");
     localRankedReferencesController.getReferences(req, res);
 });
+
+// WORLD NETWORK USERS
 
 application.get("/api/public-world-network-users", function(req, res) {
     console.log("Request to Read all Public World Network Users");
