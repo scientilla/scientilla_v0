@@ -51,6 +51,7 @@ var systemController = require("./application/plugins/system/controllers/default
 var usersController = require("./application/plugins/user/controllers/default.js")();
 var peerUsersController = require("./application/plugins/user/controllers/peer-users.js")();
 var worldNetworkUsersController = require("./application/plugins/user/controllers/world-network-users.js")();
+var localNetworkUsersController = require("./application/plugins/user/controllers/local-network-users.js")();
 var discoveryController = require("./application/plugins/discovery/controllers/discovery.js")();
 var tagsController = require("./application/plugins/tag/controllers/" + requirePrefix + "default.js")();
 
@@ -604,8 +605,17 @@ application.get("/api/ranked-network-references", expressJwt({secret: configurat
     localRankedReferencesController.getReferences(req, res);
 });
 
-// WORLD NETWORK USERS
+// LOCAL NETWORK USERS
+application.get("/api/public-network-users", function(req, res) {
+    console.log("Request to Read all Public World Network Users");
+    localNetworkUsersController.getUsers(req, res);
+});
+application.get("/api/network-users", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
+    console.log("Request to Read all World Network Users");
+    localNetworkUsersController.getUsers(req, res);
+});
 
+// WORLD NETWORK USERS
 application.get("/api/public-world-network-users", function(req, res) {
     console.log("Request to Read all Public World Network Users");
     worldNetworkUsersController.getUsers(req, res);
