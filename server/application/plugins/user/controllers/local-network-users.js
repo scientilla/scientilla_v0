@@ -125,7 +125,9 @@ module.exports = function () {
             } else {
                 networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
                     if (err) {
-                        //
+                        console.log(err);
+                        res.status(404).end();
+                        return;
                     }
                     req.request({ 
                         url: seed.url + "/api/public-local-network-users/", 
@@ -134,6 +136,7 @@ module.exports = function () {
                         qs: req.query
                     }, function (error, response, result) {
                         if (error) {
+                            console.log(error);
                             res.status(404).end();
                             return;
                         }
