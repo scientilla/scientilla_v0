@@ -40,7 +40,7 @@ module.exports = function () {
             strictSSL: false,
             json: true
         }, function(err, response, body) {
-                if (err) {
+                if (err || !body) {
                     cb(err, null);
                     return;
                 }
