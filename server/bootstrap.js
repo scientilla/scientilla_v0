@@ -193,6 +193,12 @@ async.series([
             seriesCallback();
         });
     },
+    function(seriesCallback) {
+        database.collection("local_collected_users", function(err, collection) {
+            localCollectedUsersCollection = collection;
+            seriesCallback();
+        });
+    },
     /*
      function(seriesCallback) {
      database = new databaseEngine.Db(path.resolve(dataPath + "/files/datasets/") + path.sep, {});
@@ -247,7 +253,7 @@ async.series([
             var localReferencesAndUsersCollectionJob = function localReferencesAndUsersCollectionJob() {
                 console.log("Collecting local references and users...");
                 peerReferencesController.discoverLocalReferences(peersCollection, referencesCollection, localCollectedReferencesCollection);
-                //peerUsersController.discoverLocalUsers(peersCollection, usersCollection, localCollectedUsersCollection);
+                peerUsersController.discoverLocalUsers(peersCollection, usersCollection, localCollectedUsersCollection);
 
                 return localReferencesAndUsersCollectionJob;
             }();
@@ -327,6 +333,7 @@ application.use("*", function(req, res, next) {
     req.localCollectedReferencesCollection = localCollectedReferencesCollection;
     req.usersCollection = usersCollection;
     req.collectedUsersCollection = collectedUsersCollection;
+    req.localCollectedUsersCollection = localCollectedUsersCollection;
     req.datasetReferencesCollections = datasetReferencesCollections;
     req.rankedReferencesCollection = rankedReferencesCollection;
     req.localRankedReferencesCollection = localRankedReferencesCollection;

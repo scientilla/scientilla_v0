@@ -23,7 +23,15 @@ module.exports = function () {
             callback();
         });
     };    
+    var updateUsersLocalDiscoveringHits = function(peersCollection, currentPeer, callback) {
+        peersCollection.update({_id: identificationManager.getDatabaseSpecificId(currentPeer._id)}, { $set: { users_local_discovering_hits: (currentPeer.users_loca_discovering_hits + 1) } }, { w: 1}, function(err, peer) {
+            callback();
+        });
+    };    
     return {
+        discoverLocalUsers: function(peersCollection, usersCollection, collectedUsersCollection) {
+            this.discoverUsers(peersCollection, usersCollection, collectedUsersCollection, DISCOVER_LOCAL);
+        },
         discoverGlobalUsers: function(peersCollection, usersCollection, collectedUsersCollection) {
             this.discoverUsers(peersCollection, usersCollection, collectedUsersCollection, DISCOVER_GLOBAL);
         },
@@ -124,7 +132,11 @@ module.exports = function () {
                                                 secondSeriesCallback();
                                             },
                                             function(secondSeriesCallback) {
-                                                updateUsersDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                                if (type === DISCOVER_GLOBAL) {
+                                                    updateUsersDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                                } else {
+                                                    updateUsersLocalDiscoveringHits(peersCollection, peers[0], firstSeriesCallback);
+                                                }
                                             }
                                         ]);
                                     }
