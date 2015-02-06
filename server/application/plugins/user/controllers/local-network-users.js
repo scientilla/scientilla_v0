@@ -130,7 +130,7 @@ module.exports = function () {
                         return;
                     }
                     req.request({ 
-                        url: seed.url + "/api/public-local-network-users/", 
+                        url: seed.url + "/api/public-network-users/", 
                         strictSSL: false,
                         json: true,
                         qs: req.query
