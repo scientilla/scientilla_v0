@@ -361,7 +361,7 @@ module.exports = function () {
                     json:true
                 }, function (err, res, body) {
                     if (!err && body != "") {
-                        var peers = JSON.parse(body);
+                        var peers = body;
 						async.eachSeries(
 							peers,
 							function(peer, eachSeriesCallback) {
