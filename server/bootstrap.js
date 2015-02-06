@@ -234,6 +234,7 @@ async.series([
         nodeSchedule.scheduleJob(peersAndRepositoriesCollectionRecurrenceRule, peersAndRepositoriesCollectionJob);
         seriesCallback();
     },
+    /*
     function(seriesCallback) {
         if (peerMode === 1) {
             var referencesAndUsersCollectionJob = function referencesAndUsersCollectionJob() {
@@ -264,6 +265,7 @@ async.series([
         }
         seriesCallback();
     },
+    */
     function(seriesCallback) {
         if (peerMode === 1) {
             var rankReferencesJob = function rankReferencesJob() {
