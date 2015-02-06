@@ -124,6 +124,7 @@ module.exports = function () {
                 var retrievedCollection = retrieveUsers(req.localCollectedUsersCollection, keywords, userType, currentPageNumber, numberOfItemsPerPage);
                 retrievedCollection.count(function(err, usersCount) {
                     if (err || req.underscore.isNull(usersCount)) {
+                        console.log(err);
                         res.status(404).end();
                         return;
                     }
