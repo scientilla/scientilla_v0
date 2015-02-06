@@ -135,7 +135,7 @@ module.exports = function () {
                         json: true,
                         qs: req.query
                     }, function (error, response, result) {
-                        if (error) {
+                        if (error || !result) {
                             console.log(error);
                             res.status(404).end();
                             return;
