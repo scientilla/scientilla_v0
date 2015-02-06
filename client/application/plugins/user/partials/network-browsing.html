@@ -1,0 +1,109 @@
+<!--
+ ! Scientilla v1.0 Beta (http://www.scientilla.net)
+ ! Copyright 2014-2015 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-left'}"></toaster-container>
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="navbar-brand" id="tools-link">YOUR NETWORK: <strong>{{totalNumberOfItems}}</strong> USERS (Beta)</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <form ng-submit="retrieveCustomItemsPage(1)" autocomplete="off" class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">
+                        <a data-toggle="modal" data-target="#get-started-button" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </a>                       
+                        <div class="input-group">                                        
+                            <input id="keywords" name="keywords" ng-model="keywords" type="text" placeholder="Type something to..." class="form-control">
+                            <span class="input-group-btn">
+                                <a ng-click="retrieveCustomItemsPage(1)" class="btn btn-default" data-toggle="dropdown"><i class="fa fa-search"></i> Search</a>
+                            </span>                            
+                        </div>                                                
+                        <a ng-click="retrieveCustomItemsPage(1)" class="btn btn-default"><i class="fa fa-angle-double-left"></i> First</a>
+                        <a ng-if="currentPageNumber -1 >= 1" ng-click="retrieveCustomItemsPage(currentPageNumber - 1)" class="btn btn-default">{{currentPageNumber -1}}</a>
+                        <a class="btn btn-default active">{{currentPageNumber}}</a>
+                        <a ng-if="(currentPageNumber + 1) <= lastPageNumber" ng-click="retrieveCustomItemsPage(currentPageNumber + 1)" class="btn btn-default">{{currentPageNumber + 1}}</a>
+                        <a ng-click="retrieveCustomItemsPage(lastPageNumber)" class="btn btn-default"><i class="fa fa-angle-double-right"></i> Last</a>
+                    </form>                              
+                </div>
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">       
+        <div class="row">
+            <div class="col-lg-12 visible-md visible-lg">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fa fa-file-text"></i> Identificative Data</th>
+                            <th>Type</th>
+                            <!--
+                            <th class="fixed-th-1x">
+                                <a ng-click="cloneSelectedReferences()" class="btn btn-default btn-block secondary-feature"><i class="fa fa-code-fork secondary-feature"></i></a>
+                            </th>
+                            <th class="fixed-th-1x">
+                                <input type="checkbox" ng-model="allSelected"/>
+                            </th>
+                            -->
+                        </tr>
+                    </thead>
+                    <tbody ng-show="ready && !empty">
+                        <tr ng-repeat="user in aUsers">
+                            <td>
+                                Scientilla Nominative: <strong>{{user.scientilla_nominative}}</strong><br />
+                                {{user.type == 0 || user.type == 1 ? "Birth" : "Foundation"}} Country: <strong>{{user.birth_country}}</strong><br />
+                                <small>
+                                    <br />From: <i class="fa fa-folder-open-o"></i> <a>{{user.peer_url}}</a>
+                                </small>                                
+                            </td>
+                            <td>
+                                <strong>
+                                    {{user.type == "" ? "! Not yet specified" : user.type == 0 ? "Other" : user.type == 1 ? "Researcher" : "Organization"}}<br />
+                                </strong>   
+                            </td>                            
+                            <!--
+                            <td>
+                                <a class="btn btn-default btn-block secondary-feature" ng-click="cloneReference(reference)" ng-disabled="!reference.clonable"><i class="fa fa-code-fork secondary-feature"></i></a>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="reference.selected" ng-disabled="!reference.clonable" />
+                            </td>
+                            -->
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="empty">
+                        <tr>
+                            <td colspan="8">
+                                <div class="col-lg-12 empty-message">
+                                    No users available.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody ng-show="error">
+                        <tr>
+                            <td colspan="8">
+                                <div class="col-lg-12 error-message">
+                                    Error in retrieving users.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+        </div>
+        <div ng-show="!ready" class="row">
+            <div class="col-lg-12 waiting-screen">
+                <i class="fa fa-refresh fa-spin fa-5x"></i>
+            </div>
+        </div>
+    </div>
+</div>

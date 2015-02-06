@@ -8,7 +8,7 @@ angular.module("user").factory(
     "networkUsersService", function($http) {
         var networkUsersProvider = {};
         
-        networkUsersProvider.getUsers = function(keywords, currentPageNumber, numberOfItemsPerPage, token) {
+        networkUsersProvider.getUsers = function(keywords, userType, currentPageNumber, numberOfItemsPerPage, token) {
             var params = {};
             if (keywords) {
                 params.keywords = keywords;
@@ -18,7 +18,17 @@ angular.module("user").factory(
             } 
             if (numberOfItemsPerPage) {
                 params.number_of_items_per_page = numberOfItemsPerPage;
-            }            
+            }       
+            if (userType) {
+                switch (userType) {
+                    case "researchers":
+                        params.user_type = 1;
+                        break;
+                    case "organizations":
+                        params.user_type = 2;
+                        break;                    
+                }
+            }     
             return $http({
 				method: "GET",
 				url: "/api/network-users",

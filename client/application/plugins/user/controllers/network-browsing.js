@@ -5,7 +5,9 @@
  */
 
 angular.module("user").controller(
-    "networkUsersBrowsingController", ["$scope", "networkUsersService", "systemStatusService", "$window", "$location", function($scope, networkUsersService, systemStatusService, $window, $location) {
+    "networkUsersBrowsingController", 
+    ["$scope", "$routeParams", "networkUsersService", "systemStatusService", "$window", "$location", 
+    function($scope, $routeParams, networkUsersService, systemStatusService, $window, $location) {
         $scope.keywords = "";
         $scope.aUsers = [];
         $scope.startPageNumber = 1;
@@ -22,6 +24,7 @@ angular.module("user").controller(
                 function(callback) {
                     networkUsersService.getUsers(
                         $scope.keywords,
+                        $routeParams.userType,
                         $scope.currentPageNumber,
                         $scope.numberOfItemsPerPage,
                         $window.sessionStorage.userToken
