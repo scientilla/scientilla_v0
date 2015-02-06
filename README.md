@@ -70,7 +70,7 @@ While you can see the configuration selector into your installation is highly su
 
 2. Open your preferred browser and navigate the following URL:
 
-   <https://localhost:60000>
+   <https://localhost/>
 
 ####Manual Procedure
 
@@ -96,7 +96,7 @@ While you can see the configuration selector into your installation is highly su
   - Close the "Command Prompt" window.
   - Open your preferred browser and navigate the following URL:
 
-    <https://localhost:60000> 
+    <https://localhost/> 
 
 2. **Windows 64bit**
 
@@ -120,7 +120,7 @@ While you can see the configuration selector into your installation is highly su
   - Close the "Command Prompt" window.
   - Open your preferred browser and navigate the following URL:
 
-    <https://localhost:60000>
+    <https://localhost/>
 
 3. **Linux 32bit**
 
@@ -140,7 +140,7 @@ While you can see the configuration selector into your installation is highly su
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
 
-    <https://localhost:60000>
+    <https://localhost/>
 
 4. **Linux 64bit**
 
@@ -160,7 +160,7 @@ While you can see the configuration selector into your installation is highly su
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
 
-    <https://localhost:60000>
+    <https://localhost/>
 
 5. **Mac OS X 32bit**
 
@@ -203,7 +203,7 @@ While you can see the configuration selector into your installation is highly su
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
 
-    <https://localhost:60000>
+    <https://localhost/>
 
 6. **Mac OS X 64bit**
 
@@ -246,7 +246,7 @@ While you can see the configuration selector into your installation is highly su
   - Close the "Terminal" window.
   - Open your preferred browser and navigate the following URL:
 
-    <https://localhost:60000>
+    <https://localhost/>
 
 
 
