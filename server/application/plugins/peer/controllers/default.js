@@ -416,7 +416,7 @@ module.exports = function () {
                                                 method: "GET",
                                                 url: peer.url + "/api/public-counts", 
                                                 strictSSL: false,
-                                                json; true
+                                                json: true
                                             }, function (err, res, body) {
                                                 var rediscoveredPeer = {};
                                                 if (!err && body != "") {
