@@ -15,6 +15,24 @@ var configurationManager = require(path.resolve(__dirname + "/../../system/contr
 var networkModel = require("../../network/models/default.js")();
 
 module.exports = function () {
+    var getSeedUrl = function(req, cb) {
+        var configuration = configurationManager.get();
+        peer = configuration.url;
+        var peer;
+        if (configuration.mode === 1) {
+            cb(null, peer);
+        } else {
+            networkModel.getRandomSeed(
+                req.seedsConfiguration, 
+                function(err, seed) {
+                    if (err) {
+                        cb(err, null);
+                    } else {
+                        cb(null, seed.url);
+                    }
+                });
+        }
+    };
     var objsArray2MongoSearchQuery = function(objsArray) {
         var searchCriteria = _.map(
             objsArray, 
@@ -123,28 +141,42 @@ module.exports = function () {
                     });                
                 });                
             } else {
-                networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
+                getSeedUrl(req, function(err, seedUrl) {
                     if (err) {
                         console.log(err);
                         res.status(404).end();
                         return;
                     }
-                    req.request({ 
-                        url: seed.url + "/api/public-network-users/", 
-                        strictSSL: false,
-                        json: true,
-                        qs: req.query
-                    }, function (error, response, result) {
-                        if (error || !result) {
-                            console.log(error);
+                    var qs = req.query;
+                    req.peersCollection.find({
+                        aggregating_status: true
+                    }).toArray(function(err, networkPeers) {
+                        if (err) {
+                            console.log(err);
                             res.status(404).end();
                             return;
                         }
-                        resolveUserPeers(result.items, req.peersCollection, function(resolvedUsers) {
-                            result.items = resolvedUsers;
-                            // res.setHeader("Content-Type", "application/json");
-                            res.status(200).send(result).end();
-                        });
+                        var networkPeerUrls = _.pluck(networkPeers, "url");
+                        var thisUrl = configurationManager.get().url;
+                        networkPeerUrls.push(thisUrl);
+                        qs.peer_urls = networkPeerUrls;
+                        req.request({ 
+                            url: seedUrl + "/api/public-world-network-users/", 
+                            strictSSL: false,
+                            json: true,
+                            qs: qs
+                        }, function (error, response, result) {
+                            if (error || !result) {
+                                console.log(error);
+                                res.status(404).end();
+                                return;
+                            }
+                            resolveUserPeers(result.items, req.peersCollection, function(resolvedUsers) {
+                                result.items = resolvedUsers;
+                                // res.setHeader("Content-Type", "application/json");
+                                res.status(200).send(result).end();
+                            });
+                        });                    
                     });                    
                 });                
             }

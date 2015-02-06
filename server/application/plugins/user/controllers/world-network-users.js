@@ -33,9 +33,9 @@ module.exports = function () {
         return searchQuery;
     };
     
-    var retrieveUsers = function(users, keywords, userType, currentPageNumber, numberOfItemsPerPage) {            
+    var retrieveUsers = function(users, keywords, userType, currentPageNumber, numberOfItemsPerPage, peerUrls) {        
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        return users.find({
+        var defaultQuery = {
             type: userType,
             "$or": [
                 {
@@ -69,7 +69,16 @@ module.exports = function () {
                     }
                 }
             ]
-        }).skip(
+        };
+        var searchCriteria = {$and: []};
+        searchCriteria.$and.push(defaultQuery);
+        if (!_.isEmpty(peerUrls)) {
+            var peerQuery = {
+                "peer_url": {$in: peerUrls}
+            };
+            searchCriteria.$and.push(peerQuery);
+        }
+        return users.find(searchCriteria, {"_tiarr.value.sources_cache":0}).skip(
             currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
         ).limit(
             numberOfItemsPerPage
@@ -100,10 +109,11 @@ module.exports = function () {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var userType = _.isUndefined(req.query.user_type) ? '' : parseInt(req.query.user_type, 10);
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);     
+            var peerUrls = _.isUndefined(req.query.peer_urls) ? [] : req.query.peer_urls;       
             var result = {};            
             if (configurationManager.get().mode === 1) {
-                var retrievedCollection = retrieveUsers(req.collectedUsersCollection, keywords, userType, currentPageNumber, numberOfItemsPerPage);
+                var retrievedCollection = retrieveUsers(req.collectedUsersCollection, keywords, userType, currentPageNumber, numberOfItemsPerPage, peerUrls);
                 retrievedCollection.count(function(err, usersCount) {
                     if (err || req.underscore.isNull(usersCount)) {
                         res.status(404).end();
