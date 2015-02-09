@@ -609,11 +609,11 @@ application.get("/api/ranked-network-references", expressJwt({secret: configurat
 
 // LOCAL NETWORK USERS
 application.get("/api/public-network-users", function(req, res) {
-    console.log("Request to Read all Public World Network Users");
+    console.log("Request to Read all Public Local Network Users");
     localNetworkUsersController.getUsers(req, res);
 });
 application.get("/api/network-users", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
-    console.log("Request to Read all World Network Users");
+    console.log("Request to Read all Local Network Users");
     localNetworkUsersController.getUsers(req, res);
 });
 
