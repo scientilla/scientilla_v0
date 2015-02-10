@@ -17,10 +17,8 @@ var networkModel = require("../../network/models/default.js")();
 module.exports = function () {
     var getSeedUrl = function(req, cb) {
         var configuration = configurationManager.get();
-        peer = configuration.url;
-        var peer;
         if (configuration.mode === 1) {
-            cb(null, peer);
+            cb(null, configuration.url);
         } else {
             networkModel.getRandomSeed(
                 req.seedsConfiguration, 
