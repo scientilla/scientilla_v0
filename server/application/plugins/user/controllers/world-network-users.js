@@ -78,7 +78,7 @@ module.exports = function () {
             };
             searchCriteria.$and.push(peerQuery);
         }
-        return users.find(searchCriteria, {"_tiarr.value.sources_cache":0}).skip(
+        return users.find(searchCriteria, {"_tiarr.peer_url":0}).skip(
             currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
         ).limit(
             numberOfItemsPerPage
