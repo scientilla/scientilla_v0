@@ -470,7 +470,6 @@ module.exports = function () {
 
                             // res.setHeader("Content-Type", "application/json");
                             var configuration = configurationManager.get();
-                            console.log(configuration.mode);
                             res.json({
                                 user_token: token,
                                 user_type: user.type,
