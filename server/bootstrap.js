@@ -222,6 +222,18 @@ async.series([
      },
      */
     function(seriesCallback) {
+        var versionCheckJob = function versionCheckJob() {
+            console.log("Checking version...");
+            systemController.checkVersion();
+
+            return versionCheckJob;
+        }();
+        var versionCheckRecurrenceRule = new nodeSchedule.RecurrenceRule();
+        versionCheckRecurrenceRule.minute = [1, new nodeSchedule.Range(0, 59)];
+        nodeSchedule.scheduleJob(versionCheckRecurrenceRule, versionCheckJob);
+        seriesCallback();
+    },    
+    function(seriesCallback) {
         var peersAndRepositoriesCollectionJob = function peersAndRepositoriesCollectionJob() {
             console.log("Collecting peers and repositories...");
             peersController.discoverPeers(seedsConfiguration, peersCollection, usersCollection);

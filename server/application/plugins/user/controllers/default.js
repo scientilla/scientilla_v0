@@ -479,7 +479,8 @@ module.exports = function () {
                                 user_aliases: user.aliases,
                                 owner_scientilla_nominative: owner.scientilla_nominative,
                                 peer_mode: configuration.mode,
-                                url: configuration.url
+                                url: configuration.url,
+                                update_availability: configuration.update_availability
                             });
                         }
                     );					
