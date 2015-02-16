@@ -60,6 +60,9 @@
                         <tr>
                             <th class="fixed-th-1x"></th>                            
                             <th><i class="fa fa-exchange"></i> Repository Name</th>
+                            <th class="fixed-th-1x">
+                                <a href="#/import-repository/" title="Import a Configuration" class="btn btn-default btn-block"><i class="fa fa-upload"></i></a>
+                            </th>                            
                             <th class="fixed-th-1x"></th>
                             <th class="fixed-th-1x">
                                 <a href="#/add-repository/" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
@@ -76,6 +79,9 @@
                                     <strong>{{repository.name}}</strong>
                                 </a>
                             </td>
+                            <td>
+                                <a href="#/export-repository/{{repository._id}}/" title="Export this Configuration" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-download"></i></a>
+                            </td>                            
                             <td>
                                 <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-edit"></i></a>
                             </td>

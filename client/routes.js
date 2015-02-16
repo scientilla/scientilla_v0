@@ -134,6 +134,9 @@ angular.module("scientilla").config([
         }).when("/delete-repository/:id/", {
             templateUrl: "application/plugins/repository/partials/deletion.html",
             controller: "repositoryDeletionController"
+        }).when("/import-repository/", {
+            templateUrl: "application/plugins/repository/partials/importing.html",
+            controller: "repositoryImportingController"            
             
         // SETTINGS
         }).when("/browse-settings/", {
