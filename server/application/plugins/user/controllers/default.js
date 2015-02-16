@@ -470,7 +470,6 @@ module.exports = function () {
 
                             // res.setHeader("Content-Type", "application/json");
                             var configuration = configurationManager.get();
-                            console.log(configuration.mode);
                             res.json({
                                 user_token: token,
                                 user_type: user.type,
@@ -479,7 +478,8 @@ module.exports = function () {
                                 user_aliases: user.aliases,
                                 owner_scientilla_nominative: owner.scientilla_nominative,
                                 peer_mode: configuration.mode,
-                                url: configuration.url
+                                url: configuration.url,
+                                update_availability: configuration.update_availability
                             });
                         }
                     );					

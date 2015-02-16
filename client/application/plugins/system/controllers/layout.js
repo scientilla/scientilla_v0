@@ -11,6 +11,7 @@ angular.module("system").controller(
         $scope.userScientillaNominative = "SCIENTILLA";
         $scope.ownerScientillaNominative = "---";
         $scope.bCollectedPublicationsMenuVisualizationStatus = false;
+        $scope.bUpdateAvailability = false;
         
         $scope.updateSidebarStatus = function updateSidebarStatus() {          
             /* TO-DO: substitute the jQuery code with a directive. */
@@ -56,6 +57,7 @@ angular.module("system").controller(
             $scope.userScientillaNominative = $window.sessionStorage.userScientillaNominative;
             $scope.ownerScientillaNominative = $window.sessionStorage.ownerScientillaNominative;
             $scope.bCollectedPublicationsMenuVisualizationStatus = $window.sessionStorage.peerMode === 1;
+            $scope.bUpdateAvailability = $window.sessionStorage.updateAvailability;
             
             return updateControllerStatus;
         }();

@@ -29,7 +29,10 @@ angular.module("user").factory(
             }
             if (data.owner_scientilla_nominative) {
                 $window.sessionStorage.ownerScientillaNominative = data.owner_scientilla_nominative;
-            }            
+            }
+            if (data.update_availability) {
+                $window.sessionStorage.updateAvailability = data.update_availability;
+            } 
             callback();
         };       
         
@@ -39,6 +42,8 @@ angular.module("user").factory(
             delete $window.sessionStorage.userRights;
             delete $window.sessionStorage.userScientillaNominative;
             delete $window.sessionStorage.userAliases;
+            delete $window.sessionStorage.ownerScientillaNominative;
+            delete $window.sessionStorage.updateAvailability;
             callback();
         };        
         

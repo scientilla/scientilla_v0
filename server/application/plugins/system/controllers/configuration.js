@@ -11,7 +11,9 @@ var path = require("path");
 var configurationManager = function configurationManager() {
     var configurationFilePath = path.resolve(__dirname + "/../../../../configuration/installation.json");
     
-    var configurationData = {};
+    var configurationData = {
+        
+    };
  
     this.load = function() {
         configurationData = JSON.parse(fs.readFileSync(configurationFilePath, { encoding: "utf8" }));
