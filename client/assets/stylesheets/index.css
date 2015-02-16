@@ -355,6 +355,31 @@ html, body {
     color: #FFFFFF;
 }
 
+#content .unconfigured-message {
+    background: #FFFFFF;
+    padding: 5px;
+    font-weight: bold;
+    color: #BBBBBB !important;
+    text-align: center;
+}
+
+#content .unconfigured-message .fa {
+    color: #DDDDDD !important;
+}
+
+#content .unconfigured-message ul {
+    color: #666666 !important;
+    text-align: center;
+}
+
+#content .unconfigured-message ul a {
+    color: #333333 !important;
+}
+
+#content .unconfigured-message ul .fa {
+    color: #333333 !important;
+}
+
 #content .error-message {
     background: #D9534F;
     padding: 5px;
@@ -365,6 +390,10 @@ html, body {
 #content .panel {
     margin-top: 0px;
     margin-bottom: 14px;
+}
+
+#content .file-browser {
+    padding: 0px 0px 0px 0px !important;
 }
 
 /* Footerbar */
