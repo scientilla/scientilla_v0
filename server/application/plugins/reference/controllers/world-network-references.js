@@ -15,24 +15,6 @@ var configurationManager = require("../../system/controllers/configuration.js");
 var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
-    var getSeedUrl = function(req, cb) {
-        var configuration = configurationManager.get();
-        var peer;
-        if (configuration.mode === 1) {
-            peer = configuration.url;
-            cb(null, peer);
-        } else {
-            networkModel.getRandomSeed(
-                req.seedsConfiguration, 
-                function(err, seed) {
-                    if (err) {
-                        cb(err, null);
-                    } else {
-                        cb(null, seed.url);
-                    }
-                });
-        }
-    };
     var makeRequest = function(url, qs, cb) {
         request({ 
             url: url, 
@@ -85,7 +67,7 @@ module.exports = function () {
         getReferences: function(req, res) {
             async.waterfall([
                 function(cb) {
-                    getSeedUrl(req, cb);
+                    networkModel.getSeedUrl(req, cb);
                 },
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references";
@@ -114,7 +96,7 @@ module.exports = function () {
             var id = req.params.id;
             async.waterfall([
                 function(cb) {
-                    getSeedUrl(req, cb);
+                    networkModel.getSeedUrl(req, cb);
                 },
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references/" + id;

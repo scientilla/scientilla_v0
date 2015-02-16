@@ -7,6 +7,7 @@
 var peerManager = require("../../peer/models/default.js")();
 var _ = require("underscore");
 var request = require("request");
+var configurationManager = require("../../system/controllers/configuration.js");
 
 
 module.exports = function () {
@@ -38,6 +39,24 @@ module.exports = function () {
                     callback(err, body);
                 });
             });
+        },
+        
+        getSeedUrl: function(req, cb) {
+            var configuration = configurationManager.get();
+            if (configuration.mode === 1) {
+                var peerUrl = configuration.url;
+                cb(null, peerUrl);
+            } else {
+                this.getRandomSeed(
+                    req.seedsConfiguration, 
+                    function(err, seed) {
+                        if (err) {
+                            cb(err, null);
+                        } else {
+                            cb(null, seed.url);
+                        }
+                    });
+            }
         }
     };
 };
