@@ -5,10 +5,13 @@
  */
 
 angular.module("repository").controller(
-    "localRepositoriesBrowsingController", ["$scope", "repositoriesService", "systemStatusService", "$window", "$location", function($scope, repositoriesService, systemStatusService, $window, $location) {
+    "localRepositoriesBrowsingController", 
+    ["$scope", "$routeParams", "repositoriesService", "systemStatusService", "$window", "$location", "$sce", 
+    function($scope, $routeParams, repositoriesService, systemStatusService, $window, $location, $sce) {
         $scope.keywords = "";
         $scope.aRepositories = [];
         $scope.aReferences = [];
+        $scope.fileContent = "";
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
         $scope.lastPageNumber = 0;
@@ -42,7 +45,20 @@ angular.module("repository").controller(
             ]);
             
             return retrieveRepositories;
-        }();   
+        }();
+        
+        $scope.exportRepository = function(repositoryId) {
+            repositoriesService.exportRepository(
+                repositoryId, 
+                $window.sessionStorage.userToken
+            ).success(function(data, status, headers, config) {
+                var file = new File([JSON.stringify(data)], data.name + ".json", { type: "application/octet-stream" });
+                var fileURL = URL.createObjectURL(file);
+                $window.open(fileURL);
+            }).error(function(data, status, headers, config) {
+                systemStatusService.react(status);
+            });
+        };
         
         $scope.retrievePreviousItemsPage = function() {
             if ($scope.startPageNumber > 1) {

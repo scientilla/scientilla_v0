@@ -129,6 +129,11 @@ module.exports = function () {
                 }
                 repository.extractors = getCleanExtractors(repository.extractors);
                 
+                /*
+                if (!_.isUndefined(res.query.mode) && res.query.mode == "data-as-file") {
+                    res.setHeader("Content-disposition", "attachment; filename=" + repository.name + ".json");
+                }
+                */
                 // res.setHeader("Content-Type", "application/json");
                 res.json(repository);
             });            

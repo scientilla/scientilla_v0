@@ -80,7 +80,7 @@
                                 </a>
                             </td>
                             <td>
-                                <a href="#/export-repository/{{repository._id}}/" title="Export this Configuration" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-download"></i></a>
+                                <a ng-click="exportRepository(repository._id)" title="Export this Configuration" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-download"></i></a>
                             </td>                            
                             <td>
                                 <a href="#/edit-repository/{{repository._id}}/" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-edit"></i></a>
@@ -122,6 +122,6 @@
             <div class="col-lg-12 waiting-screen">
                 <i class="fa fa-refresh fa-spin fa-5x"></i>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
