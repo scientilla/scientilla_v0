@@ -85,6 +85,18 @@ angular.module("repository").factory(
             });
         };
         
+        repositoriesProvider.importRepository = function(id, token) {
+            return $http({
+                method: "GET",
+                url: "/api/repositories/" + id,
+                cache: false,
+                timeout: 30000,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            });
+        };        
+        
         repositoriesProvider.exportRepository = function(id, token) {
             return $http({
                 method: "GET",

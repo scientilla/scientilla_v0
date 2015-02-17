@@ -140,11 +140,20 @@ module.exports = function () {
         },        
         createRepository: function(req, res) {
             var repository = {};
-            !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : repository.name = "";
-            !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : repository.url = "";
-            !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
-            !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getDefaultExtractors();
-            !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : repository.sharing_status = "";
+            if (_.isObject(req.files.file)) {
+                var importedRepository = require(req.files.file.path);
+                repository.name = importedRepository.name;
+                repository.url = importedRepository.url;
+                repository.config = importedRepository.config;
+                repository.extractors = importedRepository.extractors;
+                repository.sharing_status = false;
+            } else {
+                !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : repository.name = "";
+                !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : repository.url = "";
+                !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
+                !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getDefaultExtractors();
+                !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : repository.sharing_status = false; 
+            }
             repository.creator_id = req.user.id;
             repository.creation_datetime = req.moment().format();
             repository.last_modifier_id = "";

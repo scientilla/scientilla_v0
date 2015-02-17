@@ -15,6 +15,7 @@
         "lodash": "2.4.1",
         "moment": "2.8.3",
         "mongodb": "latest",
+        "multer": "latest",
         "node-schedule": "0.1.13",
         "request": "2.47.0",
         "tingodb": "0.3.0",

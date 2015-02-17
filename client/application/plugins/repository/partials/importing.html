@@ -28,11 +28,11 @@
     <div id="content" class="container-fluid">
         <div class="row">            
             <div class="col-lg-12">
-                <form class="form-horizontal" role="form">
+                <form class="form-horizontal" role="form" enctype="multipart/form-data">
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <label for="configuration" class="label label-default">Configuration File</label>
-                            <input id="configuration" ng-model="oRepository.configuration" type="file" class="form-control file-browser">
+                            <label for="file" class="label label-default">Repository File</label>
+                            <input id="file" file="oRepository.file" type="file" class="form-control file-browser">
                         </div>
                     </div>
                     <div class="form-group">

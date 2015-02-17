@@ -18,6 +18,7 @@ var https = require("https");
 var jsonWebToken = require("jsonwebtoken");
 var moment = require("moment");
 var mongodb = require("mongodb");
+var multer = require("multer");
 var nodeSchedule = require("node-schedule");
 var path = require("path");
 var request = require("request");
@@ -111,6 +112,12 @@ async.series([
         }
         seriesCallback();
     },
+    function(seriesCallback) {
+        if (!fs.existsSync(path.resolve(dataPath + "/files/uploads/"))) {
+            fs.mkdirSync(path.resolve(dataPath + "/files/uploads/"));
+        }
+        seriesCallback();
+    },    
     function(seriesCallback) {
         if (configurationManager.get().database_type == "mongodb") {
             databaseEngine.connect(
@@ -357,6 +364,10 @@ application.use("*", function(req, res, next) {
 application.use("*", bodyParser.json());
 
 application.use("/client", express.static(require('path').resolve(__dirname + "/../client")));
+
+application.use(multer({ 
+    dest: path.resolve(dataPath + "/files/uploads/")
+}));
 
 application.get("/", function(req, res, next) {
     res.redirect("/client");
