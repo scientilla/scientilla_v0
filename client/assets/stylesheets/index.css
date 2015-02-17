@@ -495,3 +495,7 @@ html, body {
 .xlg {
     font-size: 2.2em;
 }
+
+.ng-cloak {
+    display: none !important;
+}
