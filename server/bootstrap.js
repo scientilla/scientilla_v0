@@ -686,14 +686,7 @@ application.get("/api/public-repositories", cors(), function(req, res) {
     repositoriesController.getPublicRepositories(req, res);
 });
 
-/*
 application.get("/api/repositories/:id", expressJwt({secret: configurationManager.get().secret}), systemController.checkUserCoherence, function(req, res) {
-    console.log("Request to Read a Repository");
-    repositoriesController.getRepository(req, res);
-});
-*/
-
-application.get("/api/repositories/:id", cors(), function(req, res) {
     console.log("Request to Read a Repository");
     repositoriesController.getRepository(req, res);
 });
