@@ -60,6 +60,7 @@
                         <tr>
                             <th class="fixed-th-1x"></th>                            
                             <th><i class="fa fa-exchange"></i> Repository Name</th>
+                            <th class="fixed-th-3x text-center"><i class="fa fa-info"></i> Version</th>
                             <th class="fixed-th-1x">
                                 <a href="#/import-repository/" title="Import a Configuration" class="btn btn-default btn-block"><i class="fa fa-upload"></i></a>
                             </th>                            
@@ -73,12 +74,15 @@
                         <tr ng-repeat="repository in aRepositories" class="fixed-tr-1x">
                             <td>
                                 <a href="#/browse-repository-references/{{repository._id}}/" class="btn btn-default btn-mini primary-feature"><i class="glyphicon glyphicon-book primary-feature"></i></a>
-                            </td>                            
+                            </td>
                             <td>
                                 <a href="#/edit-repository/{{repository._id}}/">
                                     <strong>{{repository.name}}</strong>
                                 </a>
                             </td>
+                            <td class="text-center">
+                                <strong>{{repository.version}}</strong>
+                            </td>                            
                             <td>
                                 <a ng-click="exportRepository(repository._id)" title="Export this Configuration" class="btn btn-default btn-block fixed-button-1x"><i class="fa fa-download"></i></a>
                             </td>                            

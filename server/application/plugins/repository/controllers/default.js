@@ -143,12 +143,14 @@ module.exports = function () {
             if (_.isObject(req.files.file)) {
                 var importedRepository = require(req.files.file.path);
                 repository.name = importedRepository.name;
+                repository.version = importedRepository.version;
                 repository.url = importedRepository.url;
                 repository.config = importedRepository.config;
                 repository.extractors = importedRepository.extractors;
                 repository.sharing_status = false;
             } else {
                 !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : repository.name = "";
+                !req.underscore.isUndefined(req.body.version) ? repository.version = req.body.version.trim() : repository.version = "";
                 !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : repository.url = "";
                 !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
                 !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getDefaultExtractors();
@@ -170,6 +172,7 @@ module.exports = function () {
         updateRepository: function(req, res) { 
             var repository = {};
             !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : null;
+            !req.underscore.isUndefined(req.body.version) ? repository.version = req.body.version.trim() : null;
             !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : null;  
             !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
             !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getDefaultExtractors();

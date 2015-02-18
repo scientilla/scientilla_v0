@@ -17,6 +17,7 @@ angular.module("repository").controller(
         $scope.defaultPage = 1;
         $scope.oRepository = {
             name: "",
+            version: "",
             url: "",
             config: {
                 keywords: "",
@@ -50,6 +51,7 @@ angular.module("repository").controller(
         $scope.updateRepository = function() {
             repositoriesService.updateRepository({
                 name: $scope.oRepository.name,
+                version: $scope.oRepository.version,
                 url: $scope.oRepository.url,
                 config: {
                     keywords: $scope.oRepository.config.keywords,
