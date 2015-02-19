@@ -57,11 +57,11 @@ module.exports = function () {
         searchCriteria.$and.push(titleAuthorQuery);
         if (!_.isEmpty(peerUrls)) {
             var peerQuery = {
-                "value.sources_cache": {$in: peerUrls}
+                "value.all.peer_url": {$in: peerUrls}
             };
             searchCriteria.$and.push(peerQuery);
         }
-        return rankedReferencesCollection.find(searchCriteria, {"_tiarr.value.sources_cache":0}).sort(
+        return rankedReferencesCollection.find(searchCriteria, {"_tiar.value.all.peer_url":0}).sort(
             {
                 original_hash: 1,
                 clone_hash: 1,
