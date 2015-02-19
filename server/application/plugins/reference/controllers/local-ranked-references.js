@@ -116,7 +116,7 @@ module.exports = function () {
                     });                
                 });                
             } else {
-                networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
+                networkModel.getSeedUrl(req, function(err, seedUrl) {
                     if (err) {
                         console.log(err);
                         res.status(404).end();
@@ -135,8 +135,9 @@ module.exports = function () {
                         var thisUrl = configuration.url;
                         networkPeerUrls.push(thisUrl);
                         qs.peer_urls = networkPeerUrls;
+                        var url = seedUrl + "/api/ranked-references/";
                         req.request({
-                            url: seed.url + "/api/ranked-references/",
+                            url: url,
                             strictSSL: false,
                             json: true,
                             qs: qs
@@ -147,7 +148,7 @@ module.exports = function () {
                                 return;
                             }
                             if (response.statusCode !== 200) {
-                                console.log('An error happened while contacting ' + seed.url + '.');
+                                console.log('An error happened while contacting ' + seedUrl + '.');
                                 res.status(404).end();
                                 return;
                             }
