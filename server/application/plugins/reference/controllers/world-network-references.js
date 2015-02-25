@@ -22,8 +22,12 @@ module.exports = function () {
             strictSSL: false,
             json: true
         }, function(err, response, body) {
-                if (err || !body) {
+                if (err) {
                     cb(err, null);
+                    return;
+                }
+                if (!body) {
+                    cb(new Error('no references'), null);
                     return;
                 }
                 cb(null, body);
