@@ -20,28 +20,44 @@ angular.module("reference").factory(
                 params.number_of_items_per_page = numberOfItemsPerPage;
             }            
             return $http({
-				method: "GET",
-				url: "/api/ranked-network-references",
+		method: "GET",
+		url: "/api/ranked-network-references",
                 params: params,
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };        
         
         networkReferencesProvider.getReference = function(referenceId, token) {
             return $http({
-				method: "GET",
-				url: "/api/network-references/" + referenceId,
+		method: "GET",
+		url: "/api/network-references/" + referenceId,
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
-        };                              
+            });
+        };             
+        
+                                  
+        
+        networkReferencesProvider.getReferencesDetail = function(referenceHashes, token) {
+            var requestParams = {original_hashes: referenceHashes};
+            return $http({
+		method: "GET",
+		url: "/api/world-network-references/",
+                cache: false,
+                timeout: 30000,
+                params: requestParams,
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            });
+        };       
         
         return networkReferencesProvider;
     }    
