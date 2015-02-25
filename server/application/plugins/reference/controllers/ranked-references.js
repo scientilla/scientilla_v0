@@ -35,7 +35,7 @@ module.exports = function () {
         var searchQuery = {$or: searchCriteria};
         return searchQuery;
     };
-    var retrieveReferences = function(rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls) {
+    var retrieveReferences = function(rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls, originalHashes) {
         var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
         var titleAuthorQuery = {
             "$or": [
@@ -53,15 +53,25 @@ module.exports = function () {
                 }
             ]
         };
+        var originalHashesQuery = {
+            "value.top.original_hash": {
+                $in: originalHashes
+            }
+        };
         var searchCriteria = {$and: []};
-        searchCriteria.$and.push(titleAuthorQuery);
-        if (!_.isEmpty(peerUrls)) {
-            var peerQuery = {
-                "value.all.peer_url": {$in: peerUrls}
-            };
-            searchCriteria.$and.push(peerQuery);
+        if (!_.isEmpty(originalHashes)) {
+            searchCriteria.$and.push(originalHashesQuery);
         }
-        return rankedReferencesCollection.find(searchCriteria, {"_tiar.value.all.peer_url":0}).sort(
+        else {
+            searchCriteria.$and.push(titleAuthorQuery);
+            if (!_.isEmpty(peerUrls)) {
+                var peerQuery = {
+                    "value.all.peer_url": {$in: peerUrls}
+                };
+                searchCriteria.$and.push(peerQuery);
+            }
+        }
+        return rankedReferencesCollection.find(searchCriteria, {"_tiar.value.all.peer_url":0, "_tiar.value.top.original_hash":0}).sort(
             {
                 original_hash: 1,
                 clone_hash: 1,
@@ -101,9 +111,10 @@ module.exports = function () {
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);
             var peerUrls = _.isUndefined(req.query.peer_urls) ? [] : req.query.peer_urls;
+            var originalHashes = _.isUndefined(req.query.original_hashes) ? [] : req.query.original_hashes;
             var result = {};
             if (configuration.mode === 1) {
-                var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls);
+                var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls, originalHashes);
                 retrievedCollection.count(function(err, referencesCount) {
                     if (err || req.underscore.isNull(referencesCount)) {
                         console.log(err);
