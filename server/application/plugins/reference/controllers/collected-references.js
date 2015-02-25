@@ -107,7 +107,7 @@ module.exports = function () {
                                 if (!("author_signatures" in r)) {
                                     return [];
                                 }
-                                if (!("organizations"in r.author_signatures)) {
+                                if (!("organizations" in r.author_signatures)) {
                                     return [];
                                 }
                                 return r.author_signatures.organizations;
@@ -115,10 +115,12 @@ module.exports = function () {
                                     function(res, orgs){
                                         return res.concat(orgs);
                                     }, []);
+                        var sources_cache = references.map(function(r) { return r.peer_url;});
                         var result = {
                             top: top,
                             all: all,
-                            affiliations: affiliations
+                            affiliations: affiliations,
+                            sources_cache: sources_cache
                         };
                         return result;
                     }
