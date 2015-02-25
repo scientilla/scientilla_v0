@@ -155,6 +155,7 @@ angular.module("network").controller(
                     ).success(function(data, status, headers, config) {
                         $scope.totalNumberOfItems = data.total_number_of_items;
                         $scope.aReferences = data.items;
+                        _.forEach($scope.aReferences, function(r) {r.reliabilityLoading = 0;});
                         $scope.lastPageNumber = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
                         if ($scope.aReferences.length === 0) {
                             $scope.empty = true;
@@ -164,9 +165,32 @@ angular.module("network").controller(
                         $scope.error = true;
                         systemStatusService.react(status, callback);
                     });
+                },
+                function(callback) {
+                    $scope.ready = true;
+                    var referenceOriginalHashes = _.pluck($scope.aReferences, 'original_hash');
+                    networkReferencesService.getReferencesDetail(
+                        referenceOriginalHashes, 
+                        $window.sessionStorage.userToken
+                    ).success(function(data, status, headers, config) {
+                        _.forEach($scope.aReferences, function(r) {
+                            var r2 = _.find(data.items, function(ref) {return ref.original_hash === r.original_hash;});
+                            if (_.isUndefined(r2)) {
+                                r.reliabilityLoading = 1;
+                            }
+                            else {
+                                r.reliabilityLoading = 2;
+                                r.reliability = r2.confirmedBy + '/' + r2.clonesNum;
+                            }
+                        });
+                        callback();                        
+                    }).error(function(data, status, headers, config) {
+                        $scope.error = true;
+                        systemStatusService.react(status, callback);
+                    });
+                    
                 }
             ],  function(err) {
-                    $scope.ready = true;
                 });
             
             return retrieveReferences;

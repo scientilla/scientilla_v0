@@ -84,7 +84,9 @@
                                 <strong>{{reference.year}}</strong>
                             </td>        
                             <td class="text-center">
-                                <strong> {{reference.confirmedBy}}/{{reference.clonesNum}} </strong>
+                                <div ng-show="reference.reliabilityLoading === 0"><strong> Loading... </strong></div>
+                                <div ng-show="reference.reliabilityLoading === 1"><strong> NA </strong></div>
+                                <div ng-show="reference.reliabilityLoading === 2"><strong> {{reference.reliability}} </strong></div>
                             </td>
                             <td>
                                 <div class="col-xs-12">
