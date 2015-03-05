@@ -296,6 +296,7 @@ async.series([
                 
                 return referencesRankingJob;
             }();
+            var referencesRankingRecurrenceRule = new nodeSchedule.RecurrenceRule();
             referencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
             nodeSchedule.scheduleJob(referencesRankingRecurrenceRule, referencesRankingJob);
         }
@@ -313,6 +314,7 @@ async.series([
                     
                 return localReferencesRankingJob;
             }();
+            var localReferencesRankingRecurrenceRule = new nodeSchedule.RecurrenceRule();
             localReferencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
             nodeSchedule.scheduleJob(localReferencesRankingRecurrenceRule, localReferencesRankingJob);
         }
@@ -330,6 +332,7 @@ async.series([
                 
                 return tagsExtractionJob;
             }();
+            var tagsExtractionRecurrenceRule = new nodeSchedule.RecurrenceRule();
             tagsExtractionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
             nodeSchedule.scheduleJob(tagsExtractionRecurrenceRule, tagsExtractionJob);
         }
