@@ -16,6 +16,7 @@ var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
     var makeRequest = function(url, qs, cb) {
+        console.log("test1");
         request({ 
             url: url, 
             qs: qs,
@@ -30,6 +31,7 @@ module.exports = function () {
                     cb(new Error('no references'), null);
                     return;
                 }
+                console.log("test2");
                 cb(null, body);
             });
     };
@@ -48,15 +50,15 @@ module.exports = function () {
     
     var resolveReferencePeers = function(referencesObj, peersCollection, cb) {
         var result = _.pick(referencesObj, ['total_number_of_items']);
-        async.mapSeries(
+        async.map(
             referencesObj.items,
             function(reference, iterationCallback) {
-                peersCollection.find({ url: reference.peer_url }).toArray(function(error, peers) {
-                    if (error || _.isNull(peers) || _.isUndefined(peers) || peers.length === 0) {
+                peersCollection.findOne({ url: reference.peer_url }, function(error, peer) {
+                    if (error || _.isNull(peer) || _.isUndefined(peer)) {
                         iterationCallback(error, reference);
                         return;
                     }
-                    reference.peer_id = peers[0]._id;
+                    reference.peer_id = peer._id;
                     iterationCallback(null, reference);
                 });
             },
@@ -79,10 +81,10 @@ module.exports = function () {
                 },
                 function(referencesObj, cb) {
                     resolveReferencePeers(referencesObj, req.peersCollection, cb);
-                },
+                },               
                 function(referencesObj, cb) {
                     verifyResults(referencesObj, req.referencesCollection, req.user.hashes, cb);
-                }
+                }                
             ],
             function(err, referencesObj) {
                 if (err) {
@@ -104,14 +106,14 @@ module.exports = function () {
                 },
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references/" + id;
-                    makeRequest(reqUrl, {}, cb);
+                    // makeRequest(reqUrl, {}, cb);
                 },
                 function(referencesObj, cb) {
                     resolveReferencePeers(referencesObj, req.peersCollection, cb);
                 },
                 function(referencesObj, cb) {
                     verifyResults(referencesObj, req.referencesCollection, req.user.hashes, cb);
-                }
+                }                
             ],
             function(err, referencesObj) {
                 if (err) {

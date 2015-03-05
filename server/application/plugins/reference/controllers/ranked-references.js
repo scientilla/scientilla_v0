@@ -84,26 +84,6 @@ module.exports = function () {
         );
     };
 
-    var resolveReferencePeers = function(references, peersCollection, finalizationCallback) {
-        async.mapSeries(
-            references,
-            function(reference, iterationCallback) {
-                peersCollection.find({ url: reference.peer_url }).toArray(function(error, peers) {
-                    if (error || _.isNull(peers) || _.isUndefined(peers) || peers.length === 0) {
-                        console.log(error);
-                        iterationCallback(error, reference);
-                        return;
-                    }
-                    reference.peer_id = peers[0]._id;
-                    iterationCallback(null, reference);
-                });
-            },
-            function(error, resolvedReferences) {
-                finalizationCallback(resolvedReferences);
-            }
-        );
-    };
-
     return {
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
@@ -129,12 +109,10 @@ module.exports = function () {
                             return;
                         }
                         var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
-                        resolveReferencePeers(normalizedReferences, req.peersCollection, function(resolvedReferences) {
-                            result.items = resolvedReferences;
-
-                            // res.setHeader("Content-Type", "application/json");
-                            res.json(result);
-                        });
+                        result.items = normalizedReferences;
+                            
+                        // res.setHeader("Content-Type", "application/json");
+                        res.json(result);
                     });
                 });
             } else {
