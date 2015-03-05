@@ -144,6 +144,7 @@ async.series([
     function(seriesCallback) {
         database.collection("peers", function(err, collection) {
             peersCollection = collection;
+            peersCollection.createIndex({ url: "text" });
             seriesCallback();
         });
     },
@@ -236,7 +237,7 @@ async.series([
             return versionCheckJob;
         }();
         var versionCheckRecurrenceRule = new nodeSchedule.RecurrenceRule();
-        versionCheckRecurrenceRule.minute = [1, new nodeSchedule.Range(0, 59)];
+        versionCheckRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
         nodeSchedule.scheduleJob(versionCheckRecurrenceRule, versionCheckJob);
         seriesCallback();
     },    
@@ -249,7 +250,7 @@ async.series([
             return peersAndRepositoriesCollectionJob;
         }();
         var peersAndRepositoriesCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-        peersAndRepositoriesCollectionRecurrenceRule.minute = [3, new nodeSchedule.Range(0, 59)];
+        peersAndRepositoriesCollectionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 1);
         nodeSchedule.scheduleJob(peersAndRepositoriesCollectionRecurrenceRule, peersAndRepositoriesCollectionJob);
         seriesCallback();
     },
@@ -263,7 +264,7 @@ async.series([
                 return referencesAndUsersCollectionJob;
             }();
             var referencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            referencesAndUsersCollectionRecurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+            referencesAndUsersCollectionRecurrenceRule.minute = new nodeSchedule.Range(0, 59, 2);
             nodeSchedule.scheduleJob(referencesAndUsersCollectionRecurrenceRule, referencesAndUsersCollectionJob);
         }
         seriesCallback();
@@ -278,14 +279,14 @@ async.series([
                 return localReferencesAndUsersCollectionJob;
             }();
             var localReferencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            localReferencesAndUsersCollectionRecurrenceRule.minute = [2, new nodeSchedule.Range(0, 59)];
+            localReferencesAndUsersCollectionRecurrenceRule.minute = new nodeSchedule.Range(0, 59, 2);
             nodeSchedule.scheduleJob(localReferencesAndUsersCollectionRecurrenceRule, localReferencesAndUsersCollectionJob);
         }
         seriesCallback();
     },
     function(seriesCallback) {
         if (peerMode === 1) {
-            var rankReferencesJob = function rankReferencesJob() {
+            var referencesRankingJob = function referencesRankingJob() {
                 console.log("Ranking references...");
                 collectedReferencesController.rankGlobalReferences(collectedReferencesCollection, function() {
                     database.collection("ranked_references", function(err, collection) {
@@ -293,15 +294,16 @@ async.series([
                     });
                 });
                 
-                return rankReferencesJob;
+                return referencesRankingJob;
             }();
-            nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
+            referencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
+            nodeSchedule.scheduleJob(referencesRankingRecurrenceRule, referencesRankingJob);
         }
         seriesCallback();
     },
     function(seriesCallback) {
         if (peerMode === 2) {
-            var rankReferencesJob = function rankReferencesJob() {
+            var localReferencesRankingJob = function localReferencesRankingJob() {
                 console.log("Ranking Local References...");
                     collectedReferencesController.rankLocalReferences(localCollectedReferencesCollection, function() {
                     database.collection("local_ranked_references", function(err, collection) {
@@ -309,23 +311,27 @@ async.series([
                     });
                 });
                     
-                return rankReferencesJob;
+                return localReferencesRankingJob;
             }();
-            nodeSchedule.scheduleJob({hour: 1, minute: 0}, rankReferencesJob);
+            localReferencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
+            nodeSchedule.scheduleJob(localReferencesRankingRecurrenceRule, localReferencesRankingJob);
         }
         seriesCallback();
     },
     function(seriesCallback) {
         if (peerMode === 1) {
-            var extractTagsJob = (function extractTagsJob() {
+            var tagsExtractionJob = function tagsExtractionJob() {
                 console.log("Extracting tags...");
                 tagsController.extractTags(collectedReferencesCollection, function() {
                     database.collection("tags", function(err, collection) {
                         tagsCollection = collection;
                     });
                 });
-            }());
-            nodeSchedule.scheduleJob({hour: 2, minute: 0}, extractTagsJob);
+                
+                return tagsExtractionJob;
+            }();
+            tagsExtractionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
+            nodeSchedule.scheduleJob(tagsExtractionRecurrenceRule, tagsExtractionJob);
         }
         seriesCallback();
     }
