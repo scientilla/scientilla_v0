@@ -331,7 +331,7 @@ async.series([
             // var tagsExtractionRecurrenceRule = new nodeSchedule.RecurrenceRule();
             // tagsExtractionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 10);
             // nodeSchedule.scheduleJob(tagsExtractionRecurrenceRule, tagsExtractionJob);
-            setInterval(referencesRankingJob, 36000000); // 10 hours
+            setInterval(tagsExtractionJob, 36000000); // 10 hours
         }
         seriesCallback();
     }
