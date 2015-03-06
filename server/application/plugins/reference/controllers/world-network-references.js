@@ -123,7 +123,7 @@ module.exports = function () {
                 },
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references/" + id;
-                    // makeRequest(reqUrl, {}, cb);
+                     makeRequest(reqUrl, {}, cb);
                 },
                 function(referencesObj, cb) {
                     resolveReferencePeers(referencesObj, req.peersCollection, cb);
