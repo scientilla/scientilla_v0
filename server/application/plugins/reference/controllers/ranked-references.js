@@ -12,6 +12,7 @@ var path = require("path");
 var request = require("request");
 
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
+var rankedReferencesManager = require("../../reference/models/ranked-references.js")();
 var configurationManager = require(path.resolve(__dirname + "/../../system/controllers/configuration.js"));
 var identificationManager = require(path.resolve(__dirname + "/../../system/controllers/identification.js"));
 var networkModel = require("../../network/models/default.js")();
@@ -35,55 +36,7 @@ module.exports = function () {
         var searchQuery = {$or: searchCriteria};
         return searchQuery;
     };
-    var retrieveReferences = function(rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls, originalHashes) {
-        var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-        var titleAuthorQuery = {
-            "$or": [
-                {
-                    "value.top.title": {
-                        $regex: regexQuery,
-                        $options: 'i'
-                    }
-                },
-                {
-                    "value.top.authors": {
-                        $regex: regexQuery,
-                        $options: 'i'
-                    }
-                }
-            ]
-        };
-        var originalHashesQuery = {
-            "value.top.original_hash": {
-                $in: originalHashes
-            }
-        };
-        var searchCriteria = {$and: []};
-        if (!_.isEmpty(originalHashes)) {
-            searchCriteria.$and.push(originalHashesQuery);
-        }
-        else {
-            searchCriteria.$and.push(titleAuthorQuery);
-            if (!_.isEmpty(peerUrls)) {
-                var peerQuery = {
-                    "value.all.peer_url": {$in: peerUrls}
-                };
-                searchCriteria.$and.push(peerQuery);
-            }
-        }
-        return rankedReferencesCollection.find(searchCriteria, {"_tiar.value.all.peer_url":0, "_tiar.value.top.original_hash":0}).sort(
-            {
-                original_hash: 1,
-                clone_hash: 1,
-                creation_datetime: -1
-            }
-        ).skip(
-            currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
-        ).limit(
-            numberOfItemsPerPage
-        );
-    };
-
+    
     return {
         getReferences: function(req, res) {
             var configuration = configurationManager.get();
@@ -92,61 +45,23 @@ module.exports = function () {
             var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);
             var peerUrls = _.isUndefined(req.query.peer_urls) ? [] : req.query.peer_urls;
             var originalHashes = _.isUndefined(req.query.original_hashes) ? [] : req.query.original_hashes;
-            var result = {};
-            if (configuration.mode === 1) {
-                var retrievedCollection = retrieveReferences(req.rankedReferencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, peerUrls, originalHashes);
-                retrievedCollection.count(function(err, referencesCount) {
-                    if (err || req.underscore.isNull(referencesCount)) {
-                        console.log(err);
-                        res.status(404).end();
-                        return;
-                    }
-                    result.total_number_of_items = referencesCount;
-                    retrievedCollection.toArray(function(err, references) {
-                        if (err || req.underscore.isNull(references)) {
-                            console.log(err);
-                            res.status(404).end();
-                            return;
-                        }
-                        var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
-                        result.items = normalizedReferences;
-                            
-                        // res.setHeader("Content-Type", "application/json");
-                        res.json(result);
-                    });
-                });
-            } else {
-                networkModel.getRandomSeed(req.seedsConfiguration, function(err, seed) {
+            
+            rankedReferencesManager.getReferences(
+                configuration, 
+                req.rankedReferencesCollection, 
+                keywords, currentPageNumber, 
+                numberOfItemsPerPage, 
+                peerUrls, 
+                originalHashes,
+                function(err, result) {
                     if (err) {
                         console.log(err);
                         res.status(404).end();
                         return;
                     }
-                    req.request({
-                        url: seed.url + "/api/world-network-references/",
-                        strictSSL: false,
-                        json: true,
-                        qs: req.query
-                    }, function (error, response, result) {
-                        if (error) {
-                            console.log(error);
-                            res.status(404).end();
-                            return;
-                        }
-                        if (response.statusCode !== 200) {
-                            console.log('An error happened while contacting ' + seed.url + '.');
-                            res.status(404).end();
-                            return;
-                        }
-                        resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
-                            result.items = resolvedReferences;
-
-                            // res.setHeader("Content-Type", "application/json");
-                            res.status(200).send(result).end();
-                        });
-                    });
-                });
-            }
+                    res.json(result);
+                }
+            );
         },
         getRankedReference: function(req, res) {
             var configuration = configurationManager.get();
