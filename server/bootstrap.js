@@ -236,9 +236,10 @@ async.series([
 
             return versionCheckJob;
         }();
-        var versionCheckRecurrenceRule = new nodeSchedule.RecurrenceRule();
-        versionCheckRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 12);
-        nodeSchedule.scheduleJob(versionCheckRecurrenceRule, versionCheckJob);
+        // var versionCheckRecurrenceRule = new nodeSchedule.RecurrenceRule();
+        // versionCheckRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 4);
+        // nodeSchedule.scheduleJob(versionCheckRecurrenceRule, versionCheckJob);
+        setInterval(versionCheckJob, 14400000); // 4 hours
         seriesCallback();
     },    
     function(seriesCallback) {
@@ -248,9 +249,10 @@ async.series([
                 peersController.discoverPeers(seedsConfiguration, peersCollection, usersCollection);
                 // repositoriesController.discoverRepositories(seedsConfiguration, peersCollection);
             };
-            var peersAndRepositoriesCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            peersAndRepositoriesCollectionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 1);
-            nodeSchedule.scheduleJob(peersAndRepositoriesCollectionRecurrenceRule, peersAndRepositoriesCollectionJob);
+            // var peersAndRepositoriesCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            // peersAndRepositoriesCollectionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 1);
+            // nodeSchedule.scheduleJob(peersAndRepositoriesCollectionRecurrenceRule, peersAndRepositoriesCollectionJob);
+            setInterval(peersAndRepositoriesCollectionJob, 3600000); // 1 hour
         }
         seriesCallback();
     },
@@ -261,9 +263,10 @@ async.series([
                 peerReferencesController.discoverGlobalReferences(peersCollection, referencesCollection, collectedReferencesCollection);
                 peerUsersController.discoverGlobalUsers(peersCollection, usersCollection, collectedUsersCollection);
             };
-            var referencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            referencesAndUsersCollectionRecurrenceRule.minute = new nodeSchedule.Range(0, 59, 4);
-            nodeSchedule.scheduleJob(referencesAndUsersCollectionRecurrenceRule, referencesAndUsersCollectionJob);
+            // var referencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            // referencesAndUsersCollectionRecurrenceRule.minute = new nodeSchedule.Range(0, 59, 4);
+            // nodeSchedule.scheduleJob(referencesAndUsersCollectionRecurrenceRule, referencesAndUsersCollectionJob);
+            setInterval(referencesAndUsersCollectionJob, 900000); // 15 minutes
         }
         seriesCallback();
     },
@@ -274,9 +277,10 @@ async.series([
                 peerReferencesController.discoverLocalReferences(peersCollection, referencesCollection, localCollectedReferencesCollection);
                 peerUsersController.discoverLocalUsers(peersCollection, usersCollection, localCollectedUsersCollection);
             };
-            var localReferencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            localReferencesAndUsersCollectionRecurrenceRule.minute = new nodeSchedule.Range(0, 59, 6);
-            nodeSchedule.scheduleJob(localReferencesAndUsersCollectionRecurrenceRule, localReferencesAndUsersCollectionJob);
+            // var localReferencesAndUsersCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            // localReferencesAndUsersCollectionRecurrenceRule.minute = new nodeSchedule.Range(0, 59, 6);
+            // nodeSchedule.scheduleJob(localReferencesAndUsersCollectionRecurrenceRule, localReferencesAndUsersCollectionJob);
+            setInterval(localReferencesAndUsersCollectionJob, 1200000); // 20 minutes
         }
         seriesCallback();
     },
@@ -290,9 +294,10 @@ async.series([
                     });
                 });
             };
-            var localReferencesRankingRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            localReferencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 6);
-            nodeSchedule.scheduleJob(localReferencesRankingRecurrenceRule, localReferencesRankingJob);
+            // var localReferencesRankingRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            // localReferencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 6);
+            // nodeSchedule.scheduleJob(localReferencesRankingRecurrenceRule, localReferencesRankingJob);
+            setInterval(localReferencesRankingJob, 21600000); // 6 hours
         }
         seriesCallback();
     },    
@@ -306,9 +311,10 @@ async.series([
                     });
                 });
             };
-            var referencesRankingRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            referencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 8);
-            nodeSchedule.scheduleJob(referencesRankingRecurrenceRule, referencesRankingJob);
+            // var referencesRankingRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            // referencesRankingRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 8);
+            // nodeSchedule.scheduleJob(referencesRankingRecurrenceRule, referencesRankingJob);
+            setInterval(referencesRankingJob, 28800000); // 8 hours
         }
         seriesCallback();
     },
@@ -322,9 +328,10 @@ async.series([
                     });
                 });
             };
-            var tagsExtractionRecurrenceRule = new nodeSchedule.RecurrenceRule();
-            tagsExtractionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 10);
-            nodeSchedule.scheduleJob(tagsExtractionRecurrenceRule, tagsExtractionJob);
+            // var tagsExtractionRecurrenceRule = new nodeSchedule.RecurrenceRule();
+            // tagsExtractionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 10);
+            // nodeSchedule.scheduleJob(tagsExtractionRecurrenceRule, tagsExtractionJob);
+            setInterval(referencesRankingJob, 36000000); // 10 hours
         }
         seriesCallback();
     }
