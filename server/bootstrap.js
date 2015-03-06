@@ -252,7 +252,7 @@ async.series([
             // var peersAndRepositoriesCollectionRecurrenceRule = new nodeSchedule.RecurrenceRule();
             // peersAndRepositoriesCollectionRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 1);
             // nodeSchedule.scheduleJob(peersAndRepositoriesCollectionRecurrenceRule, peersAndRepositoriesCollectionJob);
-            setInterval(peersAndRepositoriesCollectionJob, 3600000); // 1 hour
+            setInterval(peersAndRepositoriesCollectionJob, Math.floor(Math.random() * (600000 - 60000 + 1) + 60000)); // random from 1 minute to 10 minutes
         }
         seriesCallback();
     },
