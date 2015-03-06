@@ -17,7 +17,6 @@ var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
     var makeRequest = function(url, qs, cb) {
-        console.log("test1");
         request({ 
             url: url, 
             qs: qs,
@@ -32,7 +31,6 @@ module.exports = function () {
                     cb(new Error('no references'), null);
                     return;
                 }
-                console.log("test2");
                 cb(null, body);
             });
     };
