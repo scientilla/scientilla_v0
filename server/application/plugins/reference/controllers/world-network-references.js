@@ -9,6 +9,7 @@ var request = require("request");
 var _ = require("lodash");
 
 var referenceManager = require("../../reference/models/default.js")();
+var rankedReferencesManager = require("../../reference/models/ranked-references.js")();
 var networkModel = require("../../network/models/default.js")();
 var collectedReferencesManager = require("../../reference/models/collected-references.js")();
 var configurationManager = require("../../system/controllers/configuration.js");
@@ -16,7 +17,6 @@ var referencesManager = require("../../reference/models/default.js")();
 
 module.exports = function () {
     var makeRequest = function(url, qs, cb) {
-        console.log("test1");
         request({ 
             url: url, 
             qs: qs,
@@ -31,7 +31,6 @@ module.exports = function () {
                     cb(new Error('no references'), null);
                     return;
                 }
-                console.log("test2");
                 cb(null, body);
             });
     };
@@ -73,11 +72,29 @@ module.exports = function () {
         getReferences: function(req, res) {
             async.waterfall([
                 function(cb) {
-                    networkModel.getSeedUrl(req, cb);
-                },
-                function(peer_url, cb) {
-                    var reqUrl = peer_url + "/api/ranked-references";
-                    makeRequest(reqUrl, req.query, cb);
+                    var configuration = configurationManager.get();
+                        if (configuration.mode === 1) {
+                            var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
+                            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
+                            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);
+                            var peerUrls = _.isUndefined(req.query.peer_urls) ? [] : req.query.peer_urls;
+                            var originalHashes = _.isUndefined(req.query.original_hashes) ? [] : req.query.original_hashes;
+
+                            rankedReferencesManager.getReferences(
+                                configuration, 
+                                req.rankedReferencesCollection, 
+                                keywords, currentPageNumber, 
+                                numberOfItemsPerPage, 
+                                peerUrls, 
+                                originalHashes,
+                                cb
+                            );
+                        } else {
+                            networkModel.getSeedUrl(req, function(err, seed_url) {
+                                var reqUrl = seed_url + "/api/ranked-references/";
+                                makeRequest(reqUrl, {}, cb);
+                            });
+                    }
                 },
                 function(referencesObj, cb) {
                     resolveReferencePeers(referencesObj, req.peersCollection, cb);
@@ -106,7 +123,7 @@ module.exports = function () {
                 },
                 function(peer_url, cb) {
                     var reqUrl = peer_url + "/api/ranked-references/" + id;
-                    // makeRequest(reqUrl, {}, cb);
+                     makeRequest(reqUrl, {}, cb);
                 },
                 function(referencesObj, cb) {
                     resolveReferencePeers(referencesObj, req.peersCollection, cb);
