@@ -152,12 +152,19 @@ module.exports = function () {
                                 res.status(404).end();
                                 return;
                             }
-                            resolveReferencePeers(result.items, req.peersCollection, function(resolvedReferences) {
-                                result.items = resolvedReferences;
-
-                                // res.setHeader("Content-Type", "application/json");
-                                res.status(200).send(result).end();
-                            });
+                            var localReferences = result.items;
+                            referenceManager.getVerifiedReferences(
+                                req.referencesCollection,
+                                req.user.hashes,
+                                localReferences, 
+                                null,
+                                function(err, verifiedReferences) {
+                                    resolveReferencePeers(verifiedReferences, req.peersCollection, function(resolvedReferences) {
+                                        result.items = resolvedReferences;
+                                        // res.setHeader("Content-Type", "application/json");
+                                        res.status(200).send(result).end();
+                                    });
+                                });
                         });
 
                     });
