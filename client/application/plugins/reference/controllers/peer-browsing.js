@@ -133,6 +133,8 @@ angular.module("reference").controller(
                     peerReferencesService.getReferences(
                         $scope.peerId,
                         $scope.keywords,
+                        $scope.currentPageNumber,
+                        $scope.numberOfItemsPerPage,
                         $window.sessionStorage.userToken
                     ).success(function(data, status, headers, config) {
                         $scope.totalNumberOfItems = data.total_number_of_items;
@@ -167,6 +169,7 @@ angular.module("reference").controller(
             if (customPageNumber >= 1 && customPageNumber <= Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage)) {
                 $scope.currentPageNumber = customPageNumber;
             }
+            $scope.retrieveReferences();
         };         
         
         $scope.retrieveNextItemsPage = function() {
