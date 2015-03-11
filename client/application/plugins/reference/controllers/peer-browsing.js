@@ -13,9 +13,10 @@ angular.module("reference").controller(
         $scope.aReferences = [];
         $scope.startPageNumber = 1;
         $scope.currentPageNumber = 1;
-        $scope.numberOfItemsPerPage = 25;
+        $scope.numberOfItemsPerPage = 20;
         $scope.totalNumberOfItems = 0;
-        $scope.allSelected = false;      
+        $scope.allSelected = false;     
+        $scope.lastPageNumber =  0;
         
         $scope.cloneReference = function(reference) {
             referencesService.cloneReferenceFromPeer(
@@ -136,6 +137,7 @@ angular.module("reference").controller(
                     ).success(function(data, status, headers, config) {
                         $scope.totalNumberOfItems = data.total_number_of_items;
                         $scope.aReferences = data.items;
+                        $scope.lastPageNumber = Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage);
                         if ($scope.aReferences.length === 0) {
                             $scope.empty = true;
                         }                    
