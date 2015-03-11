@@ -66,7 +66,7 @@ module.exports = function () {
                                 res.status(404).end();
                                 return;
                             }
-                            var verifiedReferencesObj = {items: verifiedReferences, total_number_of_items: verifiedReferences.length};
+                            var verifiedReferencesObj = {items: verifiedReferences, total_number_of_items: peerReferencesObj.total_number_of_items};
                             
                             // res.setHeader("Content-Type", "application/json");
                             res.status(200).send(verifiedReferencesObj).end();
