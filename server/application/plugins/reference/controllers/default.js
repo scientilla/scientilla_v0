@@ -89,7 +89,7 @@ module.exports = function () {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 2 : parseInt(req.query.number_of_items_per_page); 
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page); 
             var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             var retrievedCollection = req.referencesCollection.find({ 
                 sharing_status: true,
