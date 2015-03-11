@@ -44,7 +44,8 @@ module.exports = function () {
                     return;
                 }
                 req.request({ 
-                    url: peer.url + "/api/public-references?keywords=" + req.query.keywords, 
+                    url: peer.url + "/api/public-references", 
+                    qs: req.query,
                     strictSSL: false,
                     json: true 
                 }, function (error, response, peerReferencesObj) {
