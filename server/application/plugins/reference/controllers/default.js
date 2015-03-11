@@ -88,8 +88,10 @@ module.exports = function () {
         getPublicReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var datetime = _.isUndefined(req.query.datetime) ? '' : req.query.datetime;
+            var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 2 : parseInt(req.query.number_of_items_per_page); 
             var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
-            req.referencesCollection.find({ 
+            var retrievedCollection = req.referencesCollection.find({ 
                 sharing_status: true,
                 last_modification_datetime: {
                     $gt: datetime
@@ -108,17 +110,37 @@ module.exports = function () {
                         }
                     }
                 ]                
-            }).sort({ creation_datetime: -1 }).toArray(function(err, publicReferences) {
-                if (err || req.underscore.isNull(publicReferences)) {
+            }).sort(
+                    { creation_datetime: -1 }
+            ).skip(
+                currentPageNumber > 0 ? ((currentPageNumber - 1) * numberOfItemsPerPage) : 0
+            ).limit(
+                numberOfItemsPerPage
+            );
+            
+            var result = {};
+            
+            retrievedCollection.count(function(err, count) {
+                console.log(count);
+                if (err) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
-                publicReferences = cleanReferencesTags(publicReferences);
-                var publicReferencesObj = {items: publicReferences, total_number_of_items: publicReferences.length};
-                
-                // res.setHeader("Content-Type", "application/json");
-                res.json(publicReferencesObj);
-            });            
+                result.total_number_of_items = count;
+                retrievedCollection.toArray(function(err, publicReferences) {
+                    if (err || req.underscore.isNull(publicReferences)) {
+                        console.log(err);
+                        res.status(404).end();
+                        return;
+                    }
+                    publicReferences = cleanReferencesTags(publicReferences);
+                    result.items = publicReferences;
+
+                    // res.setHeader("Content-Type", "application/json");
+                    res.json(result);
+                });            
+            });
         },        
         getReference: function(req, res) {
             req.referencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, function(err, reference) {
