@@ -92,7 +92,7 @@ module.exports = function () {
                         } else {
                             networkModel.getSeedUrl(req, function(err, seed_url) {
                                 var reqUrl = seed_url + "/api/ranked-references/";
-                                makeRequest(reqUrl, {}, cb);
+                                makeRequest(reqUrl, req.query, cb);
                             });
                     }
                 },
