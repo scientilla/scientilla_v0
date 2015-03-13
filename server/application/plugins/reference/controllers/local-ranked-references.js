@@ -107,12 +107,19 @@ module.exports = function () {
                             return;
                         }
                         var normalizedReferences = collectedReferencesManager.normalizeRankedReferences(references);
-                        resolveReferencePeers(normalizedReferences, req.peersCollection, function(resolvedReferences) {
-                            result.items = resolvedReferences;
-                            
-                            // res.setHeader("Content-Type", "application/json");
-                            res.json(result);                             
-                        });              
+                        referenceManager.getVerifiedReferences(
+                                req.referencesCollection,
+                                req.user.hashes,
+                                normalizedReferences, 
+                                null,
+                                function(err, verifiedReferences) {
+                                    resolveReferencePeers(verifiedReferences, req.peersCollection, function(resolvedReferences) {
+                                        result.items = resolvedReferences;
+
+                                        // res.setHeader("Content-Type", "application/json");
+                                        res.json(result);                             
+                                    });              
+                                });
                     });                
                 });                
             } else {
@@ -159,6 +166,7 @@ module.exports = function () {
                                 localReferences, 
                                 null,
                                 function(err, verifiedReferences) {
+                                    console.log(verifiedReferences);
                                     resolveReferencePeers(verifiedReferences, req.peersCollection, function(resolvedReferences) {
                                         result.items = resolvedReferences;
                                         // res.setHeader("Content-Type", "application/json");
