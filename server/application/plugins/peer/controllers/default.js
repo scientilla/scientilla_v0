@@ -233,6 +233,10 @@ module.exports = function () {
                         newPeer.type = LOCAL;
                         newPeer.sharing_status = false;
                         newPeer.aggregating_status = true;
+                        if (_.isEmpty(newPeer.name) || _.isEmpty(newPeer.url)) {
+                            res.status(404).end();
+                            return;
+                        }
                         req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
                                 console.log(err);
