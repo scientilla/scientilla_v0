@@ -374,9 +374,9 @@ module.exports = function () {
                 }, function (err, res, body) {
                     if (!err && body != "") {
                         var peers = body;
-						async.eachSeries(
-							peers,
-							function(peer, eachSeriesCallback) {
+                        async.eachSeries(
+                                peers,
+                                function(peer, eachSeriesCallback) {
                                 if (peer.url != configurationManager.get().url) {
                                     peersCollection.findOne({ url: peer.url }, function(err, knownPeer) {
                                         if (err || underscore.isNull(knownPeer)) {
@@ -418,9 +418,13 @@ module.exports = function () {
                                                     discoveredPeer.last_modifier_id = "";
                                                     discoveredPeer.last_modification_datetime = moment().format();  
                                                     discoveredPeer.type = REMOTE;
-                                                    peersCollection.insert(discoveredPeer, {w: 1}, function(err, createdPeer) {
+                                                    if (_.isEmpty(discoveredPeer.name) || _.isEmpty(discoveredPeer.url)) {
                                                         eachSeriesCallback();
-                                                    });                                                    
+                                                    } else {
+                                                        peersCollection.insert(discoveredPeer, {w: 1}, function(err, createdPeer) {
+                                                            eachSeriesCallback();
+                                                        });   
+                                                    }
                                                 });
                                             });
                                         } else {
@@ -441,9 +445,13 @@ module.exports = function () {
                                                 rediscoveredPeer.description = peer.description;
                                                 rediscoveredPeer.last_modification_datetime = moment().format();  
                                                 rediscoveredPeer.type = REMOTE;
-                                                peersCollection.update({ url: peer.url }, { $set: rediscoveredPeer }, {w: 1}, function(err, createdPeer) {
+                                                if (_.isEmpty(rediscoveredPeer.name) || _.isEmpty(rediscoveredPeer.url)) {
                                                     eachSeriesCallback();
-                                                });                                                    
+                                                } else {
+                                                    peersCollection.update({ url: peer.url }, { $set: rediscoveredPeer }, {w: 1}, function(err, createdPeer) {
+                                                        eachSeriesCallback();
+                                                    }); 
+                                                }
                                             });
                                         }
                                     });
