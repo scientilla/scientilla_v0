@@ -15,6 +15,13 @@ angular.module("user").controller(
         $scope.lastPageNumber = 0;
         $scope.numberOfItemsPerPage = 20;
         $scope.totalNumberOfItems = 0;        
+
+        $scope.getPeerPath = function(peerId, peerUrl) {
+            if (peerUrl === $window.sessionStorage.url) {
+                return '#/';
+            }
+            return '#/browse-peer-references/' + peerId + '/';
+        };
         
         $scope.retrieveUsers = function retrieveUsers() {
             $scope.empty = false;

@@ -60,9 +60,10 @@
                             <td>
                                 Scientilla Nominative: <strong>{{user.scientilla_nominative}}</strong><br />
                                 {{user.type == 0 || user.type == 1 ? "Birth" : "Foundation"}} Country: <strong>{{user.birth_country}}</strong><br />
-                                <small>
-                                    <br />From: <i class="fa fa-folder-open-o"></i> <a>{{user.peer_url}}</a>
-                                </small>                                
+                                <small ng-init="peer_path = getPeerPath(user.peer_id, user.peer_url)">
+                                    <br />From: <i class="fa fa-folder-open-o"></i> 
+                                    <a ng-href="{{peer_path}}">{{user.peer_url}}</a>
+                                </small>                           
                             </td>
                             <td>
                                 <strong>
