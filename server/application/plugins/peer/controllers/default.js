@@ -282,6 +282,10 @@ module.exports = function () {
                             newPeer.last_modifier_id = "";
                             newPeer.last_modification_datetime = req.moment().format();      
                             newPeer.type = REMOTE;
+                            if (_.isEmpty(newPeer.name) || _.isEmpty(newPeer.url)) {
+                                res.status(404).end();
+                                return;
+                            }
                             req.peersCollection.insert(newPeer, { w: 1 }, function(err, storedPeer) {
                                 if (err || req.underscore.isNull(storedPeer)) {
                                     res.status(409).end();
@@ -296,6 +300,10 @@ module.exports = function () {
                         !req.underscore.isUndefined(req.body.description) ? renewedPeer.description = req.body.description.trim() : renewedPeer.description = existingPeer.description;
                         renewedPeer.last_modification_datetime = req.moment().format();      
                         renewedPeer.type = REMOTE;
+                        if (_.isEmpty(renewedPeer.name) || _.isEmpty(renewedPeer.url)) {
+                            res.status(404).end();
+                            return;
+                        }
                         req.peersCollection.update({ url: existingPeer.url }, { $set: renewedPeer }, { w: 1 }, function(err, storedPeer) {
                             if (err || req.underscore.isNull(storedPeer)) {
                                 res.status(409).end();
