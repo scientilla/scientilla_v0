@@ -60,9 +60,10 @@
                             <td>
                                 Scientilla Nominative: <strong>{{user.scientilla_nominative}}</strong><br />
                                 {{user.type == 0 || user.type == 1 ? "Birth" : "Foundation"}} Country: <strong>{{user.birth_country}}</strong><br />
-                                <small>
-                                    <br />From: <i class="fa fa-folder-open-o"></i> <a>{{user.peer_url}}</a>
-                                </small>                                
+                                <small ng-init="peer_path = getPeerPath(user.peer_id, user.peer_url)">
+                                    <br />From: <i class="fa fa-folder-open-o"></i> 
+                                    <a ng-href="{{peer_path}}">{{user.peer_url}}</a>
+                                </small>                            
                             </td>
                             <td>
                                 <strong>
@@ -93,7 +94,7 @@
                             <td colspan="8">
                                 <div class="col-lg-12 error-message">
                                     Error in retrieving users.
-                                </div>
+                                </drefreshiv>
                             </td>
                         </tr>
                     </tbody>                    
@@ -102,7 +103,7 @@
         </div>
         <div ng-show="!ready" class="row">
             <div class="col-lg-12 waiting-screen">
-                <i class="fa fa-refresh fa-spin fa-5x"></i>
+                <i class="fa fa- fa-spin fa-5x"></i>
             </div>
         </div>
     </div>
