@@ -31,6 +31,7 @@
                 <form name="form" autocomplete="off" class="form-horizontal" role="form">
                     <div class="form-group">
                         <div class="col-xs-12">
+                            <label for="user_type" class="label label-default">User Type</label>
                             <div>
                                 <div class="btn-group">
                                     <label class="btn btn-default" ng-model="oUser.type" btn-radio="0">Other</label>
@@ -42,49 +43,58 @@
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input id="first_name" ng-model="oUser.scientilla_nominative" type="text" placeholder="SCIENTILLA Nominative" class="form-control">
+                            <label for="scientilla_nominative" class="label label-default">Scientilla nominative</label>
+                            <input id="scientilla_nominative" ng-model="oUser.scientilla_nominative" type="text" placeholder="SCIENTILLA Nominative" class="form-control">
                         </div>
                     </div>                   
                     <div>
                         <div ng-if="oUser.type == 0 || oUser.type == 1">
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="first_name" ng-model="oUser.first_name" type="text" placeholder="First Name" class="form-control">
+                                    <label for="first_name" class="label label-default">First name</label>
+                                    <input id="first_name" name="first_name" g-model="oUser.first_name" type="text" placeholder="First Name" ng-change="resetUserAliases()" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="middle_name" ng-model="oUser.middle_name" type="text" placeholder="Middle Name" class="form-control">
+                                    <label for="middle_name" class="label label-default">Middle name</label>
+                                    <input id="middle_name" name="middle_name" ng-model="oUser.middle_name" type="text" placeholder="Middle Name" class="form-control">
                                 </div>
                             </div>                    
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="last_name" ng-model="oUser.last_name" type="text" placeholder="Last Name" class="form-control">
+                                    <label for="last_name" class="label label-default">Last name</label>
+                                    <input id="last_name" name="last_name" ng-model="oUser.last_name" type="text" placeholder="Last Name" ng-change="resetUserAliases()" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
+                                    <label for="birth_date" class="label label-default">Birth date</label>
                                     <label for="birth_date" class="label label-danger" ng-show="!form.birth_date.$valid">Wrong format</label>                         
                                     <input name="birth_date" id="birth_date" ng-model="oUser.birth_date"  type="text" placeholder="Birth Date (EG: 1977-08-16)" class="form-control" ng-pattern="/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="birth_city" ng-model="oUser.birth_city" type="text" placeholder="Birth City" class="form-control">
+                                    <label for="birth_city" class="label label-default">Birth city</label>
+                                    <input id="birth_city" name="birth_city" ng-model="oUser.birth_city" type="text" placeholder="Birth City" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="birth_state" ng-model="oUser.birth_state" type="text" placeholder="Birth State" class="form-control">
+                                    <label for="birth_state" class="label label-default">Birth state</label>
+                                    <input id="birth_state" name="birth_state" ng-model="oUser.birth_state" type="text" placeholder="Birth State" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="birth_country" ng-model="oUser.birth_country" type="text" placeholder="Birth Country" class="form-control">
+                                    <label for="birth_country" class="label label-default">Birth country</label>
+                                    <input id="birth_country" name="birth_country" ng-model="oUser.birth_country" type="text" placeholder="Birth Country" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
+                                    <label for="sex" class="label label-default">Sex</label>
                                     <div>
                                         <div class="btn-group">
                                             <label class="btn btn-default" ng-model="oUser.sex" btn-radio="'F'">Female</label>
@@ -97,33 +107,39 @@
                         <div ng-if="oUser.type == 2">
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="business_name" ng-model="oUser.business_name" type="text" placeholder="Business Name" class="form-control">
+                                    <label for="business_name" class="label label-default">Business name</label>
+                                    <input id="business_name" name="business_name" ng-model="oUser.business_name" type="text" placeholder="Business Name" ng-change="resetUserAliases()" class="form-control">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input id="email" ng-model="oUser.email" type="text" placeholder="Email" class="form-control">
+                            <label for="email" class="label label-default">Email</label>
+                            <input id="email" name="email" ng-model="oUser.email" type="text" placeholder="Email" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input id="username" ng-model="oUser.username" type="text" placeholder="Username" class="form-control">
+                            <label for="username" class="label label-default">Username</label>
+                            <input id="username" name="username" ng-model="oUser.username" type="text" placeholder="Username" class="form-control">
                         </div>
                     </div>                    
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input id="password" ng-model="oUser.password" type="password" placeholder="Password" class="form-control">
+                            <label for="password" class="label label-default">Password</label>
+                            <input id="password" name="password" ng-model="oUser.password" type="password" placeholder="Password" class="form-control">
                         </div>
                     </div>                    
                     <div class="form-group">
                         <div class="col-xs-12">
+                            <label for="password_repetition" class="label label-default">Password repetition</label>
                             <input id="password_repetition" ng-model="oUser.password_repetition" type="password" placeholder="Password Repetition" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
+                            <label for="status" class="label label-default">Status</label>
                             <div>
                                 <div class="btn-group">
                                     <label class="btn btn-default" ng-model="oUser.status" btn-radio="'B'">Blocked</label>
@@ -131,9 +147,10 @@
                                 </div>
                             </div>                            
                         </div>
-                    </div>                            
+                    </div>                   
                     <div class="form-group">
                         <div class="col-xs-12">
+                            <label for="description" class="label label-default">Description</label>
                             <textarea id="description" ng-model="oUser.description" type="text" placeholder="Description" class="form-control" rows="4"> </textarea>
                         </div>
                     </div>               
