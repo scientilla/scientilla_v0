@@ -291,7 +291,7 @@ If you want to contribute with translation please send us an email so we can kee
 
 
 
-## Sponsor
+## Supporter
 
 **Istituto Italiano di Tecnologia**
 
