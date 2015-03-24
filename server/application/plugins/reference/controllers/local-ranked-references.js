@@ -166,7 +166,6 @@ module.exports = function () {
                                 localReferences, 
                                 null,
                                 function(err, verifiedReferences) {
-                                    console.log(verifiedReferences);
                                     resolveReferencePeers(verifiedReferences, req.peersCollection, function(resolvedReferences) {
                                         result.items = resolvedReferences;
                                         // res.setHeader("Content-Type", "application/json");
