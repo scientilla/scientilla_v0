@@ -65,8 +65,8 @@ module.exports = function () {
         },
         getRankedReference: function(req, res) {
             var configuration = configurationManager.get();
-            var id = req.params.id;
             if (configuration.mode === 1) {
+                var id = req.params.id;
                 req.rankedReferencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(id)}, function(err, rankedReference) {
                     if (err || req.underscore.isNull(rankedReference)) {
                         console.log(err);
@@ -88,31 +88,7 @@ module.exports = function () {
                         });
                 });
             } else {
-                networkModel.getRandomSeed(
-                    req.seedsConfiguration,
-                    function(err, seed) {
-                        if (err) {
-                            console.log(err);
-                            res.status(404).end();
-                            return;
-                        } else {
-                            var url = seed.url + "/api/world-network-references/" + req.params.id + "/";
-                            req.request({
-                                url: url,
-                                strictSSL: false,
-                                json: true
-                            }, function(err, response, body) {
-                                if (err) {
-                                    console.log(err);
-                                    res.status(404).end();
-                                    return;
-                                }
-
-                                // res.setHeader("Content-Type", "application/json");
-                                res.status(200).json(body).end();
-                            });
-                        }
-                    });
+                res.status(404).end();
             }
         }
     };
