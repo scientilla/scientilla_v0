@@ -118,6 +118,32 @@ module.exports = function () {
             }
             async.series([
                 function(firstSeriesCallback) {
+                    if (type === DISCOVER_GLOBAL) {
+                        firstSeriesCallback();
+                        return;
+                    }
+                    async.waterfall([
+                        function(waterfallCallback) {
+                            peersCollection.find(
+                                { aggregating_status: true }).toArray(
+                                function(err, peers) {
+                                    var peerUrls = _.pluck(peers, 'url');
+                                    peerUrls.push(configurationManager.get().url);
+                                    waterfallCallback(null, peerUrls);
+                                });
+                        },
+                        function(peerUrls, waterfallCallback) {
+                            console.log(peerUrls);
+                            collectedReferencesCollection.remove(
+                                {peer_url: {$nin: peerUrls}}, 
+                                {'_tiar.peer_url' : 0},
+                                function(err, references) {
+                                    firstSeriesCallback();
+                                });
+                        }
+                    ])
+                },
+                function(firstSeriesCallback) {
                     collectedReferencesCollection.find({ peer_url: configurationManager.get().url }).sort({ last_modification_datetime: -1 }).limit(1).toArray(function(err, collectedReferences) {
                         if (err || _.isNull(collectedReferences)) {
                             firstSeriesCallback();
