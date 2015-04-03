@@ -256,6 +256,48 @@ Scientilla is a web application that works also from your desktop and that is co
 
 
 
+
+
+
+## How run multiple SCIENTILLA installations
+
+####Manual Procedure
+
+1. **Linux 32bit and 64bit**
+
+Install more than one copy of the Scientilla Zip package using different folders.
+
+Follow these steps for every Scientilla Zip package installed copy:
+  - Edit the installation.json file that you can find under **[/path/of/the/folder/where/you/installed/the/scientilla/copy]**/server/configuration/
+  - Update the "port" property to a value different than those in other installed copies.
+  - Update the "url" property so that it doesn't include the above specified port.
+
+Install the NGINX server.
+
+Applying the below reported example, create one NGINX virtual host configuration file per each installed Scientilla Zip package copy.
+<pre>
+server {
+    listen 443 ssl;
+    server_name **[the-value-of-the-url-property-for-the-scientilla-copy]**;
+    ssl_certificate **[/path/of/the/folder/where/you/installed/the/scientilla/copy]**/certs/certificate.cert;
+    ssl_certificate_key **[/path/of/the/folder/where/you/installed/the/scientilla/copy]**/certs/certificate.key;
+    location / {
+        proxy_pass https://localhost:**[the-value-of-the-url-property-for-the-scientilla-copy]**;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+</pre>
+
+Start the installed Scientilla Zip package copies.
+
+Start the NGINX server.
+
+
+
 ## How to configure SCIENTILLA
 
 ####Other Resources
