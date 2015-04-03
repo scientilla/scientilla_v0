@@ -133,7 +133,6 @@ module.exports = function () {
                                 });
                         },
                         function(peerUrls, waterfallCallback) {
-                            console.log(peerUrls);
                             collectedReferencesCollection.remove(
                                 {peer_url: {$nin: peerUrls}}, 
                                 {'_tiar.peer_url' : 0},
