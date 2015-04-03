@@ -267,9 +267,9 @@ Scientilla is a web application that works also from your desktop and that is co
 
   - Install more than one copy of the Scientilla Zip package using different folders.
   - Follow these steps for every Scientilla Zip package installed copy:
-  1. Edit the installation.json file that you can find under **[/path/of/the/folder/where/you/installed/the/scientilla/copy]**/server/configuration/
-  2. Update the "port" property to a value different than those in other installed copies.
-  3. Update the "url" property so that it doesn't include the above specified port.
+  - **For each installation**: Edit the installation.json file that you can find under **[/path/of/the/folder/where/you/installed/the/scientilla/copy]**/server/configuration/
+  - **For each installation**: Update the "port" property to a value different than those in other installed copies.
+  - **For each installation**: Update the "url" property so that it doesn't include the above specified port.
   - Install the NGINX server.
   - Applying the below reported example, create one NGINX virtual host configuration file per each installed Scientilla Zip package copy.
     <pre>
