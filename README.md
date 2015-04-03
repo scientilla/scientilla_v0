@@ -250,15 +250,6 @@ While you can see the configuration selector into your installation is highly su
 
 
 
-## How to use SCIENTILLA
-
-Scientilla is a web application that works also from your desktop and that is compatible with Windows, Mac and Linux. You can download the installation package and run it from your hardware and networking facilities or request a demo on [http://www.scientilla.net](http://www.scientilla.net) so that you can check what the software does.
-
-
-
-
-
-
 ## How run multiple SCIENTILLA installations
 
 ####Manual Procedure
@@ -290,6 +281,12 @@ Scientilla is a web application that works also from your desktop and that is co
     </pre>
   - Start the installed Scientilla Zip package copies.
   - Start the NGINX server.
+
+
+
+## How to use SCIENTILLA
+
+Scientilla is a web application that works also from your desktop and that is compatible with Windows, Mac and Linux. You can download the installation package and run it from your hardware and networking facilities or request a demo on [http://www.scientilla.net](http://www.scientilla.net) so that you can check what the software does.
 
 
 
