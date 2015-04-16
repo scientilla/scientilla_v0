@@ -43,6 +43,7 @@ angular.module("repository").controller(
                 for (var key in data) {
                     $scope.oRepository[key] = data[key];
                 }
+                $scope.compressTags();
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);
             });
