@@ -179,6 +179,7 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
             !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getDefaultExtractors();
             !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : null;
+            !req.underscore.isUndefined(req.body.tags) ? repository.tags = req.body.tags : repository.tags = []; 
             repository.last_modifier_id = req.user.id;
             repository.last_modification_datetime = req.moment().format();         
             req.repositoriesCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: repository }, {w: 1}, function(err, repository) {

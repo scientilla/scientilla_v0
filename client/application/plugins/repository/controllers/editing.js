@@ -19,6 +19,8 @@ angular.module("repository").controller(
             name: "",
             version: "",
             url: "",
+            tags: [],
+            tagsStr: "",
             config: {
                 keywords: "",
                 rows: $scope.defaultRows,
@@ -48,6 +50,18 @@ angular.module("repository").controller(
             return retrieveRepository;
         }();
         
+        $scope.extractTags = function() {
+            if (_.isEmpty($scope.oRepository.tagsStr)) {
+                $scope.oRepository.tags = [];
+            }
+            else {
+                $scope.oRepository.tags = _.uniq($scope.oRepository.tagsStr.split(/;\s*/));
+            }
+        };
+        $scope.compressTags = function() {
+            $scope.oRepository.tagsStr = $scope.oRepository.tags.join('; ');
+        };
+        
         $scope.updateRepository = function() {
             repositoriesService.updateRepository({
                 name: $scope.oRepository.name,
@@ -59,7 +73,8 @@ angular.module("repository").controller(
                     page: $scope.oRepository.config.page
                 },
                 extractors: $scope.oRepository.extractors,
-                id: $scope.oRepository._id
+                id: $scope.oRepository._id,
+                tags: $scope.oRepository.tags
             }, $window.sessionStorage.userToken).success(function(data, status, headers, config) {
                 $location.path("browse-repositories");
             }).error(function(data, status, headers, config) {
