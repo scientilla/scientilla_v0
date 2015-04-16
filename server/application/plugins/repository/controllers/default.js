@@ -148,6 +148,7 @@ module.exports = function () {
                 repository.config = importedRepository.config;
                 repository.extractors = importedRepository.extractors;
                 repository.sharing_status = false;
+                repository.tags = [];
             } else {
                 !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : repository.name = "";
                 !req.underscore.isUndefined(req.body.version) ? repository.version = req.body.version.trim() : repository.version = "";
@@ -155,6 +156,7 @@ module.exports = function () {
                 !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
                 !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getDefaultExtractors();
                 !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : repository.sharing_status = false; 
+                !req.underscore.isUndefined(req.body.tags) ? repository.tags = req.body.tags : repository.tags = []; 
             }
             repository.creator_id = req.user.id;
             repository.creation_datetime = req.moment().format();

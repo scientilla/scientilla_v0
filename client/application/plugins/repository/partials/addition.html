@@ -64,7 +64,21 @@
                             <label for="page" class="label label-default">Page</label>
                             <input id="page" ng-model="oRepository.config.page" type="number" placeholder="Page" class="form-control">
                         </div>
-                    </div>                       
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <h3>Tags</h3>
+                            <span ng-hide="oRepository.tags && oRepository.tags.length">No tag associated</span>
+                            <ul class="tagList tagInsertion">
+                                <li ng-repeat="tag in oRepository.tags">
+                                    <div class="tag">
+                                        <i class="fa fa-tag"></i><b>{{tag}}</b>
+                                    </div>
+                                </li>
+                            </ul>  
+                            <input id="tags" name="tagsStr" ng-model="oRepository.tagsStr" type="text" ng-change="extractTags()" class="form-control" placeholder="tags, semicolon separated">                            
+                        </div>
+                    </div>                            
                     <div class="form-group" ng-repeat="(f, e) in oRepository.extractors" ng-init="label = (f | extractor)">
                         <div class="col-xs-6">
                             <label for="{{f}}Field" class="label label-default">{{label}} Field</label>
