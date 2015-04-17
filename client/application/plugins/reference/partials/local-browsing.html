@@ -47,17 +47,27 @@
                             <th><i class="fa fa-file-text"></i> Bibliographic Data</th>
                             <th class="fixed-th-2x text-center"><i class="fa fa-calendar"></i> Year</th>
                             <th class="fixed-th-5x"><i class="fa fa-tags"></i> Tags</th>
-                            <th class="fixed-th-1x">
-                                <a href="#/add-reference/" class="btn btn-default btn-block" title="Add new"><i class="fa fa-plus"></i></a>
-                            </th>
-                            <th ng-if="userRights == 1" class="fixed-th-1x">
-                                <button class="btn btn-default btn-block" title="Unshare selected" ng-click="unshareSelectedPeers()" ><i class="fa fa-lock"></i></button>
-                            </th>                            
-                            <th class="fixed-th-1x text-center">
-                                <button  ng-if="userRights == 1" class="btn btn-default btn-block" title="Share selected" ng-click="shareSelectedPeers()" ><i class="fa fa-unlock"></i></button>
-                            </th>  
-                            <th class="fixed-th-1x">
-                                <button class="btn btn-default btn-block" title="Delete selected" ng-click="deleteSelectedReferences()"><i class="fa fa-trash-o"></i></button>
+                            <th colspan="4" class="fixed-th-1x">
+                                <!-- <a href="#/add-reference/" class="btn btn-default btn-block" title="Add new"><i class="fa fa-plus"></i></a> -->
+                                <div class="btn-group btn-block" role="group">
+                                    <a type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-gear"></i> Other Actions
+                                    </a>
+                                    <ul class="dropdown-menu btn-multiple" role="menu">
+                                        <li>
+                                            <a href="#/add-reference/" class="btn btn-default btn-block"><i class="fa fa-plus"></i> Add a new reference</a>
+                                        </li>
+                                        <li>
+                                            <a class="btn btn-default btn-block" ng-click="unshareSelectedPeers()" ><i class="fa fa-lock"></i> Unshare selected references</a>
+                                        </li>
+                                        <li>
+                                            <a ng-if="userRights == 1" class="btn btn-default btn-block" ng-click="shareSelectedPeers()" ><i class="fa fa-unlock"></i> Share selected references</a>
+                                        </li>
+                                        <li>
+                                            <a class="btn btn-default btn-block" ng-click="deleteSelectedReferences()"><i class="fa fa-trash-o"></i> Delete selected references</a>
+                                        </li>
+                                    </ul>
+                                </div>                                
                             </th>
                             <th class="fixed-th-1x">
                                 <input type="checkbox" ng-click="selectAll()"/>
