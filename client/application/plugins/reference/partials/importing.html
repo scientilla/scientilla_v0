@@ -1,0 +1,52 @@
+<!--
+ ! Scientilla v1.0 Beta (http://www.scientilla.net)
+ ! Copyright 2014-2015 Fondazione Istituto Italiano di Tecnologia (http://www.iit.it)
+ ! Licensed under MIT (https://github.com/scientilla/scientilla/blob/master/LICENSE)
+ -->
+<div id="toolbar-container">
+    <div id="toolbar" class="container-fluid">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a id="sidebar-toggle-link" ng-click="toggleSidebar()" class="navbar-brand">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <span class="navbar-brand" id="tools-link">REFERENCES IMPORTATION (Beta)</span>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form visible-md visible-lg col-xs-4 col-sm-5 col-md-6 col-lg-5 pull-right" role="search">                                       
+                        <a data-toggle="modal" data-target="#get-started-button" class="btn btn-default help-button">
+                            <i class="fa fa-question-circle"></i>
+                        </a>
+                    </form>                              
+                </div>
+            </div>
+        </nav>
+    </div>			
+</div>
+<div id="content-container">
+    <div id="content" class="container-fluid">
+        <div class="row">            
+            <div class="col-lg-12">
+                <form class="form-horizontal" role="form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label for="file" class="label label-default">BibTeX File</label>
+                            <input id="file" file="file" type="file" class="form-control file-browser">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button ng-click="importReferences()" type="button" class="btn btn-default form-control">Import</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <a href="#/browse-references/" class="btn btn-default form-control">Cancel</a>
+                        </div>
+                    </div> 
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
