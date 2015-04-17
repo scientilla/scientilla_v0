@@ -244,7 +244,6 @@ module.exports = function () {
             var data = fs.readFileSync(req.files.file.path, { encoding: "utf8" });
             var aReferences = bibtexParseJs.toJSON(data);
             aReferences.forEach(function(oReference, nIndex, aReferences) {
-                console.log(oReference);
                 var reference = {};
                 reference.title = !req.underscore.isUndefined(oReference.entryTags.title) ? oReference.entryTags.title.trim() : "";
                 reference.authors = !req.underscore.isUndefined(oReference.entryTags.author) ? oReference.entryTags.author.trim() : "";
