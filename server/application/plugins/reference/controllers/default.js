@@ -5,6 +5,8 @@
  */
 
 var _ = require("lodash");
+var bibtexParseJs = require("bibtex-parse-js");
+var fs = require("fs");
 var mongodb = require("mongodb");
 var path = require("path");
 
@@ -154,7 +156,7 @@ module.exports = function () {
                 res.json(reference);
             });                
         },
-        getPublicReference: function(req, res) {
+        getPublicReference: function(req, res) {           
             req.referencesCollection.findOne({_id: identificationManager.getDatabaseSpecificId(req.params.id), sharing_status: true}, function(err, publicReference) {
                 if (err || req.underscore.isNull(publicReference)) {
                     res.status(404).end();
@@ -166,6 +168,11 @@ module.exports = function () {
             });                
         },
         createReference: function(req, res) {
+            if (_.isObject(req.files.file)) {
+                req.body.source = {
+                    type: "F"
+                }
+            }
             switch (req.body.source.type) {
                 case "I":
                     // Cloning a reference from the installation 
@@ -173,24 +180,25 @@ module.exports = function () {
                     // Cloning a reference from an installation dataset
                 case "PD":
                     // Cloning a reference from a peer dataset
-                    
-                    /*not implemented yet */
+                    // not implemented yet
                     res.status(404).end();
                     return;
                 case "P":
                     // Cloning a reference from a peer
-                    
                     this.cloneReferenceFromPeer(req, res);
                     return;
                 case "R":
                     // Cloning a reference from a repository
                 case "N":
                     // Creating a new reference
-                    
                     this.createNewReference(req, res);
                     break;
+                case "F":
+                    // Importing references from a file
+                    this.importReferences(req, res);
+                    break;                    
                 default:
-                    /* error!!! */
+                    // error
                     res.status(500).end();
                     return;
             };
@@ -231,6 +239,43 @@ module.exports = function () {
                     });
                 }
             );
+        },
+        importReferences: function(req, res) {
+            var data = fs.readFileSync(req.files.file.path, { encoding: "utf8" });
+            var aReferences = bibtexParseJs.toJSON(data);
+            aReferences.forEach(function(oReference, nIndex, aReferences) {
+                console.log(oReference);
+                var reference = {};
+                reference.title = !req.underscore.isUndefined(oReference.entryTags.title) ? oReference.entryTags.title.trim() : "";
+                reference.authors = !req.underscore.isUndefined(oReference.entryTags.author) ? oReference.entryTags.author.trim() : "";
+                reference.journal_name = !req.underscore.isUndefined(oReference.entryTags.journal) ? oReference.entryTags.journal.trim() : "";
+                reference.year = !req.underscore.isUndefined(oReference.entryTags.year) ? oReference.entryTags.year.trim() : "";
+                reference.pages = !req.underscore.isUndefined(oReference.entryTags.pages) ? oReference.entryTags.pages.trim() : "";
+                reference.original_hash = referenceManager.getReferenceHash(reference);
+                reference.clone_hash = reference.original_hash;
+                reference.organization_hashes = "";
+                reference.user_hash = req.user.hash;
+                reference.creator_id = req.user.id;
+                reference.creation_datetime = req.moment().format();
+                reference.last_modifier_id = req.user.id;
+                reference.last_modification_datetime = req.moment().format();
+                req.referencesCollection
+                    .find({ 
+                        original_hash: reference.original_hash,
+                        user_hash: { $in: req.user.hashes }
+                    })
+                    .toArray(function(err, references) {
+                        if (!err && references.length == 0) {
+                            req.referencesCollection.insert(reference, { w: 1 }, function(err, reference) {
+                                if (err || req.underscore.isNull(reference)) {
+                                    // 
+                                }
+                            });
+                        }
+                    }
+                );
+                res.end();
+            });
         },
         patchReference: function(req, res) {
             var refUpdate = req.body;

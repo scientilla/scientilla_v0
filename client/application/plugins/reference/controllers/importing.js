@@ -12,9 +12,12 @@ angular.module("reference").controller(
         
         $scope.importReferences = function() {
             if ($scope.file) {
-                var formData = new FormData();
-                formData.append("file", $scope.file);
-                $http.post("/api/references", formData, {
+                var data = new FormData();
+                data.append("file", $scope.file);
+                $http({
+                    method: "POST",
+                    url: "/api/references",
+                    data: data,
                     transformRequest: angular.identity,
                     cache: false,
                     timeout: 30000,
