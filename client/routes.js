@@ -119,7 +119,10 @@ angular.module("scientilla").config([
             controller: "repositoryReferenceCloningController"
         }).when("/accept-received-reference/:id/", {
             templateUrl: "application/plugins/reference/partials/acceptation.html",
-            controller: "receivedReferencesBrowsingController"            
+            controller: "receivedReferencesBrowsingController"
+        }).when("/import-references/", {
+            templateUrl: "application/plugins/reference/partials/importing.html",
+            controller: "referencesImportingController"            
         
         // REPOSITORIES
         }).when("/browse-repositories/", {
