@@ -39,6 +39,11 @@ angular.module("reference").factory(
         
         var referencesProvider = {};
         
+        referencesProvider.createReferenceWithTagsAsync = function(reference, token, tags, callback) {
+            reference.tags = _.union(reference.tags, tags);
+            this.createReferenceAsync(reference, token, callback);
+        };
+        
         referencesProvider.createReferenceAsync = function(reference, token, callback) {
             var referenceData = cleanReferenceData(reference);
             referenceData.source = {type: 'N'};
@@ -112,117 +117,117 @@ angular.module("reference").factory(
         
         referencesProvider.getReceivedReferences = function(token) {
             return $http({
-				method: "GET",
-				url: "/api/received-references",
+                method: "GET",
+                url: "/api/received-references",
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };
         
         referencesProvider.createReference = function(data, token) {
             return $http({
-				method: "POST",
-				url: "/api/references",
+                method: "POST",
+                url: "/api/references",
                 data: data,
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };
         
         referencesProvider.updateReference = function(data, token) {
             return $http({
-				method: "PUT",
-				url: "/api/references/" + data.id,
+                method: "PUT",
+                url: "/api/references/" + data.id,
                 data: data,
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };
         
         referencesProvider.deleteReference = function(id, token) {
             return $http({
-				method: "DELETE",
-				url: "/api/references/" + id,
+                method: "DELETE",
+                url: "/api/references/" + id,
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };
         
         referencesProvider.cloneReference = function(data, token) {
             return $http({
-				method: "POST",
-				url: "/api/cloned-references",
+                method: "POST",
+                url: "/api/cloned-references",
                 data: data,
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };        
         
         referencesProvider.setReferenceAsApproved = function(id, token) {
             return $http({
-				method: "PATCH",
-				url: "/api/references/" + id,
+                method: "PATCH",
+                url: "/api/references/" + id,
                 data: { approving_status: true },
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };
         
         referencesProvider.setReferenceAsNotApproved = function(id, token) {
             return $http({
-				method: "PATCH",
-				url: "/api/references/" + id,
+                method: "PATCH",
+                url: "/api/references/" + id,
                 data: { approving_status: false },
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };        
         
         referencesProvider.setReferenceAsShared = function(id, token) {
             return $http({
-				method: "PATCH",
-				url: "/api/references/" + id,
+                method: "PATCH",
+                url: "/api/references/" + id,
                 data: { sharing_status: true },
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };
         
         referencesProvider.setReferenceAsNotShared = function(id, token) {
             return $http({
-				method: "PATCH",
-				url: "/api/references/" + id,
+                method: "PATCH",
+                url: "/api/references/" + id,
                 data: { sharing_status: false },
                 cache: false,
                 timeout: 30000,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-			});
+            });
         };        
         
         return referencesProvider;

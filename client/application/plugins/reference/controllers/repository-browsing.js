@@ -18,9 +18,10 @@ angular.module("reference").controller(
         $scope.allSelected = false;
         
         $scope.cloneReference = function(reference) {
-            referencesService.createReferenceAsync(
+            referencesService.createReferenceWithTagsAsync(
                 reference, 
                 $window.sessionStorage.userToken, 
+                $scope.oRepository.tags,
                 function(result) {
                     switch(result.status) {
                         case 200: 
@@ -49,15 +50,16 @@ angular.module("reference").controller(
             
             var cloneReferences = 
                 _.map(selectedReferences, function(reference) {
-                   return function(callback) {
-                       referencesService.createReferenceAsync(
-                           reference, 
-                           $window.sessionStorage.userToken,
+                    return function(callback) {
+                        referencesService.createReferenceWithTagsAsync(
+                            reference, 
+                            $window.sessionStorage.userToken,
+                            $scope.oRepository.tags,
                             function(result) {
-                               callback(null, result);
+                                callback(null, result);
                             }
-                       );
-                   };
+                        );
+                    };
                 });
                 
             var notifyResults = function(err, results){
