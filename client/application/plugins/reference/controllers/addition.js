@@ -65,6 +65,18 @@ angular.module("reference").controller(
         };
         $scope.tag = "";
         
+        $scope.extractTags = function() {
+            if (_.isEmpty($scope.oReference.tagsStr)) {
+                $scope.oReference.tags = [];
+            }
+            else {
+                $scope.oReference.tags = _.uniq($scope.oReference.tagsStr.split(/;\s*/));
+            }
+        };
+        $scope.compressTags = function() {
+            $scope.oReference.tagsStr = $scope.oReference.tags.join('; ');
+        };
+        
         $scope.extractAuthors = function() {
             if ($scope.oReference.aAuthors !== "") { 
                 $scope.oReference.aAuthors = $scope.oReference.authors.replace(" and ", ", ").split(", "); 
