@@ -15,6 +15,7 @@ angular.module("reference").controller(
             organizations: "",
             aOrganization: [],
             tags: [],
+            tagsStr: "",
             year: "",
             doi: "",
             journal_name: "",
@@ -51,7 +52,9 @@ angular.module("reference").controller(
             tags: []
         };
         
-        $scope.select2Options = {
+        /*
+         * 
+         * $scope.select2Options = {
             placeholder: "Search for a tag",
             minimumInputLength: 1,
             separator: " ",
@@ -75,6 +78,20 @@ angular.module("reference").controller(
                 var data = {id: element.val(), text: element.val()};
                 callback(data);
             }
+        };
+        
+        */
+        
+        $scope.extractTags = function() {
+            if (_.isEmpty($scope.oReference.tagsStr)) {
+                $scope.oReference.tags = [];
+            }
+            else {
+                $scope.oReference.tags = _.uniq($scope.oReference.tagsStr.split(/;\s*/));
+            }
+        };
+        $scope.compressTags = function() {
+            $scope.oReference.tagsStr = $scope.oReference.tags.join('; ');
         };
         
         $scope.selectedAuthors = [];
@@ -131,6 +148,7 @@ angular.module("reference").controller(
                 $scope.extractAuthors();
                 $scope.extractOrganizations();
                 updateSelectedAuthors();
+                $scope.compressTags();
                 
             }).error(function(data, status, headers, config) {
                 systemStatusService.react(status);

@@ -92,21 +92,19 @@
                         </div>
                     </div>                    -->
                     <div class="form-group">
-                        <div class="col-xs-12 nowrap"><label for="tag" class="label label-default">Tags</label>
-                            <input ui-select2="select2Options" id="tag" ng-model="tag" data-placeholder="Tag keywords" class="tagSelector" /> 
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <div class="col-xs-12">
+                            <h3>Tags</h3>
+                            <span ng-hide="oReference.tags && oReference.tags.length">No tag associated</span>
                             <ul class="tagList tagInsertion">
                                 <li ng-repeat="tag in oReference.tags">
                                     <div class="tag">
                                         <i class="fa fa-tag"></i><b>{{tag}}</b>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul>  
+                            <input id="tags" name="tagsStr" ng-model="oReference.tagsStr" type="text" ng-change="extractTags()" class="form-control" placeholder="tags, semicolon separated">                            
                         </div>
-                    </div>                    
+                    </div>  
                     <div class="form-group">
                         <div class="col-xs-1 nowrap">
                             <label for="year" class="label label-default">Year</label>
