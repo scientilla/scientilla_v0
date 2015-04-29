@@ -309,12 +309,10 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.conference_name) ? reference.conference_name = req.body.conference_name.trim() : null;
             !req.underscore.isUndefined(req.body.conference_acronym) ? reference.conference_acronym = req.body.conference_acronym.trim() : null;
             !req.underscore.isUndefined(req.body.conference_place) ? reference.conference_place = req.body.conference_place.trim() : null;
-            !req.underscore.isUndefined(req.body.conference_year) ? reference.conference_year = req.body.conference_year.trim() : null;
             !req.underscore.isUndefined(req.body.book_title) ? reference.book_title = req.body.book_title.trim() : null;
             !req.underscore.isUndefined(req.body.book_isbn) ? reference.book_isbn = req.body.book_isbn.trim() : null;
             !req.underscore.isUndefined(req.body.book_pages) ? reference.book_pages = req.body.book_pages.trim() : null;
             !req.underscore.isUndefined(req.body.book_editor) ? reference.book_editor = req.body.book_editor.trim() : null;
-            !req.underscore.isUndefined(req.body.book_year) ? reference.book_year = req.body.book_year.trim() : null;
             !req.underscore.isUndefined(req.body.abstract) ? reference.abstract = req.body.abstract.trim() : null;
             !req.underscore.isUndefined(req.body.month) ? reference.month = req.body.month.trim() : null;
             !req.underscore.isUndefined(req.body.print_status) ? reference.print_status = req.body.print_status.trim() : null;
@@ -372,12 +370,10 @@ module.exports = function () {
             !req.underscore.isUndefined(req.body.conference_name) ? reference.conference_name = req.body.conference_name.trim() : null;
             !req.underscore.isUndefined(req.body.conference_acronym) ? reference.conference_acronym = req.body.conference_acronym.trim() : null;
             !req.underscore.isUndefined(req.body.conference_place) ? reference.conference_place = req.body.conference_place.trim() : null;
-            !req.underscore.isUndefined(req.body.conference_year) ? reference.conference_year = req.body.conference_year.trim() : null;
             !req.underscore.isUndefined(req.body.book_title) ? reference.book_title = req.body.book_title.trim() : null;
             !req.underscore.isUndefined(req.body.book_isbn) ? reference.book_isbn = req.body.book_isbn.trim() : null;
             !req.underscore.isUndefined(req.body.book_pages) ? reference.book_pages = req.body.book_pages.trim() : null;
             !req.underscore.isUndefined(req.body.book_editor) ? reference.book_editor = req.body.book_editor.trim() : null;
-            !req.underscore.isUndefined(req.body.book_year) ? reference.book_year = req.body.book_year.trim() : null;
             !req.underscore.isUndefined(req.body.abstract) ? reference.abstract = req.body.abstract.trim() : null;
             !req.underscore.isUndefined(req.body.month) ? reference.month = req.body.month.trim() : null;
             !req.underscore.isUndefined(req.body.print_status) ? reference.print_status = req.body.print_status.trim() : null;
@@ -430,12 +426,10 @@ module.exports = function () {
                 reference.conference_name + ", " +
                 reference.conference_acronym + ", " +
                 reference.conference_place + ", " +
-                reference.conference_year + ", " +
                 reference.book_title + ", " +
                 reference.book_isbn + ", " +
                 reference.book_pages + ", " +
                 reference.book_editor + ", " +
-                reference.book_year + ", " +
                 reference.abstract + ", " +
                 reference.month + ", " +
                 reference.abstract

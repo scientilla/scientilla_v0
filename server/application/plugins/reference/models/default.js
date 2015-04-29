@@ -26,12 +26,10 @@ module.exports = function () {
             "conference_name",
             "conference_acronym",
             "conference_place",
-            "conference_year",
             "book_title",
             "book_isbn",
             "book_pages",
             "book_editor",
-            "book_year",
             "abstract",
             "month",
             "print_status",
@@ -71,12 +69,10 @@ module.exports = function () {
             "conference_name",
             "conference_acronym",
             "conference_place",
-            "conference_year",
             "book_title",
             "book_isbn",
             "book_pages",
             "book_editor",
-            "book_year",
             "abstract",
             "month",
             "print_status",
@@ -238,12 +234,10 @@ module.exports = function () {
             reference.conference_name + ", " +
             reference.conference_acronym + ", " +
             reference.conference_place + ", " +
-            reference.conference_year + ", " +
             reference.book_title + ", " +
             reference.book_isbn + ", " +
             reference.book_pages + ", " +
             reference.book_editor + ", " +
-            reference.book_year + ", " +
             reference.abstract + ", " +
             reference.month + ", " +
             reference.abstract
