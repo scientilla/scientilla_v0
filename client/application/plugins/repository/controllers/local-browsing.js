@@ -75,7 +75,11 @@ angular.module("repository").controller(
                 $scope.currentPageNumber = customPageNumber;
             }
             $scope.retrieveRepositories();
-        };         
+        };
+        
+        $scope.retrieveFirstPage = function() {
+            $scope.currentPageNumber = 1;
+        }
         
         $scope.retrieveNextItemsPage = function() {
             if ($scope.startPageNumber < (Math.ceil($scope.totalNumberOfItems / $scope.numberOfItemsPerPage) - 2)) {
