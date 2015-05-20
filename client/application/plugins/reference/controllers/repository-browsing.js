@@ -125,6 +125,11 @@ angular.module("reference").controller(
             $scope.retrieveReferences(+1);
         };
         
+        $scope.retrieveCustomItemsPage = function(pageNum) {
+            $scope.currentPage = pageNum;
+            $scope.retrieveReferences();
+        }
+        
         $scope.retrieveReferences = function(pageIncr) {
             pageIncr = pageIncr || 0;
             $scope.empty = false;
