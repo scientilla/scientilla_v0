@@ -242,7 +242,7 @@
                     </div>                  
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <button ng-click="createReference()" ng-show="form.$valid" type="button" class="btn btn-default form-control">Save</button>
+                            <button ng-click="createReference()" ng-disabled="!form.$valid" type="button" class="btn btn-default form-control">Save</button>
                         </div>
                     </div>
                     <div class="form-group">
