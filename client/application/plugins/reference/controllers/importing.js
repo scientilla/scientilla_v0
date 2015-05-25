@@ -8,11 +8,13 @@ angular.module("reference").controller(
     "referencesImportingController", 
     ["$scope", "referencesService", "systemStatusService", "$window", "$location", "$http", 
     function($scope, referencesService, systemStatusService, $window, $location, $http) {
+        $scope.type = 0;
         $scope.file = "";
         
         $scope.importReferences = function() {
             if ($scope.file) {
                 var data = new FormData();
+                data.append("type", $scope.type);
                 data.append("file", $scope.file);
                 $http({
                     method: "POST",

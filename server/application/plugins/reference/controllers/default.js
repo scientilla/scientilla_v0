@@ -268,39 +268,48 @@ module.exports = function () {
         },
         importReferences: function(req, res) {
             var data = fs.readFileSync(req.files.file.path, { encoding: "utf8" });
-            var aReferences = bibtexParseJs.toJSON(data);
-            aReferences.forEach(function(oReference, nIndex, aReferences) {
-                var reference = {};
-                reference.title = !req.underscore.isUndefined(oReference.entryTags.title) ? oReference.entryTags.title.trim() : "";
-                reference.authors = !req.underscore.isUndefined(oReference.entryTags.author) ? oReference.entryTags.author.trim() : "";
-                reference.journal_name = !req.underscore.isUndefined(oReference.entryTags.journal) ? oReference.entryTags.journal.trim() : "";
-                reference.year = !req.underscore.isUndefined(oReference.entryTags.year) ? oReference.entryTags.year.trim() : "";
-                reference.pages = !req.underscore.isUndefined(oReference.entryTags.pages) ? oReference.entryTags.pages.trim() : "";
-                reference.original_hash = referenceManager.getReferenceHash(reference);
-                reference.clone_hash = reference.original_hash;
-                reference.organization_hashes = "";
-                reference.user_hash = req.user.hash;
-                reference.creator_id = req.user.id;
-                reference.creation_datetime = req.moment().format();
-                reference.last_modifier_id = req.user.id;
-                reference.last_modification_datetime = req.moment().format();
-                req.referencesCollection
-                    .find({ 
-                        original_hash: reference.original_hash,
-                        user_hash: { $in: req.user.hashes }
-                    })
-                    .toArray(function(err, references) {
-                        if (!err && references.length == 0) {
-                            req.referencesCollection.insert(reference, { w: 1 }, function(err, reference) {
-                                if (err || req.underscore.isNull(reference)) {
-                                    // 
-                                }
-                            });
+            var aReferences = [];
+            if (req.body.type == 0) {
+                aReferences = bibtexParseJs.toJSON(data);
+            } else {
+                aReferences = referenceManager.convertRIStoJSON(data);
+            }
+            if (req.body.type == 0) {
+                aReferences.forEach(function(oReference, nIndex, aReferences) {
+                    var reference = {};
+                    reference.title = !req.underscore.isUndefined(oReference.entryTags.title) ? oReference.entryTags.title.trim() : "";
+                    reference.authors = !req.underscore.isUndefined(oReference.entryTags.author) ? oReference.entryTags.author.trim() : "";
+                    reference.journal_name = !req.underscore.isUndefined(oReference.entryTags.journal) ? oReference.entryTags.journal.trim() : "";
+                    reference.year = !req.underscore.isUndefined(oReference.entryTags.year) ? oReference.entryTags.year.trim() : "";
+                    reference.pages = !req.underscore.isUndefined(oReference.entryTags.pages) ? oReference.entryTags.pages.trim() : "";
+                    reference.original_hash = referenceManager.getReferenceHash(reference);
+                    reference.clone_hash = reference.original_hash;
+                    reference.organization_hashes = "";
+                    reference.user_hash = req.user.hash;
+                    reference.creator_id = req.user.id;
+                    reference.creation_datetime = req.moment().format();
+                    reference.last_modifier_id = req.user.id;
+                    reference.last_modification_datetime = req.moment().format();
+                    req.referencesCollection
+                        .find({ 
+                            original_hash: reference.original_hash,
+                            user_hash: { $in: req.user.hashes }
+                        })
+                        .toArray(function(err, references) {
+                            if (!err && references.length == 0) {
+                                req.referencesCollection.insert(reference, { w: 1 }, function(err, reference) {
+                                    if (err || req.underscore.isNull(reference)) {
+                                        // 
+                                    }
+                                });
+                            }
                         }
-                    }
-                );
+                    );
+                    res.end();
+                });
+            } else {
                 res.end();
-            });
+            }
         },
         patchReference: function(req, res) {
             var refUpdate = req.body;

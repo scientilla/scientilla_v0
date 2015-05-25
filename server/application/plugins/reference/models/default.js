@@ -256,22 +256,28 @@ module.exports = function () {
         getVerifiedReferences: function(referencesCollection, userHashes, references, repository, callback) {
             // console.log(references);
             referencesCollection
-                .find({user_hash: { $in: userHashes }})
-                .toArray(function(err, existingReferences) {
-                    if (err) {
-                        callback(err, null);
-                        return;
-                    }
-                    // console.log(existingReferences);
-                    var verifiedReferences = references.map(function(reference){
-                        var verifiedReference = createReference(reference, repository);
-                        // console.log(verifiedReference);
-                        var hash = referenceHash(verifiedReference);
-                        verifiedReference.clonable = !_.some(existingReferences, {original_hash: hash});
-                        return verifiedReference;
-                    });
-                    callback(null, verifiedReferences);
+            .find({user_hash: { $in: userHashes }})
+            .toArray(function(err, existingReferences) {
+                if (err) {
+                    callback(err, null);
+                    return;
+                }
+                // console.log(existingReferences);
+                var verifiedReferences = references.map(function(reference){
+                    var verifiedReference = createReference(reference, repository);
+                    // console.log(verifiedReference);
+                    var hash = referenceHash(verifiedReference);
+                    verifiedReference.clonable = !_.some(existingReferences, {original_hash: hash});
+                    return verifiedReference;
                 });
-            }
+                callback(null, verifiedReferences);
+            });
+        },
+        convertRIStoJSON: function(data) {
+            var regex = /(\r\n|\r|\n)/;
+            var aRows = data.split(regex);
+            console.log(aRows);
+            console.log("length: " + aRows.length);
+        }
     };
 };
