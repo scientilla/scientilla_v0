@@ -36,23 +36,49 @@ module.exports = function () {
         return cleanedReferences;
     };
     var retrieveReferences = function(referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {        
-        var regexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
+        var keywordsRegexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
+        var keywordsArray = keywords.split();
+        var keywordsRegexArray = _.map(keywordsArray, (function(k) {return new RegExp(k)}));
+        console.log(keywordsRegexArray);
         return referencesCollection.find({                
             "$or": [
                 {
                     title: { 
-                        $regex: regexQuery,
+                        $regex: keywordsRegexQuery,
                         $options: 'i'
                     }
                 },
                 {
                     authors: { 
-                        $regex: regexQuery,
+                        $regex: keywordsRegexQuery,
                         $options: 'i'
+                    }
+                },
+                {
+                    journal_name: { 
+                        $regex: keywordsRegexQuery,
+                        $options: 'i'
+                    }
+                },
+                {
+                    conference_name: { 
+                        $regex: keywordsRegexQuery,
+                        $options: 'i'
+                    }
+                },
+                {
+                    book_title: { 
+                        $regex: keywordsRegexQuery,
+                        $options: 'i'
+                    }
+                },
+                {
+                    tags: { 
+                        $in: keywordsRegexArray
                     }
                 }
             ]
-        }).sort(
+        }, {"_tiar.tags":0}).sort(
             { 
                 creation_datetime: -1 
             }
