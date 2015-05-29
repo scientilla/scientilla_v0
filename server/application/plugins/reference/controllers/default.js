@@ -39,7 +39,6 @@ module.exports = function () {
         var keywordsRegexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
         var keywordsArray = keywords.split();
         var keywordsRegexArray = _.map(keywordsArray, (function(k) {return new RegExp(k)}));
-        console.log(keywordsRegexArray);
         return referencesCollection.find({                
             "$or": [
                 {
