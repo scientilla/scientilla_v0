@@ -66,7 +66,7 @@ module.exports = function () {
         getRepositories: function(req, res) {
             var config = _.pick(req.query, ['keywords', 'page', 'rows']);
             var page = config.page || 1;
-            var rows = config.rows || 20;
+            var rows = parseInt(config.rows || 20, 10);
             var skip = (page - 1) * rows;
             var keywords = config.keywords || "";
             var result = {};

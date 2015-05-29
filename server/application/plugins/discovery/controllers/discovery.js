@@ -22,7 +22,7 @@ module.exports = function () {
             var aliasesQuery = aliases.join("|");
             var keywords = config.keywords || "";
             var page = config.page || 1;
-            var rows = config.rows || 20;
+            var rows = parseInt(config.rows || 20, 10);
             var skip = (page - 1) * rows;
             var keywordsQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
             
