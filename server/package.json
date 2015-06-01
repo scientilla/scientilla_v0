@@ -20,6 +20,7 @@
         "node-schedule": "0.1.13",
         "request": "2.47.0",
         "tingodb": "0.3.0",
-        "underscore": "1.7.0"
+        "underscore": "1.7.0",
+        "jasmine": "*"
     }
 }
