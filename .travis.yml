@@ -5,6 +5,7 @@ sudo: false
 services:
   - mongodb
 before_script:
+  - "cd server"
   - "npm i -g jasmine-node"
 script:
   - "npm test"
