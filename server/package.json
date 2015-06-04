@@ -22,5 +22,8 @@
         "tingodb": "0.3.0",
         "underscore": "1.7.0",
         "jasmine": "*"
+    },
+    "scripts": {
+        "test": "jasmine-node spec/"
     }
 }
