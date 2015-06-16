@@ -1,5 +1,7 @@
 # [SCIENTILLA](http://www.scientilla.net)
 
+[![Build Status](https://travis-ci.org/scientilla/scientilla.svg?branch=master)](https://travis-ci.org/scientilla/scientilla)
+
 ## SCIENTIfic coLLaborative Archive
 
 ####*The first Independent Scientific Register for Organizations and Researchers*
