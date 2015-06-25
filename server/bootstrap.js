@@ -247,6 +247,16 @@ async.series([
         seriesCallback();
     },    
     function(seriesCallback) {
+        var fixReferencesJob = function fixReferencesJob() {
+            console.log("Fixing references...");
+            referencesController.fixCorruptedReferences(referencesCollection, async);
+
+            return fixReferencesJob;
+        }();
+        setInterval(fixReferencesJob, 14400000); // 4 hours
+        seriesCallback();
+    },    
+    function(seriesCallback) {
         if (peerMode === 0 || peerMode === 2) { // Only if Peer or Partial Seed
             var peersAndRepositoriesCollectionJob = function() {
                 console.log("Collecting peers and repositories...");
