@@ -15,7 +15,8 @@ angular.module("repository").controller(
             'book_editor', 'abstract', 'month', 'print_status', 'note', 'approving_status', 'sharing_status'];        
         $scope.defaultRows = 20;
         $scope.defaultPage = 1;
-        $scope.oRepository = {
+        
+        $scope.oEmptyRepository = {
             name: "",
             version: "",
             url: "",
@@ -28,6 +29,9 @@ angular.module("repository").controller(
             },
             extractors: {}
         };
+        
+        $scope.oRepository = _.defaults({}, $scope.oEmptyRepository);
+        
         extractorFields.forEach(function(extractorField){
             $scope.oRepository.extractors[extractorField] = {
                 field: extractorField,
@@ -64,6 +68,7 @@ angular.module("repository").controller(
         };
         
         $scope.updateRepository = function() {
+            $scope.oRepository = _.defaults($scope.oRepository, $scope.oEmptyRepository);
             repositoriesService.updateRepository({
                 name: $scope.oRepository.name,
                 version: $scope.oRepository.version,
