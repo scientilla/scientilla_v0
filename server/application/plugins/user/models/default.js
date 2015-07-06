@@ -89,6 +89,7 @@ module.exports = function () {
                 }
                 if (_.isNull(user)) {
                     callback(new Error('No user found'), null);
+                    return;
                 }
                 
                 callback(null, user);
