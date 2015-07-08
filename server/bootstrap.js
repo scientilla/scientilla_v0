@@ -122,6 +122,7 @@ async.series([
         if (configurationManager.get().database_type == "mongodb") {
             databaseEngine.connect(
                 "mongodb://" + configurationManager.get().database_host + ":" + configurationManager.get().database_port + "/scientilla",
+                {db:{safe:false}},
                 function(err, db) {
                     database = db;
                     seriesCallback();
@@ -143,9 +144,12 @@ async.series([
     },
     function(seriesCallback) {
         database.collection("peers", function(err, collection) {
-            peersCollection = collection;
-            peersCollection.createIndex({ url: "text" });
-            seriesCallback();
+            if (!err){
+                peersCollection = collection;
+                peersCollection.createIndex({ url: "text" }, function(err, indexName){
+                    seriesCallback();
+                });
+            }
         });
     },
     function(seriesCallback) {
@@ -240,6 +244,16 @@ async.series([
         // versionCheckRecurrenceRule.hour = new nodeSchedule.Range(0, 23, 4);
         // nodeSchedule.scheduleJob(versionCheckRecurrenceRule, versionCheckJob);
         setInterval(versionCheckJob, 14400000); // 4 hours
+        seriesCallback();
+    },    
+    function(seriesCallback) {
+        var fixReferencesJob = function fixReferencesJob() {
+            console.log("Fixing references...");
+            referencesController.fixCorruptedReferences(referencesCollection, async);
+
+            return fixReferencesJob;
+        }();
+        setInterval(fixReferencesJob, 14400000); // 4 hours
         seriesCallback();
     },    
     function(seriesCallback) {

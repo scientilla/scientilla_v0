@@ -42,6 +42,19 @@ module.exports = function () {
         });
         return extractors;
     };
+    
+    
+    var getDefaultRepository= function(){
+        return {
+            name: "",
+            version: "",
+            url: "",
+            config: getEmptyConfig(),
+            extractors: getDefaultExtractors(),
+            tags: []
+        };
+    }
+        
     var getCleanExtractors = function(extractors) {
         var defaultExtractors = getDefaultExtractors();
         var cleanExtractors = _.merge(defaultExtractors, extractors);
@@ -172,14 +185,10 @@ module.exports = function () {
             });
         },
         updateRepository: function(req, res) { 
-            var repository = {};
-            !req.underscore.isUndefined(req.body.name) ? repository.name = req.body.name.trim() : null;
-            !req.underscore.isUndefined(req.body.version) ? repository.version = req.body.version.trim() : null;
-            !req.underscore.isUndefined(req.body.url) ? repository.url = req.body.url.trim() : null;  
-            !req.underscore.isUndefined(req.body.config) ? repository.config = trimObject(req.body.config) : repository.config = getEmptyConfig();
-            !req.underscore.isUndefined(req.body.extractors) ? repository.extractors = trimObject(req.body.extractors) : repository.extractors = getDefaultExtractors();
-            !req.underscore.isUndefined(req.body.sharing_status) ? repository.sharing_status = req.body.sharing_status : null;
-            !req.underscore.isUndefined(req.body.tags) ? repository.tags = req.body.tags : repository.tags = []; 
+            var repository = req.body;
+            repository = _.defaults(repository, getDefaultRepository());
+            repository = trimObject(repository);
+            
             repository.last_modifier_id = req.user.id;
             repository.last_modification_datetime = req.moment().format();         
             req.repositoriesCollection.update({_id: identificationManager.getDatabaseSpecificId(req.params.id)}, { $set: repository }, {w: 1}, function(err, repository) {

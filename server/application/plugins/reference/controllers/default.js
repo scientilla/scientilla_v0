@@ -558,6 +558,29 @@ module.exports = function () {
         },
         getPublicReferencesCount: function(req, res, callback) {
             callback(null, 0);
+        },
+        fixCorruptedReferences: function(referenceCollection, async) {
+            referenceCollection
+                .find()
+                .toArray(function(err, references) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    var referencesToBeFixed = _.filter(references, function(r) {
+                        return referenceManager.getReferenceHash(r) !== r.clone_hash;
+                    });
+                    async.each(
+                        referencesToBeFixed, 
+                        function(r, cb) {
+                            var correctCloneHash = referenceManager.getReferenceHash(r);
+                            referenceCollection.update({_id: r._id}, {$set: {clone_hash : correctCloneHash}}, function(){ cb(); });
+                        }
+                    ),
+                    function(err) { 
+                        console.log(err);
+                    }
+                });
         }
     };
 };

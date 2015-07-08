@@ -54,6 +54,11 @@ module.exports = function () {
                         res.status(404).end();
                         return;
                     }
+                    if (response.statusCode !== 200) {
+                        console.log('An error happened while contacting ' + peer.url + '.');
+                        res.status(404).end();
+                        return;
+                    }
                     
                     var peerReferences = peerReferencesObj.items;
                     referenceManager.getVerifiedReferences(
