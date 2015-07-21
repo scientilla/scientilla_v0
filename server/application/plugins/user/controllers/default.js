@@ -350,7 +350,8 @@ module.exports = function () {
                     res.status(500).end();
                     return;
                 }
-                if (users.length === 0) {
+                var isFirstLogin = (users.length === 0);
+                if (isFirstLogin) {
                     console.log("Needed to Create the Default User");
                     var user = {};
                     user.type = 0;
@@ -452,8 +453,12 @@ module.exports = function () {
                                 res.status(500).end();
                                 return;
                             }
-                            var hash = user.rights === 1 ? owner.hash : user.hash;
-                            var hashes = user.rights === 1 ? owner.hashes : user.hashes;
+//                            it makes sense only with a "operator" role
+//                            var hash = user.rights === 1 ? owner.hash : user.hash;
+//                            var hashes = user.rights === 1 ? owner.hashes : user.hashes;
+                            var hash = user.hash;
+                            var hashes = user.hashes;
+
                             var userDataForToken = {
                                 first_name: user.first_name,
                                 middle_name: user.middle_name,
