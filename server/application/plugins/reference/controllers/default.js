@@ -35,49 +35,53 @@ module.exports = function () {
         });
         return cleanedReferences;
     };
-    var retrieveReferences = function(referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage) {        
+    var retrieveReferences = function(referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, userHashes) {        
         var keywordsRegexQuery = "^(?=.*(" + keywords.replace(" ", "))(?=.*(") + "))";
         var keywordsArray = keywords.split();
         var keywordsRegexArray = _.map(keywordsArray, (function(k) {return new RegExp(k)}));
-        return referencesCollection.find({                
-            "$or": [
+        return referencesCollection.find({
+            "$and": [
+                { user_hash: { $in: userHashes } },
                 {
-                    title: { 
-                        $regex: keywordsRegexQuery,
-                        $options: 'i'
+                    "$or": [
+                    {
+                        title: { 
+                            $regex: keywordsRegexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        authors: { 
+                            $regex: keywordsRegexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        journal_name: { 
+                            $regex: keywordsRegexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        conference_name: { 
+                            $regex: keywordsRegexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        book_title: { 
+                            $regex: keywordsRegexQuery,
+                            $options: 'i'
+                        }
+                    },
+                    {
+                        tags: { 
+                            $in: keywordsRegexArray
+                        }
                     }
-                },
-                {
-                    authors: { 
-                        $regex: keywordsRegexQuery,
-                        $options: 'i'
-                    }
-                },
-                {
-                    journal_name: { 
-                        $regex: keywordsRegexQuery,
-                        $options: 'i'
-                    }
-                },
-                {
-                    conference_name: { 
-                        $regex: keywordsRegexQuery,
-                        $options: 'i'
-                    }
-                },
-                {
-                    book_title: { 
-                        $regex: keywordsRegexQuery,
-                        $options: 'i'
-                    }
-                },
-                {
-                    tags: { 
-                        $in: keywordsRegexArray
-                    }
-                }
+                ]}
             ]
-        }, {"_tiar.tags":0}).sort(
+        }, {"_tiar.tags":0, "_tiar.user_hash": 0}).sort(
             { 
                 creation_datetime: -1 
             }
@@ -91,17 +95,19 @@ module.exports = function () {
         getReferences: function(req, res) {
             var keywords = _.isUndefined(req.query.keywords) ? '' : req.query.keywords;
             var currentPageNumber = _.isUndefined(req.query.current_page_number) ? 1 : parseInt(req.query.current_page_number);
-            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page);            
-            var retrievedCollection = retrieveReferences(req.referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage);
+            var numberOfItemsPerPage = _.isUndefined(req.query.number_of_items_per_page) ? 20 : parseInt(req.query.number_of_items_per_page); 
+            var retrievedCollection = retrieveReferences(req.referencesCollection, keywords, currentPageNumber, numberOfItemsPerPage, req.user.hashes);
             var result = {};
             retrievedCollection.count(function(err, referencesCount) {
                 if (err || req.underscore.isNull(referencesCount)) {
+                    console.log(err);
                     res.status(404).end();
                     return;
                 }
                 result.total_number_of_items = referencesCount;
                 retrievedCollection.toArray(function(err, references) {
                     if (err || req.underscore.isNull(references)) {
+                        console.log(err);
                         res.status(404).end();
                         return;
                     }
