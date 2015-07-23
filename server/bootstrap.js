@@ -125,7 +125,7 @@ async.series([
                 {db:{safe:false}},
                 function(err, db) {
                     database = db;
-                    seriesCallback();
+                    seriesCallback(err);
                 }
             );
         } else {
@@ -349,7 +349,10 @@ async.series([
         }
         seriesCallback();
     }
-]);
+    ], function(err) {
+        console.log(err);
+        process.exit(1);
+});
 
 // Executes middlewares
 application.use("*", function(req, res, next) {
