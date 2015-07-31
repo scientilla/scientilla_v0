@@ -350,8 +350,12 @@ async.series([
         seriesCallback();
     }
     ], function(err) {
+        if (!err) 
+            return;
+        
         console.log(err);
         process.exit(1);
+        
 });
 
 // Executes middlewares
